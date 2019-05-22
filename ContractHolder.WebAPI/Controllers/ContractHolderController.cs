@@ -39,6 +39,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] APITeste individual)
         {
+            //Implementar Validações
             _contractHolderWriteRepository.Add(individual);
             return Ok(individual);
         }
@@ -46,6 +47,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContractHolder(Guid id, [FromBody] APITeste apiTeste)
         {
+            //Implementar Validações
             var obj = _contractHolderReadOnlyRepository.Find(id);
 
             obj.id = apiTeste.id;
@@ -55,8 +57,15 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult DeleteContractHolder(Guid id)
         {
+            //Implementar Validações
+            var obj = _contractHolderReadOnlyRepository.Find(id);
+
+            if (obj != null)
+                return Ok(_contractHolderWriteRepository.Remove(obj));
+
+            return NotFound(obj);
         }
     }
 }
