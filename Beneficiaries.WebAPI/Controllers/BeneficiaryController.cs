@@ -53,5 +53,16 @@ namespace Beneficiaries.WebAPI.Controllers
 
             return Ok(_beneficiaryWriteRepository.Update(obj));
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBeneficiary(Guid id)
+        {
+            var obj = _beneficiaryReadOnlyRepository.Find(id);
+
+            if (obj != null)
+                return Ok(_beneficiaryWriteRepository.Remove(obj));
+
+            return NotFound(obj);
+        }
     }
 }
