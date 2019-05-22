@@ -35,5 +35,13 @@ namespace Beneficiaries.WebAPI.Controllers
             var obj = _beneficiaryReadOnlyRepository.Find(id);
             return Ok(obj);
         }
+
+        [HttpPost]
+        public IActionResult PostOwner([FromBody] APITeste beneficiary)
+        {
+            _beneficiaryWriteRepository.Add(beneficiary);
+
+            return Ok(beneficiary);
+        }
     }
 }
