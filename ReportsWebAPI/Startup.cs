@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Beneficiaries.WebAPI
+namespace Reports.WebAPI
 {
     public class Startup
     {

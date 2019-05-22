@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Backend.Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infrastructure.Configuration
 {
@@ -7,7 +8,7 @@ namespace Backend.Infrastructure.Configuration
 
         public ConfigurationContext(DbContextOptions<ConfigurationContext> options) : base(options)
         {
-
+            Database.Migrate();
         }
 
         public DbSet<Individual> Individuals { get; set; }
@@ -16,6 +17,9 @@ namespace Backend.Infrastructure.Configuration
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<MobileDevice> MobileDevices { get; set; }
         public DbSet<Contract> Contracts { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Telephone> Telephones { get; set; }
+        public DbSet<ContractIndividual> ContractIndividuals { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -26,6 +30,9 @@ namespace Backend.Infrastructure.Configuration
             builder.Entity<Vehicle>();
             builder.Entity<MobileDevice>();
             builder.Entity<Contract>();
+            builder.Entity<Address>();
+            builder.Entity<Telephone>();
+            builder.Entity<ContractIndividual>();
         }
     }
 

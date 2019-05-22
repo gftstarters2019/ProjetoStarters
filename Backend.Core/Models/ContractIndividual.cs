@@ -9,11 +9,11 @@ namespace Backend.Core.Models
     {
         public Guid ContractIndividualId { get; set; }
         public List<Individual> ContractIndividuals { get; set; }
-        public List<Guid> ContractIndividualsId { get; set; }
+        //public List<Guid> ContractIndividualsId { get; set; }
         public List<Contract> ContractContracts { get; set; }
-        public List<Guid> ContractContractsId { get; set; }
-        public List<IBeneficiary> ContractBeneficiaries { get; set; }
-        public List<Guid> ContractBeneficiariesId { get; set; }
+        //public List<Guid> ContractContractsId { get; set; }
+        //public List<IBeneficiary> ContractBeneficiaries { get; set; }
+        //public List<Guid> ContractBeneficiariesId { get; set; }
         public Boolean ContractIndividualIsActive { get; set; }
     }
 }

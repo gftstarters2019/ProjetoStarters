@@ -10,7 +10,7 @@ namespace Backend.Core.Models
     {
         public Guid MobileDeviceId { get; set; }
         public Guid BeneficiaryId { get; set; }
-        public IBeneficiary Beneficiary { get; set; }
+        //public IBeneficiary Beneficiary { get; set; }
         public string MobileDeviceBrand { get; set; }
         public string MobileDeviceModel { get; set; }
         public string MobileDeviceSerialNumber { get; set; }

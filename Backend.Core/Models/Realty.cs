@@ -9,7 +9,7 @@ namespace Backend.Core.Models
     {
         public Guid RealtyId { get; set; }
         public Guid BeneficiaryId { get; set; }
-        public IBeneficiary Beneficiary { get; set; }
+        //public IBeneficiary Beneficiary { get; set; }
         public Address RealtyAddress { get; set; }
         public Guid RealtyAddressId { get; set; }
         public string RealtyMunicipalRegistration { get; set; }
