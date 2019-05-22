@@ -26,6 +26,11 @@ namespace Beneficiaries.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //services.AddScoped<IReadOnlyRepository<Owner>, OwnerRepository>();
+            //services.AddScoped<IWriteRepository<Owner>, OwnerRepository>();
+
+            //services.AddDbContext<LataNovaContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
