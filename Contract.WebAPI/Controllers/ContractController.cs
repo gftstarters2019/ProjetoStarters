@@ -53,8 +53,15 @@ namespace Contract.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult DeleteContract(Guid id)
         {
+            //Implementar Validações
+            var obj = _contractReadOnlyRepository.Find(id);
+
+            if (obj != null)
+                return Ok(_contractWriteRepository.Remove(obj));
+
+            return NotFound(obj);
         }
     }
 }
