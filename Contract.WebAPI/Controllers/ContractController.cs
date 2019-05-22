@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Backend.Core;
+﻿using Backend.Core;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Contract.WebAPI.Controllers
 {
@@ -45,8 +42,14 @@ namespace Contract.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult UpdateContract(Guid id, [FromBody] APITeste contract)
         {
+            //Implementar Validações
+            var obj = _contractReadOnlyRepository.Find(id);
+
+            obj.id = contract.id;
+
+            return Ok(_contractWriteRepository.Update(obj));
         }
 
         [HttpDelete("{id}")]
