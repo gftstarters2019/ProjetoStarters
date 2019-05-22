@@ -1,24 +1,23 @@
-﻿using Backend.Core.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
-    public class Individual : IBeneficiary
+    public class Individual : Beneficiary
     {
         public Guid IndividualId { get; set; }
-        public Guid BeneficiaryId { get; set; }
-        //public IBeneficiary Beneficiary { get; set; }
+        [MaxLength(50)]
         public string IndividualName { get; set; }
-        [MaxLength (30)]
+        [MaxLength(11)]
         public string IndividualCPF { get; set; }
+        [MaxLength(9)]
         public string IndividualRG { get; set; }
+        [MaxLength(30)]
         public string IndividualEmail { get; set; }
         public DateTime IndividualBirthdate { get; set; }
         public List<Telephone> IndividualTelephones { get; set; }
-        //public List<Guid> IndividualTelephonesId { get; set; }
         public List<Address> IndividualAddresses { get; set; }
-        //public List<Guid> IndividualAddressesId { get; set; }
+        public bool IndividualDeleted { get; set; }
     }
 }

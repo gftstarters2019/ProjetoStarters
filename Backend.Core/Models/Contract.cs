@@ -11,5 +11,7 @@ namespace Backend.Core.Models
         public ContractCategory ContractCategory { get; set; }
         public DateTime ContractExpiryDate { get; set; }
         public DateTime ContractInitialDate { get; set; }
+        public Individual ContractIndividual { get; set; }
+        public bool ContractDeleted { get; set; }
     }
 }

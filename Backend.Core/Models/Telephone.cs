@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace Backend.Core.Models
 {
@@ -8,5 +9,6 @@ namespace Backend.Core.Models
         public Guid TelephoneId { get; set; }
         public string TelephoneNumber { get; set; }
         public TelephoneType TelephoneType { get; set; }
+        public List<Individual> TelephoneIndividual { get; set; }
     }
 }
