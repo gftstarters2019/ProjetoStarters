@@ -25,7 +25,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet]
         public IActionResult Beneficiaries()
         {
-            return Ok("teste");
+            return Ok(_beneficiaryReadOnlyRepository.Get());
         }
 
         // GET: api/Beneficiary/5
@@ -37,7 +37,7 @@ namespace Beneficiaries.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostOwner([FromBody] APITeste beneficiary)
+        public IActionResult PostBeneficiary([FromBody] APITeste beneficiary)
         {
             _beneficiaryWriteRepository.Add(beneficiary);
 
