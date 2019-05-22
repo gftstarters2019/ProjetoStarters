@@ -19,7 +19,8 @@ namespace Backend.Infrastructure.Configuration
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Telephone> Telephones { get; set; }
-        public DbSet<ContractIndividual> ContractIndividuals { get; set; }
+        public DbSet<SignedContract> SignedContracts { get; set; }
+        public DbSet<Beneficiary> Beneficiaries { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -32,7 +33,8 @@ namespace Backend.Infrastructure.Configuration
             builder.Entity<Contract>();
             builder.Entity<Address>();
             builder.Entity<Telephone>();
-            builder.Entity<ContractIndividual>();
+            builder.Entity<SignedContract>();
+            builder.Entity<Beneficiary>();
         }
     }
 
