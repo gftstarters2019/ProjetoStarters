@@ -43,5 +43,15 @@ namespace Beneficiaries.WebAPI.Controllers
 
             return Ok(beneficiary);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateBeneficiary(Guid id, [FromBody] APITeste beneficiary)
+        {
+            var obj = _beneficiaryReadOnlyRepository.Find(id);
+
+            obj.id = beneficiary.id;
+
+            return Ok(_beneficiaryWriteRepository.Update(obj));
+        }
     }
 }
