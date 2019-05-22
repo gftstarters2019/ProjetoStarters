@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Backend.Core\Backend.Core.csproj" />
+    <ProjectReference Include="..\Backend.Infrastructure\Backend.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Backend.Core;
+using Backend.Infrastructure.Repositories;
+using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,8 +30,8 @@ namespace Beneficiaries.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            //services.AddScoped<IReadOnlyRepository<Owner>, OwnerRepository>();
-            //services.AddScoped<IWriteRepository<Owner>, OwnerRepository>();
+            services.AddScoped<IReadOnlyRepository<APITeste>, BeneficiaryRepository>();
+            services.AddScoped<IWriteRepository<APITeste>, BeneficiaryRepository>();
 
             //services.AddDbContext<LataNovaContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
         }

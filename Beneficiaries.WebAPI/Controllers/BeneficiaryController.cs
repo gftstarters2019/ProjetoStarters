@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Backend.Core;
+using Backend.Infrastructure.Repositories.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,28 +12,28 @@ namespace Beneficiaries.WebAPI.Controllers
     [ApiController]
     public class BeneficiaryController : ControllerBase
     {
-        //private readonly IReadOnlyRepository<Beneficiary> _beneficiaryReadOnlyRepository;
-        //private readonly IWriteRepository<Beneficiary> _beneficiaryWriteRepository;
+        private readonly IReadOnlyRepository<APITeste> _beneficiaryReadOnlyRepository;
+        private readonly IWriteRepository<APITeste> _beneficiaryWriteRepository;
 
-        public BeneficiaryController()
+        public BeneficiaryController(IReadOnlyRepository<APITeste> beneficiaryReadOnlyRepository, IWriteRepository<APITeste> beneficiaryWriteRepository)
         {
-
+            _beneficiaryReadOnlyRepository = beneficiaryReadOnlyRepository;
+            _beneficiaryWriteRepository = beneficiaryWriteRepository;
         }
 
         // GET: api/Beneficiary
         [HttpGet]
         public IActionResult Beneficiaries()
         {
-            return Ok();
+            return Ok("teste");
         }
 
         // GET: api/Beneficiary/5
         [HttpGet("{id}")]
         public IActionResult Beneficiary(Guid id)
         {
-            //var obj = _beneficiaryReadOnlyRepository.Find(id);
-            //return Ok(obj);
-            return Ok();
+            var obj = _beneficiaryReadOnlyRepository.Find(id);
+            return Ok(obj);
         }
     }
 }
