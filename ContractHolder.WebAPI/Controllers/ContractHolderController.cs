@@ -44,8 +44,14 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult UpdateContractHolder(Guid id, [FromBody] APITeste apiTeste)
         {
+            var obj = _contractHolderReadOnlyRepository.Find(id);
+
+            obj.id = apiTeste.id;
+
+            return Ok(_contractHolderWriteRepository.Update(obj));
+
         }
 
         [HttpDelete("{id}")]
