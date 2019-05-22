@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContractHolder.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ContractHolderController : ControllerBase
     {
+        //private readonly IReadOnlyRepository<Individual> _contractHolderReadOnlyRepository;
+        //private readonly IWriteRepository<Individual> _contractHolderWriteRepository;
+
+        //public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository)
+        //{
+        //    _contractHolderReadOnlyRepository = contractHolderReadOnlyRepository;
+        //    _contractHolderWriteRepository = contractHolderWriteRepository;
+        //}
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -25,6 +35,12 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         // POST api/values
+        //[HttpPost]
+        //public IActionResult PostContractHolder([FromBody] Individual individual)
+        //{
+        //    _contractHolderWriteRepository.Add(individual);
+        //    return Ok(individual);
+        //}
         [HttpPost]
         public void Post([FromBody] string value)
         {
