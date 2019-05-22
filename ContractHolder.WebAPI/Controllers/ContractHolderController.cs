@@ -23,19 +23,19 @@ namespace ContractHolder.WebAPI.Controllers
 
         // GET api/ContractHolder
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult ContractHolder()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(_contractHolderReadOnlyRepository.Get());
         }
 
         // GET api/ContractHolder/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public IActionResult ContractHolder(Guid id)
         {
-            return "value";
+            var obj = _contractHolderReadOnlyRepository.Find(id);
+            return Ok(obj);
         }
 
-        // POST api/ContractHolder
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] APITeste individual)
         {
@@ -43,13 +43,11 @@ namespace ContractHolder.WebAPI.Controllers
             return Ok(individual);
         }
 
-        // PUT api/ContractHolder/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/ContractHolder/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
