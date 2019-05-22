@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
-    public abstract class Beneficiary
+    public class Beneficiary
     {
-        Guid BeneficiaryId { get; set; }
-        public List<SignedContract> BeneficiarySignedContracts { get; set; }
+        public Guid BeneficiaryId { get; set; }
     }
 }

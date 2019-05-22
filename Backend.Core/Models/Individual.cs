@@ -16,8 +16,6 @@ namespace Backend.Core.Models
         [MaxLength(30)]
         public string IndividualEmail { get; set; }
         public DateTime IndividualBirthdate { get; set; }
-        public List<Telephone> IndividualTelephones { get; set; }
-        public List<Address> IndividualAddresses { get; set; }
         public bool IndividualDeleted { get; set; }
     }
 }
