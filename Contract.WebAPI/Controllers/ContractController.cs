@@ -37,8 +37,11 @@ namespace Contract.WebAPI.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult PostContract([FromBody] APITeste contract)
         {
+            //Implementar Validações
+            _contractWriteRepository.Add(contract);
+            return Ok(contract);
         }
 
         [HttpPut("{id}")]
