@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace Backend.Core.Models
 {
@@ -15,5 +16,6 @@ namespace Backend.Core.Models
         public string AddressCountry { get; set; }
         public string AddressZipCode { get; set; }
         public AddressType AddressType { get; set; }
+        public List<Individual> AddressIndividuals { get; set; }
     }
 }
