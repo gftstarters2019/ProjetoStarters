@@ -12,6 +12,5 @@ namespace Backend.Core.Models
         public DateTime RealtyConstructionDate { get; set; }
         public double RealtySaleValue { get; set; }
         public double RealtyMarketValue { get; set; }
-        public bool RealtyDeleted { get; set; }
     }
 }

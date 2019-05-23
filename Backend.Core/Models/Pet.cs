@@ -13,6 +13,5 @@ namespace Backend.Core.Models
         [MaxLength(30)]
         public string PetBreed { get; set; }
         public DateTime PetBirthdate { get; set; }
-        public bool PetDeleted { get; set; }
     }
 }

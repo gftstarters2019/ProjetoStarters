@@ -8,7 +8,7 @@ namespace Backend.Infrastructure.Configuration
 
         public ConfigurationContext(DbContextOptions<ConfigurationContext> options) : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         public DbSet<Individual> Individuals { get; set; }
