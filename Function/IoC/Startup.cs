@@ -1,4 +1,6 @@
-﻿using Function.IoC;
+﻿using Backend.Infrastructure.ServiceBus;
+using Backend.Infrastructure.ServiceBus.IoC;
+using Function.IoC;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Azure.WebJobs.Hosting;
@@ -36,11 +38,9 @@ namespace Function.IoC
 
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            //////Implementar classes na infrastructure
-
-            //services.ConfigureServiceBus(new ServiceBusSettings(
-            //    configuration["ServiceBusConnectionString"], configuration["ServiceBusQueueName"],
-            //    configuration["ServiceBusTopicName"], configuration["ServiceBusSubscriptionName"]));
+            services.ConfigureServiceBus(new ServiceBusSettings(
+                configuration["ServiceBusConnectionString"], configuration["ServiceBusQueueName"],
+                configuration["ServiceBusTopicName"], configuration["ServiceBusSubscriptionName"]));
         }
     }
 }
