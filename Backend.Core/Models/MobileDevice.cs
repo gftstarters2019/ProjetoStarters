@@ -16,6 +16,5 @@ namespace Backend.Core.Models
         public DateTime MobileDeviceManufactoringYear { get; set; }
         public MobileDeviceType MobileDeviceType { get; set; }
         public double MobileDeviceInvoiceValue { get; set; }
-        public bool MobileDeviceDeleted { get; set; }
     }
 }

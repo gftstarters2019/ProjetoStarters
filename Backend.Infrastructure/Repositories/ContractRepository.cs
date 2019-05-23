@@ -1,41 +1,60 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core;
+using Backend.Core.Models;
+using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractRepository : IReadOnlyRepository<Address>, IWriteRepository<Address>
+    public class ContractRepository : IReadOnlyRepository<Contract>, IWriteRepository<Contract>
     {
-        public ContractRepository()
-        {
+        private readonly ConfigurationContext _db;
 
+        public ContractRepository(ConfigurationContext db)
+        {
+            _db = db;
         }
 
-        public Address Find(Guid id)
+        public Contract Find(Guid id) => _db
+            .Contracts
+            .FirstOrDefault(con => con.ContractId == id);
+
+        public IEnumerable<Contract> Get() => _db
+            .Contracts
+            .ToList();
+
+        public void Add(Contract contract)
         {
-            throw new NotImplementedException();
+            if(contract != null)
+            {
+                _db.Add(contract);
+                _db.SaveChanges();
+            }
         }
 
-        public IEnumerable<Address> Get()
+        public Contract Remove(Contract contract)
         {
-            throw new NotImplementedException();
+            if(contract != null)
+            {
+                _db.Remove(contract);
+                _db.SaveChanges();
+            }
+
+            return contract;
         }
 
-        public void Add(Address t)
+        public Contract Update(Contract contract)
         {
-            
-        }
+            if(contract != null)
+            {
+                _db.Update(contract);
+                _db.SaveChanges();
+            }
 
-        public Address Remove(Address t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Address Update(Address t)
-        {
-            throw new NotImplementedException();
+            return contract;
         }
     }
 }

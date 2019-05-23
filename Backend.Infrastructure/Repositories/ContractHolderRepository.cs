@@ -1,42 +1,60 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core;
+using Backend.Core.Models;
+using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractHolderRepository : IReadOnlyRepository<Address>, IWriteRepository<Address>
+    public class ContractHolderRepository : IReadOnlyRepository<Individual>, IWriteRepository<Individual>
     {
+        private readonly ConfigurationContext _db;
 
-
-        public ContractHolderRepository()
+        public ContractHolderRepository(ConfigurationContext db)
         {
-
+            _db = db;
         }
 
-        public Address Find(Guid id)
+        public Individual Find(Guid id) => _db
+            .Individuals
+            .FirstOrDefault(ind => ind.IndividualId == id);
+
+        public IEnumerable<Individual> Get() => _db
+            .Individuals
+            .ToList();
+
+        public void Add(Individual individual)
         {
-            throw new NotImplementedException();
+            if(individual != null)
+            {
+                _db.Add(individual);
+                _db.SaveChanges();
+            }
         }
 
-        public IEnumerable<Address> Get()
+        public Individual Remove(Individual individual)
         {
-            throw new NotImplementedException();
+            if(individual != null)
+            {
+                _db.Remove(individual);
+                _db.SaveChanges();
+            }
+
+            return individual;
         }
 
-        public void Add(Address individual)
+        public Individual Update(Individual individual)
         {
+            if(individual != null)
+            {
+                _db.Update(individual);
+                _db.SaveChanges();
+            }
 
-        }
-
-        public Address Remove(Address t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Address Update(Address t)
-        {
-            throw new NotImplementedException();
+            return individual;
         }
     }
 }

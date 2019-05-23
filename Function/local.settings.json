@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=gftstarters;AccountKey=fc/aUmbIGvKzZLnXFpNHXi/c7gT6YYRyRVuYiyru/jTmHIOdN4VT6lauIMrsmfZxlcLPZY66aNz4hxnpIx7LwA==;EndpointSuffix=core.windows.net",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "ServiceBusConnectionString": "Endpoint=sb://gftstarters.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=6OXjU8nVftIhL5Xfn2bcpHPgxeeb95tNMRpXPdct9Mo=",
+    "ServiceBusQueueName": "GFTStartersQueue",
+    "ServiceBusTopicName": "GFTStartersTopic",
+    "ServiceBusSubscriptionName": "GFTStartersSubscription"
+  }
+}

@@ -1,41 +1,59 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core;
+using Backend.Core.Models;
+using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class BeneficiaryRepository : IReadOnlyRepository<Address>, IWriteRepository<Address>
+    public class BeneficiaryRepository : IReadOnlyRepository<Beneficiary>, IWriteRepository<Beneficiary>
     {
-        public BeneficiaryRepository()
-        {
+        private readonly ConfigurationContext _db;
 
+        public BeneficiaryRepository(ConfigurationContext db)
+        {
+            _db = db;
         }
 
-        public Address Find(Guid id)
+        public Beneficiary Find(Guid id) => _db
+            .Beneficiaries
+            .FirstOrDefault(ben => ben.BeneficiaryId == id);
+
+        public IEnumerable<Beneficiary> Get() => _db
+            .Beneficiaries
+            .ToList();
+
+        public void Add(Beneficiary beneficiary)
         {
-            throw new NotImplementedException();
+            if(beneficiary != null)
+            {
+                _db.Add(beneficiary);
+                _db.SaveChanges();
+            }
         }
 
-        public IEnumerable<Address> Get()
+        public Beneficiary Remove(Beneficiary beneficiary)
         {
-            throw new NotImplementedException();
+            if(beneficiary != null)
+            {
+                _db.Remove(beneficiary);
+                _db.SaveChanges();
+            }
+            return beneficiary;
         }
 
-        public void Add(Address individual)
+        public Beneficiary Update(Beneficiary beneficiary)
         {
+            if(beneficiary != null)
+            {
+                _db.Update(beneficiary);
+                _db.SaveChanges();
+            }
 
-        }
-
-        public Address Remove(Address t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Address Update(Address t)
-        {
-            throw new NotImplementedException();
+            return beneficiary;
         }
     }
 }
