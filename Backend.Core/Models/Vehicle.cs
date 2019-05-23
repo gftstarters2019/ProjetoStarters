@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Enums;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
