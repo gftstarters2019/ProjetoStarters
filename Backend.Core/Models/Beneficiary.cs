@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
-    public class Beneficiary
+    public abstract class Beneficiary
     {
         public Guid BeneficiaryId { get; set; }
     }
