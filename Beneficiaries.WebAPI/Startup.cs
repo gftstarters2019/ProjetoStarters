@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Backend.Core;
+using System.IO;
+using System.Reflection;
+using Backend.Core.Models;
+using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -11,8 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Beneficiaries.WebAPI
 {
@@ -33,7 +32,7 @@ namespace Beneficiaries.WebAPI
             services.AddScoped<IReadOnlyRepository<Address>, BeneficiaryRepository>();
             services.AddScoped<IWriteRepository<Address>, BeneficiaryRepository>();
 
-            //services.AddDbContext<LataNovaContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
             ConfigureSwagger(services);
         }
