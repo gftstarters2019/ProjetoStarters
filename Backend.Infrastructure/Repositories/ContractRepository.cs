@@ -1,4 +1,4 @@
-﻿using Backend.Core;
+﻿using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
@@ -6,34 +6,34 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractRepository : IReadOnlyRepository<APITeste>, IWriteRepository<APITeste>
+    public class ContractRepository : IReadOnlyRepository<Address>, IWriteRepository<Address>
     {
         public ContractRepository()
         {
 
         }
 
-        public APITeste Find(Guid id)
+        public Address Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<APITeste> Get()
+        public IEnumerable<Address> Get()
         {
             throw new NotImplementedException();
         }
 
-        public void Add(APITeste t)
+        public void Add(Address t)
         {
             
         }
 
-        public APITeste Remove(APITeste t)
+        public Address Remove(Address t)
         {
             throw new NotImplementedException();
         }
 
-        public APITeste Update(APITeste t)
+        public Address Update(Address t)
         {
             throw new NotImplementedException();
         }

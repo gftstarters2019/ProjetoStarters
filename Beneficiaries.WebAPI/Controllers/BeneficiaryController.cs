@@ -1,10 +1,7 @@
-﻿using Backend.Core;
+﻿using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Beneficiaries.WebAPI.Controllers
 {
@@ -12,10 +9,10 @@ namespace Beneficiaries.WebAPI.Controllers
     [ApiController]
     public class BeneficiaryController : ControllerBase
     {
-        private readonly IReadOnlyRepository<APITeste> _beneficiaryReadOnlyRepository;
-        private readonly IWriteRepository<APITeste> _beneficiaryWriteRepository;
+        private readonly IReadOnlyRepository<Address> _beneficiaryReadOnlyRepository;
+        private readonly IWriteRepository<Address> _beneficiaryWriteRepository;
 
-        public BeneficiaryController(IReadOnlyRepository<APITeste> beneficiaryReadOnlyRepository, IWriteRepository<APITeste> beneficiaryWriteRepository)
+        public BeneficiaryController(IReadOnlyRepository<Address> beneficiaryReadOnlyRepository, IWriteRepository<Address> beneficiaryWriteRepository)
         {
             _beneficiaryReadOnlyRepository = beneficiaryReadOnlyRepository;
             _beneficiaryWriteRepository = beneficiaryWriteRepository;
@@ -37,7 +34,7 @@ namespace Beneficiaries.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostBeneficiary([FromBody] APITeste beneficiary)
+        public IActionResult PostBeneficiary([FromBody] Address beneficiary)
         {
             _beneficiaryWriteRepository.Add(beneficiary);
 
@@ -45,11 +42,11 @@ namespace Beneficiaries.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateBeneficiary(Guid id, [FromBody] APITeste beneficiary)
+        public IActionResult UpdateBeneficiary(Guid id, [FromBody] Address beneficiary)
         {
             var obj = _beneficiaryReadOnlyRepository.Find(id);
 
-            obj.id = beneficiary.id;
+            //obj.id = beneficiary.id;
 
             return Ok(_beneficiaryWriteRepository.Update(obj));
         }
