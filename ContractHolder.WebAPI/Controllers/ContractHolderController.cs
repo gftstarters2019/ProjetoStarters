@@ -1,4 +1,4 @@
-﻿using Backend.Core;
+﻿using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,10 +9,10 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class ContractHolderController : ControllerBase
     {
-        private readonly IReadOnlyRepository<APITeste> _contractHolderReadOnlyRepository;
-        private readonly IWriteRepository<APITeste> _contractHolderWriteRepository;
+        private readonly IReadOnlyRepository<Address> _contractHolderReadOnlyRepository;
+        private readonly IWriteRepository<Address> _contractHolderWriteRepository;
 
-        public ContractHolderController(IReadOnlyRepository<APITeste> contractHolderReadOnlyRepository, IWriteRepository<APITeste> contractHolderWriteRepository)
+        public ContractHolderController(IReadOnlyRepository<Address> contractHolderReadOnlyRepository, IWriteRepository<Address> contractHolderWriteRepository)
         {
             _contractHolderReadOnlyRepository = contractHolderReadOnlyRepository;
             _contractHolderWriteRepository = contractHolderWriteRepository;
@@ -34,7 +34,7 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostContractHolder([FromBody] APITeste individual)
+        public IActionResult PostContractHolder([FromBody] Address individual)
         {
             //Implementar Validações
             _contractHolderWriteRepository.Add(individual);
@@ -42,12 +42,12 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateContractHolder(Guid id, [FromBody] APITeste apiTeste)
+        public IActionResult UpdateContractHolder(Guid id, [FromBody] Address Address)
         {
             //Implementar Validações
             var obj = _contractHolderReadOnlyRepository.Find(id);
 
-            obj.id = apiTeste.id;
+            //obj.id = Address.id;
 
             return Ok(_contractHolderWriteRepository.Update(obj));
 

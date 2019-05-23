@@ -1,9 +1,11 @@
-﻿using Backend.Core;
+﻿using Backend.Core.Models;
+using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,8 +25,10 @@ namespace Contract.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddScoped<IReadOnlyRepository<APITeste>, ContractRepository>();
-            services.AddScoped<IWriteRepository<APITeste>, ContractRepository>();
+            services.AddScoped<IReadOnlyRepository<Address>, ContractRepository>();
+            services.AddScoped<IWriteRepository<Address>, ContractRepository>();
+
+            services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
