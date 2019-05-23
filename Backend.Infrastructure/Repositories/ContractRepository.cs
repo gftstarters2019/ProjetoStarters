@@ -1,41 +1,60 @@
 ﻿using Backend.Core;
+using Backend.Core.Models;
+using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractRepository : IReadOnlyRepository<APITeste>, IWriteRepository<APITeste>
+    public class ContractRepository : IReadOnlyRepository<Contract>, IWriteRepository<Contract>
     {
-        public ContractRepository()
-        {
+        private readonly ConfigurationContext _db;
 
+        public ContractRepository(ConfigurationContext db)
+        {
+            _db = db;
         }
 
-        public APITeste Find(Guid id)
+        public Contract Find(Guid id) => _db
+            .Contracts
+            .FirstOrDefault(con => con.ContractId == id);
+
+        public IEnumerable<Contract> Get() => _db
+            .Contracts
+            .ToList();
+
+        public void Add(Contract contract)
         {
-            throw new NotImplementedException();
+            if(contract != null)
+            {
+                _db.Add(contract);
+                _db.SaveChanges();
+            }
         }
 
-        public IEnumerable<APITeste> Get()
+        public Contract Remove(Contract contract)
         {
-            throw new NotImplementedException();
+            if(contract != null)
+            {
+                _db.Remove(contract);
+                _db.SaveChanges();
+            }
+
+            return contract;
         }
 
-        public void Add(APITeste t)
+        public Contract Update(Contract contract)
         {
-            
-        }
+            if(contract != null)
+            {
+                _db.Update(contract);
+                _db.SaveChanges();
+            }
 
-        public APITeste Remove(APITeste t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public APITeste Update(APITeste t)
-        {
-            throw new NotImplementedException();
+            return contract;
         }
     }
 }
