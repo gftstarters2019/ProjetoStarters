@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Backend.Core;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace Beneficiaries.WebAPI
 {
@@ -33,8 +30,8 @@ namespace Beneficiaries.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddScoped<IReadOnlyRepository<APITeste>, BeneficiaryRepository>();
-            services.AddScoped<IWriteRepository<APITeste>, BeneficiaryRepository>();
+            services.AddScoped<IReadOnlyRepository<Address>, BeneficiaryRepository>();
+            services.AddScoped<IWriteRepository<Address>, BeneficiaryRepository>();
 
             //services.AddDbContext<LataNovaContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
