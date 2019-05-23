@@ -36,6 +36,8 @@ namespace Function.IoC
 
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            //////Implementar classes na infrastructure
+
             //services.ConfigureServiceBus(new ServiceBusSettings(
             //    configuration["ServiceBusConnectionString"], configuration["ServiceBusQueueName"],
             //    configuration["ServiceBusTopicName"], configuration["ServiceBusSubscriptionName"]));
