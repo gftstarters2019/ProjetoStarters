@@ -1,4 +1,4 @@
-﻿using Backend.Core;
+﻿using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,10 +9,10 @@ namespace Contract.WebAPI.Controllers
     [ApiController]
     public class ContractController : ControllerBase
     {
-        private readonly IReadOnlyRepository<APITeste> _contractReadOnlyRepository;
-        private readonly IWriteRepository<APITeste> _contractWriteRepository;
+        private readonly IReadOnlyRepository<Address> _contractReadOnlyRepository;
+        private readonly IWriteRepository<Address> _contractWriteRepository;
 
-        public ContractController(IReadOnlyRepository<APITeste> contractReadOnlyRepository, IWriteRepository<APITeste> contractWriteRepository)
+        public ContractController(IReadOnlyRepository<Address> contractReadOnlyRepository, IWriteRepository<Address> contractWriteRepository)
         {
             _contractReadOnlyRepository = contractReadOnlyRepository;
             _contractWriteRepository = contractWriteRepository;
@@ -34,7 +34,7 @@ namespace Contract.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostContract([FromBody] APITeste contract)
+        public IActionResult PostContract([FromBody] Address contract)
         {
             //Implementar Validações
             _contractWriteRepository.Add(contract);
@@ -42,12 +42,12 @@ namespace Contract.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateContract(Guid id, [FromBody] APITeste contract)
+        public IActionResult UpdateContract(Guid id, [FromBody] Address contract)
         {
             //Implementar Validações
             var obj = _contractReadOnlyRepository.Find(id);
 
-            obj.id = contract.id;
+            //obj.id = contract.id;
 
             return Ok(_contractWriteRepository.Update(obj));
         }
