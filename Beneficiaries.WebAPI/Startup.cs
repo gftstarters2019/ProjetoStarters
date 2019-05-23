@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Backend.Core;
 using Backend.Infrastructure.Repositories;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Beneficiaries.WebAPI
 {
@@ -34,6 +37,8 @@ namespace Beneficiaries.WebAPI
             services.AddScoped<IWriteRepository<APITeste>, BeneficiaryRepository>();
 
             //services.AddDbContext<LataNovaContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            ConfigureSwagger(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +56,30 @@ namespace Beneficiaries.WebAPI
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            ConfigureSwaggerUi(app);
+        }
+
+        private static void ConfigureSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Insurance and Health Plans", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+        }
+
+        private static void ConfigureSwaggerUi(IApplicationBuilder app)
+        {
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Insurance and Health Plans");
+            });
         }
     }
 }
