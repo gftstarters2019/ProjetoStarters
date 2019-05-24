@@ -1,34 +1,17 @@
- <div class="example-container">  
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Health&Insurance</title>
+  <base href="/">
 
-  <mat-form-field>
-    <input matInput id="name" placeholder="Name" maxlength="50" required>
-  </mat-form-field> <br>
-  
-  <mat-form-field>  
-    <input matInput id="rg" placeholder="RG:" maxlength="9" required>
-  </mat-form-field><br>
-  
-  
-  <mat-form-field>  
-    <input matInput id="cpf" placeholder="CPF:" maxlength="11" required>
-  </mat-form-field><br>
-  
-  <mat-form-field>
-    <input matInput [matDatepicker]="picker" placeholder="Birthdate" id="birthdate" required>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field><br>
-  
-  
-  <mat-form-field>  
-    <input matInput id="email" placeholder="E-mail" maxlength="40" required>
-  </mat-form-field>
-  <br>
-  <button type="button">Submit!</button>
-  
-  <button type="button" onclick="Changestate('minhaDiv')">Show Contracte Holders</button>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-
- </div>
-  
-  
+</head>
+<body>
+   <app-root></app-root>
+</body>
+</html>

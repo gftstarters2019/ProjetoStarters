@@ -1,8 +1,7 @@
 <form [formGroup]="address" (ngSubmit)="onSubmit()">
   <div class="first-container">
     <mat-form-field>
-      <input matInput placeholder="Street/Avenue" name="street" #plate formControlName="street" required>
-      <mat-error *ngIf="!street.valid">Stree/Avenue is required!</mat-error>
+      <input matInput placeholder="Street/Avenue" name="street" formControlName="street" required>
     </mat-form-field>
     <mat-form-field class="select-type">
       <mat-select formControlName="type" #owner placeholder="Select Type" required>
@@ -10,29 +9,23 @@
           {{type.name}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="!type.valid">Type is required!</mat-error>      
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Number" name="number" #brand formControlName="number" required>
-      <mat-error *ngIf="!number.valid">Number is required!</mat-error>
+      <input matInput placeholder="Number" name="number" formControlName="number" required>
     </mat-form-field>
   </div>
   <div class="second-container">
     <mat-form-field>
-      <input matInput placeholder="State" name="state" #model formControlName="state" required>
-      <mat-error *ngIf="!state.valid">State is required!</mat-error>
+      <input matInput placeholder="State" name="state" formControlName="state" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Neighborhood" name="neighborhood" #color formControlName="neighborhood" required>
-      <mat-error *ngIf="!neighborhood.valid">Neighborhood is required!</mat-error>
+      <input matInput placeholder="Neighborhood" name="neighborhood" formControlName="neighborhood" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type='Country' placeholder="country" name="country" #year formControlName="country" required>
-      <mat-error *ngIf="!country.valid">Country is required!</mat-error>
+      <input matInput type='Country' placeholder="country" name="country" formControlName="country" required>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type='Zip code' placeholder="zipCode" name="zipCode" #year formControlName="zipCode" required>
-      <mat-error *ngIf="!zipCode.valid">Zip code is required!</mat-error>
+      <input matInput type='Zip code' placeholder="zipCode" name="zipCode" formControlName="zipCode" required>
     </mat-form-field>
   </div>
   <div class="btn-address">
