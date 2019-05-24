@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{FF8BB155-3796-4C02-B6A6-23C2EE75BFE7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{A99C480D-1AB1-4D8D-9691-9ECA75317030}"
+	ProjectSection(SolutionItems) = preProject
+		TextFile1.txt = TextFile1.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Core", "1 - Core", "{98CA0639-7041-4D7D-BB6F-B94D140FAF47}"
 EndProject
@@ -31,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContractHolder.WebAPI", "Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reports.WebAPI", "ReportsWebAPI\Reports.WebAPI.csproj", "{DEF4EE02-57B3-4AB4-9021-B90EA351B16B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beneficiaries.WebAPI", "Beneficiaries.WebAPI\Beneficiaries.WebAPI.csproj", "{445D8F99-33FC-4DA2-9B32-0CB6434263B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Beneficiaries.WebAPI", "Beneficiaries.WebAPI\Beneficiaries.WebAPI.csproj", "{445D8F99-33FC-4DA2-9B32-0CB6434263B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

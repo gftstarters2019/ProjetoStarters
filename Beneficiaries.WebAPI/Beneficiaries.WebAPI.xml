@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Beneficiaries.WebAPI</name>
+    </assembly>
+    <members>
+        <member name="T:Beneficiaries.WebAPI.Controllers.BeneficiaryController">
+            <summary>
+            Beneficiaries API
+            </summary>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.#ctor(Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.Beneficiary},Backend.Infrastructure.Repositories.Contracts.IWriteRepository{Backend.Core.Models.Beneficiary})">
+            <summary>
+            BeneficiaryController constructor
+            </summary>
+            <param name="beneficiaryReadOnlyRepository"></param>
+            <param name="beneficiaryWriteRepository"></param>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.Beneficiaries">
+            <summary>
+            Gets all beneficiaries registered.
+            </summary>
+            <returns>Beneficiaries registered</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.DeletedBeneficiaries">
+            <summary>
+            Gets all deleted beneficiaries.
+            </summary>
+            <returns>Beneficiaries deleted</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.Beneficiary(System.Guid)">
+            <summary>
+            Get a specific beneficiary.
+            </summary>
+            <param name="id">GUID value representing a BeneficiaryId</param>
+            <returns>Chosen beneficiary</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostIndividual(Backend.Core.Models.Individual)">
+            <summary>
+            Creates a new Individual in the database
+            </summary>
+            <param name="individual">Individual without IDs</param>
+            <returns>Created individual, with IDs</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.UpdateIndividual(System.Guid,Backend.Core.Models.Individual)">
+            <summary>
+            Updates an Individual in the database
+            </summary>
+            <param name="id">ID of the Individual to be updated</param>
+            <param name="individual">New values for the individual</param>
+            <returns>Updated Individual</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostMobileDevice(Backend.Core.Models.MobileDevice)">
+            <summary>
+            Creates a new Mobile Device in the database
+            </summary>
+            <param name="mobileDevice">Mobile Device without IDs</param>
+            <returns>Created mobile device, with IDs</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.UpdateMobileDevice(System.Guid,Backend.Core.Models.MobileDevice)">
+            <summary>
+            Updates an Mobile Device in the database
+            </summary>
+            <param name="id">ID of the Mobile Device to be updated</param>
+            <param name="mobileDevice">New values for the mobile device</param>
+            <returns>Updated Mobile Device</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostPet(Backend.Core.Models.Pet)">
+            <summary>
+            Creates a new Pet in the database
+            </summary>
+            <param name="pet">Pet without IDs</param>
+            <returns>Created pet, with IDs</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.UpdatePet(System.Guid,Backend.Core.Models.Pet)">
+            <summary>
+            Updates an Pet in the database
+            </summary>
+            <param name="id">ID of the Pet to be updated</param>
+            <param name="pet">New values for the pet</param>
+            <returns>Updated Pet</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostRealty(Backend.Core.Models.Realty)">
+            <summary>
+            Creates a new Realty in the database
+            </summary>
+            <param name="realty">Realty without IDs</param>
+            <returns>Created realty, with IDs</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.UpdateRealty(System.Guid,Backend.Core.Models.Realty)">
+            <summary>
+            Updates an Realty in the database
+            </summary>
+            <param name="id">ID of the Realty to be updated</param>
+            <param name="realty">New values for the realty</param>
+            <returns>Updated Realty</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostVehicle(Backend.Core.Models.Vehicle)">
+            <summary>
+            Creates a new Vehicle in the database
+            </summary>
+            <param name="vehicle">Vehicle without IDs</param>
+            <returns>Created vehicle, with IDs</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.UpdateVehicle(System.Guid,Backend.Core.Models.Vehicle)">
+            <summary>
+            Updates an Vehicle in the database
+            </summary>
+            <param name="id">ID of the Vehicle to be updated</param>
+            <param name="vehicle">New values for the vehicle</param>
+            <returns>Updated Vehicle</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.DeleteBeneficiary(System.Guid)">
+            <summary>
+            Deletes a beneficiary
+            </summary>
+            <param name="id">BeneficiaryId to be deleted</param>
+            <returns>Deleted beneficiary</returns>
+        </member>
+    </members>
+</doc>
