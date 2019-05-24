@@ -1,0 +1,93 @@
+<form [formGroup]="contractform">
+  <div class="container">
+    <mat-divider></mat-divider>
+    <mat-card>
+      <mat-label>Contract</mat-label>
+    </mat-card>
+    <mat-divider></mat-divider>
+    <mat-card class="card-contract">
+
+      <mat-form-field>
+        <input matInput placeholder="Select Holder's name" name="holdername" formControlName="holdername" required>
+      </mat-form-field>
+
+
+
+      <mat-form-field>
+        <input matInput placeholder="Select Holder's CPF">
+      </mat-form-field>
+
+      <button class="btn-list" mat-raised-button color="primary" type="button">New Contract Holder</button>
+
+
+      <mat-divider></mat-divider>
+
+      <mat-card>
+        <mat-form-field>
+          <input type="text" placeholder="Select Contract">
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" placeholder="Select Category">
+        </mat-form-field>
+        <mat-divider></mat-divider>
+
+        <mat-form-field>
+          <input matInput [matDatepicker]="ContractInitialDate" placeholder="Contract Initial Date"
+            formControlName="ContractInitialDate" required>
+          <mat-datepicker-toggle matSuffix [for]="ContractInitialDate"></mat-datepicker-toggle>
+          <mat-datepicker #ContractInitialDate></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput [matDatepicker]="ContractExpiryDate" placeholder="Contract Expiry Date"
+            formControlName="ContractInitialDate" required>
+          <mat-datepicker-toggle matSuffix [for]="ContractExpiryDate"></mat-datepicker-toggle>
+          <mat-datepicker #ContractExpiryDate></mat-datepicker>
+        </mat-form-field>
+
+        <mat-slide-toggle>Active</mat-slide-toggle>
+
+      </mat-card>
+      <mat-divider></mat-divider>
+      <mat-card>
+        <mat-nav-list class="list-view">
+          <mat-label>Beneficiary</mat-label><br />
+          <mat-label>Campos Beneficiary</mat-label><br />
+          <mat-label>Campo Beneficiary</mat-label><br />
+
+          <br />
+          <!-- <a mat-list-item href="('table de owners')" *ngFor="let link of links"> {{ link }} </a> -->
+
+
+        </mat-nav-list>
+      </mat-card>
+      <mat-divider></mat-divider>
+
+
+      <mat-card>
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header class="listpanel-header">
+              <mat-panel-title>
+                Beneficiary's Add
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field>
+
+
+            </mat-form-field>
+
+
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card>
+      <mat-card>
+        <button class="btn-list" mat-raised-button color="primary" type="button">Submit</button>
+        <button class="btn-list" mat-raised-button color="primary" type="button">Cancel</button>
+      </mat-card>
+
+
+    </mat-card>
+
+  </div>
+</form>
