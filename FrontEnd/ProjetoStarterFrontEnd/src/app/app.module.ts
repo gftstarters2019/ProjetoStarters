@@ -16,6 +16,7 @@ import { ContractHolderListComponent } from './contract-holder-list/contract-hol
 import { MatTableModule, MatPaginatorModule, MatSortModule} from '@angular/material';
 import { ContractListComponent } from './contract-list/contract-list.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 
 
@@ -28,6 +29,7 @@ import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.co
     ContractHolderListComponent,
     ContractListComponent,
     BeneficiaryListComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,
