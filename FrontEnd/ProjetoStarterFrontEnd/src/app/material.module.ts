@@ -1,17 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutModule } from '@angular/cdk/layout';
-import { 
+import {MatRadioModule} from '@angular/material/radio';
+import {MatGridListModule, MatGridList} from '@angular/material/grid-list';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
+
+import {
   MatButtonModule,
   MatInputModule,
-  MatToolbarModule, 
-  MatSidenavModule, 
-  MatIconModule, 
+  MatToolbarModule,
+  MatSidenavModule,
+  MatIconModule,
   MatListModule,
   MatCardModule,
-  MatRadioModule,
   MatDatepickerModule,
+  MatSlideToggleModule,
   MatNativeDateModule,
+  MatExpansionModule,
+  MatSortModule,
   MatSelectModule,
 } from '@angular/material';
 
@@ -22,29 +30,44 @@ import {
     MatButtonModule,
     MatInputModule,
     LayoutModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatRadioModule,
+    MatGridListModule,
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
     MatCardModule,
-    MatRadioModule,
+    MatGridListModule,
     MatDatepickerModule,
+    MatSlideToggleModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatExpansionModule,
+    MatSortModule,
+    MatSelectModule,
+
   ],
   exports: [
     MatButtonModule,
     MatInputModule,
     LayoutModule,
+    MatGridListModule,
+    MatGridList,
+    MatPaginatorModule,
+    MatRadioModule,
     MatToolbarModule,
+    MatTableModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
     MatCardModule,
-    MatRadioModule,
     MatDatepickerModule,
+    MatSlideToggleModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatExpansionModule,
+    MatSortModule,
+    MatSelectModule,
   ],
 })
 export class MaterialModule { }
