@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-contract-holder',
@@ -6,10 +6,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./contract-holder.component.scss']
 })
 export class ContractHolderComponent implements OnInit {
+  
+  
+
+  Gender_: string;
+  genders: string[] = ['Male', 'Female'];
+  showList : boolean = true;
 
   constructor() { }
 
+   showButton() {
+     this.showList = !this.showList;
+  }
   ngOnInit() {
   }
+} 
 
-}
+  
+
+
+

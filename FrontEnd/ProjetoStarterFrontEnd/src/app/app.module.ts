@@ -1,99 +1,45 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
+import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
+import { MatFormFieldModule, MatInputModule} from '@angular/material';
+
+import { ContractComponent } from './contract/contract.component';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
-import {MatFormFieldModule, MatFormField} from '@angular/material/form-field';
-import {
-  MatAutocompleteModule,
-  MatBadgeModule,
-  MatBottomSheetModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatDividerModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatStepperModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatTreeModule,
-} from '@angular/material';
+import { ContractHolderListComponent } from './contract-holder-list/contract-holder-list.component';
+import { MatTableModule, MatPaginatorModule, MatSortModule} from '@angular/material';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    MatFormFieldModule,
-    MatFormField,
-    MatDatepickerModule,
-    ContractHolderComponent
+    ContractComponent,
+    ContractHolderComponent,
+    ContractHolderListComponent,
+    ContractHolderListComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatDatepickerModule,
-    BrowserAnimationsModule
-  ],
-  exports: [
-    MatAutocompleteModule,
-    MatBadgeModule,
-    MatBottomSheetModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatStepperModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatNativeDateModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatRippleModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatSortModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    MatFormFieldModule, 
+    MatInputModule, 
+    HttpClientModule,
+    ReactiveFormsModule,
+    MaterialModule,
     MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatTreeModule,
+    MatPaginatorModule,
+    MatSortModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
