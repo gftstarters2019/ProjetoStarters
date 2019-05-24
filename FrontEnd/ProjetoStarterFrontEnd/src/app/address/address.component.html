@@ -4,10 +4,9 @@
       <input matInput placeholder="Street/Avenue" name="street" formControlName="street" required>
     </mat-form-field>
     <mat-form-field class="select-type">
-      <mat-select formControlName="type" #owner placeholder="Select Type" required>
-        <mat-option *ngFor="let type of types" [value]="type">
-          {{type.name}}
-        </mat-option>
+      <mat-select formControlName="type"  placeholder="Select Type" required>
+        <mat-option value="Commercial">Commercial</mat-option>
+        <mat-option value="Residential">Residential</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>
