@@ -3,9 +3,13 @@ using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace ContractHolder.WebAPI.Controllers
 {
+    /// <summary>
+    /// Contract Holder API
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ContractHolderController : ControllerBase
@@ -13,20 +17,32 @@ namespace ContractHolder.WebAPI.Controllers
         private readonly IReadOnlyRepository<Individual> _contractHolderReadOnlyRepository;
         private readonly IWriteRepository<Individual> _contractHolderWriteRepository;
 
+        /// <summary>
+        /// Contract Holder Constructor
+        /// </summary>
+        /// <param name="contractHolderReadOnlyRepository"></param>
+        /// <param name="contractHolderWriteRepository"></param>
         public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository)
         {
             _contractHolderReadOnlyRepository = contractHolderReadOnlyRepository;
             _contractHolderWriteRepository = contractHolderWriteRepository;
         }
 
-        // GET api/ContractHolder
+        /// <summary>
+        /// Gets all contract holders registered.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult ContractHolders()
         {
-            return Ok(_contractHolderReadOnlyRepository.Get());
+            return Ok(_contractHolderReadOnlyRepository.Get().Where(ch => !ch.IndividualDeleted));
         }
 
-        // GET api/ContractHolder/5
+        /// <summary>
+        /// Get a specific contract holder.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult ContractHolder(Guid id)
         {
@@ -34,35 +50,68 @@ namespace ContractHolder.WebAPI.Controllers
             return Ok(obj);
         }
 
+        /// <summary>
+        /// Gets all deleted contract holders.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Deleted")]
+        public IActionResult DeletedContractHolders()
+        {
+            return Ok(_contractHolderReadOnlyRepository.Get().Where(b => b.IndividualDeleted));
+        }
+
+        /// <summary>
+        /// Creates a new Individual in the database
+        /// </summary>
+        /// <param name="individual"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] Individual individual)
         {
-            //Implementar Validações
+            individual.IndividualId = Guid.NewGuid();
+
             _contractHolderWriteRepository.Add(individual);
             return Ok(individual);
         }
 
+        /// <summary>
+        /// Updates an contract holder in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="individual"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult UpdateContractHolder(Guid id, [FromBody] Individual individual)
         {
-            //Implementar Validações
             var obj = _contractHolderReadOnlyRepository.Find(id);
 
             obj.IndividualId = individual.IndividualId;
+            obj.IndividualName = individual.IndividualName;
+            obj.IndividualCPF = individual.IndividualCPF;
+            obj.IndividualEmail = individual.IndividualEmail;
+            obj.IndividualRG = individual.IndividualRG;
+            obj.IndividualBirthdate = individual.IndividualBirthdate;
 
             return Ok(_contractHolderWriteRepository.Update(obj));
 
         }
 
+        /// <summary>
+        /// Deletes a beneficiary
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult DeleteContractHolder(Guid id)
         {
-            //Implementar Validações
             var obj = _contractHolderReadOnlyRepository.Find(id);
 
             if (obj != null)
-                return Ok(_contractHolderWriteRepository.Remove(obj));
-
+            {
+                obj.IndividualDeleted = !obj.IndividualDeleted;
+                return Ok(_contractHolderWriteRepository.Update(obj));
+            }        
+            
             return NotFound(obj);
         }
     }
