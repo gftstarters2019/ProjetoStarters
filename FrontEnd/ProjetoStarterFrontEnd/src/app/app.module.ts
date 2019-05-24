@@ -14,6 +14,11 @@ import { ContractComponent } from './contract/contract.component';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
 import { ContractHolderListComponent } from './contract-holder-list/contract-holder-list.component';
 import { MatTableModule, MatPaginatorModule, MatSortModule} from '@angular/material';
+import { BeneficiaryIndividualComponent } from './beneficiary-individual/beneficiary-individual.component';
+import { BeneficiaryPetComponent } from './beneficiary-pet/beneficiary-pet.component';
+import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-vehicle.component';
+import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-realty.component';
+import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 
 
 
@@ -24,6 +29,11 @@ import { MatTableModule, MatPaginatorModule, MatSortModule} from '@angular/mater
     ContractHolderComponent,
     ContractHolderListComponent,
     ContractHolderListComponent,
+    BeneficiaryIndividualComponent,
+    BeneficiaryPetComponent,
+    BeneficiaryVehicleComponent,
+    BeneficiaryRealtyComponent,
+    BeneficiaryMobileDeviceComponent,
   ],
   imports: [
     BrowserModule,
