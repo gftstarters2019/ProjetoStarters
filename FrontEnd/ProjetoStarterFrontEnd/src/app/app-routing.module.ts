@@ -8,9 +8,8 @@ import { AddressComponent } from './address/address.component';
 const routes: Routes = [
   { path: 'contract-holder', component: ContractHolderComponent },
   { path: 'address', component: AddressComponent },
-  {path:'Contract', component: ContractComponent},
-
-  { path: '', pathMatch: 'full' ,redirectTo: 'address' }
+  { path:'contract', component: ContractComponent },
+  { path: '', pathMatch: 'full' ,redirectTo: 'contract-holder' }
 ];
 
 
