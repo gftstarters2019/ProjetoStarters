@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(ConfigurationContext))]
-    [Migration("20190523134452_LocalDB")]
-    partial class LocalDB
+    [Migration("20190523185512_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,6 +53,8 @@ namespace Backend.Infrastructure.Migrations
                 {
                     b.Property<Guid>("BeneficiaryId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("BeneficiaryDeleted");
 
                     b.Property<string>("Discriminator")
                         .IsRequired();
@@ -183,8 +185,6 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<string>("IndividualCPF")
                         .HasMaxLength(11);
 
-                    b.Property<bool>("IndividualDeleted");
-
                     b.Property<string>("IndividualEmail")
                         .HasMaxLength(30);
 
@@ -207,8 +207,6 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<string>("MobileDeviceBrand")
                         .HasMaxLength(15);
-
-                    b.Property<bool>("MobileDeviceDeleted");
 
                     b.Property<Guid>("MobileDeviceId");
 
@@ -236,8 +234,6 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<string>("PetBreed")
                         .HasMaxLength(30);
 
-                    b.Property<bool>("PetDeleted");
-
                     b.Property<Guid>("PetId");
 
                     b.Property<string>("PetName")
@@ -256,8 +252,6 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<Guid?>("RealtyAddressAddressId");
 
                     b.Property<DateTime>("RealtyConstructionDate");
-
-                    b.Property<bool>("RealtyDeleted");
 
                     b.Property<Guid>("RealtyId");
 
