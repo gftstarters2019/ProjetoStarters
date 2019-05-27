@@ -1,0 +1,33 @@
+<form [formGroup]="address" (ngSubmit)="onSubmit()">
+  <div class="first-container">
+    <mat-form-field>
+      <input matInput placeholder="Street/Avenue" name="street" formControlName="street" required>
+    </mat-form-field>
+    <mat-form-field class="select-type">
+      <mat-select formControlName="type"  placeholder="Select Type" required>
+        <mat-option value="Commercial">Commercial</mat-option>
+        <mat-option value="Residential">Residential</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Number" name="number" formControlName="number" required>
+    </mat-form-field>
+  </div>
+  <div class="second-container">
+    <mat-form-field>
+      <input matInput placeholder="State" name="state" formControlName="state" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Neighborhood" name="neighborhood" formControlName="neighborhood" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type='Country' placeholder="country" name="country" formControlName="country" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type='Zip code' placeholder="zipCode" name="zipCode" formControlName="zipCode" required>
+    </mat-form-field>
+  </div>
+  <div class="btn-address">
+    <button color="primary" mat-raised-button >Submit</button>
+  </div>
+</form>
