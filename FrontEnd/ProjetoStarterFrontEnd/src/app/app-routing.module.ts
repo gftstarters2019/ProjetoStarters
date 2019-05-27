@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
 import { ContractComponent } from './contract/contract.component';
 import { AddressComponent } from './address/address.component';
+import { ContractHolderComponent } from './contract-holder/contract-holder.component';
 
 
 const routes: Routes = [
