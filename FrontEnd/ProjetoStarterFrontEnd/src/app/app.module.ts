@@ -1,29 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { AddressComponent } from './address/address.component';
 import { MaterialModule } from './material.module';
-import { MatFormFieldModule, MatInputModule} from '@angular/material';
 
 import { ContractComponent } from './contract/contract.component';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
 import { ContractHolderListComponent } from './contract-holder-list/contract-holder-list.component';
 import { MatTableModule, MatPaginatorModule, MatSortModule} from '@angular/material';
-import { ContractListComponent } from './contract-list/contract-list.component';
-import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContractComponent,
     ContractHolderComponent,
+    AddressComponent,
+    ContractComponent,
     ContractHolderListComponent,
     ContractHolderListComponent,
     ContractListComponent,
@@ -31,19 +30,15 @@ import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.co
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     MaterialModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    MatFormFieldModule, 
-    MatInputModule, 
-    HttpClientModule,
     ReactiveFormsModule,
-    MaterialModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule
-
+    HttpClientModule
+  ],
+  exports: [
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
