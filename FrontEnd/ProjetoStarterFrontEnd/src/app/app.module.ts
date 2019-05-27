@@ -17,6 +17,7 @@ import { MatTableModule, MatPaginatorModule, MatSortModule} from '@angular/mater
 import { ContractListComponent } from './contract-list/contract-list.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
 
 
 
@@ -30,6 +31,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     ContractListComponent,
     BeneficiaryListComponent,
     SidebarComponent,
+    BeneficiarylistAddComponent,
   ],
   imports: [
     BrowserModule,
