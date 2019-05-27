@@ -14,12 +14,7 @@ namespace UnitTests
         [Test]
         public void WhenCreateAnIndividual_ThenVerifyIfHeIsAContractHolder()
         {
-            var individual = new Individual();
-            individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualBirthdate = new DateTime();
-            individual.IndividualCPF = "45301152897";
-            individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualId = Guid.NewGuid();
+           
 
         }
     }
