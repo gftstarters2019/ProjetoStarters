@@ -1,0 +1,44 @@
+<form [formGroup]="individualCreateForm">
+  <div class="container">
+
+      <div class="flex-wrapper">
+          <mat-form-field style="width: 60%;">
+              <input matInput placeholder="Full name" name="name" formControlName="name">
+              <!-- <mat-error *ngIf="!name.valid && (name.touched || name.dirty)">Name is required</mat-error> -->
+          </mat-form-field>
+      </div>
+
+      <div class="flex-wrapper">
+        <mat-form-field style="width: 45%;">
+            <input matInput placeholder="CPF" name="cpf" formControlName="cpf">
+            <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
+        </mat-form-field>
+
+        <mat-form-field style="width: 45%;">
+            <input matInput placeholder="RG" name="rg" formControlName="rg">
+            <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
+        </mat-form-field>
+    </div>
+
+      <div class="flex-wrapper">
+        <mat-form-field style="width: 30%;">
+          <input matInput [matDatepicker]="picker" placeholder="Birthdate" name="birthdate" formControlName="birthdate" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <!-- <mat-error *ngIf="!birthdate.valid && (birthdate.touched || birthdate.dirty)">Birthdate is required</mat-error> -->
+        </mat-form-field>
+      </div>
+
+      <div class="flex-wrapper">
+          <mat-form-field style="width: 60%;">
+              <input matInput placeholder="Email" name="email" formControlName="email">
+              <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
+          </mat-form-field>
+      </div>
+
+      <div>
+          <button mat-raised-button color="primary" (click)="individualPost()" type="submit" [disabled]="!individualCreateForm.valid"
+              style="margin-top: 10px">Submit</button>
+      </div>
+  </div>
+</form>
