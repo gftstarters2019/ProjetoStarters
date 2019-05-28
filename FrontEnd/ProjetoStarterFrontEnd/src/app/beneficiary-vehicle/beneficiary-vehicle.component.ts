@@ -28,21 +28,23 @@ export class BeneficiaryVehicleComponent implements OnInit {
   ];
   
   vehicleCreateForm= this.formBuilder.group({
-    brand: new FormControl('', Validators.required),
-    model: new FormControl('', Validators.required),
-    manufactoringYear: new FormControl('', Validators.required),
-    modelYear: new FormControl('', Validators.required),
-    color: new FormControl('', Validators.required),
-    chassisNumber: new FormControl('', Validators.required),
-    currentMileage: new FormControl('', Validators.required),
-    currentFipeValue: new FormControl('', Validators.required),
-    doneInspection: new FormControl('', Validators.required)
+    vehicleBrand: new FormControl('', Validators.required),
+    vehicleModel: new FormControl('', Validators.required),
+    vehicleManufactoringYear: new FormControl('', Validators.required),
+    vehicleModelYear: new FormControl('', Validators.required),
+    vehicleColor: new FormControl('', Validators.required),
+    vehicleChassisNumber: new FormControl('', Validators.required),
+    vehicleCurrentMileage: new FormControl('', Validators.required),
+    vehicleCurrentFipeValue: new FormControl('', Validators.required),
+    vehicleDoneInspection: new FormControl(false)
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
   }
+
+  response:Object;
 
   public vehiclePost(): void{
     
@@ -52,8 +54,9 @@ export class BeneficiaryVehicleComponent implements OnInit {
         'Content-Type':  'application/json'
       })
     };
-    this._httpClient.post(``, form, httpOptions)
-    .subscribe(data => console.log(data));
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle', form, httpOptions)
+    .subscribe(data => {this.response = data});
+    
   }
 
 }

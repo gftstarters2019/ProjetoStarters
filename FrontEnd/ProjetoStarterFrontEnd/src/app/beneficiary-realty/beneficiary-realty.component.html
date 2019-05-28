@@ -7,14 +7,14 @@
       
       <div class="flex-wrapper">
           <mat-form-field style="width: 60%;">
-              <input matInput placeholder="Municipal Registration" name="municipalRegistration" formControlName="municipalRegistration">
+              <input matInput placeholder="Municipal Registration" name="realtyMunicipalRegistration" formControlName="realtyMunicipalRegistration">
               <!-- <mat-error *ngIf="!name.valid && (name.touched || name.dirty)">Name is required</mat-error> -->
           </mat-form-field>
       </div>
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 30%;">
-          <input matInput [matDatepicker]="picker" placeholder="Construction Date" name="constructionDate" formControlName="constructionDate" required>
+          <input matInput [matDatepicker]="picker" placeholder="Construction Date" name="realtyConstructionDate" formControlName="realtyConstructionDate" required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <!-- <mat-error *ngIf="!birthdate.valid && (birthdate.touched || birthdate.dirty)">Birthdate is required</mat-error> -->
@@ -23,12 +23,12 @@
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 45%;">
-            <input matInput type="number" placeholder="Sale Value" name="saleValue" formControlName="saleValue">
+            <input matInput type="number" placeholder="Sale Value" name="realtySaleValue" formControlName="realtySaleValue">
             <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
         </mat-form-field>
 
         <mat-form-field style="width: 45%;">
-            <input matInput type="number" placeholder="Market Value" name="marketValue" formControlName="marketValue">
+            <input matInput type="number" placeholder="Market Value" name="realtyMarketValue" formControlName="realtyMarketValue">
             <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
         </mat-form-field>
     </div>

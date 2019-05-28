@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormBuilder } from '@angular/forms';
+import { AddressComponent } from './../address/address.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, Validators, FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Address } from '../address/address.component';
 
@@ -10,11 +11,14 @@ import { Address } from '../address/address.component';
 })
 export class BeneficiaryRealtyComponent implements OnInit {
 
+  @ViewChild(AddressComponent) address;
+
   realtyCreateForm= this.formBuilder.group({
-    municipalRegistration: new FormControl('', Validators.required),
-    constructionDate: new FormControl('', Validators.required),
-    saleValue: new FormControl('', Validators.required),
-    marketValue: new FormControl('', Validators.required)
+    addressId: new FormControl(''),
+    realtyMunicipalRegistration: new FormControl('', Validators.required),
+    realtyConstructionDate: new FormControl('', Validators.required),
+    realtySaleValue: new FormControl('', Validators.required),
+    realtyMarketValue: new FormControl('', Validators.required)
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
@@ -22,23 +26,19 @@ export class BeneficiaryRealtyComponent implements OnInit {
   ngOnInit() {
   }
 
-  message:FormBuilder;
-
+  message:string;
+  response:Object;
   public realtyPost(): void{
-    
+    this.message = this.address.message;
+    this.realtyCreateForm.patchValue({addressId: this.message});
     let form = JSON.stringify(this.realtyCreateForm.value);
+    console.log(form);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
       })
     };
-    this._httpClient.post(``, form, httpOptions)
-    .subscribe(data => console.log(data));
+    this._httpClient.post('https://localhost:5001/api/Beneficiary/Realty', form, httpOptions)
+    .subscribe(data => { this.response = data});
   }
-
-  receiveMessage($event) {
-    this.message = $event
-    console.log(this.message);
-  }
-
 }

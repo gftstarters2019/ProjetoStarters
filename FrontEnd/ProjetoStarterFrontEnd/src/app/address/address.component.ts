@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 
 export interface Address{
   id : string,
@@ -18,9 +18,7 @@ export interface Address{
   styleUrls: ['./address.component.scss']
 })
 export class AddressComponent implements OnInit {
-
-  @Output() createEvent = new EventEmitter<FormGroup>();
-
+  message:string;
   address = this.fb.group ({
     id: [''],
     street: ['', Validators.required],
@@ -40,8 +38,7 @@ export class AddressComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    console.log(this.address.value);
-    this.createEvent.emit(this.address);
+    this.message=this.address.get(['id']).value;
   }
 
 }
