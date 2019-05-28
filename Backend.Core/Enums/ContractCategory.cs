@@ -6,6 +6,6 @@ namespace Backend.Core.Enums
 {
     public enum ContractCategory
     {
-        Iron, Copper, Silver, Gold, Platinum, Diamond
+        Iron, Bronze, Silver, Gold, Platinum, Diamond
     }
 }
