@@ -5,7 +5,7 @@ using System;
 
 namespace UnitTests
 {
-    public class Tests
+    public class ContractHolderTests
     {
         [SetUp]
         public void Setup()
