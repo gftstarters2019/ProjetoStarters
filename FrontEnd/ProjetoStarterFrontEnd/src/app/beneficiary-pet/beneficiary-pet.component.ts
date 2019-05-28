@@ -23,10 +23,10 @@ export class BeneficiaryPetComponent implements OnInit {
   ];
 
   petCreateForm= this.formBuilder.group({
-    name: new FormControl('', Validators.required),
-    birthdate: new FormControl('', Validators.required),
-    species: new FormControl('', Validators.required),
-    breed: new FormControl('', Validators.required)
+    petName: new FormControl('', Validators.required),
+    petBirthdate: new FormControl('', Validators.required),
+    petSpecies: new FormControl('', Validators.required),
+    petBreed: new FormControl('', Validators.required)
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
@@ -34,6 +34,7 @@ export class BeneficiaryPetComponent implements OnInit {
   ngOnInit() {
   }
 
+  response:Object;
   public petPost(): void{
     
     let form = JSON.stringify(this.petCreateForm.value);
@@ -42,7 +43,7 @@ export class BeneficiaryPetComponent implements OnInit {
         'Content-Type':  'application/json'
       })
     };
-    this._httpClient.post(``, form, httpOptions)
-    .subscribe(data => console.log(data));
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet', form, httpOptions)
+    .subscribe(data => {this.response = data});
   }
 }
