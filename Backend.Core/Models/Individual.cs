@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
-    public class Individual : Beneficiary , IValidator
+    public class Individual : Beneficiary , IvalidatorIndividual
     {
         public Guid IndividualId { get; set; }
         [MaxLength(50)]

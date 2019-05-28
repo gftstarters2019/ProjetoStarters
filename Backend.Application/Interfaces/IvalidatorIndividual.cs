@@ -1,6 +1,6 @@
 namespace Backend.Application.Interfaces
 { 
-    public interface IValidator
+    public interface IvalidatorIndividual
     {
         void ValidateCPF();
         void ValidateRG();

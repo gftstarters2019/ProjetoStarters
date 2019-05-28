@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Helper
 {
-    public class IndividualProxy : Beneficiary, IValidator
+    public class IndividualProxy : Beneficiary, IvalidatorIndividual
     {
         public Individual _individual;
 
