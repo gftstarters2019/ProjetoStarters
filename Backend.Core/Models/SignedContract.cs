@@ -12,7 +12,6 @@ namespace Backend.Core.Models
         public Guid ContractId { get; set; }
         public Individual ContractSignedIndividual { get; set; }
         public Contract ContractSignedContract { get; set; }
-
         public bool ContractIndividualIsActive { get; set; }
     }
 }
