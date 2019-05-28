@@ -9,7 +9,6 @@ namespace Backend.Core.Models
         public Guid PetId { get; set; }
         [MaxLength(40)]
         public string PetName { get; set; }
-        [MaxLength(25)]
         public PetSpecies PetSpecies { get; set; }
         [MaxLength(30)]
         public string PetBreed { get; set; }
