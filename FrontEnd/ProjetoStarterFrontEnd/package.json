@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-prod": "ng build --prod --output-path=\".dist/web\""
+    "build-prod": "ng build --output-path=\".dist/web\""
   },
   "private": true,
   "dependencies": {
