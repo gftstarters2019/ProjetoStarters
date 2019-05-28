@@ -1,4 +1,6 @@
-﻿using Backend.Infrastructure.Configuration;
+﻿using Backend.Core;
+using Backend.Core.Models;
+using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +14,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Contract.WebAPI
+namespace ContractHolder.WebAPI
 {
     public class Startup
     {
@@ -27,9 +29,8 @@ namespace Contract.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.Contract>, ContractRepository>();
-            services.AddScoped<IWriteRepository<Backend.Core.Models.Contract>, ContractRepository>();
+            services.AddScoped<IReadOnlyRepository<Individual>, ContractHolderRepository>();
+            services.AddScoped<IWriteRepository<Individual>, ContractHolderRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 

@@ -1,12 +1,14 @@
-﻿using Backend.Application.Interfaces;
+using Backend.Application.Interfaces;
+using Backend.Core.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Backend.Core.Models
+namespace Backend.Core.Helper
 {
-    public class Individual : Beneficiary , IValidator
+    public class IndividualProxy : Beneficiary, IValidator
     {
+        public Individual _individual;
+
         public Guid IndividualId { get; set; }
         [MaxLength(50)]
         public string IndividualName { get; set; }
@@ -14,10 +16,6 @@ namespace Backend.Core.Models
         public string IndividualCPF { get; set; }
         [MaxLength(9)]
         public string IndividualRG { get; set; }
-        [MaxLength(30)]
-        public string IndividualEmail { get; set; }
-        public DateTime IndividualBirthdate { get; set; }
-        public bool IndividualDeleted { get; set; }
 
         public void ValidateCPF()
         {

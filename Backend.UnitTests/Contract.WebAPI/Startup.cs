@@ -1,4 +1,5 @@
-﻿using Backend.Infrastructure.Configuration;
+﻿using Backend.Core;
+using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
