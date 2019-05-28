@@ -3,6 +3,7 @@ using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text.RegularExpressions;
 
 namespace ContractHolder.WebAPI.Controllers
 {
@@ -89,18 +90,17 @@ namespace ContractHolder.WebAPI.Controllers
                 return Ok(_telephoneWriteRepository.Update(obj));
             }
             else
-                throw new InvalidCastException("Numero de telefone inválido!");
+                throw new ArgumentException("Numero de telefone inválido!");
         }
 
         private bool Validate(Telephone telephone)
         {
-            foreach (var t in telephone.TelephoneNumber)
-            {
-                if (t < '0' || t > '9')
-                    return false;
-            }
+            Regex regex = new Regex("^[0-9]+$");
 
-            if (telephone.TelephoneNumber.Length < 8 && telephone.TelephoneNumber.Length > 11)
+            if (!regex.IsMatch(telephone.TelephoneNumber))
+                return false;
+
+            if (telephone.TelephoneNumber.Length < 8 || telephone.TelephoneNumber.Length > 11)
                 return false;
 
             if (!Enum.IsDefined(typeof(TelephoneType), telephone.TelephoneType))

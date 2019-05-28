@@ -31,6 +31,8 @@ namespace ContractHolder.WebAPI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IReadOnlyRepository<Individual>, ContractHolderRepository>();
             services.AddScoped<IWriteRepository<Individual>, ContractHolderRepository>();
+            services.AddScoped<IReadOnlyRepository<Telephone>, TelephoneRepository>();
+            services.AddScoped<IWriteRepository<Telephone>, TelephoneRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
