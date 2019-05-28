@@ -5,7 +5,7 @@ using System;
 
 namespace UnitTests
 {
-    public class Tests
+    public class ContractHolderTests
     {
         [SetUp]
         public void Setup()
@@ -23,6 +23,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
+            individual.IndividualDeleted = false;
 
             //act
             var contract = new Contract();
@@ -38,6 +39,8 @@ namespace UnitTests
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;
+            signedContract.ContractIndividualIsActive = true;
+
 
             //assert
             Assert.AreEqual(individual.IndividualId, signedContract.IndividualId);
@@ -55,6 +58,7 @@ namespace UnitTests
             var individualCPF = "45301152897";
             var individualRG = "458559462";
             var individualEmail = "gftstarters2019@outlook.com";
+            var individualDeleted = false;
 
             //act
             var individual = new Individual();
@@ -64,6 +68,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
+            individual.IndividualDeleted = false;
 
             var contract = new Contract();
             contract.ContractId = Guid.NewGuid();
@@ -78,6 +83,8 @@ namespace UnitTests
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;
+            signedContract.ContractIndividualIsActive = true;
+
 
             //assert
             Assert.AreEqual(individual.IndividualId, individualId);
@@ -86,6 +93,7 @@ namespace UnitTests
             Assert.AreEqual(individual.IndividualCPF, individualCPF);
             Assert.AreEqual(individual.IndividualRG, individualRG);
             Assert.AreEqual(individual.IndividualEmail, individualEmail);
+            Assert.AreEqual(individual.IndividualDeleted, individualDeleted);
         }
 
         [Test]
@@ -99,6 +107,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
+            individual.IndividualDeleted = false;
 
             var contract = new Contract();
             contract.ContractId = Guid.NewGuid();
@@ -113,6 +122,8 @@ namespace UnitTests
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;
+            signedContract.ContractIndividualIsActive = true;
+
 
             //act
             var individualId = individual.IndividualId;
@@ -132,6 +143,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
+            individual.IndividualDeleted = false;
 
             var contract = new Contract();
             contract.ContractId = Guid.NewGuid();
@@ -146,6 +158,8 @@ namespace UnitTests
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;
+            signedContract.ContractIndividualIsActive = true;
+
 
             var updatedIndividual = new Individual();
 
@@ -155,6 +169,7 @@ namespace UnitTests
             var individualCPF = "45301152898";
             var individualRG = "458559466";
             var individualEmail = "gftstarters@outlook.com";
+            var individualDeleted = false;
 
             //act
             updatedIndividual.BeneficiaryId = beneficiaryId;
@@ -163,6 +178,7 @@ namespace UnitTests
             updatedIndividual.IndividualCPF = individualCPF;
             updatedIndividual.IndividualRG = individualRG;
             updatedIndividual.IndividualEmail = individualEmail;
+            updatedIndividual.IndividualDeleted = individualDeleted;
 
             //assert
             Assert.AreNotEqual(individual.IndividualId, updatedIndividual.IndividualId);
@@ -171,6 +187,7 @@ namespace UnitTests
             Assert.AreNotEqual(individual.IndividualCPF, updatedIndividual.IndividualCPF);
             Assert.AreNotEqual(individual.IndividualRG, updatedIndividual.IndividualRG);
             Assert.AreNotEqual(individual.IndividualEmail, updatedIndividual.IndividualEmail);
+            Assert.AreNotEqual(individual.IndividualDeleted, updatedIndividual.IndividualDeleted);
         }
 
 
@@ -185,6 +202,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
+            individual.IndividualDeleted = false;
 
             var contract = new Contract();
             contract.ContractId = Guid.NewGuid();
@@ -199,16 +217,17 @@ namespace UnitTests
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;
+            signedContract.ContractIndividualIsActive = true;
 
             //act
-            signedContract = null;
-            contract = null;
-            individual = null;
+            var signedContractDeleted = signedContract.ContractIndividualIsActive = false;
+            var contractDeleted = contract.ContractDeleted = true;
+            var individualDeleted = individual.IndividualDeleted = true;
 
             //assert
-            Assert.IsNull(signedContract);
-            Assert.IsNull(contract);
-            Assert.IsNull(individual);
+            Assert.IsFalse(signedContractDeleted);
+            Assert.IsTrue(contractDeleted);
+            Assert.IsTrue(individualDeleted);
         }
     }
 }
