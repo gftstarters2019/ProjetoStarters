@@ -35,6 +35,7 @@ namespace Beneficiaries.WebAPI
 
             services.AddScoped<IReadOnlyRepository<Beneficiary>, BeneficiaryRepository>();
             services.AddScoped<IWriteRepository<Beneficiary>, BeneficiaryRepository>();
+            services.AddScoped<IReadOnlyRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
