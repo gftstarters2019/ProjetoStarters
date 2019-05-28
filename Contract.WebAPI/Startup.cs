@@ -31,6 +31,7 @@ namespace Contract.WebAPI
 
             services.AddScoped<IReadOnlyRepository<Backend.Core.Models.Contract>, ContractRepository>();
             services.AddScoped<IWriteRepository<Backend.Core.Models.Contract>, ContractRepository>();
+            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
