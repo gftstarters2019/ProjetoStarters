@@ -80,9 +80,6 @@ namespace UnitTests
             signedContract.ContractSignedContract = contract;
 
             //assert
-            Assert.AreEqual(individual.IndividualId, signedContract.IndividualId);
-            Assert.AreEqual(individual, signedContract.ContractSignedIndividual);
-
             Assert.AreEqual(individual.IndividualId, individualId);
             Assert.AreEqual(individual.BeneficiaryId, beneficiaryId);
             Assert.AreEqual(individual.IndividualBirthdate, individualBirthdate);
@@ -121,9 +118,6 @@ namespace UnitTests
             var individualId = individual.IndividualId;
 
             //assert
-            Assert.AreEqual(individual.IndividualId, signedContract.IndividualId);
-            Assert.AreEqual(individual, signedContract.ContractSignedIndividual);
-
             Assert.AreEqual(individual.IndividualId, individualId);
         }
 
@@ -171,9 +165,6 @@ namespace UnitTests
             updatedIndividual.IndividualEmail = individualEmail;
 
             //assert
-            Assert.AreEqual(individual.IndividualId, signedContract.IndividualId);
-            Assert.AreEqual(individual, signedContract.ContractSignedIndividual);
-
             Assert.AreNotEqual(individual.IndividualId, updatedIndividual.IndividualId);
             Assert.AreNotEqual(individual.BeneficiaryId, updatedIndividual.BeneficiaryId);
             Assert.AreNotEqual(individual.IndividualBirthdate, updatedIndividual.IndividualBirthdate);
