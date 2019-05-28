@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Address } from '../address/address.component';
 
 @Component({
   selector: 'app-beneficiary-realty',
@@ -21,6 +22,8 @@ export class BeneficiaryRealtyComponent implements OnInit {
   ngOnInit() {
   }
 
+  message:FormBuilder;
+
   public realtyPost(): void{
     
     let form = JSON.stringify(this.realtyCreateForm.value);
@@ -31,6 +34,11 @@ export class BeneficiaryRealtyComponent implements OnInit {
     };
     this._httpClient.post(``, form, httpOptions)
     .subscribe(data => console.log(data));
+  }
+
+  receiveMessage($event) {
+    this.message = $event
+    console.log(this.message);
   }
 
 }

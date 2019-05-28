@@ -1,6 +1,10 @@
 <form [formGroup]="realtyCreateForm">
   <div class="container">
-
+    <mat-card>
+      <p>Address Info</p>
+      <app-address (createEvent)="receiveMessage($event)"></app-address>
+    </mat-card>
+      
       <div class="flex-wrapper">
           <mat-form-field style="width: 60%;">
               <input matInput placeholder="Municipal Registration" name="municipalRegistration" formControlName="municipalRegistration">
