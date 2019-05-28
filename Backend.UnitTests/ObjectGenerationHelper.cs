@@ -12,15 +12,17 @@ namespace Backend.UnitTests
         public Individual GenerateIndividual()
         {
             var individual = new Individual();
-            individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualBirthdate = new DateTime();
+            individual.BeneficiaryId = new Guid("b83b58f8-d488-4181-86ab-1c065ef107ef");
+            individual.IndividualId = new Guid("3fa31ff9-a641-4831-9625-839009d558b4");
+            individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualId = Guid.NewGuid();
 
             return individual;
         }
+
+        
 
         public Contract GenerateContract(ContractType contractType, ContractCategory contractCategory)
         {
