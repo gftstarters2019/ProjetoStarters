@@ -178,7 +178,6 @@ namespace UnitTests
             updatedIndividual.IndividualCPF = individualCPF;
             updatedIndividual.IndividualRG = individualRG;
             updatedIndividual.IndividualEmail = individualEmail;
-            updatedIndividual.IndividualDeleted = individualDeleted;
 
             //assert
             Assert.AreNotEqual(individual.IndividualId, updatedIndividual.IndividualId);
@@ -187,7 +186,6 @@ namespace UnitTests
             Assert.AreNotEqual(individual.IndividualCPF, updatedIndividual.IndividualCPF);
             Assert.AreNotEqual(individual.IndividualRG, updatedIndividual.IndividualRG);
             Assert.AreNotEqual(individual.IndividualEmail, updatedIndividual.IndividualEmail);
-            Assert.AreNotEqual(individual.IndividualDeleted, updatedIndividual.IndividualDeleted);
         }
 
 
