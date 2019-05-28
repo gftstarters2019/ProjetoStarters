@@ -1,5 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+
+export interface Address{
+  id : string,
+  street: string,
+  type: string,
+  number: number,
+  state: string,
+  neighborhood: string,
+  country: string,
+  zipCode: string
+}
 
 @Component({
   selector: 'app-address',
@@ -8,7 +19,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class AddressComponent implements OnInit {
 
+  @Output() createEvent = new EventEmitter<FormGroup>();
+
   address = this.fb.group ({
+    id: [''],
     street: ['', Validators.required],
     type: ['', Validators.required],
     number: ['', Validators.required],
@@ -22,10 +36,12 @@ export class AddressComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+
   }
 
   public onSubmit(): void {
     console.log(this.address.value);
+    this.createEvent.emit(this.address);
   }
 
 }
