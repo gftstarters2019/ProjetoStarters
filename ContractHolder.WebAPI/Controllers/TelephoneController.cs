@@ -55,7 +55,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// </summary>
         /// <param name="telephone"></param>
         /// <returns></returns>
-        [HttpPost("Telephone")]
+        [HttpPost]
         public IActionResult PostTelephone([FromBody] Telephone telephone)
         {
             telephone.TelephoneId = Guid.NewGuid();
@@ -67,7 +67,7 @@ namespace ContractHolder.WebAPI.Controllers
                 return Ok(telephone);
             }
             else
-                throw new InvalidCastException("Numero de telefone inválido!");
+                return Conflict();
 
         }
 
@@ -77,7 +77,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="id"></param>
         /// <param name="telephone"></param>
         /// <returns></returns>
-        [HttpPut("Telephone/{id}")]
+        [HttpPut("{id}")]
         public IActionResult UpdateTelephone(Guid id, [FromBody] Telephone telephone)
         {
             var obj = (Telephone)_telephoneReadOnlyRepository.Find(id);
@@ -90,7 +90,7 @@ namespace ContractHolder.WebAPI.Controllers
                 return Ok(_telephoneWriteRepository.Update(obj));
             }
             else
-                throw new ArgumentException("Numero de telefone inválido!");
+                return Conflict();
         }
 
         private bool Validate(Telephone telephone)
