@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-address',
@@ -7,6 +7,7 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./address.component.scss']
 })
 export class AddressComponent implements OnInit {
+  addressAdd: FormArray;
 
   address = this.fb.group ({
     street: ['', Validators.required],
@@ -15,7 +16,8 @@ export class AddressComponent implements OnInit {
     state: ['', Validators.required],
     neighborhood: [ '', Validators.required],
     country: ['', Validators.required],
-    zipCode: ['', Validators.required]
+    zipCode: ['', Validators.required],
+    addressAdd: this.fb.array([])
   });
 
 
@@ -28,4 +30,17 @@ export class AddressComponent implements OnInit {
     console.log(this.address.value);
   }
 
+  createAddress(): FormGroup {
+    return this.fb.group({
+      id: ''
+    });
+  }
+
+  addAddress(): void {
+    this.addressAdd = this.address.get('addressAdd') as FormArray;
+    if(this.addressAdd.length<5){
+      this.addressAdd.push(this.createAddress());
+    }
+  }
+  
 }

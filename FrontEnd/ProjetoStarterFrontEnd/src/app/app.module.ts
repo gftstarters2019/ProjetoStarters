@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AddressComponent } from './address/address.component';
@@ -18,7 +19,8 @@ import { ContractListComponent } from './contract-list/contract-list.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
-
+import { TableListComponent } from './table-list/table-list.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
@@ -33,17 +35,20 @@ import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiaryli
     BeneficiaryListComponent,
     SidebarComponent,
     BeneficiarylistAddComponent,
+    TableListComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    MatDialogModule,
     MaterialModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AgGridModule.withComponents([])
   ],
-  exports: [
+  exports: [  
     MaterialModule
   ],
   providers: [],

@@ -1,49 +1,62 @@
+<form [formGroup]="contractHolder" (ngSubmit)="onSubmit()">
 
-<form> 
-
-    <mat-form-field style="width: 500px;">
+  <mat-form-field style="width: 500px;">
       <input matInput placeholder="Name" name="name"  maxlength="50" required>
     </mat-form-field> <br> 
-
+    
     <mat-radio-group>
       <mat-radio-button class = "tp-radio-button"
          *ngFor = "let gender of genders" [value] = "gender">
          {{gender}}
-      </mat-radio-button>
-   </mat-radio-group>
-   <div class = "tp-selected-value">
-     {{Gender_}}
-   </div>
-    
-    <mat-form-field style="width: 250px;">
-      <input matInput placeholder="RG" name="rg"  maxlength="9" required>    
-    </mat-form-field> <br>
-  
-  
-    <mat-form-field style="width: 250px;">
-      <input matInput placeholder="CPF" name="cpf"  maxlength="11" required>
-    
-    </mat-form-field>  <br>
-    
-    <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Birthdate" id="birthdate" required>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field><br>
-    
-    <mat-form-field style="width: 350px;">
-      <input matInput placeholder="Email" name="email"  maxlength="30"  required email>
-    </mat-form-field> <br>
-  
-    <br>
-    <button mat-raised-button color="primary" type="submit" >Submit</button>
-    
-    <button mat-raised-button color="primary"   (click)="showButton()" >Show Contract Holder</button>
-    
-    <div *ngIf="!showList" class="mat-elevation-z8">
-      <div>
-        <app-contract-holder-list> </app-contract-holder-list>
+        </mat-radio-button>
+      </mat-radio-group>
+      <div class = "tp-selected-value">
+        {{Gender_}}
       </div>
-    </div>
-  </form>
-  
+      
+      <mat-form-field style="width: 250px;">
+          <input matInput placeholder="RG" name="rg"  maxlength="9" required>    
+        </mat-form-field> 
+        
+        
+        <mat-form-field style="width: 250px;">
+            <input matInput placeholder="CPF" id="cpf" value="" name="cpf" type="text" required  maxlength="11" > 
+            <span id="cpfResponse"></span>
+            
+            
+            <script></script>
+          </mat-form-field>  <br>
+          
+          <mat-form-field style="width: 250px;">
+              <input matInput [matDatepicker]="picker" placeholder="Birthdate" id="birthdate" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            
+            <mat-form-field style="width: 350px;">
+                <input matInput placeholder="Email" name="email"  maxlength="30"  required email>
+              </mat-form-field> 
+              
+              <br>
+              <button button color="primary" mat-raised-button  type="submit" >Submit</button> <br> <br>
+              
+              <button mat-raised-button color ="primary" (click)="showAddress()">
+                <mat-icon class="material-icons">add</mat-icon>    
+              </button>
+              <app-address *ngIf="showAddresslist" >     </app-address> <br> <br>
+              <button mat-raised-button color="primary"   (click)="showButton()" >Show Contract Holder</button>
+              
+              
+              <div *ngIf="!showList" class="mat-elevation-z8">
+                <div>
+                  <ag-grid-angular  
+                  style="width: 1000px; height: 1000px;" 
+                  class="ag-theme-material"
+                  [gridOptions]="gridOptions">
+                </ag-grid-angular>   
+              </div>
+            </div>
+          </form>
+          <script src=validateCpf.js></script>
+          
+          
