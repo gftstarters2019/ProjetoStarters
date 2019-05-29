@@ -1,5 +1,4 @@
-﻿using Backend.Core.Models;
-using Backend.Infrastructure.Repositories.Contracts;
+﻿using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -9,10 +8,10 @@ namespace Contract.WebAPI.Controllers
     [ApiController]
     public class ContractController : ControllerBase
     {
-        private readonly IReadOnlyRepository<Address> _contractReadOnlyRepository;
-        private readonly IWriteRepository<Address> _contractWriteRepository;
+        private readonly IReadOnlyRepository<Backend.Core.Models.Contract> _contractReadOnlyRepository;
+        private readonly IWriteRepository<Backend.Core.Models.Contract> _contractWriteRepository;
 
-        public ContractController(IReadOnlyRepository<Address> contractReadOnlyRepository, IWriteRepository<Address> contractWriteRepository)
+        public ContractController(IReadOnlyRepository<Backend.Core.Models.Contract> contractReadOnlyRepository, IWriteRepository<Backend.Core.Models.Contract> contractWriteRepository)
         {
             _contractReadOnlyRepository = contractReadOnlyRepository;
             _contractWriteRepository = contractWriteRepository;
@@ -34,7 +33,7 @@ namespace Contract.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostContract([FromBody] Address contract)
+        public IActionResult PostContract([FromBody] Backend.Core.Models.Contract contract)
         {
             //Implementar Validações
             _contractWriteRepository.Add(contract);
@@ -42,12 +41,12 @@ namespace Contract.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateContract(Guid id, [FromBody] Address contract)
+        public IActionResult UpdateContract(Guid id, [FromBody] Backend.Core.Models.Contract contract)
         {
             //Implementar Validações
             var obj = _contractReadOnlyRepository.Find(id);
 
-            //obj.id = contract.id;
+            obj.ContractId = contract.ContractId;
 
             return Ok(_contractWriteRepository.Update(obj));
         }

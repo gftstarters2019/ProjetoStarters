@@ -8,7 +8,7 @@ namespace Backend.Infrastructure.Configuration
 
         public ConfigurationContext(DbContextOptions<ConfigurationContext> options) : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         public DbSet<Individual> Individuals { get; set; }
@@ -24,9 +24,7 @@ namespace Backend.Infrastructure.Configuration
         public DbSet<IndividualAddress> Individual_Address { get; set; }
         public DbSet<IndividualTelephone> Individual_Telephone { get; set; }
         public DbSet<ContractBeneficiary> Contract_Beneficiary { get; set; }
-
-
-
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Individual>();
@@ -45,8 +43,4 @@ namespace Backend.Infrastructure.Configuration
 
         }
     }
-
-    
-
-   
 }

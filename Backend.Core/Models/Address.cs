@@ -16,6 +16,5 @@ namespace Backend.Core.Models
         public string AddressCountry { get; set; }
         public string AddressZipCode { get; set; }
         public AddressType AddressType { get; set; }
-        public ICollection<Individual> AddressIndividuals { get; set; }
     }
 }

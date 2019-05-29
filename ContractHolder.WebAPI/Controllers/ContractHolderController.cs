@@ -1,4 +1,5 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core;
+using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,10 +10,10 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class ContractHolderController : ControllerBase
     {
-        private readonly IReadOnlyRepository<Address> _contractHolderReadOnlyRepository;
-        private readonly IWriteRepository<Address> _contractHolderWriteRepository;
+        private readonly IReadOnlyRepository<Individual> _contractHolderReadOnlyRepository;
+        private readonly IWriteRepository<Individual> _contractHolderWriteRepository;
 
-        public ContractHolderController(IReadOnlyRepository<Address> contractHolderReadOnlyRepository, IWriteRepository<Address> contractHolderWriteRepository)
+        public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository)
         {
             _contractHolderReadOnlyRepository = contractHolderReadOnlyRepository;
             _contractHolderWriteRepository = contractHolderWriteRepository;
@@ -34,7 +35,7 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostContractHolder([FromBody] Address individual)
+        public IActionResult PostContractHolder([FromBody] Individual individual)
         {
             //Implementar Validações
             _contractHolderWriteRepository.Add(individual);
@@ -42,12 +43,12 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateContractHolder(Guid id, [FromBody] Address Address)
+        public IActionResult UpdateContractHolder(Guid id, [FromBody] Individual individual)
         {
             //Implementar Validações
             var obj = _contractHolderReadOnlyRepository.Find(id);
 
-            //obj.id = Address.id;
+            obj.IndividualId = individual.IndividualId;
 
             return Ok(_contractHolderWriteRepository.Update(obj));
 
