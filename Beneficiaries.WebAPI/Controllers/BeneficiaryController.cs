@@ -344,7 +344,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <returns>If Realty is valid</returns>
         public static bool RealtyIsValid(Realty realty)
         {
-            if (realty.RealtyMarketValue > 0 && realty.RealtySaleValue > 0)
+            if (realty.RealtyMarketValue < 0 && realty.RealtySaleValue < 0)
                 return false;
 
             if (!CEPIsValid(realty.RealtyAddress.AddressZipCode))
