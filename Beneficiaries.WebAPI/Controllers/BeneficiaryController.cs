@@ -248,6 +248,9 @@ namespace Beneficiaries.WebAPI.Controllers
             vehicle.BeneficiaryId = Guid.NewGuid();
             vehicle.VehicleId = Guid.NewGuid();
 
+            if (!VehicleIsValid(vehicle))
+                return Forbid();
+
             _beneficiaryWriteRepository.Add(vehicle);
 
             return Ok(vehicle);
@@ -262,6 +265,9 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Vehicle/{id}")]
         public IActionResult UpdateVehicle(Guid id, [FromBody] Vehicle vehicle)
         {
+            if (!VehicleIsValid(vehicle))
+                return Forbid();
+
             var obj = (Vehicle)_beneficiaryReadOnlyRepository.Find(id);
 
             obj.VehicleBrand = vehicle.VehicleBrand;
@@ -345,6 +351,25 @@ namespace Beneficiaries.WebAPI.Controllers
                 return false;
 
             if (!DateIsValid(realty.RealtyConstructionDate))
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Verifies if Vehicle is valid
+        /// </summary>
+        /// <param name="vehicle">Vehicle to be verified</param>
+        /// <returns>If Vehicle is valid</returns>
+        public static bool VehicleIsValid(Vehicle vehicle)
+        {
+            if (!DateIsValid(vehicle.VehicleManufactoringYear))
+                return false;
+
+            if (!DateIsValid(vehicle.VehicleModelYear))
+                return false;
+
+            if (vehicle.VehicleCurrentFipeValue < 0 && vehicle.VehicleCurrentMileage <= 0)
                 return false;
 
             return true;
