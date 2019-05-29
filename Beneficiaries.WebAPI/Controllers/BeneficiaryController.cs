@@ -291,6 +291,9 @@ namespace Beneficiaries.WebAPI.Controllers
 
             if (!EmailIsValid(individual.IndividualEmail))
                 return false;
+
+            if (!BirthdateIsValid(individual.IndividualBirthdate))
+                return false;
             return true;
         }
 
@@ -352,6 +355,15 @@ namespace Beneficiaries.WebAPI.Controllers
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Verifies if birthdate is not future date
+        /// </summary>
+        /// <returns>If birthday is valid</returns>
+        public static bool BirthdateIsValid (DateTime birthdate)
+        {
+            return birthdate != null ? birthdate > DateTime.Today : false;
         }
         #endregion Validations
     }
