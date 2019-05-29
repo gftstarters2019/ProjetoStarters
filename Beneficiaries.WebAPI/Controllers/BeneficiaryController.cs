@@ -86,7 +86,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Individual/{id}")]
         public IActionResult UpdateIndividual(Guid id, [FromBody] Individual individual)
         {
-            var obj = (Individual) _beneficiaryReadOnlyRepository.Find(id);
+            var obj = (Individual)_beneficiaryReadOnlyRepository.Find(id);
 
             obj.BeneficiaryDeleted = individual.BeneficiaryDeleted;
             obj.IndividualBirthdate = individual.IndividualBirthdate;
@@ -94,7 +94,7 @@ namespace Beneficiaries.WebAPI.Controllers
             obj.IndividualEmail = individual.IndividualEmail;
             obj.IndividualName = individual.IndividualName;
             obj.IndividualRG = individual.IndividualRG;
-            
+
             return Ok(_beneficiaryWriteRepository.Update(obj));
         }
         #endregion Individual
@@ -125,7 +125,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("MobileDevice/{id}")]
         public IActionResult UpdateMobileDevice(Guid id, [FromBody] MobileDevice mobileDevice)
         {
-            var obj = (MobileDevice) _beneficiaryReadOnlyRepository.Find(id);
+            var obj = (MobileDevice)_beneficiaryReadOnlyRepository.Find(id);
 
             obj.BeneficiaryDeleted = mobileDevice.BeneficiaryDeleted;
             obj.MobileDeviceBrand = mobileDevice.MobileDeviceBrand;
@@ -165,7 +165,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Pet/{id}")]
         public IActionResult UpdatePet(Guid id, [FromBody] Pet pet)
         {
-            var obj = (Pet) _beneficiaryReadOnlyRepository.Find(id);
+            var obj = (Pet)_beneficiaryReadOnlyRepository.Find(id);
 
             obj.BeneficiaryDeleted = pet.BeneficiaryDeleted;
             obj.PetBirthdate = pet.PetBirthdate;
@@ -203,7 +203,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Realty/{id}")]
         public IActionResult UpdateRealty(Guid id, [FromBody] Realty realty)
         {
-            var obj = (Realty) _beneficiaryReadOnlyRepository.Find(id);
+            var obj = (Realty)_beneficiaryReadOnlyRepository.Find(id);
 
             obj.BeneficiaryDeleted = realty.BeneficiaryDeleted;
             obj.RealtyAddress = realty.RealtyAddress;
@@ -242,7 +242,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Vehicle/{id}")]
         public IActionResult UpdateVehicle(Guid id, [FromBody] Vehicle vehicle)
         {
-            var obj = (Vehicle) _beneficiaryReadOnlyRepository.Find(id);
+            var obj = (Vehicle)_beneficiaryReadOnlyRepository.Find(id);
 
             obj.VehicleBrand = vehicle.VehicleBrand;
             obj.VehicleChassisNumber = vehicle.VehicleChassisNumber;
@@ -277,45 +277,59 @@ namespace Beneficiaries.WebAPI.Controllers
             return NotFound(obj);
         }
 
+        #region Validations
         /// <summary>
-        /// 
+        /// Does all validations to see if Individual is valid.
         /// </summary>
-        /// <param name="cpf"></param>
-        /// <returns></returns>
-        public static bool IsCpf(string cpf)
-	    {
-		int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-		int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-		string tempCpf;
-		string digito;
-		int soma;
-		int resto;
-		cpf = cpf.Trim();
-		cpf = cpf.Replace(".", "").Replace("-", "");
-		if (cpf.Length != 11)
-		   return false;
-		tempCpf = cpf.Substring(0, 9);
-		soma = 0;
+        /// <param name="individual">Individual to be verified</param>
+        /// <returns>If Individual is valid</returns>
+        public static bool IndividualIsValid(Individual individual)
+        {
+            if (!IsCpf(individual.IndividualCPF))
+                return false;
+            return true;
+        }
 
-		for(int i=0; i<9; i++)
-		    soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
-		resto = soma % 11;
-		if ( resto < 2 )
-		    resto = 0;
-		else
-		   resto = 11 - resto;
-		digito = resto.ToString();
-		tempCpf = tempCpf + digito;
-		soma = 0;
-		for(int i=0; i<10; i++)
-		    soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
-		resto = soma % 11;
-		if (resto < 2)
-		   resto = 0;
-		else
-		   resto = 11 - resto;
-		digito = digito + resto.ToString();
-		return cpf.EndsWith(digito);
-	      }
+        /// <summary>
+        /// Algorithm to verify if a string is a CPF
+        /// </summary>
+        /// <param name="cpf">String to be verified</param>
+        /// <returns>If the string is a CPF</returns>
+        public static bool IsCpf(string cpf)
+        {
+            int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            string tempCpf;
+            string digito;
+            int soma;
+            int resto;
+            cpf = cpf.Trim();
+            cpf = cpf.Replace(".", "").Replace("-", "");
+            if (cpf.Length != 11)
+                return false;
+            tempCpf = cpf.Substring(0, 9);
+            soma = 0;
+
+            for (int i = 0; i < 9; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
+            resto = soma % 11;
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+            digito = resto.ToString();
+            tempCpf = tempCpf + digito;
+            soma = 0;
+            for (int i = 0; i < 10; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
+            resto = soma % 11;
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+            digito = digito + resto.ToString();
+            return cpf.EndsWith(digito);
+        }
+        #endregion Validations
     }
 }
