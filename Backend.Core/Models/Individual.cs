@@ -1,11 +1,10 @@
-﻿using Backend.Core.Helper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
-    public class Individual : Beneficiary , IValidator
+    public class Individual : Beneficiary
     {
         public Guid IndividualId { get; set; }
         [MaxLength(50)]
@@ -19,19 +18,6 @@ namespace Backend.Core.Models
         public DateTime IndividualBirthdate { get; set; }
         public bool IndividualDeleted { get; set; }
 
-        public void ValidateCPF()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ValidateDate()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ValidateRG()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
