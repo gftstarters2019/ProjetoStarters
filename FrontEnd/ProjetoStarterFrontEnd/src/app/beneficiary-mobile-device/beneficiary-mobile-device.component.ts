@@ -21,18 +21,20 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   ];
   
   mobileDeviceCreateForm= this.formBuilder.group({
-    brand: new FormControl('', Validators.required),
-    model: new FormControl('', Validators.required),
-    manufactoringYear: new FormControl('', Validators.required),
-    serialNumber: new FormControl('', Validators.required),
+    mobileDeviceBrand: new FormControl('', Validators.required),
+    mobileDeviceModel: new FormControl('', Validators.required),
+    mobileDeviceManufactoringYear: new FormControl('', Validators.required),
+    mobileDeviceSerialNumber: new FormControl('', Validators.required),
     mobileDeviceType: new FormControl('', Validators.required),
-    invoiceValue: new FormControl('', Validators.required)
+    mobileDeviceInvoiceValue: new FormControl('', Validators.required)
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
   }
+
+  response:Object;
 
   public mobileDevicePost(): void{
     
@@ -42,8 +44,8 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
         'Content-Type':  'application/json'
       })
     };
-    this._httpClient.post(``, form, httpOptions)
-    .subscribe(data => console.log(data));
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevice', form, httpOptions)
+    .subscribe(data => {this.response = data});
   }
 
 }

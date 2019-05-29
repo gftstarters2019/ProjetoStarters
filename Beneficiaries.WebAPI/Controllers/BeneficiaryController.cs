@@ -16,16 +16,18 @@ namespace Beneficiaries.WebAPI.Controllers
     {
         private readonly IReadOnlyRepository<Beneficiary> _beneficiaryReadOnlyRepository;
         private readonly IWriteRepository<Beneficiary> _beneficiaryWriteRepository;
+        private readonly IReadOnlyRepository<ContractBeneficiary> _contractsReadOnlyRepository;
 
         /// <summary>
         /// BeneficiaryController constructor
         /// </summary>
         /// <param name="beneficiaryReadOnlyRepository"></param>
         /// <param name="beneficiaryWriteRepository"></param>
-        public BeneficiaryController(IReadOnlyRepository<Beneficiary> beneficiaryReadOnlyRepository, IWriteRepository<Beneficiary> beneficiaryWriteRepository)
+        public BeneficiaryController(IReadOnlyRepository<Beneficiary> beneficiaryReadOnlyRepository, IWriteRepository<Beneficiary> beneficiaryWriteRepository, IReadOnlyRepository<ContractBeneficiary> contractsReadOnlyRepository)
         {
             _beneficiaryReadOnlyRepository = beneficiaryReadOnlyRepository;
             _beneficiaryWriteRepository = beneficiaryWriteRepository;
+            _contractsReadOnlyRepository = contractsReadOnlyRepository;
         }
 
         /// <summary>
@@ -259,13 +261,16 @@ namespace Beneficiaries.WebAPI.Controllers
         #endregion Vehicle
 
         /// <summary>
-        /// Deletes a beneficiary
+        /// Soft Deletes a beneficiary
         /// </summary>
         /// <param name="id">BeneficiaryId to be deleted</param>
         /// <returns>Deleted beneficiary</returns>
         [HttpDelete("{id}")]
         public IActionResult DeleteBeneficiary(Guid id)
         {
+            if (_contractsReadOnlyRepository.Get().Where(cb => cb.BeneficiaryId == id).ToList().Count > 0)
+                return Forbid();
+
             var obj = _beneficiaryReadOnlyRepository.Find(id);
 
             if (obj != null)
