@@ -35,7 +35,7 @@ namespace Backend.Infrastructure.Migrations
                     ContractType = table.Column<int>(nullable: false),
                     ContractCategory = table.Column<int>(nullable: false),
                     ContractExpiryDate = table.Column<DateTime>(nullable: false),
-                    ContractInitialDate = table.Column<DateTime>(nullable: false),
+                    ContractInitialDate = table.Column<DateTime>(nullable: true),
                     ContractDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
