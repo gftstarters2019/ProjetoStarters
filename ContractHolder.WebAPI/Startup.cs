@@ -33,6 +33,7 @@ namespace ContractHolder.WebAPI
             services.AddScoped<IWriteRepository<Individual>, ContractHolderRepository>();
             services.AddScoped<IReadOnlyRepository<Telephone>, TelephoneRepository>();
             services.AddScoped<IWriteRepository<Telephone>, TelephoneRepository>();
+            services.AddScoped<IReadOnlyRepository<SignedContract>, SignedContractRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
