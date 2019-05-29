@@ -3,17 +3,17 @@
 
       <div class="flex-wrapper">
            <mat-form-field style="width: 30%;">
-              <input matInput placeholder="Brand" name="brand" formControlName="brand">
+              <input matInput placeholder="Brand" name="mobileDeviceBrand" formControlName="mobileDeviceBrand">
               <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
           </mat-form-field>
 
           <mat-form-field style="width: 30%;">
-              <input matInput placeholder="Model" name="model" formControlName="model">
+              <input matInput placeholder="Model" name="mobileDeviceModel" formControlName="mobileDeviceModel">
               <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
           </mat-form-field>
 
           <mat-form-field style="width: 30%;">
-            <input matInput [matDatepicker]="picker" placeholder="Manufactoring Year" name="manufactoringYear" formControlName="manufactoringYear" required>
+            <input matInput [matDatepicker]="picker" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <!-- <mat-error *ngIf="!birthdate.valid && (birthdate.touched || birthdate.dirty)">Birthdate is required</mat-error> -->
@@ -22,7 +22,7 @@
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 30%;">
-          <input matInput placeholder="Serial Number" name="serialNumber" formControlName="serialNumber">
+          <input matInput placeholder="Serial Number" name="mobileDeviceSerialNumber" formControlName="mobileDeviceSerialNumber">
           <!-- <mat-error *ngIf="!name.valid && (name.touched || name.dirty)">Name is required</mat-error> -->
         </mat-form-field>
 
@@ -36,7 +36,7 @@
       </mat-form-field>
 
         <mat-form-field style="width: 30%;">
-          <input matInput placeholder="Invoice Value" name="invoiceValue" formControlName="invoiceValue">
+          <input matInput type="number" placeholder="Invoice Value" name="mobileDeviceInvoiceValue" formControlName="mobileDeviceInvoiceValue">
           <!-- <mat-error *ngIf="!name.valid && (name.touched || name.dirty)">Name is required</mat-error> -->
         </mat-form-field>
       </div>
