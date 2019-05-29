@@ -120,6 +120,9 @@ namespace Beneficiaries.WebAPI.Controllers
             mobileDevice.BeneficiaryId = Guid.NewGuid();
             mobileDevice.MobileDeviceId = Guid.NewGuid();
 
+            if (!MobileDeviceIsValid(mobileDevice))
+                return Forbid();
+
             _beneficiaryWriteRepository.Add(mobileDevice);
 
             return Ok(mobileDevice);
@@ -134,6 +137,9 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("MobileDevice/{id}")]
         public IActionResult UpdateMobileDevice(Guid id, [FromBody] MobileDevice mobileDevice)
         {
+            if (!MobileDeviceIsValid(mobileDevice))
+                return Forbid();
+
             var obj = (MobileDevice)_beneficiaryReadOnlyRepository.Find(id);
 
             obj.BeneficiaryDeleted = mobileDevice.BeneficiaryDeleted;
@@ -370,6 +376,22 @@ namespace Beneficiaries.WebAPI.Controllers
                 return false;
 
             if (vehicle.VehicleCurrentFipeValue < 0 && vehicle.VehicleCurrentMileage <= 0)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Verifies if Mobile Device is valid
+        /// </summary>
+        /// <param name="mobileDevice">Mobile Device to be verified</param>
+        /// <returns>If Mobile Device is valid</returns>
+        public static bool MobileDeviceIsValid(MobileDevice mobileDevice)
+        {
+            if (!DateIsValid(mobileDevice.MobileDeviceManufactoringYear))
+                return false;
+
+            if (mobileDevice.MobileDeviceInvoiceValue <= 0)
                 return false;
 
             return true;
