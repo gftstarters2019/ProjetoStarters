@@ -13,10 +13,11 @@ namespace Contract.WebAPI.Controllers
         private readonly IWriteRepository<Backend.Core.Models.Contract> _contractWriteRepository;
         private readonly IReadOnlyRepository<Backend.Core.Models.SignedContract> _signedContractReadOnlyRepository;
 
-        public ContractController(IReadOnlyRepository<Backend.Core.Models.Contract> contractReadOnlyRepository, IWriteRepository<Backend.Core.Models.Contract> contractWriteRepository)
+        public ContractController(IReadOnlyRepository<Backend.Core.Models.Contract> contractReadOnlyRepository, IWriteRepository<Backend.Core.Models.Contract> contractWriteRepository, IReadOnlyRepository<Backend.Core.Models.SignedContract> signedContractReadOnlyRepository)
         {
             _contractReadOnlyRepository = contractReadOnlyRepository;
             _contractWriteRepository = contractWriteRepository;
+            _signedContractReadOnlyRepository = signedContractReadOnlyRepository;
         }
 
         // GET api/Contract
