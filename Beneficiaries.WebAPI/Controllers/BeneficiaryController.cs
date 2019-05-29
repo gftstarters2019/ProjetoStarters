@@ -203,6 +203,9 @@ namespace Beneficiaries.WebAPI.Controllers
             realty.BeneficiaryId = Guid.NewGuid();
             realty.RealtyId = Guid.NewGuid();
 
+            if (!RealtyIsValid(realty))
+                return Forbid();
+
             _beneficiaryWriteRepository.Add(realty);
 
             return Ok(realty);
@@ -217,6 +220,9 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Realty/{id}")]
         public IActionResult UpdateRealty(Guid id, [FromBody] Realty realty)
         {
+            if (!RealtyIsValid(realty))
+                return Forbid();
+
             var obj = (Realty)_beneficiaryReadOnlyRepository.Find(id);
 
             obj.BeneficiaryDeleted = realty.BeneficiaryDeleted;
@@ -308,7 +314,7 @@ namespace Beneficiaries.WebAPI.Controllers
             if (!EmailIsValid(individual.IndividualEmail))
                 return false;
 
-            if (!BirthdateIsValid(individual.IndividualBirthdate))
+            if (!DateIsValid(individual.IndividualBirthdate))
                 return false;
             return true;
         }
@@ -320,8 +326,27 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <returns>If Pet is valid</returns>
         public static bool PetIsValid(Pet pet)
         {
-            if (!BirthdateIsValid(pet.PetBirthdate))
+            if (!DateIsValid(pet.PetBirthdate))
                 return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Verifies if Realty is valid
+        /// </summary>
+        /// <param name="realty">Realty to be verified</param>
+        /// <returns>If Realty is valid</returns>
+        public static bool RealtyIsValid(Realty realty)
+        {
+            if (realty.RealtyMarketValue > 0 && realty.RealtySaleValue > 0)
+                return false;
+
+            if (!CEPIsValid(realty.RealtyAddress.AddressZipCode))
+                return false;
+
+            if (!DateIsValid(realty.RealtyConstructionDate))
+                return false;
+
             return true;
         }
 
@@ -386,12 +411,26 @@ namespace Beneficiaries.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Verifies if birthdate is not future date
+        /// Verifies if date is not future date
         /// </summary>
-        /// <returns>If birthday is valid</returns>
-        public static bool BirthdateIsValid (DateTime birthdate)
+        /// <returns>If date is valid</returns>
+        public static bool DateIsValid(DateTime date)
         {
-            return birthdate != null ? birthdate > DateTime.Today : false;
+            return date != null ? date > DateTime.Today : false;
+        }
+
+        /// <summary>
+        /// Verifies if CEP is valid
+        /// </summary>
+        /// <param name="cep">CEP to be verified</param>
+        /// <returns>If CEP is valid</returns>
+        public static bool CEPIsValid(string cep)
+        {
+            if (cep.Length == 8)
+            {
+                cep = cep.Substring(0, 5) + "-" + cep.Substring(5, 3);
+            }
+            return System.Text.RegularExpressions.Regex.IsMatch(cep, "[0-9]{5}-[0-9]{3}");
         }
         #endregion Validations
     }
