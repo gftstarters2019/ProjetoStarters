@@ -1,4 +1,3 @@
-using Backend.Application.Interfaces;
 using Backend.Core.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
