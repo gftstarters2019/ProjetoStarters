@@ -73,6 +73,9 @@ namespace Beneficiaries.WebAPI.Controllers
             individual.BeneficiaryId = Guid.NewGuid();
             individual.IndividualId = Guid.NewGuid();
 
+            if (!IndividualIsValid(individual))
+                return Forbid();
+
             _beneficiaryWriteRepository.Add(individual);
 
             return Ok(individual);
@@ -87,6 +90,9 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Individual/{id}")]
         public IActionResult UpdateIndividual(Guid id, [FromBody] Individual individual)
         {
+            if (!IndividualIsValid(individual))
+                return Forbid();
+
             var obj = (Individual)_beneficiaryReadOnlyRepository.Find(id);
 
             obj.BeneficiaryDeleted = individual.BeneficiaryDeleted;
