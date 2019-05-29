@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 
 
@@ -69,7 +70,7 @@ cpfs: CPF[]=[
     contractStatus:['False', Validators.required]
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private _httpClient: HttpClient, private fb: FormBuilder) { }
 
   ngOnInit() {}
   
@@ -78,6 +79,18 @@ cpfs: CPF[]=[
   }
   public showList2(): void {
     this.showlist2 = !this.showlist2;
+  }
+
+  public contractPost(): void{
+    let form = JSON.stringify(this.contractform.value);
+    console.log(form);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    this._httpClient.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+    .subscribe(data => { console.log(data)});
   }
 
 }
