@@ -4,6 +4,7 @@ using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Net.Mail;
 
 namespace Beneficiaries.WebAPI.Controllers
 {
@@ -285,7 +286,10 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <returns>If Individual is valid</returns>
         public static bool IndividualIsValid(Individual individual)
         {
-            if (!IsCpf(individual.IndividualCPF))
+            if (!CPFIsValid(individual.IndividualCPF))
+                return false;
+
+            if (!EmailIsValid(individual.IndividualEmail))
                 return false;
             return true;
         }
@@ -295,7 +299,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// </summary>
         /// <param name="cpf">String to be verified</param>
         /// <returns>If the string is a CPF</returns>
-        public static bool IsCpf(string cpf)
+        public static bool CPFIsValid(string cpf)
         {
             int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
             int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
@@ -329,6 +333,25 @@ namespace Beneficiaries.WebAPI.Controllers
                 resto = 11 - resto;
             digito = digito + resto.ToString();
             return cpf.EndsWith(digito);
+        }
+
+        /// <summary>
+        /// Verifies if an email is valid.
+        /// </summary>
+        /// <param name="emailaddress">Email to be verified</param>
+        /// <returns>If email is valid</returns>
+        public static bool EmailIsValid(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
         #endregion Validations
     }
