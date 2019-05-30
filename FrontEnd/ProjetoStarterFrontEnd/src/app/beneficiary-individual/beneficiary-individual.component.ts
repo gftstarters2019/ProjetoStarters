@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 @Component({
   selector: 'app-beneficiary-individual',
@@ -11,10 +12,10 @@ export class BeneficiaryIndividualComponent implements OnInit {
 
 
   individualCreateForm= this.formBuilder.group({
-    individualName: new FormControl('', Validators.required),
-    individualCpf: new FormControl('', Validators.required),
+    individualName: new FormControl('', Validators.pattern(/^[a-zA-Z]+$/)),
+    individualCpf: new FormControl('', GenericValidator.isValidCpf()),
     individualRg: new FormControl('', Validators.required),
-    individualBirthdate: new FormControl('', Validators.required),
+    individualBirthdate: new FormControl('', GenericValidator.dateValidation()),
     individualEmail: new FormControl('', Validators.required)
   });
 
@@ -35,9 +36,5 @@ export class BeneficiaryIndividualComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual', form, httpOptions)
     .subscribe(data => {this.response = data});
-  }
-
-  public onSubmit(){
-    console.log(this.individualCreateForm.value);
   }
 }

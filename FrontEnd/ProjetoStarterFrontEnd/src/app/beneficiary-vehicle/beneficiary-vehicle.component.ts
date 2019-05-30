@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Color {
   value: string;
@@ -29,14 +30,14 @@ export class BeneficiaryVehicleComponent implements OnInit {
   ];
   
   vehicleCreateForm= this.formBuilder.group({
-    vehicleBrand: new FormControl('', Validators.pattern(/[A-Za-z]/)),
-    vehicleModel: new FormControl('', Validators.pattern(/[A-Za-z0-9]/)),
-    vehicleManufactoringYear: new FormControl('', this.dateValidation),
-    vehicleModelYear: new FormControl('', this.dateValidation),
+    vehicleBrand: new FormControl('', Validators.pattern(/^[a-zA-Z]+$/)),
+    vehicleModel: new FormControl('', Validators.pattern(/^[a-zA-Z0-9]+$/)),
+    vehicleManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
+    vehicleModelYear: new FormControl('', GenericValidator.dateValidation()),
     vehicleColor: new FormControl('', Validators.required),
-    vehicleChassisNumber: new FormControl('', Validators.pattern(/[A-Za-z0-9]/)),
-    vehicleCurrentMileage: new FormControl('', this.negativeValidation),
-    vehicleCurrentFipeValue: new FormControl('', this.negativeValidation),
+    vehicleChassisNumber: new FormControl('', Validators.pattern(/^[a-zA-Z0-9]+$/)),
+    vehicleCurrentMileage: new FormControl('', GenericValidator.negativeValidation()),
+    vehicleCurrentFipeValue: new FormControl('', GenericValidator.negativeValidation()),
     vehicleDoneInspection: new FormControl(false)
   });
 
@@ -59,22 +60,5 @@ export class BeneficiaryVehicleComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle', form, httpOptions)
     .subscribe(data => {this.response = data});
-  }
-  public onSubmit(): void {
-      console.log(this.vehicleCreateForm.value);
-  }
-
-  public dateValidation(control: AbstractControl): { [key: string]: boolean } | null{
-    if(control.value > Date.now())
-      return {"EnteredADateHigherThanToday": true};
-    
-    return null;
-  }
-
-  public negativeValidation(control: AbstractControl): { [key: string]: boolean } | null{
-    if(control.value < 0)
-      return {"EnteredANegativeNumber": true};
-    
-    return null;
   }
 }
