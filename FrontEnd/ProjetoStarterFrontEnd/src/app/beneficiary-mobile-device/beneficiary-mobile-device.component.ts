@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -13,6 +13,8 @@ export interface MobileType {
   styleUrls: ['./beneficiary-mobile-device.component.scss']
 })
 export class BeneficiaryMobileDeviceComponent implements OnInit {
+
+  @Output() messageMobilelEvent = new EventEmitter<any>();
 
   mobileType: MobileType[] = [
     {value: '0', name: 'Smartphone'},
@@ -34,7 +36,7 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   ngOnInit() {
   }
 
-  response:Object;
+  response:any;
 
   public mobileDevicePost(): void{
     
@@ -46,6 +48,10 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevice', form, httpOptions)
     .subscribe(data => {this.response = data});
+
+    if(this.response != null){
+      this.messageMobilelEvent.emit(this.response.beneficiaryId);
+    }
   }
 
 }

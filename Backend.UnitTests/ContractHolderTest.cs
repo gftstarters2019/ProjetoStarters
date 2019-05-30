@@ -23,7 +23,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            
 
             //act
             var contract = new Contract();
@@ -58,7 +58,6 @@ namespace UnitTests
             var individualCPF = "45301152897";
             var individualRG = "458559462";
             var individualEmail = "gftstarters2019@outlook.com";
-            var individualDeleted = false;
 
             //act
             var individual = new Individual();
@@ -68,7 +67,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            
 
             var contract = new Contract();
             contract.ContractId = Guid.NewGuid();
@@ -93,7 +92,7 @@ namespace UnitTests
             Assert.AreEqual(individual.IndividualCPF, individualCPF);
             Assert.AreEqual(individual.IndividualRG, individualRG);
             Assert.AreEqual(individual.IndividualEmail, individualEmail);
-            Assert.AreEqual(individual.IndividualDeleted, individualDeleted);
+            
         }
 
         [Test]
@@ -107,7 +106,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            
 
             var contract = new Contract();
             contract.ContractId = Guid.NewGuid();
@@ -143,7 +142,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            
 
             var contract = new Contract();
             contract.ContractId = Guid.NewGuid();
@@ -169,7 +168,6 @@ namespace UnitTests
             var individualCPF = "45301152898";
             var individualRG = "458559466";
             var individualEmail = "gftstarters@outlook.com";
-            var individualDeleted = false;
 
             //act
             updatedIndividual.BeneficiaryId = beneficiaryId;
@@ -200,7 +198,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            
 
             var contract = new Contract();
             contract.ContractId = Guid.NewGuid();
@@ -220,12 +218,11 @@ namespace UnitTests
             //act
             var signedContractDeleted = signedContract.ContractIndividualIsActive = false;
             var contractDeleted = contract.ContractDeleted = true;
-            var individualDeleted = individual.IndividualDeleted = true;
+            
 
             //assert
             Assert.IsFalse(signedContractDeleted);
             Assert.IsTrue(contractDeleted);
-            Assert.IsTrue(individualDeleted);
         }
     }
 }

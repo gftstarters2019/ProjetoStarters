@@ -82,7 +82,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateAddress(Guid id, [FromBody] Address address)
         {
-            var obj = (Address)_addressReadOnlyRepository.Find(id);
+            var obj = _addressReadOnlyRepository.Find(id);
 
             obj.AddressStreet = address.AddressStreet;
             obj.AddressNumber = address.AddressNumber;

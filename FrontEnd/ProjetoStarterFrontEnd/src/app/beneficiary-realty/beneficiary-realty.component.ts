@@ -1,8 +1,7 @@
 import { AddressComponent } from './../address/address.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, Validators, FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Address } from '../address/address.component';
 
 @Component({
   selector: 'app-beneficiary-realty',
@@ -12,6 +11,8 @@ import { Address } from '../address/address.component';
 export class BeneficiaryRealtyComponent implements OnInit {
 
   @ViewChild(AddressComponent) address;
+
+  @Output() messageRealtyEvent = new EventEmitter<any>();
 
   realtyCreateForm= this.formBuilder.group({
     addressId: new FormControl(''),
@@ -27,7 +28,7 @@ export class BeneficiaryRealtyComponent implements OnInit {
   }
 
   message:string;
-  response:Object;
+  response:any;
   public realtyPost(): void{
     this.message = this.address.message;
     this.realtyCreateForm.patchValue({addressId: this.message});
@@ -38,7 +39,11 @@ export class BeneficiaryRealtyComponent implements OnInit {
         'Content-Type':  'application/json'
       })
     };
-    this._httpClient.post('https://localhost:5001/api/Beneficiary/Realty', form, httpOptions)
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realty', form, httpOptions)
     .subscribe(data => { this.response = data});
+
+    if(this.response != null){
+      this.messageRealtyEvent.emit(this.response.beneficiaryId);
+    }
   }
 }
