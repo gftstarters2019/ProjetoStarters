@@ -36,4 +36,8 @@ export class BeneficiaryIndividualComponent implements OnInit {
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual', form, httpOptions)
     .subscribe(data => {this.response = data});
   }
+
+  public onSubmit(){
+    console.log(this.individualCreateForm.value);
+  }
 }

@@ -56,7 +56,14 @@ export class BeneficiaryVehicleComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle', form, httpOptions)
     .subscribe(data => {this.response = data});
-    
+  }
+  public onSubmit(): void {
+    if (!this.vehicleIsValid(this.vehicleCreateForm.value))
+      console.log("Forbidden");
+    console.log(this.vehicleCreateForm.value);
   }
 
+  public vehicleIsValid(something): boolean{
+    
+  }
 }
