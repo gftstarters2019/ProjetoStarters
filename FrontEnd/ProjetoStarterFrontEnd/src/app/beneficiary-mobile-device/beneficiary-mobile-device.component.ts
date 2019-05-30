@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export interface MobileType {
@@ -21,12 +21,12 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   ];
   
   mobileDeviceCreateForm= this.formBuilder.group({
-    mobileDeviceBrand: new FormControl('', Validators.required),
-    mobileDeviceModel: new FormControl('', Validators.required),
-    mobileDeviceManufactoringYear: new FormControl('', Validators.required),
-    mobileDeviceSerialNumber: new FormControl('', Validators.required),
+    mobileDeviceBrand: new FormControl('', Validators.pattern(/[A-Za-z]/)),
+    mobileDeviceModel: new FormControl('', Validators.pattern(/[A-Za-z0-9]/)),
+    mobileDeviceManufactoringYear: new FormControl('', this.dateValidation),
+    mobileDeviceSerialNumber: new FormControl('', Validators.pattern(/[A-Za-z0-9]/)),
     mobileDeviceType: new FormControl('', Validators.required),
-    mobileDeviceInvoiceValue: new FormControl('', Validators.required)
+    mobileDeviceInvoiceValue: new FormControl('', this.negativeValidation)
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
@@ -46,5 +46,19 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevice', form, httpOptions)
     .subscribe(data => {this.response = data});
+  }
+
+  public dateValidation(control: AbstractControl): { [key: string]: boolean } | null{
+    if(control.value > Date.now())
+      return {"EnteredADateHigherThanToday": true};
+    
+    return null;
+  }
+
+  public negativeValidation(control: AbstractControl): { [key: string]: boolean } | null{
+    if(control.value < 0)
+      return {"EnteredANegativeNumber": true};
+    
+    return null;
   }
 }
