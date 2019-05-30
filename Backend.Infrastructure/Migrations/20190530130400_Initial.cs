@@ -102,7 +102,7 @@ namespace Backend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Individual_Address",
+                name: "Beneficiary_Address",
                 columns: table => new
                 {
                     BeneficiaryAddressId = table.Column<Guid>(nullable: false),
@@ -111,15 +111,15 @@ namespace Backend.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Individual_Address", x => x.BeneficiaryAddressId);
+                    table.PrimaryKey("PK_Beneficiary_Address", x => x.BeneficiaryAddressId);
                     table.ForeignKey(
-                        name: "FK_Individual_Address_Addresses_AddressId",
+                        name: "FK_Beneficiary_Address_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "AddressId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Individual_Address_Beneficiaries_BeneficiaryId",
+                        name: "FK_Beneficiary_Address_Beneficiaries_BeneficiaryId",
                         column: x => x.BeneficiaryId,
                         principalTable: "Beneficiaries",
                         principalColumn: "BeneficiaryId",
@@ -213,13 +213,13 @@ namespace Backend.Infrastructure.Migrations
                 column: "SignedContractId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Individual_Address_AddressId",
-                table: "Individual_Address",
+                name: "IX_Beneficiary_Address_AddressId",
+                table: "Beneficiary_Address",
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Individual_Address_BeneficiaryId",
-                table: "Individual_Address",
+                name: "IX_Beneficiary_Address_BeneficiaryId",
+                table: "Beneficiary_Address",
                 column: "BeneficiaryId");
 
             migrationBuilder.CreateIndex(
@@ -249,7 +249,7 @@ namespace Backend.Infrastructure.Migrations
                 name: "Contract_Beneficiary");
 
             migrationBuilder.DropTable(
-                name: "Individual_Address");
+                name: "Beneficiary_Address");
 
             migrationBuilder.DropTable(
                 name: "Individual_Telephone");

@@ -352,8 +352,8 @@ namespace Beneficiaries.WebAPI.Controllers
             if (realty.RealtyMarketValue < 0 && realty.RealtySaleValue < 0)
                 return false;
 
-            if (!CEPIsValid(realty.RealtyAddress.AddressZipCode))
-                return false;
+            //if (!CEPIsValid(realty.RealtyAddress.AddressZipCode))
+            //    return false;
 
             if (!DateIsValid(realty.RealtyConstructionDate))
                 return false;
