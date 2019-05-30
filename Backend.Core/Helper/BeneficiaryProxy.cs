@@ -1,12 +1,15 @@
-﻿using Backend.Core.Helper;
+﻿using Backend.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
-namespace Backend.Core.Models
+namespace Backend.Core.Helper
 {
-    public class Individual : Beneficiary
+    class BeneficiaryProxy : Beneficiary
     {
+        private Individual _individual = new Individual();
+
         public Guid IndividualId { get; set; }
         [MaxLength(50)]
         public string IndividualName { get; set; }
@@ -17,8 +20,5 @@ namespace Backend.Core.Models
         [MaxLength(30)]
         public string IndividualEmail { get; set; }
         public DateTime IndividualBirthdate { get; set; }
-        public bool IndividualDeleted { get; set; }
-
-       
     }
 }
