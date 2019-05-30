@@ -20,14 +20,15 @@ namespace Backend.Infrastructure.ServiceBus
         public ServiceBusClient(IQueueClient queueClient)
         {
             _queueClient = queueClient;
+            _queueClient.ServiceBusConnection.TransportType = TransportType.AmqpWebSockets;
             //_subscriptionClient = subscriptionClient;
-           // _topicClient = topicClient;
+            // _topicClient = topicClient;
         }
 
         public async Task SendMessageToQueue<T>(T message, Dictionary<string, object> properties = null)
         {
             string json = JsonConvert.SerializeObject(message);
-            Message envelope = new Message(Encoding.UTF8.GetBytes(json)) { Label = message.GetType().FullName };
+            Message envelope = new Message(Encoding.UTF8.GetBytes(json)) { Label = message.GetType().FullName, MessageId = Guid.NewGuid().ToString(), To = _queueClient.QueueName };
 
             if (properties != null)
             {

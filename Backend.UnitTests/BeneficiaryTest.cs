@@ -23,7 +23,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            individual.IsDeleted = false;
 
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
@@ -32,7 +32,7 @@ namespace UnitTests
             beneficiary.IndividualCPF = "45301152978";
             beneficiary.IndividualRG = "458559463";
             beneficiary.IndividualEmail = "gftstarters@outlook.com";
-            beneficiary.IndividualDeleted = false;
+            beneficiary.IsDeleted = false;
 
             //act
             var contract = new Contract();
@@ -75,7 +75,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            individual.IsDeleted = false;
 
             //act
             var contract = new Contract();
@@ -115,7 +115,7 @@ namespace UnitTests
             var individualCPF = "45301152897";
             var individualRG = "458559462";
             var individualEmail = "gftstarters2019@outlook.com";
-            var individualDeleted = false;
+            var IsDeleted = false;
 
             var newAddress = new Address();
             newAddress.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
@@ -173,7 +173,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            individual.IsDeleted = false;
 
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
@@ -182,7 +182,7 @@ namespace UnitTests
             beneficiary.IndividualCPF = "45301152897";
             beneficiary.IndividualRG = "458559462";
             beneficiary.IndividualEmail = "gftstarters2019@outlook.com";
-            beneficiary.IndividualDeleted = false;
+            beneficiary.IsDeleted = false;
 
             var address = new Address();
             address.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
@@ -199,7 +199,7 @@ namespace UnitTests
             var realty = new Realty();
             realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("080eef5c-6d09-441b-af39-5802d9201701");
-            realty.RealtyAddress = address;
+            //realty.RealtyAddress = address;
             realty.RealtyMunicipalRegistration = "abc68dfr98721dxe1";
             realty.RealtyConstructionDate = new DateTime(2019, 05, 15, 7, 0, 0);
             realty.RealtySaleValue = 800000.00;
@@ -265,7 +265,7 @@ namespace UnitTests
             Assert.AreEqual(beneficiary.IndividualCPF, individualCPF);
             Assert.AreEqual(beneficiary.IndividualRG, individualRG);
             Assert.AreEqual(beneficiary.IndividualEmail, individualEmail);
-            Assert.AreEqual(beneficiary.IndividualDeleted, individualDeleted);
+            Assert.AreEqual(beneficiary.IsDeleted, IsDeleted);
 
             Assert.AreEqual(realty.RealtyId, realtyId);
             Assert.AreEqual(realty.BeneficiaryId, realtyBeneficiaryId);
@@ -316,7 +316,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            individual.IsDeleted = false;
 
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
@@ -325,7 +325,7 @@ namespace UnitTests
             beneficiary.IndividualCPF = "45301152978";
             beneficiary.IndividualRG = "458559463";
             beneficiary.IndividualEmail = "gftstarters@outlook.com";
-            beneficiary.IndividualDeleted = false;
+            beneficiary.IsDeleted = false;
 
             var address = new Address();
             address.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
@@ -342,7 +342,7 @@ namespace UnitTests
             var realty = new Realty();
             realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("fe0216e8-e70a-4c7c-a5ae-f0b8e1319885");
-            realty.RealtyAddress = address;
+            //realty.RealtyAddress = address;
             realty.RealtyMunicipalRegistration = "abc68dfr98721dxe1";
             realty.RealtyConstructionDate = new DateTime(2019, 05, 15, 7, 0, 0);
             realty.RealtySaleValue = 800000.00;
@@ -422,7 +422,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            individual.IsDeleted = false;
 
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
@@ -431,7 +431,7 @@ namespace UnitTests
             beneficiary.IndividualCPF = "45301152978";
             beneficiary.IndividualRG = "458559463";
             beneficiary.IndividualEmail = "gftstarters@outlook.com";
-            beneficiary.IndividualDeleted = false;
+            beneficiary.IsDeleted = false;
 
             var address = new Address();
             address.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
@@ -448,7 +448,7 @@ namespace UnitTests
             var realty = new Realty();
             realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("080eef5c-6d09-441b-af39-5802d9201701");
-            realty.RealtyAddress = address;
+            //realty.RealtyAddress = address;
             realty.RealtyMunicipalRegistration = "abc68dfr98721dxe1";
             realty.RealtyConstructionDate = new DateTime(2019, 05, 15, 7, 0, 0);
             realty.RealtySaleValue = 800000.00;
@@ -508,7 +508,7 @@ namespace UnitTests
             updatedBeneficiary.IndividualCPF = "45301152975";
             updatedBeneficiary.IndividualRG = "458559464";
             updatedBeneficiary.IndividualEmail = "gftstarters15@outlook.com";
-            updatedBeneficiary.IndividualDeleted = false;
+            updatedBeneficiary.IsDeleted = false;
 
             var newAddress = new Address();
             newAddress.AddressId = Guid.NewGuid();
@@ -525,7 +525,7 @@ namespace UnitTests
             var updatedRealty = new Realty();
             updatedRealty.RealtyId = Guid.NewGuid();
             updatedRealty.BeneficiaryId = Guid.NewGuid();
-            updatedRealty.RealtyAddress = newAddress;
+            //updatedRealty.RealtyAddress = newAddress;
             updatedRealty.RealtyMunicipalRegistration = "abc68dfy98721dze1";
             updatedRealty.RealtyConstructionDate = new DateTime(2018, 05, 15, 7, 0, 0);
             updatedRealty.RealtySaleValue = 850000.00;
@@ -572,7 +572,7 @@ namespace UnitTests
 
             Assert.AreNotEqual(updatedRealty.RealtyId, realty.RealtyId);
             Assert.AreNotEqual(updatedRealty.BeneficiaryId, realty.BeneficiaryId);
-            Assert.AreNotEqual(updatedRealty.RealtyAddress, realty.RealtyAddress);
+            //Assert.AreNotEqual(updatedRealty.RealtyAddress, realty.RealtyAddress);
             Assert.AreNotEqual(updatedRealty.RealtyMunicipalRegistration, realty.RealtyMunicipalRegistration);
             Assert.AreNotEqual(updatedRealty.RealtyConstructionDate, realty.RealtyConstructionDate);
             Assert.AreNotEqual(updatedRealty.RealtySaleValue, realty.RealtySaleValue);
@@ -619,7 +619,7 @@ namespace UnitTests
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
-            individual.IndividualDeleted = false;
+            individual.IsDeleted = false;
 
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
@@ -628,7 +628,7 @@ namespace UnitTests
             beneficiary.IndividualCPF = "45301152978";
             beneficiary.IndividualRG = "458559463";
             beneficiary.IndividualEmail = "gftstarters@outlook.com";
-            beneficiary.IndividualDeleted = false;
+            beneficiary.IsDeleted = false;
 
             var address = new Address();
             address.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
@@ -645,7 +645,7 @@ namespace UnitTests
             var realty = new Realty();
             realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("080eef5c-6d09-441b-af39-5802d9201701");
-            realty.RealtyAddress = address;
+            //realty.RealtyAddress = address;
             realty.RealtyMunicipalRegistration = "abc68dfr98721dxe1";
             realty.RealtyConstructionDate = new DateTime(2019, 05, 15, 7, 0, 0);
             realty.RealtySaleValue = 800000.00;
@@ -698,11 +698,11 @@ namespace UnitTests
             signedContract.ContractIndividualIsActive = true;
 
             //act
-            var individualBeneficiaryDeleted = beneficiary.BeneficiaryDeleted = true;
-            var realtyBeneficiaryDeleted = realty.BeneficiaryDeleted = true;
-            var mobileDeviceBeneficiaryDeleted = mobileDevice.BeneficiaryDeleted = true;
-            var petBeneficiaryDeleted = pet.BeneficiaryDeleted = true;
-            var vehicleBeneficaryDeleted = vehicle.BeneficiaryDeleted = true;
+            var individualBeneficiaryDeleted = beneficiary.IsDeleted = true;
+            var realtyBeneficiaryDeleted = realty.IsDeleted = true;
+            var mobileDeviceBeneficiaryDeleted = mobileDevice.IsDeleted = true;
+            var petBeneficiaryDeleted = pet.IsDeleted = true;
+            var vehicleBeneficaryDeleted = vehicle.IsDeleted = true;
 
             //assert
             Assert.IsTrue(individualBeneficiaryDeleted);

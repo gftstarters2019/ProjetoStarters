@@ -13,13 +13,17 @@ namespace Backend.Infrastructure.ServiceBus.IoC
             IServiceBusManagementClient serviceBusManagementClient = new ServiceBusManagementClient(managementClient);
             services.AddSingleton(managementClient);
             services.AddSingleton(serviceBusManagementClient);
-            services.AddSingleton<IQueueClient>(new QueueClient(settings.ConnectionString, settings.QueueName));
+
+            var testeQueueCliente = new QueueClient(settings.ConnectionString, settings.QueueName);
+            testeQueueCliente.ServiceBusConnection.TransportType = TransportType.AmqpWebSockets;
+            services.AddSingleton<IQueueClient>(testeQueueCliente);
+
             //services.AddSingleton<ISubscriptionClient>(new SubscriptionClient(settings.ConnectionString, settings.TopicName, settings.SubscriptionName));
             services.AddSingleton<IServiceBusClient, ServiceBusClient>();
 
             serviceBusManagementClient.CreateQueue(settings.QueueName).Wait();
             //serviceBusManagementClient.CreateSubscription(settings.SubscriptionName, settings.Filters).Wait();
-
+            //_queueClient.ServiceBusConnection.TransportType = TransportType.AmqpWebSockets;
             return services;
         }
     }

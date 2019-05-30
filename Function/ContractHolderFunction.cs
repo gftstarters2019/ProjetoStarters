@@ -14,7 +14,7 @@ namespace Function
     public static class ContractHolderFunction
     {
         [FunctionName("CreateContractHolderFunction")]
-        public static void CreateContractHolder([ServiceBusTrigger("%ServiceBusQueueName%", Connection = "ServiceBusConnectionString")]string createContractHolder, ILogger log, [Inject]IServiceBusClient busClient)
+        public static void CreateContractHolder([ServiceBusTrigger("hi-contract-holder-email", Connection = "ServiceBusConnectionString")]string createContractHolder, ILogger log, [Inject]IServiceBusClient busClient)
         {
             var contractHolder = JsonConvert.DeserializeObject<CreateContractHolder>(createContractHolder);
             //busClient.PublishMessageToTopic(new ContractHolderCreated(contractHolder.ContractHolder));

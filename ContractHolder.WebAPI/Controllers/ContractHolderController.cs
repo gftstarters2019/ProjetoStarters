@@ -44,7 +44,7 @@ namespace ContractHolder.WebAPI.Controllers
         public IActionResult PostContractHolder([FromBody] Individual individual)
         {
             _contractHolderWriteRepository.Add(individual);
-            busClient.SendMessageToQueue(new CreateContractHolder(individual));
+            _busClient.SendMessageToQueue(new CreateContractHolder(individual)).Wait();
             return Ok(individual);
         }
 
