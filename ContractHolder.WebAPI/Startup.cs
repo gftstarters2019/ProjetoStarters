@@ -3,6 +3,8 @@ using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.ServiceBus;
+using Backend.Infrastructure.ServiceBus.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +35,10 @@ namespace ContractHolder.WebAPI
             services.AddScoped<IWriteRepository<Individual>, ContractHolderRepository>();
             services.AddScoped<IReadOnlyRepository<Telephone>, TelephoneRepository>();
             services.AddScoped<IWriteRepository<Telephone>, TelephoneRepository>();
-
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
-
+            services.ConfigureServiceBus(new ServiceBusSettings(
+                Configuration["ServiceBus:DefaultConnection"], Configuration["ServiceBus:QueueName"],
+                Configuration["ServiceBus:TopicName"], Configuration["ServiceBus:SubscriptionName"]));
             ConfigureSwagger(services);
         }
 

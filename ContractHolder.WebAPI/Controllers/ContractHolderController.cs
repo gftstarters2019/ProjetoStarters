@@ -1,6 +1,7 @@
-﻿using Backend.Core;
+﻿using Backend.Core.Commands;
 using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.ServiceBus.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -12,11 +13,13 @@ namespace ContractHolder.WebAPI.Controllers
     {
         private readonly IReadOnlyRepository<Individual> _contractHolderReadOnlyRepository;
         private readonly IWriteRepository<Individual> _contractHolderWriteRepository;
+        private readonly IServiceBusClient _busClient;
 
-        public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository)
+        public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository, IServiceBusClient busClient)
         {
             _contractHolderReadOnlyRepository = contractHolderReadOnlyRepository;
             _contractHolderWriteRepository = contractHolderWriteRepository;
+            _busClient = busClient;
         }
 
         // GET api/ContractHolder
@@ -38,7 +41,8 @@ namespace ContractHolder.WebAPI.Controllers
         public IActionResult PostContractHolder([FromBody] Individual individual)
         {
             //Implementar Validações
-            _contractHolderWriteRepository.Add(individual);
+            //_contractHolderWriteRepository.Add(individual);
+            _busClient.SendMessageToQueue(new CreateContractHolder(individual));
             return Ok(individual);
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Backend.Core.Commands;
+using Backend.Core.Events;
 using Backend.Core.Events;
 using Backend.Infrastructure.ServiceBus.Contracts;
 using Function.IoC;

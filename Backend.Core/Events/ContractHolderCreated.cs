@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Backend.Core.Commands
+namespace Backend.Core.Events
 {
     public class ContractHolderCreated
     {
