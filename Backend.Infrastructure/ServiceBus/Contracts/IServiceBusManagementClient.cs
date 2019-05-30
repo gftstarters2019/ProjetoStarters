@@ -8,9 +8,7 @@ namespace Backend.Infrastructure.ServiceBus.Contracts
     {
         Task CreateQueue(string queueName);
         Task DeleteQueue(string queueName);
-        Task CreateTopic(string topicName);
-        Task DeleteTopic(string topicName);
-        Task CreateSubscription(string topicName, string subscriptionName, IList<Type> filters = null);
-        Task DeleteSubscription(string topicName, string subscriptionName);
+        //Task CreateSubscription(string subscriptionName, IList<Type> filters = null);
+        //Task DeleteSubscription(string subscriptionName);
     }
 }

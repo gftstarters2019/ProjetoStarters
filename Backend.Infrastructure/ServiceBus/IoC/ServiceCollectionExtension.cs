@@ -14,13 +14,11 @@ namespace Backend.Infrastructure.ServiceBus.IoC
             services.AddSingleton(managementClient);
             services.AddSingleton(serviceBusManagementClient);
             services.AddSingleton<IQueueClient>(new QueueClient(settings.ConnectionString, settings.QueueName));
-            services.AddSingleton<ITopicClient>(new TopicClient(settings.ConnectionString, settings.TopicName));
-            services.AddSingleton<ISubscriptionClient>(new SubscriptionClient(settings.ConnectionString, settings.TopicName, settings.SubscriptionName));
+            //services.AddSingleton<ISubscriptionClient>(new SubscriptionClient(settings.ConnectionString, settings.TopicName, settings.SubscriptionName));
             services.AddSingleton<IServiceBusClient, ServiceBusClient>();
 
             serviceBusManagementClient.CreateQueue(settings.QueueName).Wait();
-            serviceBusManagementClient.CreateTopic(settings.TopicName).Wait();
-            serviceBusManagementClient.CreateSubscription(settings.TopicName, settings.SubscriptionName, settings.Filters).Wait();
+            //serviceBusManagementClient.CreateSubscription(settings.SubscriptionName, settings.Filters).Wait();
 
             return services;
         }

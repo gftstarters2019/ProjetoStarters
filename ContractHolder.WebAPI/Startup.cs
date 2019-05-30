@@ -37,8 +37,7 @@ namespace ContractHolder.WebAPI
             services.AddScoped<IWriteRepository<Telephone>, TelephoneRepository>();
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.ConfigureServiceBus(new ServiceBusSettings(
-                Configuration["ServiceBus:DefaultConnection"], Configuration["ServiceBus:QueueName"],
-                Configuration["ServiceBus:TopicName"], Configuration["ServiceBus:SubscriptionName"]));
+                Configuration["ServiceBus:DefaultConnection"], Configuration["ServiceBus:QueueName"]));
             ConfigureSwagger(services);
         }
 

@@ -65,46 +65,46 @@ namespace Backend.Infrastructure.ServiceBus
             }
         }
 
-        public async Task CreateSubscription(string topicName, string subscriptionName, IList<Type> filters = null)
-        {
-            if (!await _managementClient.SubscriptionExistsAsync(topicName, subscriptionName))
-            {
-                // Configure Topic Settings.
-                SubscriptionDescription topicDescription = new SubscriptionDescription(topicName, subscriptionName)
-                {
-                    EnableDeadLetteringOnMessageExpiration = true,
-                    DefaultMessageTimeToLive = TimeSpan.FromDays(10),
-                    AutoDeleteOnIdle = TimeSpan.FromDays(1)
+        //public async Task CreateSubscription(string subscriptionName, IList<Type> filters = null)
+        //{
+        //    if (!await _managementClient.SubscriptionExistsAsync(topicName, subscriptionName))
+        //    {
+        //        // Configure Topic Settings.
+        //        SubscriptionDescription topicDescription = new SubscriptionDescription(topicName, subscriptionName)
+        //        {
+        //            EnableDeadLetteringOnMessageExpiration = true,
+        //            DefaultMessageTimeToLive = TimeSpan.FromDays(10),
+        //            AutoDeleteOnIdle = TimeSpan.FromDays(1)
 
-                };
-                await _managementClient.CreateSubscriptionAsync(topicDescription);
-            }
+        //        };
+        //        await _managementClient.CreateSubscriptionAsync(topicDescription);
+        //    }
 
-            if (filters != null && filters.Any())
-            {
-                IList<RuleDescription> rules = await _managementClient.GetRulesAsync(topicName, subscriptionName);
+        //    if (filters != null && filters.Any())
+        //    {
+        //        IList<RuleDescription> rules = await _managementClient.GetRulesAsync(topicName, subscriptionName);
 
-                if (rules.Any(x => x.Name == RuleDescription.DefaultRuleName))
-                {
-                    await _managementClient.DeleteRuleAsync(topicName, subscriptionName, RuleDescription.DefaultRuleName);
-                }
+        //        if (rules.Any(x => x.Name == RuleDescription.DefaultRuleName))
+        //        {
+        //            await _managementClient.DeleteRuleAsync(topicName, subscriptionName, RuleDescription.DefaultRuleName);
+        //        }
 
-                foreach (Type filter in filters)
-                {
-                    if (rules.Any(x => x.Name == filter.Name)) { continue; }
+        //        foreach (Type filter in filters)
+        //        {
+        //            if (rules.Any(x => x.Name == filter.Name)) { continue; }
 
-                    await _managementClient.CreateRuleAsync(topicName, subscriptionName,
-                        new RuleDescription(filter.Name, new CorrelationFilter { Label = filter.FullName }));
-                }
-            }
-        }
+        //            await _managementClient.CreateRuleAsync(topicName, subscriptionName,
+        //                new RuleDescription(filter.Name, new CorrelationFilter { Label = filter.FullName }));
+        //        }
+        //    }
+        //}
 
-        public async Task DeleteSubscription(string topicName, string subscriptionName)
-        {
-            if (await _managementClient.SubscriptionExistsAsync(topicName, subscriptionName))
-            {
-                await _managementClient.DeleteSubscriptionAsync(topicName, subscriptionName);
-            }
-        }
+        //public async Task DeleteSubscription(string topicName, string subscriptionName)
+        //{
+        //    if (await _managementClient.SubscriptionExistsAsync(topicName, subscriptionName))
+        //    {
+        //        await _managementClient.DeleteSubscriptionAsync(topicName, subscriptionName);
+        //    }
+        //}
     }
 }

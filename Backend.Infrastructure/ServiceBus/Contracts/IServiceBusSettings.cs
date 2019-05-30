@@ -7,8 +7,6 @@ namespace Backend.Infrastructure.ServiceBus.Contracts
     {
         string ConnectionString { get; }
         string QueueName { get; }
-        string SubscriptionName { get; }
-        string TopicName { get; }
         IList<Type> Filters { get; }
     }
 }
