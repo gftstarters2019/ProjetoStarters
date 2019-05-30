@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export interface Species {
@@ -23,10 +23,10 @@ export class BeneficiaryPetComponent implements OnInit {
   ];
 
   petCreateForm= this.formBuilder.group({
-    petName: new FormControl('', Validators.required),
-    petBirthdate: new FormControl('', Validators.required),
+    petName: new FormControl('', Validators.pattern(/[A-Za-z]/)),
+    petBirthdate: new FormControl('', this.dateValidation),
     petSpecies: new FormControl('', Validators.required),
-    petBreed: new FormControl('', Validators.required)
+    petBreed: new FormControl('', Validators.pattern(/[A-Za-z]/))
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
@@ -45,5 +45,16 @@ export class BeneficiaryPetComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet', form, httpOptions)
     .subscribe(data => {this.response = data});
+  }
+
+  public onSubmit(): void {
+    console.log(this.petCreateForm.value)
+  }
+
+  public dateValidation(control: AbstractControl): { [key: string]: boolean } | null{
+    if(control.value > Date.now())
+      return {"EnteredADateHigherThanToday": true};
+    
+    return null;
   }
 }

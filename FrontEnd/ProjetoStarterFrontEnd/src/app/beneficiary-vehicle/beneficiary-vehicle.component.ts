@@ -29,12 +29,12 @@ export class BeneficiaryVehicleComponent implements OnInit {
   ];
   
   vehicleCreateForm= this.formBuilder.group({
-    vehicleBrand: new FormControl('', this.isNaNValidation),
-    vehicleModel: new FormControl('', Validators.required),
+    vehicleBrand: new FormControl('', Validators.pattern(/[A-Za-z]/)),
+    vehicleModel: new FormControl('', Validators.pattern(/[A-Za-z0-9]/)),
     vehicleManufactoringYear: new FormControl('', this.dateValidation),
     vehicleModelYear: new FormControl('', this.dateValidation),
     vehicleColor: new FormControl('', Validators.required),
-    vehicleChassisNumber: new FormControl('', Validators.required),
+    vehicleChassisNumber: new FormControl('', Validators.pattern(/[A-Za-z0-9]/)),
     vehicleCurrentMileage: new FormControl('', this.negativeValidation),
     vehicleCurrentFipeValue: new FormControl('', this.negativeValidation),
     vehicleDoneInspection: new FormControl(false)
@@ -62,13 +62,6 @@ export class BeneficiaryVehicleComponent implements OnInit {
   }
   public onSubmit(): void {
       console.log(this.vehicleCreateForm.value);
-  }
-
-  public isNaNValidation(control: AbstractControl): { [key: string]: boolean } | null{
-    if(!isNaN(control.value))
-      return {"EnteredANumber": true};
-    
-    return null;
   }
 
   public dateValidation(control: AbstractControl): { [key: string]: boolean } | null{
