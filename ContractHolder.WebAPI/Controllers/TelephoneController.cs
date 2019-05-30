@@ -80,7 +80,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateTelephone(Guid id, [FromBody] Telephone telephone)
         {
-            var obj = (Telephone)_telephoneReadOnlyRepository.Find(id);
+            var obj = _telephoneReadOnlyRepository.Find(id);
 
             obj.TelephoneNumber = telephone.TelephoneNumber;
             obj.TelephoneType = telephone.TelephoneType;

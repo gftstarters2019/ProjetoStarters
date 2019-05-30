@@ -37,7 +37,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet]
         public IActionResult Beneficiaries()
         {
-            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => !b.BeneficiaryDeleted));
+            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => !b.IsDeleted));
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Deleted")]
         public IActionResult DeletedBeneficiaries()
         {
-            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.BeneficiaryDeleted));
+            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.IsDeleted));
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             var obj = (Individual) _beneficiaryReadOnlyRepository.Find(id);
 
-            obj.BeneficiaryDeleted = individual.BeneficiaryDeleted;
+            obj.IsDeleted = individual.IsDeleted;
             obj.IndividualBirthdate = individual.IndividualBirthdate;
             obj.IndividualCPF = individual.IndividualCPF;
             obj.IndividualEmail = individual.IndividualEmail;
@@ -129,7 +129,7 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             var obj = (MobileDevice) _beneficiaryReadOnlyRepository.Find(id);
 
-            obj.BeneficiaryDeleted = mobileDevice.BeneficiaryDeleted;
+            obj.IsDeleted = mobileDevice.IsDeleted;
             obj.MobileDeviceBrand = mobileDevice.MobileDeviceBrand;
             obj.MobileDeviceInvoiceValue = mobileDevice.MobileDeviceInvoiceValue;
             obj.MobileDeviceManufactoringYear = mobileDevice.MobileDeviceManufactoringYear;
@@ -169,7 +169,7 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             var obj = (Pet) _beneficiaryReadOnlyRepository.Find(id);
 
-            obj.BeneficiaryDeleted = pet.BeneficiaryDeleted;
+            obj.IsDeleted = pet.IsDeleted;
             obj.PetBirthdate = pet.PetBirthdate;
             obj.PetBreed = pet.PetBreed;
             obj.PetName = pet.PetName;
@@ -207,8 +207,7 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             var obj = (Realty) _beneficiaryReadOnlyRepository.Find(id);
 
-            obj.BeneficiaryDeleted = realty.BeneficiaryDeleted;
-            obj.RealtyAddress = realty.RealtyAddress;
+            obj.IsDeleted = realty.IsDeleted;
             obj.RealtyConstructionDate = realty.RealtyConstructionDate;
             obj.RealtyMarketValue = realty.RealtyMarketValue;
             obj.RealtyMunicipalRegistration = realty.RealtyMunicipalRegistration;
@@ -275,7 +274,7 @@ namespace Beneficiaries.WebAPI.Controllers
 
             if (obj != null)
             {
-                obj.BeneficiaryDeleted = !obj.BeneficiaryDeleted;
+                obj.IsDeleted = !obj.IsDeleted;
                 return Ok(_beneficiaryWriteRepository.Update(obj));
             }
 
