@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, Validators, FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { throwError } from 'rxjs';
 
 export interface Color {
   value: string;
@@ -28,18 +29,20 @@ export class BeneficiaryVehicleComponent implements OnInit {
   ];
   
   vehicleCreateForm= this.formBuilder.group({
-    vehicleBrand: new FormControl('', Validators.required),
+    vehicleBrand: new FormControl('', this.isNaNValidation),
     vehicleModel: new FormControl('', Validators.required),
-    vehicleManufactoringYear: new FormControl('', Validators.required),
-    vehicleModelYear: new FormControl('', Validators.required),
+    vehicleManufactoringYear: new FormControl('', this.dateValidation),
+    vehicleModelYear: new FormControl('', this.dateValidation),
     vehicleColor: new FormControl('', Validators.required),
     vehicleChassisNumber: new FormControl('', Validators.required),
-    vehicleCurrentMileage: new FormControl('', Validators.required),
-    vehicleCurrentFipeValue: new FormControl('', Validators.required),
+    vehicleCurrentMileage: new FormControl('', this.negativeValidation),
+    vehicleCurrentFipeValue: new FormControl('', this.negativeValidation),
     vehicleDoneInspection: new FormControl(false)
   });
 
-  constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
+
+
+  constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
   }
@@ -58,12 +61,27 @@ export class BeneficiaryVehicleComponent implements OnInit {
     .subscribe(data => {this.response = data});
   }
   public onSubmit(): void {
-    if (!this.vehicleIsValid(this.vehicleCreateForm.value))
-      console.log("Forbidden");
-    console.log(this.vehicleCreateForm.value);
+      console.log(this.vehicleCreateForm.value);
   }
 
-  public vehicleIsValid(something): boolean{
+  public isNaNValidation(control: AbstractControl): { [key: string]: boolean } | null{
+    if(!isNaN(control.value))
+      return {"EnteredANumber": true};
     
+    return null;
+  }
+
+  public dateValidation(control: AbstractControl): { [key: string]: boolean } | null{
+    if(control.value > Date.now())
+      return {"EnteredADateHigherThanToday": true};
+    
+    return null;
+  }
+
+  public negativeValidation(control: AbstractControl): { [key: string]: boolean } | null{
+    if(control.value < 0)
+      return {"EnteredANegativeNumber": true};
+    
+    return null;
   }
 }
