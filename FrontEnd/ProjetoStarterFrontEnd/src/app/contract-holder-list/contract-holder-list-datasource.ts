@@ -1,41 +1,24 @@
 import { DataSource } from '@angular/cdk/collections';
+import { Component } from '@angular/core';
 import { MatPaginator, MatSort } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
+import {MatTableDataSource} from '@angular/material';
 
-// TODO: Replace this with your own data model type
-export interface ContractHolderListItem {
-  name: string;
-  id: number;
-  rg: number;
-  cpf: number;
-  birthdate: number;
+// @Component({
+//   selector: 'contract-holder-list-datasource',
+//   styleUrls: ['contract-holder-list.css'],
+//   templateUrl: 'contract-holder-list.html',
+// })
+// export class FilterContractHolder {
+//   displayedColumns: string[] = ['id', 'name', 'rg', 'cpf', 'birthdate'];
+//   dataSource = new MatTableDataSource(EXAMPLE_DATA);
 
-}
+//   applyFilter(filterValue: string) {
+//     this.dataSource.filter = filterValue.trim().toLowerCase();
+//   }
+// }
 
-// TODO: replace this with real data from your application
-const EXAMPLE_DATA: ContractHolderListItem[] = [
-  {id: 1, name: 'Hydrogen', rg:123654, cpf:321654,birthdate:123,},
-  {id: 2, name: 'Helium', rg:123654, cpf:321654,birthdate:123,},
-  {id: 3, name: 'Lithium', rg:123654, cpf:321654,birthdate:123,},
-  {id: 4, name: 'Beryllium', rg:123654, cpf:321654,birthdate:123,},
-  {id: 5, name: 'Boron', rg:123654, cpf:321654,birthdate:123,},
-  {id: 6, name: 'Carbon' ,rg:123654, cpf:321654,birthdate:123,},
-  {id: 7, name: 'Nitrogen', rg:123654, cpf:321654,birthdate:123,},
-  {id: 8, name: 'Oxygen', rg:123654, cpf:321654,birthdate:123,},
-  {id: 9, name: 'Fluorine', rg:123654, cpf:321654,birthdate:123,},
-  {id: 10, name: 'Neon' ,rg:123654, cpf:321654,birthdate:123,},
-  {id: 11, name: 'Sodium' ,rg:123654, cpf:321654,birthdate:123,},
-  {id: 12, name: 'Magnesium', rg:123654, cpf:321654,birthdate:123,},
-  {id: 13, name: 'Aluminum', rg:123654, cpf:321654,birthdate:123,},
-  {id: 14, name: 'Silicon', rg:123654, cpf:321654,birthdate:123,},
-  {id: 15, name: 'Phosphorus', rg:123654, cpf:321654,birthdate:123,},
-  {id: 16, name: 'Sulfur' ,rg:123654, cpf:321654,birthdate:123,},
-  {id: 17, name: 'Chlorine' ,rg:123654, cpf:321654,birthdate:123,},
-  {id: 18, name: 'Argon' ,rg:123654, cpf:321654,birthdate:123,},
-  {id: 19, name: 'Potassium', rg:123654, cpf:321654,birthdate:123,},
-  {id: 20, name: 'Calcium' ,rg:123654, cpf:321654,birthdate:123,},
-];
 
 /**
  * Data source for the ContractHolderList view. This class should
@@ -43,7 +26,7 @@ const EXAMPLE_DATA: ContractHolderListItem[] = [
  * (including sorting, pagination, and filtering).
  */
 export class ContractHolderListDataSource extends DataSource<ContractHolderListItem> {
-  data: ContractHolderListItem[] = EXAMPLE_DATA;
+  data: ContractHolderListItem[] = EXAMPLE_DATA; 
 
   constructor(private paginator: MatPaginator, private sort: MatSort) {
     super();
@@ -114,3 +97,79 @@ export class ContractHolderListDataSource extends DataSource<ContractHolderListI
 function compare(a, b, isAsc) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
+
+
+
+// TODO: Replace this with your own data model type
+export interface ContractHolderListItem {
+  name: string;
+  id: number;
+  rg: number;
+  cpf: number;
+  birthdate: number;
+
+}
+
+// TODO: replace this with real data from your application
+const EXAMPLE_DATA: ContractHolderListItem[] = [
+  {id: 1, name: 'Hydrogen', rg:123654, cpf:321654,birthdate:123,},
+  {id: 2, name: 'Helium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 3, name: 'Lithium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 4, name: 'Beryllium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 5, name: 'Boron', rg:123654, cpf:321654,birthdate:123,},
+  {id: 6, name: 'Carbon' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 7, name: 'Nitrogen', rg:123654, cpf:321654,birthdate:123,},
+  {id: 8, name: 'Oxygen', rg:123654, cpf:321654,birthdate:123,},
+  {id: 9, name: 'Fluorine', rg:123654, cpf:321654,birthdate:123,},
+  {id: 10, name: 'Neon' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 11, name: 'Sodium' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 12, name: 'Magnesium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 13, name: 'Aluminum', rg:123654, cpf:321654,birthdate:123,},
+  {id: 14, name: 'Silicon', rg:123654, cpf:321654,birthdate:123,},
+  {id: 15, name: 'Phosphorus', rg:123654, cpf:321654,birthdate:123,},
+  {id: 16, name: 'Sulfur' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 17, name: 'Chlorine' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 18, name: 'Argon' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 19, name: 'Potassium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 20, name: 'Calcium' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 21, name: 'Hydrogen', rg:123654, cpf:321654,birthdate:123,},
+  {id: 22, name: 'Helium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 23, name: 'Lithium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 24, name: 'Beryllium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 25, name: 'Boron', rg:123654, cpf:321654,birthdate:123,},
+  {id: 26, name: 'Carbon' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 27, name: 'Nitrogen', rg:123654, cpf:321654,birthdate:123,},
+  {id: 28, name: 'Oxygen', rg:123654, cpf:321654,birthdate:123,},
+  {id: 29, name: 'Fluorine', rg:123654, cpf:321654,birthdate:123,},
+  {id: 30, name: 'Neon' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 31, name: 'Sodium' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 32, name: 'Magnesium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 33, name: 'Aluminum', rg:123654, cpf:321654,birthdate:123,},
+  {id: 34, name: 'Silicon', rg:123654, cpf:321654,birthdate:123,},
+  {id: 35, name: 'Phosphorus', rg:123654, cpf:321654,birthdate:123,},
+  {id: 36, name: 'Sulfur' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 37, name: 'Chlorine' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 38, name: 'Argon' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 39, name: 'Potassium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 40, name: 'Calcium' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 41, name: 'Hydrogen', rg:123654, cpf:321654,birthdate:123,},
+  {id: 42, name: 'Helium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 43, name: 'Lithium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 44, name: 'Beryllium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 45, name: 'Boron', rg:123654, cpf:321654,birthdate:123,},
+  {id: 46, name: 'Carbon' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 47, name: 'Nitrogen', rg:123654, cpf:321654,birthdate:123,},
+  {id: 48, name: 'Oxygen', rg:123654, cpf:321654,birthdate:123,},
+  {id: 49, name: 'Fluorine', rg:123654, cpf:321654,birthdate:123,},
+  {id: 50, name: 'Neon' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 51, name: 'Sodium' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 52, name: 'Magnesium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 53, name: 'Aluminum', rg:123654, cpf:321654,birthdate:123,},
+  {id: 54, name: 'Silicon', rg:123654, cpf:321654,birthdate:123,},
+  {id: 55, name: 'Phosphorus', rg:123654, cpf:321654,birthdate:123,},
+  {id: 56, name: 'Sulfur' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 57, name: 'Chlorine' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 58, name: 'Argon' ,rg:123654, cpf:321654,birthdate:123,},
+  {id: 59, name: 'Potassium', rg:123654, cpf:321654,birthdate:123,},
+  {id: 60, name: 'Calcium' ,rg:123654, cpf:321654,birthdate:123,},
+];
