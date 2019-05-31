@@ -20,9 +20,9 @@ namespace Backend.Core.Helper
         public string IndividualEmail { get; set; }
         public DateTime IndividualBirthdate { get; set; }
 
-        private ICollection<Address> _address { get; set; }
+        public ICollection<Address> _address { get; set; }
 
-        private ICollection<Telephone> _telephone { get; set; }
+        public ICollection<Telephone> _telephone { get; set; }
 
 
 
