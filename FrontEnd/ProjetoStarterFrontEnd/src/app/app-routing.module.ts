@@ -11,6 +11,7 @@ import { AddressComponent } from './address/address.component';
 import { TelephoneComponent } from './telephone/telephone.component';
 
 
+
 const routes: Routes = [
   { path: 'contract-holder', component: ContractHolderComponent },
   { path: 'address', component: AddressComponent },
