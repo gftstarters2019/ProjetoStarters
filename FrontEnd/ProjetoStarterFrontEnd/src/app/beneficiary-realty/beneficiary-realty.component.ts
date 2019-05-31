@@ -2,6 +2,8 @@ import { AddressComponent } from './../address/address.component';
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Address } from '../address/address.component';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 @Component({
   selector: 'app-beneficiary-realty',
@@ -16,10 +18,10 @@ export class BeneficiaryRealtyComponent implements OnInit {
 
   realtyCreateForm= this.formBuilder.group({
     addressId: new FormControl(''),
-    realtyMunicipalRegistration: new FormControl('', Validators.required),
-    realtyConstructionDate: new FormControl('', Validators.required),
-    realtySaleValue: new FormControl('', Validators.required),
-    realtyMarketValue: new FormControl('', Validators.required)
+    realtyMunicipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    realtyConstructionDate: new FormControl('', GenericValidator.dateValidation()),
+    realtySaleValue: new FormControl('', GenericValidator.negativeValidation()),
+    realtyMarketValue: new FormControl('', GenericValidator.negativeValidation())
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }

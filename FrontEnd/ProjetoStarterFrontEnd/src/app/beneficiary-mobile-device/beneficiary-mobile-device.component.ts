@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface MobileType {
   value: string;
@@ -23,12 +24,12 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   ];
   
   mobileDeviceCreateForm= this.formBuilder.group({
-    mobileDeviceBrand: new FormControl('', Validators.required),
-    mobileDeviceModel: new FormControl('', Validators.required),
-    mobileDeviceManufactoringYear: new FormControl('', Validators.required),
-    mobileDeviceSerialNumber: new FormControl('', Validators.required),
+    mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    mobileDeviceModel: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
+    mobileDeviceManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
+    mobileDeviceSerialNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
     mobileDeviceType: new FormControl('', Validators.required),
-    mobileDeviceInvoiceValue: new FormControl('', Validators.required)
+    mobileDeviceInvoiceValue: new FormControl('', GenericValidator.negativeValidation())
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
@@ -53,5 +54,4 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
       this.messageMobilelEvent.emit(this.response.beneficiaryId);
     }
   }
-
 }

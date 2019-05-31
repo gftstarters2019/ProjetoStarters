@@ -3,8 +3,8 @@
 
     <div class="flex-wrapper">
         <mat-form-field style="width: 60%;">
-            <input matInput placeholder="Name" name="petName" formControlName="petName">
-            <!-- <mat-error *ngIf="!name.valid && (name.touched || name.dirty)">Name is required</mat-error> -->
+          <input matInput placeholder="Name" name="petName" formControlName="petName" required>
+          <mat-error>Name is invalid!</mat-error>
         </mat-form-field>
     </div>
 
@@ -13,13 +13,13 @@
         <input matInput [matDatepicker]="picker" placeholder="Birthdate" name="petBirthdate" formControlName="petBirthdate" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <!-- <mat-error *ngIf="!birthdate.valid && (birthdate.touched || birthdate.dirty)">Birthdate is required</mat-error> -->
+        <mat-error>Date is invalid!</mat-error>
       </mat-form-field>
     </div>
 
     <mat-form-field style="width: 30%;">
       <mat-label>Species</mat-label>
-      <mat-select name="animalSpecies" formControlName="petSpecies">
+      <mat-select name="animalSpecies" formControlName="petSpecies" required>
           <mat-option *ngFor="let specie of species" [value]="specie.value" >
               {{specie.name}}
           </mat-option>
@@ -29,7 +29,7 @@
   <div class="flex-wrapper">
     <mat-form-field style="width: 60%;">
         <input matInput placeholder="Breed" name="petBreed" formControlName="petBreed">
-        <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
+        <mat-error>Breed is invalid!</mat-error>
     </mat-form-field>
   </div>
 
