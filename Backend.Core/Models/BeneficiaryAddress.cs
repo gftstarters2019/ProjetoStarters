@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Backend.Core.Models
 {
-    public class IndividualAddress
+    public class BeneficiaryAddress
     {
-        public Guid IndividualAddressId { get; set; }
+        public Guid BeneficiaryAddressId { get; set; }
         public Guid AddressId { get; set; }
-        public Guid IndividualId { get; set; }
-        public Individual Individual { get; set; }
         public Address Address { get; set; }
+        public Guid BeneficiaryId { get; set; }
+        public Beneficiary Beneficiary { get; set; }
     }
 }

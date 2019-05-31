@@ -1,5 +1,18 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup , AbstractControl } from '@angular/forms';
+
+
+export interface Address{
+  id : string,
+  street: string,
+  type: string,
+  number: number,
+  state: string,
+  neighborhood: string,
+  country: string,
+  zipCode: string
+}
+
 
 @Component({
   selector: 'app-address',
@@ -15,6 +28,7 @@ export class AddressComponent implements OnInit {
   addressAdd: FormArray;
 
   address = this.fb.group ({
+    id: [''],
     street: ['', Validators.required],
     type: ['', Validators.required],
     number: ['', Validators.required],
@@ -29,13 +43,16 @@ export class AddressComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+
   }
 
   public onSubmit(): void {
-    debugger;
 
     console.log(this.address.value);
     this.add.emit(this.address.value);
+
+    this.message=this.address.get(['id']).value;
+
   }
 
   createAddress(): FormGroup {
