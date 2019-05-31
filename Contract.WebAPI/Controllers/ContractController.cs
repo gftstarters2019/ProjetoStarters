@@ -1,4 +1,5 @@
-﻿using Backend.Infrastructure.Repositories.Contracts;
+﻿using Backend.Core.Enums;
+using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -38,7 +39,9 @@ namespace Contract.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContract([FromBody] Backend.Core.Models.Contract contract)
         {
-            //Implementar Validações
+            if (!ContractIsValid(contract))
+                return StatusCode(403); //Forbbiden
+
             _contractWriteRepository.Add(contract);
             return Ok(contract);
         }
@@ -75,5 +78,22 @@ namespace Contract.WebAPI.Controllers
 
             return NotFound(contract);
         }
+
+        #region Validations
+        /// <summary>
+        /// Verifies if Contract is valid
+        /// </summary>
+        /// <param name="contract">Contract to be verified</param>
+        /// <returns>If Contract is valid</returns>
+        public static bool ContractIsValid(Backend.Core.Models.Contract contract)
+        {
+            if (!Enum.IsDefined(typeof(ContractType), contract.ContractType) || !Enum.IsDefined(typeof(ContractCategory), contract.ContractCategory))
+                return false;
+            if (contract.ContractExpiryDate < DateTime.Now.Date)
+                return false;
+            
+            return true;
+        }
+        #endregion Validations
     }
 }
