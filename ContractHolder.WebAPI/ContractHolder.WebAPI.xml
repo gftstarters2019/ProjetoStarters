@@ -4,5 +4,45 @@
         <name>ContractHolder.WebAPI</name>
     </assembly>
     <members>
+        <member name="T:ContractHolder.WebAPI.Controllers.TelephoneController">
+            <summary>
+            Telephone Controller
+            </summary>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.#ctor(Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.Telephone},Backend.Infrastructure.Repositories.Contracts.IWriteRepository{Backend.Core.Models.Telephone})">
+            <summary>
+            TelephoneController constructor
+            </summary>
+            <param name="telephoneReadoOnlyRepository"></param>
+            <param name="telephoneWriteRepository"></param>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.Telephones">
+            <summary>
+            Gets all telephones registered
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.Telephone(System.Guid)">
+            <summary>
+            Get a specific telephone
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.PostTelephone(Backend.Core.Models.Telephone)">
+            <summary>
+            Creates a new Telephone in the database
+            </summary>
+            <param name="telephone"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.UpdateTelephone(System.Guid,Backend.Core.Models.Telephone)">
+            <summary>
+            Updates a Telephone in the database
+            </summary>
+            <param name="id"></param>
+            <param name="telephone"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

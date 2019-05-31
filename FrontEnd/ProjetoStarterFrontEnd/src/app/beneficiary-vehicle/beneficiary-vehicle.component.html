@@ -1,0 +1,70 @@
+<form [formGroup]="vehicleCreateForm">
+  <div class="container">
+
+      <div class="flex-wrapper">
+           <mat-form-field style="width: 30%;">
+              <input matInput placeholder="Brand" name="vehicleBrand" formControlName="vehicleBrand">
+              <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
+          </mat-form-field>
+
+          <mat-form-field style="width: 30%;">
+              <input matInput placeholder="Model" name="vehicleModel" formControlName="vehicleModel">
+              <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
+          </mat-form-field>
+
+          <mat-form-field style="width: 30%;">
+              <mat-label>Color</mat-label>
+              <mat-select name="animalSpecies" formControlName="vehicleColor">
+                  <mat-option *ngFor="let color of colors" [value]="color.value" >
+                      {{color.name}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+      </div>
+
+      <div class="flex-wrapper">
+        <mat-form-field style="width: 30%;">
+          <input matInput [matDatepicker]="picker" placeholder="Manufactoring Year" name="vehicleManufactoringYear" formControlName="vehicleManufactoringYear" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <!-- <mat-error *ngIf="!birthdate.valid && (birthdate.touched || birthdate.dirty)">Birthdate is required</mat-error> -->
+        </mat-form-field>
+
+        <mat-form-field style="width: 30%;">
+          <input matInput [matDatepicker]="pickerModelYear" placeholder="Model Year" name="vehicleModelYear" formControlName="vehicleModelYear" required>
+          <mat-datepicker-toggle matSuffix [for]="pickerModelYear"></mat-datepicker-toggle>
+          <mat-datepicker #pickerModelYear></mat-datepicker>
+          <!-- <mat-error *ngIf="!birthdate.valid && (birthdate.touched || birthdate.dirty)">Birthdate is required</mat-error> -->
+        </mat-form-field>
+
+        <mat-form-field style="width: 30%;">
+            <input matInput placeholder="Chassis Number" name="vehicleChassisNumber" formControlName="vehicleChassisNumber">
+            <!-- <mat-error *ngIf="!name.valid && (name.touched || name.dirty)">Name is required</mat-error> -->
+        </mat-form-field>
+      </div>
+
+
+      
+
+      <div class="flex-wrapper">
+          <mat-form-field style="width: 30%;">
+              <input matInput placeholder="Current Mileage" type="number" name="vehicleCurrentMileage" formControlName="vehicleCurrentMileage">
+              <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
+          </mat-form-field>
+          
+          <mat-form-field style="width: 30%;">
+            <input matInput placeholder="Current Fipe Value" type="number" name="vehicleCurrentFipeValue" formControlName="vehicleCurrentFipeValue">
+            <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
+        </mat-form-field> 
+      </div>
+
+      <mat-slide-toggle name="vehicleDoneInspection" formControlName="vehicleDoneInspection">
+          Done Inspection
+      </mat-slide-toggle>
+      
+      <div>
+          <button mat-raised-button color="primary" (click)="vehiclePost()" type="submit" [disabled]="!vehicleCreateForm.valid"
+              style="margin-top: 10px">Submit</button>
+      </div>
+  </div>
+</form>

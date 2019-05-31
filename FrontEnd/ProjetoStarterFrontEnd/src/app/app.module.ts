@@ -18,6 +18,12 @@ import { ContractListComponent } from './contract-list/contract-list.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
+import { BeneficiaryIndividualComponent } from './beneficiary-individual/beneficiary-individual.component';
+import { BeneficiaryPetComponent } from './beneficiary-pet/beneficiary-pet.component';
+import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-vehicle.component';
+import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-realty.component';
+import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
+import { TelephoneComponent } from './telephone/telephone.component';
 
 
 
@@ -33,6 +39,12 @@ import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiaryli
     BeneficiaryListComponent,
     SidebarComponent,
     BeneficiarylistAddComponent,
+    BeneficiaryIndividualComponent,
+    BeneficiaryPetComponent,
+    BeneficiaryVehicleComponent,
+    BeneficiaryRealtyComponent,
+    BeneficiaryMobileDeviceComponent,
+    TelephoneComponent,
   ],
   imports: [
     BrowserModule,

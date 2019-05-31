@@ -16,8 +16,5 @@ namespace Backend.Core.Models
         [MaxLength(30)]
         public string IndividualEmail { get; set; }
         public DateTime IndividualBirthdate { get; set; }
-        public bool IndividualDeleted { get; set; }
-
-        
     }
 }

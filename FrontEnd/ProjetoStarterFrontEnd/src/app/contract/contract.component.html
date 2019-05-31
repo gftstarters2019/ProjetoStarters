@@ -56,12 +56,6 @@
         </mat-form-field>
         <mat-divider></mat-divider>
         <br />
-        <mat-form-field>
-          <input matInput [matDatepicker]="contractIniatalDate" placeholder="Contract Initial Date"
-            formControlName="contractIniatalDate" required>
-          <mat-datepicker-toggle matSuffix [for]="contractIniatalDate"></mat-datepicker-toggle>
-          <mat-datepicker #contractIniatalDate></mat-datepicker>
-        </mat-form-field>
 
         <mat-form-field>
           <input matInput [matDatepicker]="contractExpiryDate" placeholder="Contract Expiry Date"
@@ -78,14 +72,48 @@
       <app-beneficiarylist-add></app-beneficiarylist-add>
       <mat-divider></mat-divider>
       <mat-card>
-        <p>
-          Add Component to Create new Beneficiary
-        </p>
+        <button mat-raised-button color="primary" type="button" (click)="assignContractType(); addBeneficiary();">Add Beneficiary</button>
+        <div *ngIf="cType == 'Health Plan' || cType=='Dental Plan' || cType=='Life Insurance Plan'">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries').controls; let i = index;">
+            <div [formGroupName]="i">
+                <app-beneficiary-individual (messageIndividualEvent)="receiveMessage($event)"></app-beneficiary-individual>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="cType == 'Animal Health Plan'">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries').controls; let i = index;">
+            <div [formGroupName]="i">
+                <app-beneficiary-pet (messagePetEvent)="receiveMessage($event)"></app-beneficiary-pet>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="cType == 'Real Estate Insurance'">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries').controls; let i = index;">
+            <div [formGroupName]="i">
+                <app-beneficiary-realty (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="cType == 'Car insurance'">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries').controls; let i = index;">
+            <div [formGroupName]="i">
+                <app-beneficiary-vehicle (messageVehicleEvent)="receiveMessage($event)"></app-beneficiary-vehicle>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="cType == 'Mobile device Insurance'">
+            <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries').controls; let i = index;">
+              <div [formGroupName]="i">
+                  <app-beneficiary-mobile-device (messageMobileEvent)="receiveMessage($event)"></app-beneficiary-mobile-device>
+              </div>
+            </div>
+          </div>
+
       </mat-card>
       <mat-divider></mat-divider>
       <mat-card>
 
-        <button class="btn-list" mat-raised-button color="primary" type="button">Clear</button>
+        <button class="btn-list" mat-raised-button color="primary" (click)="clearBeneficiary()" type="button">Clear</button>
         <button class="btn-list" mat-raised-button color="primary" type="button">Submit</button>
       </mat-card>
       <mat-divider></mat-divider>
