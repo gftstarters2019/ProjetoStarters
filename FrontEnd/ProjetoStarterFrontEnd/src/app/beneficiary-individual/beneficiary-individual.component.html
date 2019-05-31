@@ -10,12 +10,12 @@
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 45%;">
-            <input matInput placeholder="CPF" name="individualCpf" formControlName="individualCpf" required>
+            <input matInput placeholder="CPF" name="individualCpf" [textMask]="{mask: cpfMask}" formControlName="individualCpf" required>
             <mat-error>CPF is invalid!</mat-error>
         </mat-form-field>
 
         <mat-form-field style="width: 45%;">
-            <input matInput placeholder="RG" name="individualRg" formControlName="individualRg" required>
+            <input matInput placeholder="RG" name="individualRg" [textMask]="{mask: rgMask}" formControlName="individualRg" required>
             <mat-error>RG is invalid!</mat-error>
         </mat-form-field>
     </div>

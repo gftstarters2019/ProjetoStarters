@@ -24,10 +24,10 @@ export class BeneficiaryPetComponent implements OnInit {
   ];
 
   petCreateForm= this.formBuilder.group({
-    petName: new FormControl('', Validators.pattern(/^[a-zA-Z]+$/)),
+    petName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
     petBirthdate: new FormControl('', GenericValidator.dateValidation()),
     petSpecies: new FormControl('', Validators.required),
-    petBreed: new FormControl('', Validators.pattern(/^[a-zA-Z]+$/))
+    petBreed: new FormControl('', Validators.pattern(GenericValidator.regexName))
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }

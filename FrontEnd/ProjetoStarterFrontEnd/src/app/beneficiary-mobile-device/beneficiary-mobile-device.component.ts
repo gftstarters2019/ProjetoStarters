@@ -22,10 +22,10 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   ];
   
   mobileDeviceCreateForm= this.formBuilder.group({
-    mobileDeviceBrand: new FormControl('', Validators.pattern(/^[a-zA-Z]+$/)),
-    mobileDeviceModel: new FormControl('', Validators.pattern(/^[a-zA-Z0-9]+$/)),
+    mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    mobileDeviceModel: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
     mobileDeviceManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
-    mobileDeviceSerialNumber: new FormControl('', Validators.pattern(/^[a-zA-Z0-9]+$/)),
+    mobileDeviceSerialNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
     mobileDeviceType: new FormControl('', Validators.required),
     mobileDeviceInvoiceValue: new FormControl('', GenericValidator.negativeValidation())
   });

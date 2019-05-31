@@ -30,12 +30,12 @@ export class BeneficiaryVehicleComponent implements OnInit {
   ];
   
   vehicleCreateForm= this.formBuilder.group({
-    vehicleBrand: new FormControl('', Validators.pattern(/^[a-zA-Z]+$/)),
-    vehicleModel: new FormControl('', Validators.pattern(/^[a-zA-Z0-9]+$/)),
+    vehicleBrand: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    vehicleModel: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
     vehicleManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
     vehicleModelYear: new FormControl('', GenericValidator.dateValidation()),
     vehicleColor: new FormControl('', Validators.required),
-    vehicleChassisNumber: new FormControl('', Validators.pattern(/^[a-zA-Z0-9]+$/)),
+    vehicleChassisNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
     vehicleCurrentMileage: new FormControl('', GenericValidator.negativeValidation()),
     vehicleCurrentFipeValue: new FormControl('', GenericValidator.negativeValidation()),
     vehicleDoneInspection: new FormControl(false)

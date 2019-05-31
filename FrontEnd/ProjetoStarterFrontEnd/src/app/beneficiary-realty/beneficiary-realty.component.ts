@@ -16,7 +16,7 @@ export class BeneficiaryRealtyComponent implements OnInit {
 
   realtyCreateForm= this.formBuilder.group({
     addressId: new FormControl(''),
-    realtyMunicipalRegistration: new FormControl('', Validators.pattern(/^[a-zA-Z]+$/)),
+    realtyMunicipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexName)),
     realtyConstructionDate: new FormControl('', GenericValidator.dateValidation()),
     realtySaleValue: new FormControl('', GenericValidator.negativeValidation()),
     realtyMarketValue: new FormControl('', GenericValidator.negativeValidation())

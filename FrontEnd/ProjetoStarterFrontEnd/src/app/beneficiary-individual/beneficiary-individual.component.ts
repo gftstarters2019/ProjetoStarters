@@ -11,8 +11,11 @@ import { GenericValidator } from '../Validations/GenericValidator';
 export class BeneficiaryIndividualComponent implements OnInit {
 
 
+  public cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+  public rgMask= [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/]
+
   individualCreateForm= this.formBuilder.group({
-    individualName: new FormControl('', Validators.pattern(/^[a-zA-Z]+$/)),
+    individualName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
     individualCpf: new FormControl('', GenericValidator.isValidCpf()),
     individualRg: new FormControl('', Validators.required),
     individualBirthdate: new FormControl('', GenericValidator.dateValidation()),

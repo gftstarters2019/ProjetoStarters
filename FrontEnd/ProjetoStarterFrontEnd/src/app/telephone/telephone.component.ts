@@ -16,7 +16,7 @@ export class TelephoneComponent implements OnInit {
   message:string;
   telephone = this.fb.group ({
     id: [''],
-    telephoneNumber: ['', Validators.required],
+    telephoneNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(11), Validators.minLength(10)]],
     telephoneType: ['', Validators.required]
   });
 

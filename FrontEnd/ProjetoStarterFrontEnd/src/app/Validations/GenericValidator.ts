@@ -2,14 +2,25 @@ import { AbstractControl, Validators } from '@angular/forms';
 
 export class GenericValidator {
     constructor() {}
- 
+
+    static regexName = new RegExp(/^[a-zA-Z-ã]+\s[a-zA-Z]+$/);
+    static regexAlphaNumeric = new RegExp(/^[a-zA-Z-ã]+[0-9]+\s[(a-zA-Z]+[0-9]+$/);
+
+
     /**
      * Valida se o CPF é valido. Deve-se ser informado o cpf sem máscara.
     */
     static isValidCpf() {
       return (control: AbstractControl): Validators => {
-        const cpf = control.value;
+
+        var cpf = control.value
         if (cpf) {
+
+          cpf = cpf.replace('.', '');
+          cpf = cpf.replace('.', '');
+          cpf = cpf.replace('-', '');
+
+
           let numbers, digits, sum, i, result, equalDigits;
           equalDigits = 1;
           if (cpf.length < 11) {
@@ -17,6 +28,7 @@ export class GenericValidator {
           }
  
           for (i = 0; i < cpf.length - 1; i++) {
+
             if (cpf.charAt(i) !== cpf.charAt(i + 1)) {
               equalDigits = 0;
               break;
@@ -72,4 +84,5 @@ export class GenericValidator {
         return null;
       }
     }
+
 }
