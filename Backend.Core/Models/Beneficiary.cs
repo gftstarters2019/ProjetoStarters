@@ -7,6 +7,6 @@ namespace Backend.Core.Models
     public abstract class Beneficiary
     {
         public Guid BeneficiaryId { get; set; }
-        public bool BeneficiaryDeleted { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
