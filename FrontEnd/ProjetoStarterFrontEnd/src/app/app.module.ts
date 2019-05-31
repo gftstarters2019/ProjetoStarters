@@ -23,6 +23,7 @@ import { BeneficiaryPetComponent } from './beneficiary-pet/beneficiary-pet.compo
 import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-vehicle.component';
 import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-realty.component';
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
+import { TelephoneComponent } from './telephone/telephone.component';
 
 
 
@@ -43,6 +44,7 @@ import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/be
     BeneficiaryVehicleComponent,
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
+    TelephoneComponent,
   ],
   imports: [
     BrowserModule,
