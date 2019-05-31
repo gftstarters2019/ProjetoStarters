@@ -1,6 +1,4 @@
 ﻿using Backend.Infrastructure.Configuration;
-using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +10,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Contract.WebAPI
+namespace Reports.WebAPI
 {
     public class Startup
     {
@@ -27,11 +25,6 @@ namespace Contract.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.Contract>, ContractRepository>();
-            services.AddScoped<IWriteRepository<Backend.Core.Models.Contract>, ContractRepository>();
-            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
-
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
             ConfigureSwagger(services);

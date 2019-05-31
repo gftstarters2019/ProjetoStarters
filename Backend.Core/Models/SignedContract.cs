@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Backend.Core.Helper;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
