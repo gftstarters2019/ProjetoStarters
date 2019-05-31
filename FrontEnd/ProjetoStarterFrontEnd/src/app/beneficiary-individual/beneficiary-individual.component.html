@@ -4,20 +4,20 @@
       <div class="flex-wrapper">
           <mat-form-field style="width: 60%;">
               <input matInput placeholder="Full name" name="individualName" formControlName="individualName">
-              <!-- <mat-error *ngIf="!name.valid && (name.touched || name.dirty)">Name is required</mat-error> -->
+              <mat-error>Name is invalid!</mat-error>
           </mat-form-field>
       </div>
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 45%;">
             <input matInput placeholder="CPF" name="individualCpf" formControlName="individualCpf">
-            <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
-        </mat-form-field>
+            <mat-error>CPF is invalid!</mat-error>
+          </mat-form-field>
 
         <mat-form-field style="width: 45%;">
             <input matInput placeholder="RG" name="individualRg" formControlName="individualRg">
-            <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
-        </mat-form-field>
+            <mat-error>RG is invalid!</mat-error>
+          </mat-form-field>
     </div>
 
       <div class="flex-wrapper">
@@ -25,14 +25,14 @@
           <input matInput [matDatepicker]="picker" placeholder="Birthdate" name="individualBirthdate" formControlName="individualBirthdate" required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-          <!-- <mat-error *ngIf="!birthdate.valid && (birthdate.touched || birthdate.dirty)">Birthdate is required</mat-error> -->
+          <mat-error>Date is invalid!</mat-error>
         </mat-form-field>
       </div>
 
       <div class="flex-wrapper">
           <mat-form-field style="width: 60%;">
               <input matInput placeholder="Email" name="individualEmail" formControlName="individualEmail">
-              <!-- <mat-error *ngIf="!email.valid && (email.touched || email.dirty)">Email is required</mat-error> -->
+              <mat-error>E-mail is invalid!</mat-error>
           </mat-form-field>
       </div>
 

@@ -12,7 +12,7 @@ export class BeneficiaryIndividualComponent implements OnInit {
   @Output() messageIndividualEvent = new EventEmitter<any>();
 
   individualCreateForm= this.formBuilder.group({
-    individualName: new FormControl('', Validators.required),
+    individualName: new FormControl('', G),
     individualCpf: new FormControl('', Validators.required),
     individualRg: new FormControl('', Validators.required),
     individualBirthdate: new FormControl('', Validators.required),
