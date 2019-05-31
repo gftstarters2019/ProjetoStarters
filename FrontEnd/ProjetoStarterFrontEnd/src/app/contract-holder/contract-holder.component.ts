@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Validators, FormBuilder } from '@angular/forms';
-import { GridOptions, ColDef } from 'ag-grid-community';
-import { $ } from 'protractor';
+import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
+import { GridOptions, ColDef, SelectionChangedEvent } from 'ag-grid-community';
 
+import { CellDatepickerComponent } from '../cell-datepicker/cell-datepicker.component';
+import * as moment from 'moment';
 
 
 @Component({
@@ -12,8 +13,11 @@ import { $ } from 'protractor';
   styleUrls: ['./contract-holder.component.scss']
 })
 export class ContractHolderComponent implements OnInit, AfterViewInit {
+
   private columnDefs: Array<ColDef>;
   private rowData;
+
+
 
   gridOptions: GridOptions;
   load_failure: boolean;
@@ -22,6 +26,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   genders: string[] = ['Male   ', 'Female'];
   showList: boolean = true;
   showAddresslist: boolean = false;
+
   constructor(private chfb: FormBuilder, private http: HttpClient) {
 
   }
@@ -44,7 +49,20 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     cpf: ['', Validators.required],
     birthdate: ['', Validators.required],
     email: ['', Validators.required],
-    idAddress: ['', Validators.required]
+    // idAddress: ['', Validators.required]
+
+    idAddress: this.chfb.array([
+      this.chfb.group({
+        street: ['', Validators.required],
+        type: ['', Validators.required],
+        number: ['', Validators.required],
+        state: ['', Validators.required],
+        neighborhood: ['', Validators.required],
+        country: ['', Validators.required],
+        zipCode: ['', Validators.required],
+      })
+    ]),
+
   });
 
 
@@ -57,34 +75,73 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   showAddress() {
+    debugger;
+    const addressControl = this.contractHolder.controls.idAddress as FormArray;
+    const hasMax = addressControl.length >= 5;
+
+    if (!hasMax) {
+      addressControl.push(this.chfb.group({
+        street: ['', Validators.required],
+        type: ['', Validators.required],
+        number: ['', Validators.required],
+        state: ['', Validators.required],
+        neighborhood: ['', Validators.required],
+        country: ['', Validators.required],
+        zipCode: ['', Validators.required],
+      }))
+    }
+
     this.showAddresslist = !this.showAddresslist;
   }
+
+  handle_addAddress() {
+    const addressControl = this.contractHolder.controls.idAddress as FormArray;
+    addressControl.push(this.chfb.group({
+
+    }))
+  }
+
+  handle_add($event: any) {
+    debugger;
+  }
+
+
+
   private setup_gridOptions() {
     this.gridOptions = {
+      rowSelection: 'single',
+      onRowSelected: this.onRowSelected.bind(this),
+
       columnDefs: [
-        { headerName: 'Name', field: 'name', lockPosition: true, sortable: true, filter: true,
-        editable: true, onCellValueChanged: this.onCellEdit.bind(this) },
+        {
+          headerName: 'Name', field: 'name', lockPosition: true, sortable: true, filter: true,
+          editable: true, onCellValueChanged: this.onCellEdit.bind(this)
+        },
         {
           headerName: 'CPF', field: 'cpf', lockPosition: true, sortable: true, filter: true,
           editable: true, onCellValueChanged: this.onCellEdit.bind(this),
         },
-        { 
-          headerName: 'RG', field: 'rg', lockPosition: true, editable: true, 
-        onCellValueChanged: this.onCellEdit.bind(this)
-      },
-        { headerName: 'Gender', field: 'gender', lockPosition: true,editable: true,
-         cellEditor: "agRichSelectCellEditor", cellEditorParams: {
-          cellHeight: 50,
-          values: ["Male", "Female"] }
+        {
+          headerName: 'RG', field: 'rg', lockPosition: true, editable: true,
+          onCellValueChanged: this.onCellEdit.bind(this)
         },
         {
-           headerName: 'Birthdate', field: 'birthdate', lockPosition: true, sortable: true, editable: true, cellEditor: "datePicker",
-        onCellValueChanged: this.onCellEdit.bind(this) , 
-      },
+          headerName: 'Gender', field: 'gender', lockPosition: true, editable: true,
+          cellEditor: "agRichSelectCellEditor", cellEditorParams: {
+            cellHeight: 50,
+            values: ["Male", "Female"]
+          }
+        },
         {
-           headerName: 'Email', field: 'email', lockPosition: true, sortable: true,editable: true, 
-        onCellValueChanged: this.onCellEdit.bind(this) 
-      },
+          headerName: 'Birthdate', field: 'birthdate', lockPosition: true, sortable: true, editable: true,
+          cellRendererFramework: CellDatepickerComponent,
+          cellEditorFramework: CellDatepickerComponent,
+          valueFormatter: (data) => data.value ? moment(data.value).format('L') : null,
+        },
+        {
+          headerName: 'Email', field: 'email', lockPosition: true, sortable: true, editable: true,
+          onCellValueChanged: this.onCellEdit.bind(this)
+        },
       ],
 
       rowData: [
@@ -115,6 +172,11 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   private onCellEdit(params: any) {
     console.log(params.newValue);
     console.log(params.data);
+  }
+
+  private onRowSelected(event: SelectionChangedEvent) {
+    const { } = event;
+    debugger;
   }
 
   // private hideGridLoading() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,11 @@ import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
   styleUrls: ['./address.component.scss']
 })
 export class AddressComponent implements OnInit {
+  
+  @Output() add = new EventEmitter<any>();
+  @Input() address2: FormGroup;
+
+
   addressAdd: FormArray;
 
   address = this.fb.group ({
@@ -27,7 +32,10 @@ export class AddressComponent implements OnInit {
   }
 
   public onSubmit(): void {
+    debugger;
+
     console.log(this.address.value);
+    this.add.emit(this.address.value);
   }
 
   createAddress(): FormGroup {
