@@ -1,9 +1,9 @@
-using Backend.Core.Models;
+using Backend.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Backend.Core.Helper
+namespace Backend.Infrastructure.Helper
 {
     public class HolderProxy
     {
@@ -19,9 +19,10 @@ namespace Backend.Core.Helper
         [MaxLength(30)]
         public string IndividualEmail { get; set; }
         public DateTime IndividualBirthdate { get; set; }
-        public bool IndividualDeleted { get; set; }
-        private ICollection<Address> _address;
-        private ICollection<Telephone> _telephone;
+
+        private ICollection<Address> _address { get; set; }
+
+        private ICollection<Telephone> _telephone { get; set; }
 
 
 
