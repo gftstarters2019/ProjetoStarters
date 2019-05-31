@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { GenericValidator } from '../Validations/GenericValidator';
@@ -28,6 +28,8 @@ export class BeneficiaryVehicleComponent implements OnInit {
     {value: '8', name: 'Green'},
     {value: '9', name: 'Other'}
   ];
+
+  @Output() messageVehicleEvent = new EventEmitter<any>();
   
   vehicleCreateForm= this.formBuilder.group({
     vehicleBrand: new FormControl('', Validators.pattern(GenericValidator.regexName)),
@@ -48,7 +50,7 @@ export class BeneficiaryVehicleComponent implements OnInit {
   ngOnInit() {
   }
 
-  response:Object;
+  response:any;
 
   public vehiclePost(): void{
     
@@ -60,5 +62,9 @@ export class BeneficiaryVehicleComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle', form, httpOptions)
     .subscribe(data => {this.response = data});
+    
+    if(this.response != null){
+      this.messageVehicleEvent.emit(this.response.beneficiaryId);
+    }
   }
 }
