@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AddressComponent } from './address/address.component';
@@ -12,12 +13,14 @@ import { MaterialModule } from './material.module';
 
 import { ContractComponent } from './contract/contract.component';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
-import { ContractHolderListComponent } from './contract-holder-list/contract-holder-list.component';
-import { MatTableModule, MatPaginatorModule, MatSortModule} from '@angular/material';
 import { ContractListComponent } from './contract-list/contract-list.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
+
+import { TableListComponent } from './table-list/table-list.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { CellDatepickerComponent } from './cell-datepicker/cell-datepicker.component';
 import { BeneficiaryIndividualComponent } from './beneficiary-individual/beneficiary-individual.component';
 import { BeneficiaryPetComponent } from './beneficiary-pet/beneficiary-pet.component';
 import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-vehicle.component';
@@ -33,12 +36,12 @@ import { TelephoneComponent } from './telephone/telephone.component';
     ContractHolderComponent,
     AddressComponent,
     ContractComponent,
-    ContractHolderListComponent,
-    ContractHolderListComponent,
     ContractListComponent,
     BeneficiaryListComponent,
     SidebarComponent,
     BeneficiarylistAddComponent,
+    TableListComponent,
+    CellDatepickerComponent,
     BeneficiaryIndividualComponent,
     BeneficiaryPetComponent,
     BeneficiaryVehicleComponent,
@@ -51,11 +54,13 @@ import { TelephoneComponent } from './telephone/telephone.component';
     FormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    MatDialogModule,
     MaterialModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AgGridModule.withComponents([CellDatepickerComponent])
   ],
-  exports: [
+  exports: [  
     MaterialModule
   ],
   providers: [],
