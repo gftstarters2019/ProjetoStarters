@@ -9,7 +9,7 @@
             Beneficiaries API
             </summary>
         </member>
-        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.#ctor(Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.Beneficiary},Backend.Infrastructure.Repositories.Contracts.IWriteRepository{Backend.Core.Models.Beneficiary})">
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.#ctor(Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.Beneficiary},Backend.Infrastructure.Repositories.Contracts.IWriteRepository{Backend.Core.Models.Beneficiary},Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.ContractBeneficiary})">
             <summary>
             BeneficiaryController constructor
             </summary>
@@ -112,7 +112,7 @@
         </member>
         <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.DeleteBeneficiary(System.Guid)">
             <summary>
-            Deletes a beneficiary
+            Soft Deletes a beneficiary
             </summary>
             <param name="id">BeneficiaryId to be deleted</param>
             <returns>Deleted beneficiary</returns>
