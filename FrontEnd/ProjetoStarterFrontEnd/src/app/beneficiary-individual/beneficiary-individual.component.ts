@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class BeneficiaryIndividualComponent implements OnInit {
 
+  @Output() messageIndividualEvent = new EventEmitter<any>();
 
   individualCreateForm= this.formBuilder.group({
     individualName: new FormControl('', Validators.required),
@@ -23,7 +24,7 @@ export class BeneficiaryIndividualComponent implements OnInit {
   ngOnInit() {
   }
 
-  response:Object;
+  response:any;
 
   public individualPost(): void{
     
@@ -35,5 +36,9 @@ export class BeneficiaryIndividualComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual', form, httpOptions)
     .subscribe(data => {this.response = data});
+
+    if(this.response != null){
+      this.messageIndividualEvent.emit(this.response.beneficiaryId);
+    }
   }
 }

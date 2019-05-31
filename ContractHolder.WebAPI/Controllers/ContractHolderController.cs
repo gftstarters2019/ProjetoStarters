@@ -71,7 +71,7 @@ namespace ContractHolder.WebAPI.Controllers
 
             if (contractHolder != null)
             {
-                contractHolder.BeneficiaryDeleted = !contractHolder.BeneficiaryDeleted;
+                contractHolder.IsDeleted = !contractHolder.IsDeleted;
                 return Ok(_contractHolderWriteRepository.Update(contractHolder));
             }
             else return NotFound(contractHolder);

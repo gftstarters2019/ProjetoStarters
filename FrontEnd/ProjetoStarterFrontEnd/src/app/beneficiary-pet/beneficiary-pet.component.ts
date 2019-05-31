@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -22,6 +22,8 @@ export class BeneficiaryPetComponent implements OnInit {
     {value: '4', name: 'Ara chloropterus'},
   ];
 
+  @Output() messagePetEvent = new EventEmitter<any>();
+
   petCreateForm= this.formBuilder.group({
     petName: new FormControl('', Validators.required),
     petBirthdate: new FormControl('', Validators.required),
@@ -34,7 +36,7 @@ export class BeneficiaryPetComponent implements OnInit {
   ngOnInit() {
   }
 
-  response:Object;
+  response:any;
   public petPost(): void{
     
     let form = JSON.stringify(this.petCreateForm.value);
@@ -45,5 +47,9 @@ export class BeneficiaryPetComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet', form, httpOptions)
     .subscribe(data => {this.response = data});
+
+    if(this.response != null){
+      this.messagePetEvent.emit(this.response.beneficiaryId);
+    }
   }
 }

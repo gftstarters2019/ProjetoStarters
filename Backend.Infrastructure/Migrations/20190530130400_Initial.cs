@@ -28,6 +28,52 @@ namespace Backend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Beneficiaries",
+                columns: table => new
+                {
+                    BeneficiaryId = table.Column<Guid>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    IndividualId = table.Column<Guid>(nullable: true),
+                    IndividualName = table.Column<string>(maxLength: 50, nullable: true),
+                    IndividualCPF = table.Column<string>(maxLength: 11, nullable: true),
+                    IndividualRG = table.Column<string>(maxLength: 9, nullable: true),
+                    IndividualEmail = table.Column<string>(maxLength: 30, nullable: true),
+                    IndividualBirthdate = table.Column<DateTime>(nullable: true),
+                    MobileDeviceId = table.Column<Guid>(nullable: true),
+                    MobileDeviceBrand = table.Column<string>(maxLength: 15, nullable: true),
+                    MobileDeviceModel = table.Column<string>(maxLength: 20, nullable: true),
+                    MobileDeviceSerialNumber = table.Column<string>(maxLength: 40, nullable: true),
+                    MobileDeviceManufactoringYear = table.Column<DateTime>(nullable: true),
+                    MobileDeviceType = table.Column<int>(nullable: true),
+                    MobileDeviceInvoiceValue = table.Column<double>(nullable: true),
+                    PetId = table.Column<Guid>(nullable: true),
+                    PetName = table.Column<string>(maxLength: 40, nullable: true),
+                    PetSpecies = table.Column<int>(nullable: true),
+                    PetBreed = table.Column<string>(maxLength: 30, nullable: true),
+                    PetBirthdate = table.Column<DateTime>(nullable: true),
+                    RealtyId = table.Column<Guid>(nullable: true),
+                    RealtyMunicipalRegistration = table.Column<string>(maxLength: 50, nullable: true),
+                    RealtyConstructionDate = table.Column<DateTime>(nullable: true),
+                    RealtySaleValue = table.Column<double>(nullable: true),
+                    RealtyMarketValue = table.Column<double>(nullable: true),
+                    VehicleId = table.Column<Guid>(nullable: true),
+                    VehicleBrand = table.Column<string>(nullable: true),
+                    VehicleModel = table.Column<string>(nullable: true),
+                    VehicleManufactoringYear = table.Column<DateTime>(nullable: true),
+                    VehicleColor = table.Column<int>(nullable: true),
+                    VehicleModelYear = table.Column<DateTime>(nullable: true),
+                    VehicleChassisNumber = table.Column<string>(nullable: true),
+                    VehicleCurrentMileage = table.Column<int>(nullable: true),
+                    VehicleCurrentFipeValue = table.Column<double>(nullable: true),
+                    VehicleDoneInspection = table.Column<bool>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Beneficiaries", x => x.BeneficiaryId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contracts",
                 columns: table => new
                 {
@@ -35,7 +81,6 @@ namespace Backend.Infrastructure.Migrations
                     ContractType = table.Column<int>(nullable: false),
                     ContractCategory = table.Column<int>(nullable: false),
                     ContractExpiryDate = table.Column<DateTime>(nullable: false),
-                    ContractInitialDate = table.Column<DateTime>(nullable: true),
                     ContractDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -57,112 +102,27 @@ namespace Backend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Beneficiaries",
+                name: "Beneficiary_Address",
                 columns: table => new
                 {
-                    BeneficiaryId = table.Column<Guid>(nullable: false),
-                    BeneficiaryDeleted = table.Column<bool>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
-                    IndividualId = table.Column<Guid>(nullable: true),
-                    IndividualName = table.Column<string>(maxLength: 50, nullable: true),
-                    IndividualCPF = table.Column<string>(maxLength: 11, nullable: true),
-                    IndividualRG = table.Column<string>(maxLength: 9, nullable: true),
-                    IndividualEmail = table.Column<string>(maxLength: 30, nullable: true),
-                    IndividualBirthdate = table.Column<DateTime>(nullable: true),
-                    AddressId = table.Column<Guid>(nullable: true),
-                    MobileDeviceId = table.Column<Guid>(nullable: true),
-                    MobileDeviceBrand = table.Column<string>(maxLength: 15, nullable: true),
-                    MobileDeviceModel = table.Column<string>(maxLength: 20, nullable: true),
-                    MobileDeviceSerialNumber = table.Column<string>(maxLength: 40, nullable: true),
-                    MobileDeviceManufactoringYear = table.Column<DateTime>(nullable: true),
-                    MobileDeviceType = table.Column<int>(nullable: true),
-                    MobileDeviceInvoiceValue = table.Column<double>(nullable: true),
-                    PetId = table.Column<Guid>(nullable: true),
-                    PetName = table.Column<string>(maxLength: 40, nullable: true),
-                    PetSpecies = table.Column<string>(maxLength: 25, nullable: true),
-                    PetBreed = table.Column<string>(maxLength: 30, nullable: true),
-                    PetBirthdate = table.Column<DateTime>(nullable: true),
-                    RealtyId = table.Column<Guid>(nullable: true),
-                    RealtyAddressAddressId = table.Column<Guid>(nullable: true),
-                    RealtyMunicipalRegistration = table.Column<string>(maxLength: 50, nullable: true),
-                    RealtyConstructionDate = table.Column<DateTime>(nullable: true),
-                    RealtySaleValue = table.Column<double>(nullable: true),
-                    RealtyMarketValue = table.Column<double>(nullable: true),
-                    VehicleId = table.Column<Guid>(nullable: true),
-                    VehicleBrand = table.Column<string>(nullable: true),
-                    VehicleModel = table.Column<string>(nullable: true),
-                    VehicleManufactoringYear = table.Column<DateTime>(nullable: true),
-                    VehicleColor = table.Column<int>(nullable: true),
-                    VehicleModelYear = table.Column<DateTime>(nullable: true),
-                    VehicleChassisNumber = table.Column<string>(nullable: true),
-                    VehicleCurrentMileage = table.Column<short>(nullable: true),
-                    VehicleCurrentFipeValue = table.Column<double>(nullable: true),
-                    VehicleDoneInspection = table.Column<bool>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Beneficiaries", x => x.BeneficiaryId);
-                    table.ForeignKey(
-                        name: "FK_Beneficiaries_Addresses_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Addresses",
-                        principalColumn: "AddressId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Beneficiaries_Addresses_RealtyAddressAddressId",
-                        column: x => x.RealtyAddressAddressId,
-                        principalTable: "Addresses",
-                        principalColumn: "AddressId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Individual_Address",
-                columns: table => new
-                {
-                    IndividualAddressId = table.Column<Guid>(nullable: false),
+                    BeneficiaryAddressId = table.Column<Guid>(nullable: false),
                     AddressId = table.Column<Guid>(nullable: false),
-                    IndividualId = table.Column<Guid>(nullable: false)
+                    BeneficiaryId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Individual_Address", x => x.IndividualAddressId);
+                    table.PrimaryKey("PK_Beneficiary_Address", x => x.BeneficiaryAddressId);
                     table.ForeignKey(
-                        name: "FK_Individual_Address_Addresses_AddressId",
+                        name: "FK_Beneficiary_Address_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "AddressId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Individual_Address_Beneficiaries_IndividualId",
-                        column: x => x.IndividualId,
+                        name: "FK_Beneficiary_Address_Beneficiaries_BeneficiaryId",
+                        column: x => x.BeneficiaryId,
                         principalTable: "Beneficiaries",
                         principalColumn: "BeneficiaryId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Individual_Telephone",
-                columns: table => new
-                {
-                    IndividualTelephoneId = table.Column<Guid>(nullable: false),
-                    TelephoneId = table.Column<Guid>(nullable: false),
-                    IndividualId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Individual_Telephone", x => x.IndividualTelephoneId);
-                    table.ForeignKey(
-                        name: "FK_Individual_Telephone_Beneficiaries_IndividualId",
-                        column: x => x.IndividualId,
-                        principalTable: "Beneficiaries",
-                        principalColumn: "BeneficiaryId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Individual_Telephone_Telephones_TelephoneId",
-                        column: x => x.TelephoneId,
-                        principalTable: "Telephones",
-                        principalColumn: "TelephoneId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -193,11 +153,36 @@ namespace Backend.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Individual_Telephone",
+                columns: table => new
+                {
+                    BeneficiaryTelephoneId = table.Column<Guid>(nullable: false),
+                    TelephoneId = table.Column<Guid>(nullable: false),
+                    BeneficiaryId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Individual_Telephone", x => x.BeneficiaryTelephoneId);
+                    table.ForeignKey(
+                        name: "FK_Individual_Telephone_Beneficiaries_BeneficiaryId",
+                        column: x => x.BeneficiaryId,
+                        principalTable: "Beneficiaries",
+                        principalColumn: "BeneficiaryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Individual_Telephone_Telephones_TelephoneId",
+                        column: x => x.TelephoneId,
+                        principalTable: "Telephones",
+                        principalColumn: "TelephoneId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contract_Beneficiary",
                 columns: table => new
                 {
                     ContractBeneficiaryId = table.Column<Guid>(nullable: false),
-                    SignedContractId = table.Column<Guid>(nullable: true),
+                    SignedContractId = table.Column<Guid>(nullable: false),
                     BeneficiaryId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -214,18 +199,8 @@ namespace Backend.Infrastructure.Migrations
                         column: x => x.SignedContractId,
                         principalTable: "SignedContracts",
                         principalColumn: "ContractSignedId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Beneficiaries_AddressId",
-                table: "Beneficiaries",
-                column: "AddressId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Beneficiaries_RealtyAddressAddressId",
-                table: "Beneficiaries",
-                column: "RealtyAddressAddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contract_Beneficiary_BeneficiaryId",
@@ -238,19 +213,19 @@ namespace Backend.Infrastructure.Migrations
                 column: "SignedContractId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Individual_Address_AddressId",
-                table: "Individual_Address",
+                name: "IX_Beneficiary_Address_AddressId",
+                table: "Beneficiary_Address",
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Individual_Address_IndividualId",
-                table: "Individual_Address",
-                column: "IndividualId");
+                name: "IX_Beneficiary_Address_BeneficiaryId",
+                table: "Beneficiary_Address",
+                column: "BeneficiaryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Individual_Telephone_IndividualId",
+                name: "IX_Individual_Telephone_BeneficiaryId",
                 table: "Individual_Telephone",
-                column: "IndividualId");
+                column: "BeneficiaryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Individual_Telephone_TelephoneId",
@@ -274,13 +249,16 @@ namespace Backend.Infrastructure.Migrations
                 name: "Contract_Beneficiary");
 
             migrationBuilder.DropTable(
-                name: "Individual_Address");
+                name: "Beneficiary_Address");
 
             migrationBuilder.DropTable(
                 name: "Individual_Telephone");
 
             migrationBuilder.DropTable(
                 name: "SignedContracts");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Telephones");
@@ -290,9 +268,6 @@ namespace Backend.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Beneficiaries");
-
-            migrationBuilder.DropTable(
-                name: "Addresses");
         }
     }
 }
