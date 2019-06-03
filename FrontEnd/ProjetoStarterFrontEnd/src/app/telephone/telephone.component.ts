@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, AbstractControl, Validator } from '@angular/forms';
 
 export interface Telephone{
   id: string,
@@ -13,11 +13,15 @@ export interface Telephone{
   styleUrls: ['./telephone.component.scss']
 })
 export class TelephoneComponent implements OnInit {
+
+  cellphoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  telephoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+
   message:string;
   telephone = this.fb.group ({
     id: [''],
-    telephoneNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(11), Validators.minLength(10)]],
-    telephoneType: ['', Validators.required]
+    telephoneNumber: ['', this.validador],
+    telephoneType: ''
   });
 
   constructor(private fb: FormBuilder) { }
@@ -29,4 +33,21 @@ export class TelephoneComponent implements OnInit {
     this.message=this.telephone.get(['id']).value;
   }
 
+  chooseTelephone(): boolean {
+    if(this.telephone.value.telephoneType == 'Cellphone')
+      return true;
+    return false;
+  }
+
+  validador(control: AbstractControl): {[key: string]: boolean} | null {
+    let number = control.value;
+
+    number = number.replace('(', '');
+    number = number.replace(')', '');
+    number = number.replace('-', '');
+    
+    if(number.length < 10)
+      return {"NumberInvalid": true};
+    return null;
+  }
 }
