@@ -1,6 +1,6 @@
 
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, AbstractControl, FormArray } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Address{
@@ -39,6 +39,7 @@ export class AddressComponent implements OnInit {
     country: ['', GenericValidator.regexName],
     zipCode: ['', Validators.required]
   });
+  message: any;
 
 
   constructor(private fb: FormBuilder) { }

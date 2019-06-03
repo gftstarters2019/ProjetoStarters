@@ -55,6 +55,7 @@ import { TextMaskModule } from 'angular2-text-mask';
     AppRoutingModule,
     MatDialogModule,
     MaterialModule,
+    AgGridModule,
     ReactiveFormsModule,
     HttpClientModule,
 
@@ -62,13 +63,9 @@ import { TextMaskModule } from 'angular2-text-mask';
   ],
   exports: [
     MaterialModule,
-
-    AgGridModule.withComponents([CellDatepickerComponent])
+   AgGridModule,
   ],
-  exports: [  
-    MaterialModule
-
-  ],
+  
   providers: [],
   bootstrap: [AppComponent]
 })
