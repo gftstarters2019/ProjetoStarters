@@ -27,8 +27,7 @@ import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-v
 import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-realty.component';
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 import { TelephoneComponent } from './telephone/telephone.component';
-
-
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   declarations: [
@@ -47,7 +46,7 @@ import { TelephoneComponent } from './telephone/telephone.component';
     BeneficiaryVehicleComponent,
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
-    TelephoneComponent,
+    TelephoneComponent
   ],
   imports: [
     BrowserModule,
@@ -58,10 +57,17 @@ import { TelephoneComponent } from './telephone/telephone.component';
     MaterialModule,
     ReactiveFormsModule,
     HttpClientModule,
+
+    TextMaskModule
+  ],
+  exports: [
+    MaterialModule,
+
     AgGridModule.withComponents([CellDatepickerComponent])
   ],
   exports: [  
     MaterialModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

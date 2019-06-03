@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, Validators, FormArray, FormGroup , AbstractControl } from '@angular/forms';
 
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Address{
   id : string,
@@ -29,14 +30,14 @@ export class AddressComponent implements OnInit {
 
   address = this.fb.group ({
     id: [''],
-    street: ['', Validators.required],
+    street: ['', GenericValidator.regexName],
     type: ['', Validators.required],
-    number: ['', Validators.required],
-    state: ['', Validators.required],
-    neighborhood: [ '', Validators.required],
-    country: ['', Validators.required],
-    zipCode: ['', Validators.required],
-    addressAdd: this.fb.array([])
+
+    number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
+    state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2)]],
+    neighborhood: [ '', GenericValidator.regexName],
+    country: ['', GenericValidator.regexName],
+    zipCode: ['', Validators.required]
   });
 
 

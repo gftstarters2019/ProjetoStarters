@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 @Component({
   selector: 'app-beneficiary-individual',
@@ -11,11 +12,14 @@ export class BeneficiaryIndividualComponent implements OnInit {
 
   @Output() messageIndividualEvent = new EventEmitter<any>();
 
+  public cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+  public rgMask= [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/]
+
   individualCreateForm= this.formBuilder.group({
-    individualName: new FormControl('', Validators.required),
-    individualCpf: new FormControl('', Validators.required),
+    individualName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    individualCpf: new FormControl('', GenericValidator.isValidCpf()),
     individualRg: new FormControl('', Validators.required),
-    individualBirthdate: new FormControl('', Validators.required),
+    individualBirthdate: new FormControl('', GenericValidator.dateValidation()),
     individualEmail: new FormControl('', Validators.required)
   });
 

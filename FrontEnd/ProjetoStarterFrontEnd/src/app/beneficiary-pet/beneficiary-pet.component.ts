@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Species {
   value: string;
@@ -25,10 +26,10 @@ export class BeneficiaryPetComponent implements OnInit {
   @Output() messagePetEvent = new EventEmitter<any>();
 
   petCreateForm= this.formBuilder.group({
-    petName: new FormControl('', Validators.required),
-    petBirthdate: new FormControl('', Validators.required),
+    petName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    petBirthdate: new FormControl('', GenericValidator.dateValidation()),
     petSpecies: new FormControl('', Validators.required),
-    petBreed: new FormControl('', Validators.required)
+    petBreed: new FormControl('', Validators.pattern(GenericValidator.regexName))
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
