@@ -1,9 +1,10 @@
-﻿using Backend.Core;
-using Backend.Core.Models;
+﻿using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
@@ -34,9 +35,9 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets all contract holders registered.
+        /// Gets all Contract Holders
         /// </summary>
-        /// <returns></returns>
+        /// <returns>All Contract Holders</returns>
         [HttpGet]
         public IActionResult ContractHolders()
         {
@@ -44,10 +45,10 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Get a specific contract holder.
+        /// Gets a single Contract Holder
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">GUID of the chosen Contract Holder</param>
+        /// <returns>Chosen Contract Holder</returns>
         [HttpGet("{id}")]
         public IActionResult ContractHolder(Guid id)
         {
@@ -56,10 +57,10 @@ namespace ContractHolder.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Creates a new Contract Holder in the database
+        /// Creates a new Contract Holder
         /// </summary>
-        /// <param name="individual"></param>
-        /// <returns></returns>
+        /// <param name="individual">Contract Hodler to be created</param>
+        /// <returns>Created Contract Holder</returns>
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] Individual individual)
         {
@@ -69,16 +70,16 @@ namespace ContractHolder.WebAPI.Controllers
                 return StatusCode(403);
 
             _contractHolderWriteRepository.Add(individual);
-
+            SendWelcomeEmail(individual);
             return Ok(individual);
         }
 
         /// <summary>
-        /// Updates an Contract Holder in the database
+        /// Updates a Contract Holder
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="individual"></param>
-        /// <returns></returns>
+        /// <param name="id">GUID of the chosen Contract Holder</param>
+        /// <param name="individual">Updated Contract Holder object</param>
+        /// <returns>Updated Contract Holder</returns>
         [HttpPut("{id}")]
         public IActionResult UpdateContractHolder(Guid id, [FromBody] Individual individual)
         {
@@ -207,5 +208,16 @@ namespace ContractHolder.WebAPI.Controllers
         //    return true;
         //}
         #endregion Validations
+
+        /// <summary>
+        /// Sends welcome email to Contract Holder
+        /// </summary>
+        /// <param name="individual">Individual to send the email</param>
+        public void SendWelcomeEmail(Individual individual)
+        {
+            new EmailService().SendEmail("Welcome!",
+                $"Welcome {individual.IndividualName}!",
+                individual.IndividualEmail);
+        }
     }
 }
