@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ValidatorCpfComponent } from './validator-cpf.component';
+import { DeviceMobileListComponent } from './device-mobile-list.component';
 
-describe('ValidatorCpfComponent', () => {
-  let component: ValidatorCpfComponent;
-  let fixture: ComponentFixture<ValidatorCpfComponent>;
+describe('DeviceMobileListComponent', () => {
+  let component: DeviceMobileListComponent;
+  let fixture: ComponentFixture<DeviceMobileListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ValidatorCpfComponent ]
+      declarations: [ DeviceMobileListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ValidatorCpfComponent);
+    fixture = TestBed.createComponent(DeviceMobileListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

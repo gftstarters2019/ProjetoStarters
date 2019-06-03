@@ -9,7 +9,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AddressComponent } from './address/address.component';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './material/material.module';
 
 import { ContractComponent } from './contract/contract.component';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
@@ -28,6 +28,10 @@ import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-rea
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
+import { PetListComponent } from './pet-list/pet-list.component';
+import { ImobileListComponent } from './imobile-list/imobile-list.component';
+import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
+import { DeviceMobileListComponent } from './device-mobile-list/device-mobile-list.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +50,11 @@ import { TextMaskModule } from 'angular2-text-mask';
     BeneficiaryVehicleComponent,
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
-    TelephoneComponent
+    TelephoneComponent,
+    PetListComponent,
+    ImobileListComponent,
+    VehicleListComponent,
+    DeviceMobileListComponent
   ],
   imports: [
     BrowserModule,
