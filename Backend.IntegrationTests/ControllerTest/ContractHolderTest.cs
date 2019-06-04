@@ -4,6 +4,7 @@ using Backend.IntegrationTests.ControllerTest;
 using ContractHolder.WebAPI;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -35,8 +36,9 @@ namespace IntegrationTests
             Individual individual = new Individual();
             individual.IndividualName = "Elwing";
             individual.IndividualEmail = "elwing@email.com";
-            individual.IndividualCPF = "123456789";
-            individual.IndividualRG = "123456789";
+            individual.IndividualCPF = "36449769025";
+            individual.IndividualRG = "405589219";
+            individual.IndividualBirthdate = new DateTime(2017, 1, 18);
 
             //act
             var jsonContent = JsonConvert.SerializeObject(individual);
@@ -57,6 +59,7 @@ namespace IntegrationTests
             Assert.AreEqual(individual.IndividualEmail, getApiResponse.IndividualEmail);
             Assert.AreEqual(individual.IndividualCPF, getApiResponse.IndividualCPF);
             Assert.AreEqual(individual.IndividualRG, getApiResponse.IndividualRG);
+            Assert.AreEqual(individual.IndividualBirthdate, getApiResponse.IndividualBirthdate);
         }
 
         [Test]
@@ -67,8 +70,9 @@ namespace IntegrationTests
             Individual individual = new Individual();
             individual.IndividualName = "Feanor";
             individual.IndividualEmail = "feanor@email.com";
-            individual.IndividualCPF = "9876543210";
-            individual.IndividualRG = "9876543210";
+            individual.IndividualCPF = "58302207098";
+            individual.IndividualRG = "244025769";
+            individual.IndividualBirthdate = new DateTime(2017, 1, 18);
 
             //act
             var jsonContent = JsonConvert.SerializeObject(individual);
@@ -88,6 +92,7 @@ namespace IntegrationTests
             Assert.AreEqual(individual.IndividualEmail, apiResponse.IndividualEmail);
             Assert.AreEqual(individual.IndividualCPF, apiResponse.IndividualCPF);
             Assert.AreEqual(individual.IndividualRG, apiResponse.IndividualRG);
+            Assert.AreEqual(individual.IndividualBirthdate, apiResponse.IndividualBirthdate);
         }
 
         [Test]
@@ -100,6 +105,8 @@ namespace IntegrationTests
             individual.IndividualEmail = "earendil@email.com";
             individual.IndividualCPF = "35895879039";
             individual.IndividualRG = "310291136";
+            individual.IndividualBirthdate = new DateTime(2017, 1, 18);
+
 
             //act
 
@@ -131,6 +138,7 @@ namespace IntegrationTests
             Assert.AreEqual(putApiResponse.IndividualEmail, getApiResponse.IndividualEmail);
             Assert.AreEqual(putApiResponse.IndividualCPF, getApiResponse.IndividualCPF);
             Assert.AreEqual(putApiResponse.IndividualRG, getApiResponse.IndividualRG);
+            Assert.AreEqual(putApiResponse.IndividualBirthdate, getApiResponse.IndividualBirthdate);
         }
 
         [Test]
@@ -143,6 +151,7 @@ namespace IntegrationTests
             individual.IndividualEmail = "manwe@email.com";
             individual.IndividualCPF = "83094604064";
             individual.IndividualRG = "485936781";
+            individual.IndividualBirthdate = new DateTime(2017, 1, 18);
 
             //act
             var jsonContent = JsonConvert.SerializeObject(individual);
@@ -164,6 +173,7 @@ namespace IntegrationTests
             Assert.AreEqual(individual.IndividualEmail, deleteApiResponse.IndividualEmail);
             Assert.AreEqual(individual.IndividualCPF, deleteApiResponse.IndividualCPF);
             Assert.AreEqual(individual.IndividualRG, deleteApiResponse.IndividualRG);
+            Assert.AreEqual(individual.IndividualBirthdate, deleteApiResponse.IndividualBirthdate);
         }
     }
 }
