@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material';
 
 export interface Type {
   value: string;
@@ -9,14 +11,10 @@ export interface Category {
   value: string;
   viewValue: string;
 }
-export interface Holder{
-  value: string;
-  viewValue:string;
-}
-export interface CPF{
-  value: string;
-  viewValue:string;
-}
+// export interface Holder{
+//   name: string;
+//   cpf: string;
+// }
 
 @Component({
   selector: 'app-contract',
@@ -28,13 +26,6 @@ export class ContractComponent implements OnInit {
   public showlist: boolean = true;
   public showlist2: boolean = true;
   beneficiaries: FormArray;
-
-  holders: Holder[]=[
-    {value: '',viewValue:''},
-  ]
-  cpfs: CPF[]=[
-    {value: '',viewValue:''},
-  ]
 
   cType:any;
 
@@ -68,9 +59,13 @@ export class ContractComponent implements OnInit {
     beneficiaries: this.fb.array([])
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private httpClient: HttpClient) { }
 
   ngOnInit() {}
+
+  // displayedColumns: string[] = ['name', 'CPF'];
+  // dataSource = new MatTableDataSource();
+
   
   public showList(): void {
     this.showlist = !this.showlist;
@@ -105,4 +100,9 @@ export class ContractComponent implements OnInit {
   receiveMessage($event) {
     this.beneficiaries.value[this.beneficiaries.length-1].id = $event;
   }
+
+  // getData() {
+  //   this.httpClient.get('minhaapi')
+  //     .subscribe((data: Holder) => this.dataSource.data.push(data));
+  // }
 }
