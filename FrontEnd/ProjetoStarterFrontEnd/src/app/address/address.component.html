@@ -1,4 +1,5 @@
-<form [formGroup]="address2" (ngSubmit)="onSubmit()">
+
+<form [formGroup]="address2" (ngSubmit)="onSubmit()" class="borderAddress">
   <div class="first-container">
 
     <mat-form-field>
@@ -34,15 +35,10 @@
       <input matInput type='Zip code' placeholder="zipCode" name="zipCode" formControlName="zipCode" required>
       <mat-error>Zip code is invalid!</mat-error>
 
-
+      
     </mat-form-field>
   </div>
   <div class="btn-address">
 
-      <!-- <button mat-raised-button color ="primary" (click)="addAddress();">
-          <mat-icon class="material-icons">add</mat-icon>    
-        </button> -->
-
-    <!-- <button color="primary" mat-raised-button>Submit</button> -->
   </div>
 </form>

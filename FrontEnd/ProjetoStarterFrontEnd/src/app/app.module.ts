@@ -20,7 +20,6 @@ import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiaryli
 
 import { TableListComponent } from './table-list/table-list.component';
 import {MatDialogModule} from '@angular/material/dialog';
-import { CellDatepickerComponent } from './cell-datepicker/cell-datepicker.component';
 import { BeneficiaryIndividualComponent } from './beneficiary-individual/beneficiary-individual.component';
 import { BeneficiaryPetComponent } from './beneficiary-pet/beneficiary-pet.component';
 import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-vehicle.component';
@@ -28,6 +27,8 @@ import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-rea
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
+import {MatCardModule} from '@angular/material/card';
+import { ValidatorCpfComponent } from './validator-cpf/validator-cpf.component';
 
 @NgModule({
   declarations: [
@@ -37,10 +38,10 @@ import { TextMaskModule } from 'angular2-text-mask';
     ContractComponent,
     ContractListComponent,
     BeneficiaryListComponent,
+    ValidatorCpfComponent,
     SidebarComponent,
     BeneficiarylistAddComponent,
     TableListComponent,
-    CellDatepickerComponent,
     BeneficiaryIndividualComponent,
     BeneficiaryPetComponent,
     BeneficiaryVehicleComponent,
@@ -56,6 +57,7 @@ import { TextMaskModule } from 'angular2-text-mask';
     MatDialogModule,
     MaterialModule,
     AgGridModule,
+    MatCardModule,
     ReactiveFormsModule,
     HttpClientModule,
 
