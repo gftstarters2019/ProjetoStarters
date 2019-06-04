@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, AbstractControl, FormArray } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Address{
@@ -21,6 +21,8 @@ export interface Address{
   styleUrls: ['./address.component.scss']
 })
 export class AddressComponent implements OnInit {
+
+  zipCodeMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
   
   @Output() add = new EventEmitter<any>();
   @Input() address2: FormGroup;
@@ -30,14 +32,13 @@ export class AddressComponent implements OnInit {
 
   address = this.fb.group ({
     id: [''],
-    street: ['', GenericValidator.regexName],
+    street: ['', Validators.pattern(GenericValidator.regexName)],
     type: ['', Validators.required],
-
     number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
-    state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2)]],
-    neighborhood: [ '', GenericValidator.regexName],
-    country: ['', GenericValidator.regexName],
-    zipCode: ['', Validators.required]
+    state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
+    neighborhood: [ '', Validators.pattern(GenericValidator.regexName)],
+    country: ['', Validators.pattern(GenericValidator.regexName)],
+    zipCode: ['', this.zipCodeValidation]
   });
   message: any;
 
@@ -70,4 +71,14 @@ export class AddressComponent implements OnInit {
     }
   }
   
+  zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
+    let zipCodeNumber = control.value;
+
+    zipCodeNumber = zipCodeNumber.replace(/\D+/g, '');
+
+    if(zipCodeNumber.length < 8)
+      return {"zipCodeIsTooShort": true};
+    
+    return null;
+  }
 }
