@@ -4,15 +4,18 @@
 
   <mat-form-field style="width: 500px;">
     <input matInput placeholder="Name" name="name" maxlength="50" required formControlName="name" >
+    <mat-error>Name is invalid!</mat-error>
   </mat-form-field> <br>
 
   <mat-form-field style="width: 250px;">
-    <input matInput placeholder="RG" name="rg" maxlength="9" formControlName="rg" required>
+    <input matInput placeholder="RG" name="rg" [textMask]="{mask: rgMask}" formControlName="rg" required>
+    <mat-error>RG is invalid!</mat-error>
   </mat-form-field>
 
 
   <mat-form-field style="width: 250px;">
-    <input matInput placeholder="CPF" id="cpf" value="" name="cpf" type="text" formControlName="cpf" required maxlength="11">
+    <input matInput placeholder="CPF" id="cpf" [textMask]="{mask: cpfMask}" value="" name="cpf" type="text" formControlName="cpf" required>
+    <mat-error>CPF is invalid!</mat-error>
     <span id="cpfResponse"></span>
 
 
@@ -23,11 +26,13 @@
     <input matInput [matDatepicker]="picker" placeholder="Birthdate" id="birthdate" formControlName="birthdate" required>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
+    <mat-error>Date is invalid!</mat-error>
   </mat-form-field>
 
   <mat-form-field style="width: 350px;">
-    <input matInput placeholder="Email" name="email" maxlength="30" formControlName="email" required email>
-  </mat-form-field><br>  
+    <input matInput placeholder="Email" name="email" type= "email" maxlength="30" formControlName="email" required email>
+    <mat-error>E-mail is invalid!</mat-error>
+  </mat-form-field>
 
                               <!-- Telephone Component -->
   <div formArrayName="idTelephone" *ngFor="let telefone of contractHolder.get('idTelephone')['controls'];">
