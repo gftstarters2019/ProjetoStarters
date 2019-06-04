@@ -27,7 +27,7 @@ namespace Backend.Infrastructure.Configuration
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Individual>();
+            builder.Entity<Individual>().HasAlternateKey(i => i.IndividualCPF);
             builder.Entity<Realty>();
             builder.Entity<Pet>();
             builder.Entity<Vehicle>();

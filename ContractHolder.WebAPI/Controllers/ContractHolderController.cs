@@ -209,6 +209,7 @@ namespace ContractHolder.WebAPI.Controllers
         //}
         #endregion Validations
 
+        #region SendEmail
         /// <summary>
         /// Sends welcome email to Contract Holder
         /// </summary>
@@ -219,5 +220,6 @@ namespace ContractHolder.WebAPI.Controllers
                 $"Welcome {individual.IndividualName}!",
                 individual.IndividualEmail);
         }
+        #endregion SendEmail
     }
 }

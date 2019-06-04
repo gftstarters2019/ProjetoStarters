@@ -23,8 +23,8 @@ namespace Backend.Infrastructure.Repositories
             .FirstOrDefault(ind => ind.IndividualId == id);
 
         public IEnumerable<Individual> Get() => _db
-            .Individuals
-            .ToList();
+              .Individuals
+              .ToList();
 
         public void Add(Individual individual)
         {
