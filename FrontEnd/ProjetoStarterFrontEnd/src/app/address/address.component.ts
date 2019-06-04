@@ -2,6 +2,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
+import {MatCardModule} from '@angular/material/card';
+
 
 export interface Address{
   id : string,
@@ -25,6 +27,7 @@ export class AddressComponent implements OnInit {
   zipCodeMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
   
   @Output() add = new EventEmitter<any>();
+
   @Input() address2: FormGroup;
 
 
@@ -46,7 +49,8 @@ export class AddressComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-
+    
+    console.log(this.address.value);
   }
 
   public onSubmit(): void {
@@ -55,8 +59,12 @@ export class AddressComponent implements OnInit {
     this.add.emit(this.address.value);
 
     this.message=this.address.get(['id']).value;
+   }
 
-  }
+   emitValue() {
+     this.add.emit(this.address.value)
+     debugger;
+   }
 
   createAddress(): FormGroup {
     return this.fb.group({
