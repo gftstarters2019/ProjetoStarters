@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
+import { GenericValidator } from '../Validations/GenericValidator';
 
 @Component({
   selector: 'app-contract-holder',
@@ -10,6 +11,9 @@ import "ag-grid-enterprise";
   styleUrls: ['./contract-holder.component.scss']
 })
 export class ContractHolderComponent implements OnInit, AfterViewInit {
+
+  rgMask = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/];
+  cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/,/\d/, '-', /\d/, /\d/];
 
   private columnDefs: Array<ColDef>;
   private rowData;
@@ -45,10 +49,10 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   private setup_form() {
     this.contractHolder = this.chfb.group({
-      name: ['', Validators.required],
-      rg: ['', Validators.required],
-      cpf: ['', Validators.required],
-      birthdate: ['', Validators.required],
+      name: ['', Validators.pattern(GenericValidator.regexName)],
+      rg: ['', GenericValidator.rgLengthValidation()],
+      cpf: ['', GenericValidator.isValidCpf()],
+      birthdate: ['', GenericValidator.dateValidation()],
       email: ['', Validators.required],
   
       idAddress: this.chfb.array([
