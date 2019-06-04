@@ -1,5 +1,6 @@
 ﻿using Backend.Application.Singleton;
 using Backend.Application.ViewModels;
+using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Contracts;
 using System;
@@ -20,7 +21,10 @@ namespace Backend.Infrastructure.Repositories
         {
             if(vm != null)
             {
-                var individual = ViewModelCreator.Individual;
+                var viewModelCreator = new ViewModelCreator(vm);
+
+                // Individual
+                var individual = viewModelCreator.Individual;
 
                 if (individual == null)
                     return false;
@@ -28,21 +32,24 @@ namespace Backend.Infrastructure.Repositories
                 _db.Add(individual);
 
                 // Telephone
-                //var telephones = ViewModelCreator.Generate(vm.IndividualTelephones);
-                //if (telephones == null)
-                //    return false;
-                //if (telephones.Count > 0)
-                //{
-                //    foreach(telephone in telephones)
-                //    {
-                //        _db.Add(telephone);
-                //        _db.Add(new BeneficiaryTelephone
-                //        {
-                //            BeneficiaryId = individual.id,
-                //            TelephoneId = telephone.telephoneId
-                //        });
-                //    }
-                //}
+                var telephones = viewModelCreator.Telephone;
+                if (telephones == null)
+                    return false;
+                if (telephones.Count > 0)
+                {
+                    foreach (var telephone in telephones)
+                    {
+                        _db.Add(telephone);
+
+                        _db.Add(new BeneficiaryTelephone
+                        {
+                            BeneficiaryTelephoneId = Guid.NewGuid(),
+                            BeneficiaryId = individual.IndividualId,
+                            TelephoneId = telephone.TelephoneId
+                        });
+
+                    }
+                }
 
                 // Address
                 //var telephones = ViewModelCreator.Generate(vm.IndividualTelephones);

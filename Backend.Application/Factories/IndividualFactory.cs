@@ -58,6 +58,11 @@ namespace Backend.Application.Factories
             return true;
         }
 
+        /// <summary>
+        /// Validação de Nome
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static bool NameIsValid(string name)
         {
             //Validando se só tem letras no Nome

@@ -10,17 +10,17 @@ namespace Backend.Application.Singleton
     public class ViewModelCreator
     {
         private static Individual individual = null;
-        private static Address address = null;
-        private static Telephone telephone = null;
+        private static List<Address> addresses = null;
+        private static List<Telephone> telephones = null;
         private static ContractHolderViewModel _contractHolderViewModel = null;
         private static readonly object padlock = new object();
 
-        ViewModelCreator(ContractHolderViewModel contractHolderViewModel)
+        public ViewModelCreator(ContractHolderViewModel contractHolderViewModel)
         {
             _contractHolderViewModel = contractHolderViewModel;
         }
 
-        public static Individual Individual
+        public Individual Individual
         {
             get
             {
@@ -31,7 +31,7 @@ namespace Backend.Application.Singleton
                         if(individual == null)
                         {
                             var individualFactory = new IndividualFactory();
-                            individual = individualFactory.Create(_contractHolderViewModel);
+                            return individualFactory.Create(_contractHolderViewModel);
                         }
                     }
                 }
@@ -39,40 +39,41 @@ namespace Backend.Application.Singleton
             }
         }
 
-        public static Address Address
+        public List<Telephone> Telephone
         {
             get
             {
-                if (address == null)
+                if (telephones == null)
                 {
                     lock (padlock)
                     {
-                        if (address == null)
+                        if (telephones == null)
                         {
-                            address = new Address();
+                            var telephoneFactory = new TelephoneFactory();
+                            return telephoneFactory.CreateList(_contractHolderViewModel.IndividualTelephones);
                         }
                     }
                 }
-                return address;
+                return telephones;
             }
         }
 
-        public static Telephone Telephone
-        {
-            get
-            {
-                if (telephone == null)
-                {
-                    lock (padlock)
-                    {
-                        if (telephone == null)
-                        {
-                            telephone = new Telephone();
-                        }
-                    }
-                }
-                return telephone;
-            }
-        }
+        //public static Address Address
+        //{
+        //    get
+        //    {
+        //        if (address == null)
+        //        {
+        //            lock (padlock)
+        //            {
+        //                if (address == null)
+        //                {
+        //                    address = new Address();
+        //                }
+        //            }
+        //        }
+        //        return address;
+        //    }
+        //}
     }
 }
