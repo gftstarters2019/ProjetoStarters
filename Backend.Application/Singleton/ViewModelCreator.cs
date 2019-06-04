@@ -58,22 +58,23 @@ namespace Backend.Application.Singleton
             }
         }
 
-        //public static Address Address
-        //{
-        //    get
-        //    {
-        //        if (address == null)
-        //        {
-        //            lock (padlock)
-        //            {
-        //                if (address == null)
-        //                {
-        //                    address = new Address();
-        //                }
-        //            }
-        //        }
-        //        return address;
-        //    }
-        //}
+        public List<Address> Address
+        {
+            get
+            {
+                if (addresses == null)
+                {
+                    lock (padlock)
+                    {
+                        if (addresses == null)
+                        {
+                            var addressFactory = new AddressFactory();
+                            return addressFactory.CreateList(_contractHolderViewModel.IndividualAddresses);
+                        }
+                    }
+                }
+                return addresses;
+            }
+        }
     }
 }

@@ -52,24 +52,24 @@ namespace Backend.Infrastructure.Repositories
                 }
 
                 // Address
-                //var telephones = ViewModelCreator.Generate(vm.IndividualTelephones);
-                //if (telephones == null)
-                //    return false;
-                //if (telephones.Count > 0)
-                //{
-                //    foreach (Telephone in telephones)
-                //    {
-                //        var db_tel = _db.Add(telephone);
-                //        if (db_tel == null) return false;
+                var addresses = viewModelCreator.Address;
+                if (addresses == null)
+                    return false;
+                if (addresses.Count > 0)
+                {
+                    foreach (var address in addresses)
+                    {
+                        _db.Add(address);
 
-                //        var db_bentel = _db.Add(new BeneficiaryTelephone
-                //        {
-                //            BeneficiaryId = individual.id,
-                //            TelephoneId = telephone.telephoneId
-                //        });
-                //        if (db_bentel == null) return false;
-                //    }
-                //}
+                        _db.Add(new BeneficiaryAddress
+                        {
+                            BeneficiaryAddressId = Guid.NewGuid(),
+                            BeneficiaryId = individual.IndividualId,
+                            AddressId = address.AddressId
+                        });
+
+                    }
+                }
 
                 _db.SaveChanges();
                 return true;

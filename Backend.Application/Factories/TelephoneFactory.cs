@@ -19,6 +19,7 @@ namespace Backend.Application.Factories
                 if (Validate(tel))
                 {
                     telephone = new Telephone();
+
                     telephone.TelephoneId = Guid.NewGuid();
                     telephone.TelephoneNumber = tel.TelephoneNumber;
                     telephone.TelephoneType = tel.TelephoneType;
