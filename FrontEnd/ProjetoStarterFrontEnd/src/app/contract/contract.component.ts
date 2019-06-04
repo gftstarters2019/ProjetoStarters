@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
-
-
+import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 export interface Type {
   value: string;
@@ -20,8 +18,6 @@ export interface CPF{
   viewValue:string;
 }
 
-
-
 @Component({
   selector: 'app-contract',
   templateUrl: './contract.component.html',
@@ -31,14 +27,16 @@ export class ContractComponent implements OnInit {
 
   public showlist: boolean = true;
   public showlist2: boolean = true;
+  beneficiaries: FormArray;
 
+  holders: Holder[]=[
+    {value: '',viewValue:''},
+  ]
+  cpfs: CPF[]=[
+    {value: '',viewValue:''},
+  ]
 
-holders: Holder[]=[
-  {value: '',viewValue:''},
-]
-cpfs: CPF[]=[
-  {value: '',viewValue:''},
-]
+  cType:any;
 
   types: Type[] = [
     { value: 'Health Plan', viewValue: 'Contract Health Plan' },
@@ -66,7 +64,8 @@ cpfs: CPF[]=[
     contractCategory: ['', Validators.required],
     contractExpiryDate: ['', Validators.required],
     contractIniatalDate: ['', Validators.required],
-    contractStatus:['False', Validators.required]
+    contractStatus:['False', Validators.required],
+    beneficiaries: this.fb.array([])
   });
 
   constructor(private fb: FormBuilder) { }
@@ -80,4 +79,30 @@ cpfs: CPF[]=[
     this.showlist2 = !this.showlist2;
   }
 
+  public assignContractType(): void{
+    this.cType = this.contractform.get(['contractType']).value;
+  }
+
+  createBeneficiary(): FormGroup {
+    return this.fb.group({
+      id: ''
+    });
+  }
+
+  addBeneficiary(): void {
+    this.beneficiaries = this.contractform.get('beneficiaries') as FormArray;
+    if(this.beneficiaries.length<5){
+      this.beneficiaries.push(this.createBeneficiary());
+    }
+  }
+
+  clearBeneficiary(): void{
+    this.beneficiaries.controls.pop();
+    
+    this.cType = '';
+  }
+
+  receiveMessage($event) {
+    this.beneficiaries.value[this.beneficiaries.length-1].id = $event;
+  }
 }

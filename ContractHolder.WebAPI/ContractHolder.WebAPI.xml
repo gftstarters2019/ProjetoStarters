@@ -4,5 +4,92 @@
         <name>ContractHolder.WebAPI</name>
     </assembly>
     <members>
+        <member name="T:ContractHolder.WebAPI.Controllers.AddressController">
+            <summary>
+            Address Controller
+            </summary>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.AddressController.#ctor(Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.Address},Backend.Infrastructure.Repositories.Contracts.IWriteRepository{Backend.Core.Models.Address})">
+            <summary>
+            AddressController constructor
+            </summary>
+            <param name="addressReadoOnlyRepository"></param>
+            <param name="addressWriteRepository"></param>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.AddressController.Addresses">
+            <summary>
+            Gets all addresses registered
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.AddressController.Address(System.Guid)">
+            <summary>
+            Get a specific address
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.AddressController.PostAddress(Backend.Core.Models.Address)">
+            <summary>
+            Creates a new Address in the database
+            </summary>
+            <param name="address"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.AddressController.UpdateAddress(System.Guid,Backend.Core.Models.Address)">
+            <summary>
+            Updates a Address in the database
+            </summary>
+            <param name="id"></param>
+            <param name="address"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.DeleteContractHolder(System.Guid)">
+            <summary>
+            Soft deletes a Contract Holder from the DB
+            </summary>
+            <param name="id">GUID of the Contract Holder</param>
+            <returns>Deleted Contract Holder</returns>
+        </member>
+        <member name="T:ContractHolder.WebAPI.Controllers.TelephoneController">
+            <summary>
+            Telephone Controller
+            </summary>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.#ctor(Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.Telephone},Backend.Infrastructure.Repositories.Contracts.IWriteRepository{Backend.Core.Models.Telephone})">
+            <summary>
+            TelephoneController constructor
+            </summary>
+            <param name="telephoneReadoOnlyRepository"></param>
+            <param name="telephoneWriteRepository"></param>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.Telephones">
+            <summary>
+            Gets all telephones registered
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.Telephone(System.Guid)">
+            <summary>
+            Get a specific telephone
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.PostTelephone(Backend.Core.Models.Telephone)">
+            <summary>
+            Creates a new Telephone in the database
+            </summary>
+            <param name="telephone"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.UpdateTelephone(System.Guid,Backend.Core.Models.Telephone)">
+            <summary>
+            Updates a Telephone in the database
+            </summary>
+            <param name="id"></param>
+            <param name="telephone"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>
