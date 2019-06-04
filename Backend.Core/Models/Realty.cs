@@ -6,8 +6,6 @@ namespace Backend.Core.Models
     public class Realty : Beneficiary
     {
         public Guid RealtyId { get; set; }
-        public Guid AddressId { get; set; }
-        public Address RealtyAddress { get; set; }
         [MaxLength(50)]
         public string RealtyMunicipalRegistration { get; set; }
         public DateTime RealtyConstructionDate { get; set; }

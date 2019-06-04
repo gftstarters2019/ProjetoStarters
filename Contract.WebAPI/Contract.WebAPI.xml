@@ -4,5 +4,12 @@
         <name>Contract.WebAPI</name>
     </assembly>
     <members>
+        <member name="M:Contract.WebAPI.Controllers.ContractController.ContractIsValid(Backend.Core.Models.Contract)">
+            <summary>
+            Verifies if Contract is valid
+            </summary>
+            <param name="contract">Contract to be verified</param>
+            <returns>If Contract is valid</returns>
+        </member>
     </members>
 </doc>
