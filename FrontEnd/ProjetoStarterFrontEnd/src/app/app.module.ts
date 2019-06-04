@@ -20,7 +20,6 @@ import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiaryli
 
 import { TableListComponent } from './table-list/table-list.component';
 import {MatDialogModule} from '@angular/material/dialog';
-import { CellDatepickerComponent } from './cell-datepicker/cell-datepicker.component';
 import { BeneficiaryIndividualComponent } from './beneficiary-individual/beneficiary-individual.component';
 import { BeneficiaryPetComponent } from './beneficiary-pet/beneficiary-pet.component';
 import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-vehicle.component';
@@ -40,7 +39,6 @@ import { TextMaskModule } from 'angular2-text-mask';
     SidebarComponent,
     BeneficiarylistAddComponent,
     TableListComponent,
-    CellDatepickerComponent,
     BeneficiaryIndividualComponent,
     BeneficiaryPetComponent,
     BeneficiaryVehicleComponent,
