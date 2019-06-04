@@ -1,8 +1,10 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
+import { GenericValidator } from '../Validations/GenericValidator';
+
 
 @Component({
   selector: 'app-contract-holder',
@@ -11,6 +13,9 @@ import "ag-grid-enterprise";
 })
 export class ContractHolderComponent implements OnInit, AfterViewInit {
 
+  rgMask = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/];
+  cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/,/\d/, '-', /\d/, /\d/];
+
   private columnDefs: Array<ColDef>;
   private rowData;
   private paginationPageSize;
@@ -18,14 +23,16 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   gridApi;
   gridColumApi;
 
+  
 
   gridOptions: GridOptions;
   load_failure: boolean;
   contractHolder: FormGroup;
+  addressForm: FormArray;
 
   showList: boolean = true;
   showAddresslist: boolean = false;
-
+  showTelephonelist: boolean = false;
   constructor(private chfb: FormBuilder, private http: HttpClient) {
 
   }
@@ -45,29 +52,24 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   private setup_form() {
     this.contractHolder = this.chfb.group({
-      name: ['', Validators.required],
-      rg: ['', Validators.required],
-      cpf: ['', Validators.required],
-      birthdate: ['', Validators.required],
+      name: ['', Validators.pattern(GenericValidator.regexName)],
+      rg: ['', GenericValidator.rgLengthValidation()],
+      cpf: ['', GenericValidator.isValidCpf()],
+      birthdate: ['', GenericValidator.dateValidation()],
       email: ['', Validators.required],
-  
+      
+      idTelephone: this.chfb.array([
+          this.chfb.group({
+          })
+        ]),
+
       idAddress: this.chfb.array([
         this.chfb.group({
-          street: ['', Validators.required],
-          type: ['', Validators.required],
-          number: ['', Validators.required],
-          state: ['', Validators.required],
-          neighborhood: ['', Validators.required],
-          country: ['', Validators.required],
-          zipCode: ['', Validators.required],
         })
       ]),
   
     });
   }
-
-
-
   onSubmit(): void {
     console.log(this.contractHolder.value);
 
@@ -75,7 +77,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
    let httpOptions = {headers: new HttpHeaders ({
      'Content-Type': 'application/json'
    })};
-   this.http.post('https://contractholderwebapi.azurewebsites.net/api/ContractHolder', json,httpOptions).subscribe(data => console.log(data));
+   this.http.post('https://httpbin.org/post', json,httpOptions).subscribe(data => console.log(data));
    
   }
   
@@ -86,34 +88,48 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   showAddress() {
     const addressControl = this.contractHolder.controls.idAddress as FormArray;
-    const hasMax = addressControl.length >= 5;
+    const hasMax = addressControl.length >= 3; 
 
-    if (!hasMax) {
+    if (!hasMax) {      
       addressControl.push(this.chfb.group({
-        street: ['', Validators.required],
+        street: ['', GenericValidator.regexName],
         type: ['', Validators.required],
-        number: ['', Validators.required],
-        state: ['', Validators.required],
-        neighborhood: ['', Validators.required],
-        country: ['', Validators.required],
-        zipCode: ['', Validators.required],
+        number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
+        state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2)]],
+        neighborhood: [ '', GenericValidator.regexName],
+        country: ['', GenericValidator.regexName],
+        zipCode: ['', Validators.required]
       }))
     }
 
     this.showAddresslist = !this.showAddresslist;
   }
+  showTelephone() {
+    const telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
+    const hasMax = telephoneControl.length >= 5; 
 
-  handle_addAddress() {
-    const addressControl = this.contractHolder.controls.idAddress as FormArray;
-    addressControl.push(this.chfb.group({
+    if (!hasMax) {      
+      telephoneControl.push(this.chfb.group({
+        telephoneNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(11), Validators.minLength(10)]],
+        telephoneType: ['', Validators.required]
+      }))
+    }
+
+    this.showTelephonelist = !this.showTelephonelist;
+  }
+ 
+  hanble_add_telphone($event: any) {
+    const telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
+    telephoneControl.push(this.chfb.group ({
 
     }))
-  }
-
-
-
+  } 
+  
   handle_add($event: any) {
-    debugger;
+    const addressControl = this.contractHolder.controls.idAddress as FormArray;
+    addressControl.push(this.chfb.group({
+  
+    }))
   }
 
 
@@ -222,66 +238,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
 
       },
-
-      rowData: [
-        {
-          name: 'Paulo',
-          cpf: 333333,
-          rg: 444444,
-          birthdate: '12/08/1995',
-          email: 'paulo@gft.com',
-          idAddress: [{
-            street: 'dont care',
-            type: 'really dont care',
-            number: 123,
-            state: 'still dont care',
-            neighborhood: '',
-            country: '',
-            zipCode: '',
-          }]
-        },
-
-        {
-          name: 'Ariel',
-          cpf: 111111,
-          rg: 666666,
-          birthdate: '12/08/1996',
-          email: 'ariel@gft.com'
-        },
-
-        {
-          name: 'Andre',
-          cpf: 666666,
-          rg: 111111,
-          birthdate: '12/08/1994',
-          email: 'andre@gft.com'
-        },
-
-        {
-          name: 'Gilberto',
-          cpf: 222222,
-          rg: 555555,
-          birthdate: '12/08/1991',
-          email: 'gilberto@gft.com'
-        },
-
-        {
-          name: 'Vinicius',
-          cpf: 444444,
-          rg: 333333,
-          birthdate: '12/08/1996',
-          email: 'vinicius@gft.com'
-        },
-
-        {
-          name: 'Leonardo',
-          cpf: 555555,
-          rg: 222222,
-          birthdate: '12/08/1996',
-          email: 'leonardo@gft.com'
-        }
-      ],
-
       onGridReady: this.onGridReady.bind(this)
     }
 
@@ -303,12 +259,12 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       },
       failure => {
         console.error(failure);
-        // this.hideGridLoading();
-
+        
+        
       }
-    );
-  }
-
+      );
+    }
+    
   private onCellEdit(params: any) {
     console.log(params.newValue);
     console.log(params.data);
@@ -319,22 +275,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     const { data } = event;
     this.contractHolder.getRawValue();
     console.log(data);
-    //debugger;
+   
     this.contractHolder.patchValue(data);
-    
-    console.log(data);
-    //debugger;
+   
   }
 
 }
-  // private hideGridLoading() {
-  //   this.gridOptions.api.setRowData([]);
-  // }
-
-
-
-
-
-
-
-
