@@ -26,13 +26,17 @@ namespace Backend.Infrastructure.Repositories
             .Beneficiaries
             .ToList();
 
-        public void Add(Beneficiary beneficiary)
+        public bool Add(Beneficiary beneficiary)
         {
             if(beneficiary != null)
             {
                 _db.Add(beneficiary);
-                _db.SaveChanges();
+                if (_db.SaveChanges() == 1)
+                    return true;
+
+                return false;
             }
+            return false;
         }
 
         public Beneficiary Remove(Beneficiary beneficiary)

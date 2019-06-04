@@ -25,13 +25,17 @@ namespace Backend.Infrastructure.Repositories
             .Individual_Telephone
             .ToList();
 
-        public void Add(BeneficiaryTelephone telephones)
+        public bool Add(BeneficiaryTelephone telephones)
         {
             if (telephones != null)
             {
                 _db.Add(telephones);
-                _db.SaveChanges();
+                if (_db.SaveChanges() == 1)
+                    return true;
+
+                return false;
             }
+            return false;
         }
 
         public BeneficiaryTelephone Remove(BeneficiaryTelephone telephones)

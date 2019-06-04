@@ -26,13 +26,17 @@ namespace Backend.Infrastructure.Repositories
               .Individuals
               .ToList();
 
-        public void Add(Individual individual)
+        public bool Add(Individual individual)
         {
             if(individual != null)
             {
                 _db.Add(individual);
-                _db.SaveChanges();
+                if (_db.SaveChanges() == 1)
+                    return true;
+
+                return false;
             }
+            return false;
         }
 
         public Individual Remove(Individual individual)
