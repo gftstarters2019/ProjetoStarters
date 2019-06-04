@@ -28,7 +28,6 @@ import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/be
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import {MatCardModule} from '@angular/material/card';
-import { ValidatorCpfComponent } from './validator-cpf/validator-cpf.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +37,6 @@ import { ValidatorCpfComponent } from './validator-cpf/validator-cpf.component';
     ContractComponent,
     ContractListComponent,
     BeneficiaryListComponent,
-    ValidatorCpfComponent,
     SidebarComponent,
     BeneficiarylistAddComponent,
     TableListComponent,
