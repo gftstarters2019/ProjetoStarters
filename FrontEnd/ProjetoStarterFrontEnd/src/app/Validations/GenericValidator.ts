@@ -16,10 +16,7 @@ export class GenericValidator {
         var cpf = control.value
         if (cpf) {
 
-          cpf = cpf.replace('.', '');
-          cpf = cpf.replace('.', '');
-          cpf = cpf.replace('-', '');
-
+          cpf = cpf.replace(/\D+/g, '');
 
           let numbers, digits, sum, i, result, equalDigits;
           equalDigits = 1;
