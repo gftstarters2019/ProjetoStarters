@@ -77,7 +77,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
    let httpOptions = {headers: new HttpHeaders ({
      'Content-Type': 'application/json'
    })};
-   this.http.post('https://contractholderwebapi.azurewebsites.net/api/ContractHolder', json,httpOptions).subscribe(data => console.log(data));
+   this.http.post('https://httpbin.org/post', json,httpOptions).subscribe(data => console.log(data));
    
   }
   

@@ -2,6 +2,7 @@
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Contract.WebAPI.Controllers
@@ -26,6 +27,45 @@ namespace Contract.WebAPI.Controllers
         public IActionResult Contracts()
         {
             return Ok(_contractReadOnlyRepository.Get());
+        }
+
+        /// <summary>
+        /// Gets the contracts' categories
+        /// </summary>
+        /// <returns>Categories</returns>
+        [HttpGet("Categories")]
+        public IActionResult Categories()
+        {
+            var categories = new Dictionary<int, string>
+            {
+                { 0, "iron" },
+                { 1, "bronze" },
+                { 2, "silver" },
+                { 3, "gold" },
+                { 4, "platinum" },
+                { 5, "diamond" }
+            };
+            return Ok(categories);
+        }
+
+        /// <summary>
+        /// Gets the contract types
+        /// </summary>
+        /// <returns>Types</returns>
+        [HttpGet("Types")]
+        public IActionResult Types()
+        {
+            var types = new Dictionary<int, string>
+            {
+                { 0, "HealthPlan" },
+                { 1, "AnimalHealthPlan" },
+                { 2, "DentalPlan" },
+                { 3, "LifeInsurance" },
+                { 4, "RealStateInsurance" },
+                { 5, "VehicleInsurance" },
+                { 6, "MobileDeviceInsurance" }
+            };
+            return Ok(types);
         }
 
         // GET api/Contract/5
@@ -91,7 +131,7 @@ namespace Contract.WebAPI.Controllers
                 return false;
             if (contract.ContractExpiryDate < DateTime.Now.Date)
                 return false;
-            
+
             return true;
         }
         #endregion Validations
