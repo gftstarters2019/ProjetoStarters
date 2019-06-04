@@ -27,6 +27,7 @@ import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-rea
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { TextMaskModule } from 'angular2-text-mask';
     MatDialogModule,
     MaterialModule,
     AgGridModule,
+    MatCardModule,
     ReactiveFormsModule,
     HttpClientModule,
 
