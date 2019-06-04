@@ -1,5 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, AbstractControl, FormArray } from '@angular/forms';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Address{
   id : string,
@@ -12,25 +14,32 @@ export interface Address{
   zipCode: string
 }
 
+
 @Component({
   selector: 'app-address',
   templateUrl: './address.component.html',
   styleUrls: ['./address.component.scss']
 })
 export class AddressComponent implements OnInit {
+  
+  @Output() add = new EventEmitter<any>();
+  @Input() address2: FormGroup;
 
-  @Output() createEvent = new EventEmitter<FormGroup>();
+
+  addressAdd: FormArray;
 
   address = this.fb.group ({
     id: [''],
-    street: ['', Validators.required],
+    street: ['', GenericValidator.regexName],
     type: ['', Validators.required],
-    number: ['', Validators.required],
-    state: ['', Validators.required],
-    neighborhood: [ '', Validators.required],
-    country: ['', Validators.required],
+
+    number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
+    state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2)]],
+    neighborhood: [ '', GenericValidator.regexName],
+    country: ['', GenericValidator.regexName],
     zipCode: ['', Validators.required]
   });
+  message: any;
 
 
   constructor(private fb: FormBuilder) { }
@@ -40,8 +49,25 @@ export class AddressComponent implements OnInit {
   }
 
   public onSubmit(): void {
+
     console.log(this.address.value);
-    this.createEvent.emit(this.address);
+    this.add.emit(this.address.value);
+
+    this.message=this.address.get(['id']).value;
+
   }
 
+  createAddress(): FormGroup {
+    return this.fb.group({
+      id: ''
+    });
+  }
+
+  addAddress(): void {
+    this.addressAdd = this.address.get('addressAdd') as FormArray;
+    if(this.addressAdd.length<5){
+      this.addressAdd.push(this.createAddress());
+    }
+  }
+  
 }

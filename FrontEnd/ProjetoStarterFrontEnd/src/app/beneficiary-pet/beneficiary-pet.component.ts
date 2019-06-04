@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Species {
   value: string;
@@ -22,11 +23,13 @@ export class BeneficiaryPetComponent implements OnInit {
     {value: '4', name: 'Ara chloropterus'},
   ];
 
+  @Output() messagePetEvent = new EventEmitter<any>();
+
   petCreateForm= this.formBuilder.group({
-    name: new FormControl('', Validators.required),
-    birthdate: new FormControl('', Validators.required),
-    species: new FormControl('', Validators.required),
-    breed: new FormControl('', Validators.required)
+    petName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    petBirthdate: new FormControl('', GenericValidator.dateValidation()),
+    petSpecies: new FormControl('', Validators.required),
+    petBreed: new FormControl('', Validators.pattern(GenericValidator.regexName))
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
@@ -34,6 +37,7 @@ export class BeneficiaryPetComponent implements OnInit {
   ngOnInit() {
   }
 
+  response:any;
   public petPost(): void{
     
     let form = JSON.stringify(this.petCreateForm.value);
@@ -42,7 +46,11 @@ export class BeneficiaryPetComponent implements OnInit {
         'Content-Type':  'application/json'
       })
     };
-    this._httpClient.post(``, form, httpOptions)
-    .subscribe(data => console.log(data));
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet', form, httpOptions)
+    .subscribe(data => {this.response = data});
+
+    if(this.response != null){
+      this.messagePetEvent.emit(this.response.beneficiaryId);
+    }
   }
 }

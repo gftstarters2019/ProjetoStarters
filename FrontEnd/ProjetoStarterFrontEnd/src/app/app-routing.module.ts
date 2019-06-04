@@ -8,6 +8,8 @@ import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-rea
 import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-vehicle.component';
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 import { AddressComponent } from './address/address.component';
+import { TelephoneComponent } from './telephone/telephone.component';
+
 
 
 const routes: Routes = [
@@ -19,6 +21,7 @@ const routes: Routes = [
   { path:'realty', component: BeneficiaryRealtyComponent},
   { path:'vehicle', component: BeneficiaryVehicleComponent},
   { path: 'mobile', component: BeneficiaryMobileDeviceComponent },
+  { path: 'telephone', component: TelephoneComponent },
   { path: '', pathMatch: 'full', redirectTo: 'contract-holder' }
 ]
 

@@ -1,6 +1,8 @@
-﻿using Backend.Infrastructure.Repositories.Contracts;
+﻿using Backend.Core.Enums;
+using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace Contract.WebAPI.Controllers
 {
@@ -10,11 +12,13 @@ namespace Contract.WebAPI.Controllers
     {
         private readonly IReadOnlyRepository<Backend.Core.Models.Contract> _contractReadOnlyRepository;
         private readonly IWriteRepository<Backend.Core.Models.Contract> _contractWriteRepository;
+        private readonly IReadOnlyRepository<Backend.Core.Models.SignedContract> _signedContractReadOnlyRepository;
 
-        public ContractController(IReadOnlyRepository<Backend.Core.Models.Contract> contractReadOnlyRepository, IWriteRepository<Backend.Core.Models.Contract> contractWriteRepository)
+        public ContractController(IReadOnlyRepository<Backend.Core.Models.Contract> contractReadOnlyRepository, IWriteRepository<Backend.Core.Models.Contract> contractWriteRepository, IReadOnlyRepository<Backend.Core.Models.SignedContract> signedContractReadOnlyRepository)
         {
             _contractReadOnlyRepository = contractReadOnlyRepository;
             _contractWriteRepository = contractWriteRepository;
+            _signedContractReadOnlyRepository = signedContractReadOnlyRepository;
         }
 
         // GET api/Contract
@@ -35,7 +39,9 @@ namespace Contract.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContract([FromBody] Backend.Core.Models.Contract contract)
         {
-            //Implementar Validações
+            if (!ContractIsValid(contract))
+                return StatusCode(403); //Forbbiden
+
             _contractWriteRepository.Add(contract);
             return Ok(contract);
         }
@@ -51,16 +57,43 @@ namespace Contract.WebAPI.Controllers
             return Ok(_contractWriteRepository.Update(obj));
         }
 
+        /// <summary>
+        /// Soft deletes a Contract
+        /// </summary>
+        /// <param name="id">GUID of the chosen Contract</param>
+        /// <returns>Deleted Contract</returns>
         [HttpDelete("{id}")]
         public IActionResult DeleteContract(Guid id)
         {
-            //Implementar Validações
-            var obj = _contractReadOnlyRepository.Find(id);
+            if (_signedContractReadOnlyRepository.Get().Where(sc => sc.ContractIndividualIsActive).ToList().Count > 0)
+                return Forbid();
 
-            if (obj != null)
-                return Ok(_contractWriteRepository.Remove(obj));
+            var contract = _contractReadOnlyRepository.Find(id);
 
-            return NotFound(obj);
+            if (contract != null)
+            {
+                contract.ContractDeleted = !contract.ContractDeleted;
+                return Ok(_contractWriteRepository.Update(contract));
+            }
+
+            return NotFound(contract);
         }
+
+        #region Validations
+        /// <summary>
+        /// Verifies if Contract is valid
+        /// </summary>
+        /// <param name="contract">Contract to be verified</param>
+        /// <returns>If Contract is valid</returns>
+        public static bool ContractIsValid(Backend.Core.Models.Contract contract)
+        {
+            if (!Enum.IsDefined(typeof(ContractType), contract.ContractType) || !Enum.IsDefined(typeof(ContractCategory), contract.ContractCategory))
+                return false;
+            if (contract.ContractExpiryDate < DateTime.Now.Date)
+                return false;
+            
+            return true;
+        }
+        #endregion Validations
     }
 }

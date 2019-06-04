@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface MobileType {
   value: string;
@@ -14,6 +15,8 @@ export interface MobileType {
 })
 export class BeneficiaryMobileDeviceComponent implements OnInit {
 
+  @Output() messageMobilelEvent = new EventEmitter<any>();
+
   mobileType: MobileType[] = [
     {value: '0', name: 'Smartphone'},
     {value: '1', name: 'Tablet'},
@@ -21,18 +24,20 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   ];
   
   mobileDeviceCreateForm= this.formBuilder.group({
-    brand: new FormControl('', Validators.required),
-    model: new FormControl('', Validators.required),
-    manufactoringYear: new FormControl('', Validators.required),
-    serialNumber: new FormControl('', Validators.required),
+    mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    mobileDeviceModel: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
+    mobileDeviceManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
+    mobileDeviceSerialNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
     mobileDeviceType: new FormControl('', Validators.required),
-    invoiceValue: new FormControl('', Validators.required)
+    mobileDeviceInvoiceValue: new FormControl('', GenericValidator.negativeValidation())
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
   }
+
+  response:any;
 
   public mobileDevicePost(): void{
     
@@ -42,8 +47,11 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
         'Content-Type':  'application/json'
       })
     };
-    this._httpClient.post(``, form, httpOptions)
-    .subscribe(data => console.log(data));
-  }
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevice', form, httpOptions)
+    .subscribe(data => {this.response = data});
 
+    if(this.response != null){
+      this.messageMobilelEvent.emit(this.response.beneficiaryId);
+    }
+  }
 }

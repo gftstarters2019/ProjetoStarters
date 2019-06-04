@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { throwError } from 'rxjs';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Color {
   value: string;
@@ -26,23 +28,29 @@ export class BeneficiaryVehicleComponent implements OnInit {
     {value: '8', name: 'Green'},
     {value: '9', name: 'Other'}
   ];
+
+  @Output() messageVehicleEvent = new EventEmitter<any>();
   
   vehicleCreateForm= this.formBuilder.group({
-    brand: new FormControl('', Validators.required),
-    model: new FormControl('', Validators.required),
-    manufactoringYear: new FormControl('', Validators.required),
-    modelYear: new FormControl('', Validators.required),
-    color: new FormControl('', Validators.required),
-    chassisNumber: new FormControl('', Validators.required),
-    currentMileage: new FormControl('', Validators.required),
-    currentFipeValue: new FormControl('', Validators.required),
-    doneInspection: new FormControl('', Validators.required)
+    vehicleBrand: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    vehicleModel: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
+    vehicleManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
+    vehicleModelYear: new FormControl('', GenericValidator.dateValidation()),
+    vehicleColor: new FormControl('', Validators.required),
+    vehicleChassisNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
+    vehicleCurrentMileage: new FormControl('', GenericValidator.negativeValidation()),
+    vehicleCurrentFipeValue: new FormControl('', GenericValidator.negativeValidation()),
+    vehicleDoneInspection: new FormControl(false)
   });
 
-  constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
+
+
+  constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
   }
+
+  response:any;
 
   public vehiclePost(): void{
     
@@ -52,8 +60,11 @@ export class BeneficiaryVehicleComponent implements OnInit {
         'Content-Type':  'application/json'
       })
     };
-    this._httpClient.post(``, form, httpOptions)
-    .subscribe(data => console.log(data));
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle', form, httpOptions)
+    .subscribe(data => {this.response = data});
+    
+    if(this.response != null){
+      this.messageVehicleEvent.emit(this.response.beneficiaryId);
+    }
   }
-
 }
