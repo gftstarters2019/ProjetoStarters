@@ -20,7 +20,7 @@ export class TelephoneComponent implements OnInit {
   message:string;
   telephone = this.fb.group ({
     id: [''],
-    telephoneNumber: ['', this.validador],
+    telephoneNumber: ['', this.telephoneValidator],
     telephoneType: ''
   });
 
@@ -39,15 +39,20 @@ export class TelephoneComponent implements OnInit {
     return false;
   }
 
-  validador(control: AbstractControl): {[key: string]: boolean} | null {
+  telephoneValidator(control: AbstractControl): {[key:string]: boolean} | null {
     let number = control.value;
-
-    number = number.replace('(', '');
-    number = number.replace(')', '');
-    number = number.replace('-', '');
+    let numberLength;
     
-    if(number.length < 10)
-      return {"NumberInvalid": true};
+    if (number.length == 14)
+      numberLength = 11;
+    else
+      numberLength = 10;
+
+    number = number.replace(/\D+/g, '');
+
+    if(number.length < numberLength)
+      return {"NumberIsTooShort": true};
+    
     return null;
   }
 }
