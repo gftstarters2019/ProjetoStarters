@@ -21,13 +21,13 @@ namespace Backend.Infrastructure.Configuration
         public DbSet<Telephone> Telephones { get; set; }
         public DbSet<SignedContract> SignedContracts { get; set; }
         public DbSet<Beneficiary> Beneficiaries { get; set; }
-        public DbSet<BeneficiaryAddress> Individual_Address { get; set; }
+        public DbSet<BeneficiaryAddress> Beneficiary_Address { get; set; }
         public DbSet<BeneficiaryTelephone> Individual_Telephone { get; set; }
         public DbSet<ContractBeneficiary> Contract_Beneficiary { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Individual>().HasAlternateKey(i => i.IndividualCPF);
+            builder.Entity<Individual>();
             builder.Entity<Realty>();
             builder.Entity<Pet>();
             builder.Entity<Vehicle>();

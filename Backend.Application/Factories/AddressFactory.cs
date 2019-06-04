@@ -11,6 +11,11 @@ namespace Backend.Application.Factories
         private List<Address> addresses = null;
         private Address address = null;
 
+        public AddressFactory()
+        {
+            addresses = new List<Address>();
+        }
+
         public List<Address> CreateList(List<Address> vm_addresses)
         {
             foreach (var ad in vm_addresses)
