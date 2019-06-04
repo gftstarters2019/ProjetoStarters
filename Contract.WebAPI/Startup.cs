@@ -5,6 +5,7 @@ using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,8 +30,20 @@ namespace Contract.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("ContractPermission"));
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ContractPermission",
+                builder => builder.AllowAnyHeader().AllowAnyOrigin());
+            });
+
             services.AddScoped<IReadOnlyRepository<Backend.Core.Models.Contract>, ContractRepository>();
             services.AddScoped<IWriteRepository<Backend.Core.Models.Contract>, ContractRepository>();
+            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
@@ -49,6 +62,8 @@ namespace Contract.WebAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors("ContractPermission");
 
             app.UseHttpsRedirection();
             app.UseMvc();

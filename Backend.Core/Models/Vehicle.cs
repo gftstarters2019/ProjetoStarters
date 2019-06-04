@@ -13,7 +13,7 @@ namespace Backend.Core.Models
         public Color VehicleColor { get; set; }
         public DateTime VehicleModelYear { get; set; }
         public string VehicleChassisNumber { get; set; }
-        public short VehicleCurrentMileage { get; set; }
+        public int VehicleCurrentMileage { get; set; }
         public double VehicleCurrentFipeValue { get; set; }
         public bool VehicleDoneInspection { get; set; }
     }
