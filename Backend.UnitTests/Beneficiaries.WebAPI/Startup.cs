@@ -1,4 +1,12 @@
-﻿using Backend.Infrastructure.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Backend.Core;
+using Backend.Core.Models;
+using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -8,11 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.IO;
-using System.Reflection;
 
-namespace Contract.WebAPI
+namespace Beneficiaries.WebAPI
 {
     public class Startup
     {
@@ -28,9 +33,8 @@ namespace Contract.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.Contract>, ContractRepository>();
-            services.AddScoped<IWriteRepository<Backend.Core.Models.Contract>, ContractRepository>();
-            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
+            services.AddScoped<IReadOnlyRepository<Beneficiary>, BeneficiaryRepository>();
+            services.AddScoped<IWriteRepository<Beneficiary>, BeneficiaryRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
