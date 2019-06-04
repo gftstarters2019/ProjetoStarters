@@ -91,5 +91,24 @@ export class GenericValidator {
         return null;
       }
     }
+    static telephoneValidator() {
+      return (control: AbstractControl): {[key:string]: boolean} | null => {
+        let number = control.value;
+      let numberLength;
+      
+      if (number.length == 14)
+        numberLength = 11;
+      else
+        numberLength = 10;
+  
+      number = number.replace(/\D+/g, '');
+  
+      if(number.length < numberLength)
+        return {"NumberIsTooShort": true};
+      
+      return null;
+      }
+      
+    }
 
 }
