@@ -3,7 +3,7 @@ import { AbstractControl, Validators } from '@angular/forms';
 export class GenericValidator {
     constructor() {}
 
-    static regexName = new RegExp(/^[a-zA-Z-ã]+\s[a-zA-Z]+$/);
+    static regexName = new RegExp(/^[A-ZÀ-Ÿ][A-zÀ-ÿ']+\s([A-zÀ-ÿ']\s?)*[A-ZÀ-Ÿ][A-zÀ-ÿ']+$/);
     static regexAlphaNumeric = new RegExp(/^[a-zA-Z-ã]+[0-9]+\s[(a-zA-Z]+[0-9]+$/);
 
 
@@ -16,10 +16,7 @@ export class GenericValidator {
         var cpf = control.value
         if (cpf) {
 
-          cpf = cpf.replace('.', '');
-          cpf = cpf.replace('.', '');
-          cpf = cpf.replace('-', '');
-
+          cpf = cpf.replace(/\D+/g, '');
 
           let numbers, digits, sum, i, result, equalDigits;
           equalDigits = 1;
@@ -81,6 +78,16 @@ export class GenericValidator {
         if(control.value < 0)
           return {"EnteredANegativeNumber": true};
         
+        return null;
+      }
+    }
+
+    static rgLengthValidation() {
+      return (control: AbstractControl): {[key:string]: boolean} | null => {
+        let rgNumber = control.value;
+        rgNumber = rgNumber.replace(/\D+/g, '');
+        if (rgNumber.length < 9)
+          return {"rgNumberIsTooShort": true};
         return null;
       }
     }

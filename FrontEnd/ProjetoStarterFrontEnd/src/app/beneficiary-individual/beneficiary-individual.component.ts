@@ -18,7 +18,7 @@ export class BeneficiaryIndividualComponent implements OnInit {
   individualCreateForm= this.formBuilder.group({
     individualName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
     individualCpf: new FormControl('', GenericValidator.isValidCpf()),
-    individualRg: new FormControl('', Validators.required),
+    individualRg: new FormControl('', GenericValidator.rgLengthValidation()),
     individualBirthdate: new FormControl('', GenericValidator.dateValidation()),
     individualEmail: new FormControl('', Validators.required)
   });

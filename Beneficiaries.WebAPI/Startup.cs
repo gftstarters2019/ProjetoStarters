@@ -36,12 +36,12 @@ namespace Beneficiaries.WebAPI
 
             services.Configure<MvcOptions>(options =>
             {
-                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowMyOrigin"));
+                options.Filters.Add(new CorsAuthorizationFilterFactory("BeneficiaryPermission"));
             });
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowMyOrigin",
+                options.AddPolicy("BeneficiaryPermission",
                 builder => builder.AllowAnyHeader().AllowAnyOrigin());
             });
 
@@ -67,7 +67,7 @@ namespace Beneficiaries.WebAPI
                 app.UseHsts();
             }
 
-            app.UseCors("AllowMyOrigin");
+            app.UseCors("BeneficiaryPermission");
 
             app.UseHttpsRedirection();
             app.UseMvc();
