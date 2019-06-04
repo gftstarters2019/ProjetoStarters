@@ -21,25 +21,35 @@ export class BeneficiaryListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'cpf', 'rg', 'BirthDate', 'email'];
   dataSource: MatTableDataSource<Beneficiary>;
 
-  constructor(private httpClient: HttpClient) { }
-
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  
+  constructor(private httpClient: HttpClient) {
+    this.dataSource = new MatTableDataSource();
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
 
+
   }
 
-  getData() {
-    this.httpClient.get('minha_api')
+  getIndividual() {
+    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual')
+      .subscribe((data: Beneficiary) => this.dataSource.data.push(data));
+  }
+
+  getPet() {
+    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet')
       .subscribe((data: Beneficiary) => this.dataSource.data.push(data));
   }
 

@@ -28,10 +28,6 @@ import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-rea
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
-import { PetListComponent } from './pet-list/pet-list.component';
-import { ImobileListComponent } from './imobile-list/imobile-list.component';
-import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
-import { DeviceMobileListComponent } from './device-mobile-list/device-mobile-list.component';
 
 @NgModule({
   declarations: [
@@ -50,11 +46,7 @@ import { DeviceMobileListComponent } from './device-mobile-list/device-mobile-li
     BeneficiaryVehicleComponent,
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
-    TelephoneComponent,
-    PetListComponent,
-    ImobileListComponent,
-    VehicleListComponent,
-    DeviceMobileListComponent
+    TelephoneComponent
   ],
   imports: [
     BrowserModule,
