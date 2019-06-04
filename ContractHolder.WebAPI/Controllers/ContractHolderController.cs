@@ -1,4 +1,5 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Application.ViewModels;
+using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Backend.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,8 @@ namespace ContractHolder.WebAPI.Controllers
     {
         private readonly IReadOnlyRepository<Individual> _contractHolderReadOnlyRepository;
         private readonly IWriteRepository<Individual> _contractHolderWriteRepository;
+        private readonly IReadOnlyRepository<ContractHolderViewModel> _contractHolderViewModelReadOnlyRepository;
+        private readonly IWriteRepository<ContractHolderViewModel> _contractHolderViewModelWriteRepository;
         private readonly IReadOnlyRepository<SignedContract> _contractsReadOnlyRepository;
 
         /// <summary>
@@ -59,19 +62,19 @@ namespace ContractHolder.WebAPI.Controllers
         /// <summary>
         /// Creates a new Contract Holder
         /// </summary>
-        /// <param name="individual">Contract Hodler to be created</param>
+        /// <param name="vm">Contract Hodler to be created</param>
         /// <returns>Created Contract Holder</returns>
         [HttpPost]
-        public IActionResult PostContractHolder([FromBody] Individual individual)
+        public IActionResult PostContractHolder([FromBody] ContractHolderViewModel vm)
         {
-            individual.IndividualId = Guid.NewGuid();
+            //if (!ContractHolderIsValid(individual))
+            //    return StatusCode(403);
 
-            if (!ContractHolderIsValid(individual))
+            if (!_contractHolderViewModelWriteRepository.Add(vm))
                 return StatusCode(403);
 
-            _contractHolderWriteRepository.Add(individual);
-            SendWelcomeEmail(individual);
-            return Ok(individual);
+            //SendWelcomeEmail(vm);
+            return Ok(vm);
         }
 
         /// <summary>
@@ -213,13 +216,13 @@ namespace ContractHolder.WebAPI.Controllers
         /// <summary>
         /// Sends welcome email to Contract Holder
         /// </summary>
-        /// <param name="individual">Individual to send the email</param>
-        public void SendWelcomeEmail(Individual individual)
-        {
-            new EmailService().SendEmail("Welcome!",
-                $"Welcome {individual.IndividualName}!",
-                individual.IndividualEmail);
-        }
+        /// <param name="vm">Individual to send the email</param>
+        //public void SendWelcomeEmail(ContractHolderViewModel vm)
+        //{
+        //    new EmailService().SendEmail("Welcome!",
+        //        $"Welcome {vm.IndividualName}!",
+        //        vm.IndividualEmail);
+        //}
         #endregion SendEmail
     }
 }
