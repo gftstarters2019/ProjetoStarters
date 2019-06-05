@@ -6,6 +6,7 @@ using Backend.Infrastructure.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 
 namespace Backend.Infrastructure.Repositories
 {
@@ -20,12 +21,10 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Add(ContractHolderViewModel vm)
         {
-            if(vm != null)
+            if (vm != null)
             {
-                var viewModelCreator = new ViewModelCreator(vm);
-
                 // Individual
-                var individual = viewModelCreator.Individual;
+                var individual = ViewModelCreator.IndividualFactory.Create(vm);
 
                 if (individual == null)
                     return false;
@@ -33,7 +32,7 @@ namespace Backend.Infrastructure.Repositories
                 _db.Add(individual);
 
                 // Telephone
-                var telephones = viewModelCreator.Telephone;
+                var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.IndividualTelephones);
                 if (!telephones.Any())
                     return false;
                 if (telephones.Count > 0)
@@ -53,7 +52,7 @@ namespace Backend.Infrastructure.Repositories
                 }
 
                 // Address
-                var addresses = viewModelCreator.Address;
+                var addresses = ViewModelCreator.AddressFactory.CreateList(vm.IndividualAddresses);
                 if (!addresses.Any())
                     return false;
                 if (addresses.Count > 0)
@@ -76,7 +75,6 @@ namespace Backend.Infrastructure.Repositories
                 return true;
 
             }
-
             return false;
         }
 
@@ -92,12 +90,27 @@ namespace Backend.Infrastructure.Repositories
 
         public ContractHolderViewModel Remove(ContractHolderViewModel t)
         {
-            throw new NotImplementedException();
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
+            {
+                //
+                throw new NotImplementedException();
+                _db.SaveChanges();
+
+                scope.Complete();
+            }
         }
 
         public ContractHolderViewModel Update(ContractHolderViewModel t)
         {
-            throw new NotImplementedException();
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
+            {
+                throw new NotImplementedException();
+                _db.SaveChanges();
+
+                scope.Complete();
+            }
         }
     }
 }

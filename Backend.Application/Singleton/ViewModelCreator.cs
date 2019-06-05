@@ -7,104 +7,68 @@ using System.Text;
 
 namespace Backend.Application.Singleton
 {
-    public class ViewModelCreator
+    public sealed class ViewModelCreator
     {
-        private static Individual individual = null;
-        private static List<Address> addresses = null;
-        private static List<Telephone> telephones = null;
-        private static ContractHolderViewModel _contractHolderViewModel = new ContractHolderViewModel();
+        private static IndividualFactory individualFactory = null;
+        private static TelephoneFactory telephoneFactory = null;
+        private static AddressFactory addressFactory = null;
         private static readonly object padlock = new object();
 
-        public ViewModelCreator(ContractHolderViewModel contractHolderViewModel)
+        public ViewModelCreator()
         {
-            //_contractHolderViewModel = new ContractHolderViewModel();
-            _contractHolderViewModel = contractHolderViewModel;
-
-            //_contractHolderViewModel.IndividualCPF = contractHolderViewModel.IndividualCPF;
-            //_contractHolderViewModel.IndividualBirthdate = contractHolderViewModel.IndividualBirthdate;
-            //_contractHolderViewModel.IndividualEmail = contractHolderViewModel.IndividualEmail;
-            //_contractHolderViewModel.IndividualName = contractHolderViewModel.IndividualName;
-            //_contractHolderViewModel.IndividualRG = contractHolderViewModel.IndividualRG;
-            //foreach (var tel in contractHolderViewModel.IndividualTelephones)
-            //{
-            //    Telephone telephone = new Telephone();
-            //    telephone.TelephoneId = Guid.NewGuid();
-            //    telephone.TelephoneNumber = tel.TelephoneNumber;
-            //    telephone.TelephoneType = tel.TelephoneType;
-
-            //    _contractHolderViewModel.IndividualTelephones.Add(telephone);
-            //}
-            //foreach (var ad in contractHolderViewModel.IndividualAddresses)
-            //{
-            //    Address address = new Address();
-            //    address.AddressCity = ad.AddressCity;
-            //    address.AddressComplement = ad.AddressComplement;
-            //    address.AddressCountry = ad.AddressCountry;
-            //    address.AddressNeighborhood = ad.AddressNeighborhood;
-            //    address.AddressNumber = ad.AddressNumber;
-            //    address.AddressState = ad.AddressState;
-            //    address.AddressStreet = ad.AddressStreet;
-            //    address.AddressType = ad.AddressType;
-            //    address.AddressZipCode = ad.AddressZipCode;
-
-            //    _contractHolderViewModel.IndividualAddresses.Add(address);
-            //}
         }
 
-        public Individual Individual
+        public static IndividualFactory IndividualFactory
         {
             get
             {
-                if(individual == null)
+                if(individualFactory == null)
                 {
                     lock (padlock)
                     {
-                        if(individual == null)
+                        if(individualFactory == null)
                         {
-                            var individualFactory = new IndividualFactory();
-                            return individualFactory.Create(_contractHolderViewModel);
+                            individualFactory = new IndividualFactory();
                         }
                     }
                 }
-                return individual;
+                return individualFactory;
             }
         }
 
-        public List<Telephone> Telephone
+        public static TelephoneFactory TelephoneFactory
         {
             get
             {
-                if (telephones == null)
+                if (telephoneFactory == null)
                 {
                     lock (padlock)
                     {
-                        if (telephones == null)
+                        if (telephoneFactory == null)
                         {
-                            var telephoneFactory = new TelephoneFactory();
-                            return telephoneFactory.CreateList(_contractHolderViewModel.IndividualTelephones);
+                            telephoneFactory = new TelephoneFactory();
                         }
                     }
                 }
-                return telephones;
+                return telephoneFactory;
             }
         }
 
-        public List<Address> Address
+        public static AddressFactory AddressFactory
         {
             get
             {
-                if (addresses == null)
+                if (addressFactory == null)
                 {
                     lock (padlock)
                     {
-                        if (addresses == null)
+                        if (addressFactory == null)
                         {
-                            var addressFactory = new AddressFactory();
-                            return addressFactory.CreateList(_contractHolderViewModel.IndividualAddresses);
+                            addressFactory = new AddressFactory();
                         }
                     }
                 }
-                return addresses;
+                return addressFactory;
             }
         }
     }
