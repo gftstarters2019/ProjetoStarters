@@ -1,5 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
+import "ag-grid-enterprise";
+
 
 export interface Type {
   value: string;
@@ -28,6 +32,17 @@ export class ContractComponent implements OnInit {
   public showlist: boolean = true;
   public showlist2: boolean = true;
   beneficiaries: FormArray;
+
+  private columnDefs: Array<ColDef>;
+  rowData$: any;
+  private paginationPageSize;
+  detailCellRendererParams;
+
+  gridApi;
+  gridColumApi;
+  gridOption: GridOptions;
+  load_failure: boolean;
+
 
   holders: Holder[]=[
     {value: '',viewValue:''},
@@ -63,14 +78,16 @@ export class ContractComponent implements OnInit {
     contractType: ['', Validators.required],
     contractCategory: ['', Validators.required],
     contractExpiryDate: ['', Validators.required],
-    contractIniatalDate: ['', Validators.required],
     contractStatus:['False', Validators.required],
     beneficiaries: this.fb.array([])
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private http: HttpClient) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.setup_gridData();
+    this.setup_gridOptions();
+  }
   
   public showList(): void {
     this.showlist = !this.showlist;
@@ -105,4 +122,98 @@ export class ContractComponent implements OnInit {
   receiveMessage($event) {
     this.beneficiaries.value[this.beneficiaries.length-1].id = $event;
   }
+
+  //AG-grid Table Contract
+  private setup_gridOptions() {
+    this.gridOption = {
+      rowSelection: 'single',
+
+      onRowSelected: this.onRowSelected.bind(this),
+      masterDetail: true,
+
+      columnDefs: [
+
+        {
+          headerName: 'Contract Holder',
+          field: 'holdername',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+
+        {
+          headerName: 'Category',
+          field: 'contractCategory',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+
+        {
+          headerName: 'Type',
+          field: 'contractType',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+
+        {
+          headerName: 'Beneficiary ',
+          field: 'beneficiaries',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'Expire Date',
+          field: 'contractExpiryDate',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'Status',
+          field: 'contractStatus',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+      ]
+
+    }
+  }
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumApi = params.columnApi;
+  }
+  private setup_gridData() {
+    this.rowData$ = this.http.get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
+  }
+  private onCellEdit(params: any) {
+    console.log(params.newValue);
+    console.log(params.data);
+
+  }
+
+  private onRowSelected(event: RowSelectedEvent) {
+    const { data } = event;
+    //this.contract.getRawValue();
+    console.log(data);
+
+    //this.contract.patchValue(data);
+
+  }
+
 }
