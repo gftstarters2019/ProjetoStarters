@@ -6,21 +6,17 @@ import "ag-grid-enterprise";
 
 
 export interface Type {
-  value: string;
+  value: number;
   viewValue: string;
 }
 export interface Category {
-  value: string;
+  value: number;
   viewValue: string;
 }
 export interface Holder{
   value: string;
-  viewValue:string;
-}
-export interface CPF{
-  value: string;
-  viewValue:string;
-}
+ }
+
 
 @Component({
   selector: 'app-contract',
@@ -33,9 +29,8 @@ export class ContractComponent implements OnInit {
   public showlist2: boolean = true;
   beneficiaries: FormArray;
 
-  private columnDefs: Array<ColDef>;
   rowData$: any;
-  private paginationPageSize;
+  paginationPageSize;
   detailCellRendererParams;
 
   gridApi;
@@ -45,40 +40,34 @@ export class ContractComponent implements OnInit {
 
 
   holders: Holder[]=[
-    {value: '',viewValue:''},
+    {value: ''}
   ]
-  cpfs: CPF[]=[
-    {value: '',viewValue:''},
-  ]
-
+  
   cType:any;
 
   types: Type[] = [
-    { value: 'Health Plan', viewValue: 'Contract Health Plan' },
-    { value: 'Animal Health Plan', viewValue: 'Contract Animal Health Plan' },
-    { value: 'Dental Plan', viewValue: 'Contract Dental Plan' },
-    { value: 'Life insurance Plan', viewValue: 'Contract Life insurance Plan' },
-    { value: 'Real Estate Insurance', viewValue: 'Contract Real Estate Insurance' },
-    { value: 'Car insurance', viewValue: 'Contract Car insurance' },
-    { value: 'Mobile device Insurance', viewValue: 'Contract Mobile device Insurance' },
+    { value: 0, viewValue: 'Contract Health Plan' },
+    { value: 1, viewValue: 'Contract Animal Health Plan' },
+    { value: 2, viewValue: 'Contract Dental Plan' },
+    { value: 3, viewValue: 'Contract Life insurance Plan' },
+    { value: 4, viewValue: 'Contract Real Estate Insurance' },
+    { value: 5, viewValue: 'Contract Vehicle insurance' },
+    { value: 6, viewValue: 'Contract Mobile device Insurance' },
   ];
   categories: Category[] = [
-    { value: 'Iron', viewValue: 'Contract Iron' },
-    { value: 'Bronze', viewValue: 'Contract Bronze' },
-    { value: 'Silver', viewValue: 'Contract Silver' },
-    { value: 'Gold', viewValue: 'Contract Gold' },
-    { value: 'Platinum', viewValue: 'Contract Platinum' },
-    { value: 'Diamond', viewValue: 'Contract Diamond' },
+    { value: 0, viewValue: 'Iron' },
+    { value: 1, viewValue: 'Bronze' },
+    { value: 2, viewValue: 'Silver' },
+    { value: 3, viewValue: 'Gold' },
+    { value: 4, viewValue: 'Platinum' },
+    { value: 5, viewValue: 'Diamond' },
   ];
 
   contractform = this.fb.group({
-    holdername: ['', Validators.required],
-    holderCPF: ['', Validators.required],
-    contractId: ['', Validators.required],
-    contractType: ['', Validators.required],
-    contractCategory: ['', Validators.required],
-    contractExpiryDate: ['', Validators.required],
-    contractStatus:['False', Validators.required],
+    Type: ['', Validators.required],
+    Category: ['', Validators.required],
+    ExpiryDate: ['', Validators.required],
+    Status:['False', Validators.required],
     beneficiaries: this.fb.array([])
   });
 
@@ -87,6 +76,7 @@ export class ContractComponent implements OnInit {
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
+    this.paginationPageSize = 50;
   }
   
   public showList(): void {
@@ -134,8 +124,8 @@ export class ContractComponent implements OnInit {
       columnDefs: [
 
         {
-          headerName: 'Contract Holder',
-          field: 'holdername',
+          headerName: 'Contract Holder Name',
+          field: 'name',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -145,7 +135,7 @@ export class ContractComponent implements OnInit {
 
         {
           headerName: 'Category',
-          field: 'contractCategory',
+          field: 'Category',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -155,7 +145,7 @@ export class ContractComponent implements OnInit {
 
         {
           headerName: 'Type',
-          field: 'contractType',
+          field: 'Type',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -164,7 +154,7 @@ export class ContractComponent implements OnInit {
         },
 
         {
-          headerName: 'Beneficiary ',
+          headerName: 'Beneficiaries ',
           field: 'beneficiaries',
           lockPosition: true,
           sortable: true,
@@ -174,7 +164,7 @@ export class ContractComponent implements OnInit {
         },
         {
           headerName: 'Expire Date',
-          field: 'contractExpiryDate',
+          field: 'ExpiryDate',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -183,7 +173,7 @@ export class ContractComponent implements OnInit {
         },
         {
           headerName: 'Status',
-          field: 'contractStatus',
+          field: 'Status',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -191,7 +181,7 @@ export class ContractComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
       ]
-
+      
     }
   }
   onGridReady(params) {
