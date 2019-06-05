@@ -19,11 +19,13 @@ namespace Backend.Infrastructure.Repositories
         }
 
         public Beneficiary Find(Guid id) => _db
-            .Beneficiaries
+            //.Beneficiaries
+            .Individuals
             .FirstOrDefault(ben => ben.BeneficiaryId == id);
 
         public IEnumerable<Beneficiary> Get() => _db
-            .Beneficiaries
+            //.Beneficiaries
+            .Individuals
             .ToList();
 
         public bool Add(Beneficiary beneficiary)

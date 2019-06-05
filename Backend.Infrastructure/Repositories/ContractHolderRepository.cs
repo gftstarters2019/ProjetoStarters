@@ -20,7 +20,7 @@ namespace Backend.Infrastructure.Repositories
 
         public Individual Find(Guid id) => _db
             .Individuals
-            .FirstOrDefault(ind => ind.IndividualId == id);
+            .FirstOrDefault(ind => ind.BeneficiaryId == id);
 
         public IEnumerable<Individual> Get() => _db
               .Individuals

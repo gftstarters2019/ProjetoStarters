@@ -24,7 +24,7 @@ namespace Backend.Application.Factories
             {
                 individual = new Individual();
 
-                individual.IndividualId = Guid.NewGuid();
+                //individual.IndividualId = Guid.NewGuid();
                 individual.BeneficiaryId = Guid.NewGuid();
                 individual.IndividualCPF = vm.IndividualCPF;
                 individual.IndividualName = vm.IndividualName;

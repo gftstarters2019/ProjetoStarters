@@ -44,7 +44,7 @@ namespace Backend.Infrastructure.Repositories
                         _db.Add(new BeneficiaryTelephone
                         {
                             BeneficiaryTelephoneId = Guid.NewGuid(),
-                            BeneficiaryId = individual.IndividualId,
+                            BeneficiaryId = individual.BeneficiaryId,
                             TelephoneId = telephone.TelephoneId
                         });
 
@@ -64,7 +64,7 @@ namespace Backend.Infrastructure.Repositories
                         _db.Add(new BeneficiaryAddress
                         {
                             BeneficiaryAddressId = Guid.NewGuid(),
-                            BeneficiaryId = individual.IndividualId,
+                            BeneficiaryId = individual.BeneficiaryId,
                             AddressId = address.AddressId
                         });
 

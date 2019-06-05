@@ -6,10 +6,8 @@ namespace Backend.Core.Models
 {
     public class Individual : Beneficiary
     {
-        public Guid IndividualId { get; set; }
         [MaxLength(50)]
         public string IndividualName { get; set; }
-       
         [MaxLength(11)]
         public string IndividualCPF { get; set; }
         [MaxLength(9)]

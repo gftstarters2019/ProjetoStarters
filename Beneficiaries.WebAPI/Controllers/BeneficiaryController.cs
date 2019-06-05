@@ -73,7 +73,7 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostIndividual([FromBody] Individual individual)
         {
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
 
             if (!IndividualIsValid(individual))
                 return Forbid();
@@ -118,7 +118,7 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostMobileDevice([FromBody] MobileDevice mobileDevice)
         {
             mobileDevice.BeneficiaryId = Guid.NewGuid();
-            mobileDevice.MobileDeviceId = Guid.NewGuid();
+            //mobileDevice.MobileDeviceId = Guid.NewGuid();
 
             if (!MobileDeviceIsValid(mobileDevice))
                 return Forbid();
@@ -164,7 +164,7 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostPet([FromBody] Pet pet)
         {
             pet.BeneficiaryId = Guid.NewGuid();
-            pet.PetId = Guid.NewGuid();
+            //pet.PetId = Guid.NewGuid();
 
             if (!PetIsValid(pet))
                 return Forbid();
@@ -207,7 +207,7 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostRealty([FromBody] Realty realty)
         {
             realty.BeneficiaryId = Guid.NewGuid();
-            realty.RealtyId = Guid.NewGuid();
+            //realty.RealtyId = Guid.NewGuid();
 
             if (!RealtyIsValid(realty))
                 return Forbid();
@@ -251,7 +251,7 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostVehicle([FromBody] Vehicle vehicle)
         {
             vehicle.BeneficiaryId = Guid.NewGuid();
-            vehicle.VehicleId = Guid.NewGuid();
+            //vehicle.VehicleId = Guid.NewGuid();
 
             if (!VehicleIsValid(vehicle))
                 return Forbid();
