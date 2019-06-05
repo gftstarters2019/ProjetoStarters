@@ -17,7 +17,6 @@ import { ContractListComponent } from './contract-list/contract-list.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
-
 import { TableListComponent } from './table-list/table-list.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { BeneficiaryIndividualComponent } from './beneficiary-individual/beneficiary-individual.component';
@@ -27,7 +26,9 @@ import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-rea
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule} from '@angular/material/card';
+import { CdkTableModule } from '@angular/cdk/table';
+import {ObserversModule} from '@angular/cdk/observers';
 
 @NgModule({
   declarations: [
@@ -38,16 +39,17 @@ import {MatCardModule} from '@angular/material/card';
     ContractListComponent,
     BeneficiaryListComponent,
     SidebarComponent,
-    BeneficiarylistAddComponent,
     TableListComponent,
+    BeneficiarylistAddComponent,
     BeneficiaryIndividualComponent,
     BeneficiaryPetComponent,
     BeneficiaryVehicleComponent,
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
-    TelephoneComponent
+    TelephoneComponent,
   ],
   imports: [
+    ObserversModule,
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -58,12 +60,13 @@ import {MatCardModule} from '@angular/material/card';
     MatCardModule,
     ReactiveFormsModule,
     HttpClientModule,
-
+    CdkTableModule,
     TextMaskModule
   ],
   exports: [
     MaterialModule,
    AgGridModule,
+   CdkTableModule,
   ],
   
   providers: [],
