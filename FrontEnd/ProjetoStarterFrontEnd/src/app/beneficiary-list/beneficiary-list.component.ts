@@ -108,8 +108,8 @@ export class BeneficiaryListComponent implements OnInit {
 
   public TypeTable(): void {
     this.sType = this.selectType.get(['Type']).value;
-
     if (this.sType = 'Individual') {
+      
       this.getIndividual();
       this.columns = [
         { columnDef: 'name', header: 'Name', cell: (element: any) => `${element.name}` },
@@ -120,6 +120,7 @@ export class BeneficiaryListComponent implements OnInit {
       ];
     }
     if (this.sType = 'Pet') {
+      this.getPet();
       this.columns = [
         { columnDef: 'name', header: 'Name', cell: (element: any) => `${element.name}` },
         { columnDef: 'BirthDate', header: 'Birth Date', cell: (element: any) => `${element.BirthDate}` },
@@ -128,6 +129,7 @@ export class BeneficiaryListComponent implements OnInit {
       ];
     }
     if (this.sType = 'Realty') {
+      this.getRealty();
       this.columns = [
         { columnDef: 'street', header: 'Street', cell: (element: any) => `${element.street}` },
         { columnDef: 'type', header: 'Type', cell: (element: any) => `${element.type}` },
@@ -143,6 +145,7 @@ export class BeneficiaryListComponent implements OnInit {
       ];
     }
     if (this.sType = 'Vehicle') {
+      this.getvehicle();
       this.columns = [
         { columnDef: 'brand', header: 'Brand', cell: (element: any) => `${element.brand}` },
         { columnDef: 'model', header: 'Model', cell: (element: any) => `${element.model}` },
@@ -156,6 +159,7 @@ export class BeneficiaryListComponent implements OnInit {
       ];
     }
     if (this.sType = 'MobileDevice') {
+      this.getMobile();
       this.columns = [
         { columnDef: 'brand', header: 'Brand', cell: (element: any) => `${element.brand}` },
         { columnDef: 'model', header: 'Model', cell: (element: any) => `${element.model}` },
@@ -168,27 +172,27 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   getIndividual() {
-    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual')
+    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals')
       .subscribe((data: Individual) => this.dataSource.data.push(data));
   }
 
   getPet() {
-    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet')
+    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets')
       .subscribe((data: Pet) => this.dataSource.data.push(data));
   }
 
   getRealty() {
-    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realty')
+    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realties')
       .subscribe((data: Realty) => this.dataSource.data.push(data));
   }
 
   getvehicle() {
-    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle')
+    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicles')
       .subscribe((data: Vehicle) => this.dataSource.data.push(data));
   }
 
   getMobile() {
-    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/mobile')
+    this.httpClient.get('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevices')
       .subscribe((data: MobileDevice) => this.dataSource.data.push(data));
   }
 
