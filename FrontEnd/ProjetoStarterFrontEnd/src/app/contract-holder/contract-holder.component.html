@@ -35,17 +35,15 @@
   </mat-form-field>
 
                               <!-- Telephone Component -->
-  <div formArrayName="idTelephone" *ngFor="let telefone of contractHolder.get('idTelephone')['controls'];">
+  <div formArrayName="idTelephone" *ngFor="let telephone2 of contractHolder.get('idTelephone')['controls'];">
     <mat-card>
-      <app-telephone [telephone2]="telefone" (addTelephone)="hanble_add_telphone($event)"></app-telephone>
-
-      <button mat-raised-button color="primary"  (click)="showTelephone()">
-          <mat-icon class="material-icons">add</mat-icon>
-     </button> 
-     
+      <app-telephone [telephone2]="telephone2" (addTelephone)="handle_add_telphone($event)"></app-telephone>
     </mat-card> <br>
-
+    
   </div> <br> <br> 
+  <button mat-raised-button color="primary" type="button" (click)="showTelephone()">
+      <mat-icon class="material-icons">add</mat-icon>
+ </button> 
                   <!-- Final do Telephone Component -->
 
                   <!-- Address Component -->
@@ -65,7 +63,7 @@
  
   
                 <!-- Final do Address -->
-  <button button color="primary" mat-raised-button type="submit">Submit</button> <br> <br>
+  <button button color="primary" mat-raised-button type="submit" (click)=onSubmit()>Submit</button> <br> <br>
   <br> <br> <br>
 
   <button mat-raised-button color="primary" (click)="showButton()">Show Contract Holder</button>

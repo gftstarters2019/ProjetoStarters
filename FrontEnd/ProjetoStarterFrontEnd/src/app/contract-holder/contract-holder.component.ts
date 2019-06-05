@@ -4,6 +4,8 @@ import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { GenericValidator } from '../Validations/GenericValidator';
+import { TelephoneComponent } from '../telephone/telephone.component';
+import { TestBed } from '@angular/core/testing';
 
 
 @Component({
@@ -23,7 +25,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   gridApi;
   gridColumApi;
 
-  
 
   gridOptions: GridOptions;
   load_failure: boolean;
@@ -37,12 +38,15 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   }
 
+  @Output() teste = new EventEmitter();
+
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
     this.setup_form();
-
-
+    this.setup_form();
+    
+    this.teste.emit(0);
   }
 
   ngAfterViewInit() {
@@ -58,10 +62,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       birthdate: ['', GenericValidator.dateValidation()],
       email: ['', Validators.required],
       
-      idTelephone: this.chfb.array([
-          this.chfb.group({
-          })
-        ]),
+      idTelephone: this.chfb.array([]),
 
       idAddress: this.chfb.array([
         this.chfb.group({
@@ -71,10 +72,12 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     });
   }
   onSubmit(): void {
-    console.log(this.contractHolder.value);
+    
+    this.teste.emit(1);
 
-   let json = JSON.stringify(this.contractHolder.value);
-   let httpOptions = {headers: new HttpHeaders ({
+
+    let json = JSON.stringify(this.contractHolder.value);
+    let httpOptions = {headers: new HttpHeaders ({
      'Content-Type': 'application/json'
    })};
    this.http.post('https://httpbin.org/post', json,httpOptions).subscribe(data => console.log(data));
@@ -108,22 +111,23 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     const telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
     const hasMax = telephoneControl.length >= 5; 
 
-    if (!hasMax) {      
+    if (!hasMax) {
+            
       telephoneControl.push(this.chfb.group({
-        telephoneNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(11), Validators.minLength(10)]],
-        telephoneType: ['', Validators.required]
+        id: [''],
+        telephoneNumber: ['', GenericValidator.telephoneValidator()],
+        telephoneType: ''
+
       }))
     }
 
     this.showTelephonelist = !this.showTelephonelist;
   }
  
-  hanble_add_telphone($event: any) {
+  handle_add_telphone($event: any) {
     const telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
-    telephoneControl.push(this.chfb.group ({
-
-    }))
-  } 
+    telephoneControl.push(this.chfb.group($event));
+  }
   
   handle_add($event: any) {
     const addressControl = this.contractHolder.controls.idAddress as FormArray;
