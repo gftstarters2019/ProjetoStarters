@@ -33,7 +33,7 @@ namespace Backend.Infrastructure.Repositories
 
                 // Telephone
                 var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.IndividualTelephones);
-                if (!telephones.Any())
+                if (telephones.Count != vm.IndividualTelephones.Count || !telephones.Any())
                     return false;
                 if (telephones.Count > 0)
                 {
@@ -53,7 +53,7 @@ namespace Backend.Infrastructure.Repositories
 
                 // Address
                 var addresses = ViewModelCreator.AddressFactory.CreateList(vm.IndividualAddresses);
-                if (!addresses.Any())
+                if (addresses.Count != vm.IndividualAddresses.Count || !addresses.Any())
                     return false;
                 if (addresses.Count > 0)
                 {

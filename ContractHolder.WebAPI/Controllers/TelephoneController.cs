@@ -1,4 +1,5 @@
-﻿using Backend.Core.Enums;
+﻿using Backend.Application.ViewModels;
+using Backend.Core.Enums;
 using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +68,27 @@ namespace ContractHolder.WebAPI.Controllers
                 return Ok(telephone);
             }
             else
+                return Conflict();
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="telephone"></param>
+        /// <returns></returns>
+        [HttpPost("Link")]
+        public IActionResult LinkTelephone([FromBody] TelephoneIndividualViewModel telephoneIndividualViewModel)
+        {
+            //telephone.TelephoneId = Guid.NewGuid();
+
+            //if (Validate(telephone))
+            //{
+            //    _telephoneWriteRepository.Add(telephone);
+
+            //    return Ok(telephone);
+            //}
+            //else
                 return Conflict();
 
         }
