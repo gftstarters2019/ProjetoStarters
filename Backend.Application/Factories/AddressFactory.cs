@@ -60,7 +60,7 @@ namespace Backend.Application.Factories
             if (!new Regex("^[0-9]+$").IsMatch(address.AddressNumber))
                 return false;
 
-            if (!new Regex("^\\d{5}(?:[-\\s]\\d{4})?$").IsMatch(address.AddressZipCode))
+            if (!new Regex("^\\d{5}(?:[-\\s]\\d{3})?$").IsMatch(address.AddressZipCode))
                 return false;
 
             if (!regexLetters.IsMatch(address.AddressStreet) || !regexLetters.IsMatch(address.AddressComplement) || !regexLetters.IsMatch(address.AddressNeighborhood) ||
