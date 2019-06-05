@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Backend.Infrastructure.Configuration
 {
@@ -27,6 +28,11 @@ namespace Backend.Infrastructure.Configuration
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
             builder.Entity<Individual>().HasBaseType<Beneficiary>();
             builder.Entity<Realty>().HasBaseType<Beneficiary>();
             builder.Entity<Pet>().HasBaseType<Beneficiary>();

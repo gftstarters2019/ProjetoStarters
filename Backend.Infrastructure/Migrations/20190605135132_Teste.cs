@@ -112,13 +112,13 @@ namespace Backend.Infrastructure.Migrations
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "AddressId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Beneficiary_Address_Beneficiary_BeneficiaryId",
                         column: x => x.BeneficiaryId,
                         principalTable: "Beneficiary",
                         principalColumn: "BeneficiaryId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -138,13 +138,13 @@ namespace Backend.Infrastructure.Migrations
                         column: x => x.ContractId,
                         principalTable: "Contracts",
                         principalColumn: "ContractId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SignedContracts_Beneficiary_IndividualId",
                         column: x => x.IndividualId,
                         principalTable: "Beneficiary",
                         principalColumn: "BeneficiaryId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -163,13 +163,13 @@ namespace Backend.Infrastructure.Migrations
                         column: x => x.BeneficiaryId,
                         principalTable: "Beneficiary",
                         principalColumn: "BeneficiaryId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Individual_Telephone_Telephones_TelephoneId",
                         column: x => x.TelephoneId,
                         principalTable: "Telephones",
                         principalColumn: "TelephoneId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,13 +188,13 @@ namespace Backend.Infrastructure.Migrations
                         column: x => x.BeneficiaryId,
                         principalTable: "Beneficiary",
                         principalColumn: "BeneficiaryId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Contract_Beneficiary_SignedContracts_SignedContractId",
                         column: x => x.SignedContractId,
                         principalTable: "SignedContracts",
                         principalColumn: "ContractSignedId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

@@ -276,12 +276,12 @@ namespace Backend.Infrastructure.Migrations
                     b.HasOne("Backend.Core.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Backend.Core.Models.Beneficiary", "Beneficiary")
                         .WithMany()
                         .HasForeignKey("BeneficiaryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Backend.Core.Models.BeneficiaryTelephone", b =>
@@ -289,12 +289,12 @@ namespace Backend.Infrastructure.Migrations
                     b.HasOne("Backend.Core.Models.Beneficiary", "Beneficiary")
                         .WithMany()
                         .HasForeignKey("BeneficiaryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Backend.Core.Models.Telephone", "Telephone")
                         .WithMany()
                         .HasForeignKey("TelephoneId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Backend.Core.Models.ContractBeneficiary", b =>
@@ -302,12 +302,12 @@ namespace Backend.Infrastructure.Migrations
                     b.HasOne("Backend.Core.Models.Beneficiary", "Beneficiary")
                         .WithMany()
                         .HasForeignKey("BeneficiaryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Backend.Core.Models.SignedContract", "SignedContract")
                         .WithMany()
                         .HasForeignKey("SignedContractId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Backend.Core.Models.SignedContract", b =>
@@ -315,12 +315,12 @@ namespace Backend.Infrastructure.Migrations
                     b.HasOne("Backend.Core.Models.Contract", "ContractSignedContract")
                         .WithMany()
                         .HasForeignKey("ContractId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Backend.Core.Models.Individual", "ContractSignedIndividual")
                         .WithMany()
                         .HasForeignKey("IndividualId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
