@@ -47,7 +47,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet]
         public IActionResult ContractHolders()
         {
-            return Ok(_contractHolderReadOnlyRepository.Get());
+            return Ok(_contractHolderViewModelReadOnlyRepository.Get());
         }
 
         /// <summary>
