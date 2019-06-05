@@ -7,6 +7,11 @@ namespace Backend.Application.ViewModels
 {
     public class ContractHolderViewModel
     {
+        public ContractHolderViewModel(){
+            IndividualAddresses = new List<Address>();
+            IndividualTelephones = new List<Telephone>();
+        }
+
         public Guid IndividualId { get; set; }
         [MaxLength(50)]
         public string IndividualName { get; set; }

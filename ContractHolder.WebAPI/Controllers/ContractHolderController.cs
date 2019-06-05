@@ -30,10 +30,12 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="contractHolderReadOnlyRepository"></param>
         /// <param name="contractHolderWriteRepository"></param>
         /// <param name="contractsReadOnlyRepository"></param>
-        public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository, IReadOnlyRepository<SignedContract> contractsReadOnlyRepository)
+        public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository, IReadOnlyRepository<ContractHolderViewModel> contractHolderViewModelReadOnlyRepository, IWriteRepository<ContractHolderViewModel> contractHolderViewModelWriteRepository, IReadOnlyRepository<SignedContract> contractsReadOnlyRepository)
         {
             _contractHolderReadOnlyRepository = contractHolderReadOnlyRepository;
             _contractHolderWriteRepository = contractHolderWriteRepository;
+            _contractHolderViewModelReadOnlyRepository = contractHolderViewModelReadOnlyRepository;
+            _contractHolderViewModelWriteRepository = contractHolderViewModelWriteRepository;
             _contractsReadOnlyRepository = contractsReadOnlyRepository;
         }
 

@@ -8,7 +8,7 @@ namespace Backend.Infrastructure.Configuration
 
         public ConfigurationContext(DbContextOptions<ConfigurationContext> options) : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         public DbSet<Individual> Individuals { get; set; }
@@ -27,7 +27,7 @@ namespace Backend.Infrastructure.Configuration
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Individual>();
+            builder.Entity<Individual>().HasBaseType<Beneficiary>();
             builder.Entity<Realty>().HasBaseType<Beneficiary>();
             builder.Entity<Pet>().HasBaseType<Beneficiary>();
             builder.Entity<Vehicle>().HasBaseType<Beneficiary>();

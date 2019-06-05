@@ -12,6 +12,11 @@ namespace Backend.Application.Factories
         private List<Telephone> telephones = null;
         private Telephone telephone = null;
 
+        public TelephoneFactory()
+        {
+            telephones = new List<Telephone>();
+        }
+
         public List<Telephone> CreateList(List<Telephone> vm_telephones)
         {
             foreach (var tel in vm_telephones)

@@ -5,6 +5,7 @@ using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Backend.Infrastructure.Repositories
 {
@@ -33,7 +34,7 @@ namespace Backend.Infrastructure.Repositories
 
                 // Telephone
                 var telephones = viewModelCreator.Telephone;
-                if (telephones == null)
+                if (!telephones.Any())
                     return false;
                 if (telephones.Count > 0)
                 {
@@ -53,7 +54,7 @@ namespace Backend.Infrastructure.Repositories
 
                 // Address
                 var addresses = viewModelCreator.Address;
-                if (addresses == null)
+                if (!addresses.Any())
                     return false;
                 if (addresses.Count > 0)
                 {
