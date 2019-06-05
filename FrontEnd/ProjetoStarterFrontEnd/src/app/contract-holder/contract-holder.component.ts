@@ -19,12 +19,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   private columnDefs: Array<ColDef>;
   rowData$: Observable<Array<any>>;
-  private paginationPageSize;
   detailCellRendererParams;
   gridApi;
   gridColumApi;
-
-  
 
   gridOptions: GridOptions;
   load_failure: boolean;
@@ -34,6 +31,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   showList: boolean = true;
   showAddresslist: boolean = false;
   showTelephonelist: boolean = false;
+  components: { singleClickEditRenderer: any; };
   constructor(private chfb: FormBuilder, private http: HttpClient) {
 
   }
@@ -136,12 +134,10 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
 
   private setup_gridOptions() {
-    this.gridOptions = {
-      rowSelection: 'single',
 
+    this.gridOptions = {
       onRowSelected: this.onRowSelected.bind(this),
       masterDetail: true,
-
       columnDefs: [
         {
           headerName: 'Name',
@@ -209,62 +205,37 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           headerName: 'Edit/Delete',
           field: 'editDelete',
           colId: "params",
-          width: 60,
           lockPosition: true,
+          cellRenderer: "singleClickEditRenderer"
+
         }
       ],
-
+      
       detailCellRendererParams: {
-        detailGridOptions: {
-          columnDefs: [
-            { field: "street" },
-            { field: "type" },
-            { field: "number" },
-            { field: "state" },
-            { field: "neighborhood" },
-            { field: "country" },
-            { field: "zipcode" }
-          ],
-
-          
-          onFirstDataRendered(params) {
-            params.api.sizeColumnsToFit();
-          }
-          
-        },
+       
         
         getDetailRowData: function (params) {
-          debugger;
           params.successCallback(params.data.idAddress);
         },
-
-        template: function(params) {
         
-          var personName = params.data.name;
-          debugger;
-          return (
-            '<div style="height: 100%; background-color: #EDF6FF; padding: 20px; box-sizing: border-box;">' +
-            '  <div style="height: 10%;">Name: ' +
-            personName +
-            "</div>" +
-            '  <div ref="eDetailGrid" style="height: 90%;"></div>' +
-            "</div>"
-            );
-          } 
+         
         },
         onGridReady: this.onGridReady.bind(this)
       }
+      this.components = { singleClickEditRenderer: getRenderer() };
     }
+    
+    
     
     onGridReady(params) {
       this.gridApi = params.api;
       this.gridColumApi = params.columnApi;
     }
-  
+    
     
     private setup_gridData() {
       this.rowData$ = this.http.get<Array<any>>('https://contractholderwebapi.azurewebsites.net/api/ContractHolder');
-                }
+    }
           
           private onCellEdit(params: any) {
             console.log(params.newValue);
@@ -275,10 +246,21 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           private onRowSelected(event: RowSelectedEvent) {
             const { data } = event;
             this.contractHolder.getRawValue();
+            debugger;
             console.log(data);
             
             this.contractHolder.patchValue(data);
             
           }
           
+        }
+        function getRenderer() {
+          function CellRenderer() {}
+          CellRenderer.prototype.createGui = function() {
+            var template =
+              '<span><button id="theButton">#</button><span id="theValue" style="padding-left: 4px;"></span></span>';
+            var tempDiv = document.createElement("div");
+            tempDiv.innerHTML = template;
+            this.eGui = tempDiv.firstElementChild;
+          };
         }
