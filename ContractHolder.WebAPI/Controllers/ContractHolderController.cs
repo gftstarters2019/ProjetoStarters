@@ -27,9 +27,6 @@ namespace ContractHolder.WebAPI.Controllers
         /// <summary>
         /// ContractHolderController constructor
         /// </summary>
-        /// <param name="contractHolderReadOnlyRepository"></param>
-        /// <param name="contractHolderWriteRepository"></param>
-        /// <param name="contractsReadOnlyRepository"></param>
         public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository, IReadOnlyRepository<ContractHolderViewModel> contractHolderViewModelReadOnlyRepository, IWriteRepository<ContractHolderViewModel> contractHolderViewModelWriteRepository, IReadOnlyRepository<SignedContract> contractsReadOnlyRepository)
         {
             _contractHolderReadOnlyRepository = contractHolderReadOnlyRepository;
@@ -64,7 +61,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// <summary>
         /// Creates a new Contract Holder
         /// </summary>
-        /// <param name="vm">Contract Hodler to be created</param>
+        /// <param name="vm">Contract Holder to be created</param>
         /// <returns>Created Contract Holder</returns>
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel vm)
