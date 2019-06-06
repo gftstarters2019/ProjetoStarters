@@ -41,11 +41,15 @@ namespace Beneficiaries.WebAPI.Controllers
             IWriteRepository<Beneficiary> beneficiaryWriteRepository,
             IReadOnlyRepository<ContractBeneficiary> contractsReadOnlyRepository,
             IReadOnlyRepository<Individual> individualReadOnlyRepository,
+            IWriteRepository<Individual> individualWriteRepository,
             IReadOnlyRepository<Pet> petReadOnlyRepository,
+            IWriteRepository<Pet> petWriteRepository,
             IReadOnlyRepository<MobileDevice> mobileDeviceReadOnlyRepository,
+            IWriteRepository<MobileDevice> mobileDeviceWriteRepository,
             IReadOnlyRepository<Realty> realtyReadOnlyRepository,
+            IWriteRepository<Realty> realtyWriteRepository,
             IReadOnlyRepository<Vehicle> vehicleReadOnlyRepository,
-            IWriteRepository<Individual> individualWriteRepository)
+            IWriteRepository<Vehicle> vehicleWriteRepository)
         {
             _beneficiaryReadOnlyRepository = beneficiaryReadOnlyRepository;
             _beneficiaryWriteRepository = beneficiaryWriteRepository;
@@ -171,7 +175,7 @@ namespace Beneficiaries.WebAPI.Controllers
             if (!MobileDeviceIsValid(mobileDevice))
                 return Forbid();
 
-            _mobWriteRepository.Add(mobileDevice);
+            _mobileWriteRepository.Add(mobileDevice);
 
             return Ok(mobileDevice);
         }
@@ -226,7 +230,7 @@ namespace Beneficiaries.WebAPI.Controllers
 
             //if (!PetIsValid(pet))
             //    return Forbid();
-            _beneficiaryWriteRepository.Add(pet);
+            _petWriteRepository.Add(pet);
 
             return Ok(pet);
         }
@@ -280,7 +284,7 @@ namespace Beneficiaries.WebAPI.Controllers
             if (!RealtyIsValid(realty))
                 return Forbid();
 
-            _beneficiaryWriteRepository.Add(realty);
+            _realtyWriteRepository.Add(realty);
 
             return Ok(realty);
         }
@@ -333,7 +337,7 @@ namespace Beneficiaries.WebAPI.Controllers
             if (!VehicleIsValid(vehicle))
                 return Forbid();
 
-            _beneficiaryWriteRepository.Add(vehicle);
+            _vehicleWriteRepository.Add(vehicle);
 
             return Ok(vehicle);
         }
