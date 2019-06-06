@@ -22,7 +22,8 @@ export class BeneficiaryListComponent implements OnInit {
   detailCellRendererParams;
   gridApi;
   gridColumApi;
-  rowData$;
+  rowData$: any;
+  paginationPageSize;
   gridOptions: GridOptions;
   load_failure: boolean;
 
@@ -48,7 +49,11 @@ export class BeneficiaryListComponent implements OnInit {
   ];
   constructor(private fb: FormBuilder, private http: HttpClient) {
   }
-  ngOnInit() { }
+  ngOnInit() {
+    this.setup_gridData();
+    this.setup_gridOptions();
+    this.paginationPageSize = 50;
+  }
 
   TypeTable(): void {
     this.sType = this.selectType.get(['Type']).value;
@@ -115,23 +120,23 @@ export class BeneficiaryListComponent implements OnInit {
     }
     if (this.sType == 1) {
 
-       this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets');
-       this.gridOptions = {
-         rowSelection: 'single',
+      this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets');
+      this.gridOptions = {
+        rowSelection: 'single',
 
         //  onRowSelected: this.onRowSelected.bind(this),
-         masterDetail: true,
+        masterDetail: true,
 
-       columnDefs: [
-           {
-             headerName: 'Name',
-             field: 'name',
-             lockPosition: true,
-             sortable: true,
-             filter: true,
-             onCellValueChanged:
-             this.onCellEdit.bind(this)
-           },
+        columnDefs: [
+          {
+            headerName: 'Name',
+            field: 'name',
+            lockPosition: true,
+            sortable: true,
+            filter: true,
+            onCellValueChanged:
+              this.onCellEdit.bind(this)
+          },
           {
             headerName: 'Birth Date',
             field: 'BirthDate',
@@ -442,20 +447,82 @@ export class BeneficiaryListComponent implements OnInit {
 
     }
   }
+  //AG-grid Table Contract
+  private setup_gridOptions() {
 
+    this.gridOptions = {
+      rowSelection: 'single',
+
+      onRowSelected: this.onRowSelected.bind(this),
+      masterDetail: true,
+
+
+      columnDefs: [
+        {
+          headerName: 'Name',
+          field: 'name',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'cpf',
+          field: 'cpf',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'rg',
+          field: 'rg',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'BirthDate',
+          field: 'BirthDate',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'email',
+          field: 'email',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        }
+      ],
+      onGridReady: this.onGridReady.bind(this)
+    }
+  }
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
+  }
+  private setup_gridData() {
+    this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals');
   }
   private onCellEdit(params: any) {
     console.log(params.newValue);
     console.log(params.data);
   }
 
-  // private onRowSelected(event: RowSelectedEvent) {
-  //   const { data } = event;
-  //   this.individual.getRawValue();
-  //   console.log(data);
-  //   this.individual.patchValue(data);
-  // }
+  private onRowSelected(event: RowSelectedEvent) {
+    const { data } = event;
+    // this.individual.getRawValue();
+    console.log(data);
+    // this.individual.patchValue(data);
+  }
 }
