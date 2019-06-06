@@ -59,9 +59,16 @@ namespace Beneficiaries.WebAPI.Controllers
             _individualWriteRepository = individualWriteRepository;
 
             _petReadOnlyRepository = petReadOnlyRepository;
+            _petWriteRepository = petWriteRepository;
+
             _mobileDeviceReadOnlyRepository = mobileDeviceReadOnlyRepository;
+            _mobileWriteRepository = mobileDeviceWriteRepository;
+
             _realtyReadOnlyRepository = realtyReadOnlyRepository;
+            _realtyWriteRepository = realtyWriteRepository;
+
             _vehicleReadOnlyRepository = vehicleReadOnlyRepository;
+            _vehicleWriteRepository = vehicleWriteRepository;
         }
 
         /// <summary>
