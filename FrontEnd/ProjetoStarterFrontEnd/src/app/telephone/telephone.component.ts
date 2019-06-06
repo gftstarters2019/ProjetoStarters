@@ -32,24 +32,21 @@ export class TelephoneComponent implements OnInit {
 
   @Output () addTelephone = new EventEmitter<any>();
   @Input() telephone2: FormGroup;
-  @Input() teste !: number;
+  @Input() pushPermission !: number;
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    console.log(this.teste)
-    //debugger;
+    
   }
 
   
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.teste.currentValue != 0 && changes.teste.currentValue != changes.previousValue)
+    if(changes.pushPermission.currentValue != 0 && changes.pushPermission.currentValue != changes.previousValue)
         this.addTelephone.emit(this.telephone);
   }
 
   public onSubmit(values: any): void {
-    // this.message=this.telephone.get(['id']).value;
-    // this.addTelephone.emit(this.telephone.value);
   }
 
   chooseTelephone(): boolean {

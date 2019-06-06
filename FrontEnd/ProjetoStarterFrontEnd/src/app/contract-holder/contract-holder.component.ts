@@ -68,13 +68,12 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   
     });
   }
+
+  changeMessageValue(): void {
+    this.message = 1;
+  } 
   onSubmit(): void {
     console.log("sub")
-    
-    this.message = 1;
-
-
-    console.log(this.contractHolder.controls.IndividualTelephones)
 
     let json = JSON.stringify(this.contractHolder.value);
     let httpOptions = {headers: new HttpHeaders ({
