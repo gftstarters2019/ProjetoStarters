@@ -70,7 +70,7 @@ namespace Backend.Infrastructure.Repositories
                         .ToList();
                     break;
                 case Core.Enums.ContractType.RealStateInsurance:
-                    beneficiaries = _db.Reaties
+                    beneficiaries = _db.Realties
                         .Where(rea => viewModel.Beneficiaries.Contains(rea.BeneficiaryId))
                         .Select(rea => rea.BeneficiaryId)
                         .ToList();
@@ -177,12 +177,15 @@ namespace Backend.Infrastructure.Repositories
                 .Where(sc => sc.SignedContractId == id)
                 .FirstOrDefault()
                 .ContractId;
+
             if (_db.SignedContracts
                 .Where(sc => sc.ContractId == contractToDelete && sc.ContractIndividualIsActive)
                 .Count() > 0)
                 return false;
+
             _db.Contracts.Remove(_db.Contracts.Where(c => c.ContractId == contractToDelete).FirstOrDefault());
             _db.SaveChanges();
+
             return true;
         }
 
@@ -197,7 +200,7 @@ namespace Backend.Infrastructure.Repositories
             return contractViewModel;
         }
 
-        public ContractViewModel UpdateContract(Guid id, ContractViewModel contractViewModel)
+        private ContractViewModel UpdateContract(Guid id, ContractViewModel contractViewModel)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
         new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -250,7 +253,7 @@ namespace Backend.Infrastructure.Repositories
                         .ToList();
                     break;
                 case Core.Enums.ContractType.RealStateInsurance:
-                    beneficiaries = _db.Reaties
+                    beneficiaries = _db.Realties
                         .Where(rea => viewModel.Beneficiaries.Contains(rea.BeneficiaryId))
                         .Select(rea => rea.BeneficiaryId)
                         .ToList();

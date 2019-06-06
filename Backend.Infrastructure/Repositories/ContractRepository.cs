@@ -28,7 +28,7 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Add(Contract contract)
         {
-            if(contract != null)
+            if (contract != null)
             {
                 _db.Add(contract);
                 if (_db.SaveChanges() == 1)
@@ -42,7 +42,7 @@ namespace Backend.Infrastructure.Repositories
         public bool Remove(Guid id)
         {
             var contract = Find(id);
-            if(contract != null)
+            if (contract != null)
             {
                 _db.Remove(contract);
                 _db.SaveChanges();
@@ -54,9 +54,18 @@ namespace Backend.Infrastructure.Repositories
 
         public Contract Update(Guid id, Contract contract)
         {
-            if(contract != null)
+            if (contract != null)
             {
-                _db.Update(contract);
+                var contractToUpdate = contract;
+                if (contract.ContractId != id)
+                {
+                    contractToUpdate = Find(id);
+                    contractToUpdate.ContractCategory = contract.ContractCategory;
+                    contractToUpdate.ContractDeleted = contract.ContractDeleted;
+                    contractToUpdate.ContractExpiryDate = contract.ContractExpiryDate;
+                    contractToUpdate.ContractType = contract.ContractType;
+                }
+                _db.Update(contractToUpdate);
                 _db.SaveChanges();
             }
 
