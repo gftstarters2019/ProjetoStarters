@@ -51,57 +51,6 @@ export class BeneficiaryListComponent implements OnInit {
     this.sType = this.selectType.get(['Type']).value;
 }
   
-  //   if (this.sType == 1) {
-
-  //     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets');
-  //     this.gridOptions = {
-  //       rowSelection: 'single',
-
-  //       //  onRowSelected: this.onRowSelected.bind(this),
-  //       masterDetail: true,
-
-  //       columnDefs: [
-  //         {
-  //           headerName: 'Name',
-  //           field: 'name',
-  //           lockPosition: true,
-  //           sortable: true,
-  //           filter: true,
-  //           onCellValueChanged:
-  //             this.onCellEdit.bind(this)
-  //         },
-  //         {
-  //           headerName: 'Birth Date',
-  //           field: 'BirthDate',
-  //           lockPosition: true,
-  //           sortable: true,
-  //           filter: true,
-  //           onCellValueChanged:
-  //             this.onCellEdit.bind(this)
-  //         },
-  //         {
-  //           headerName: 'Especie',
-  //           field: 'especie',
-  //           lockPosition: true,
-  //           sortable: true,
-  //           filter: true,
-  //           onCellValueChanged:
-  //             this.onCellEdit.bind(this)
-  //         },
-  //         {
-  //           headerName: 'Breed',
-  //           field: 'breed',
-  //           lockPosition: true,
-  //           sortable: true,
-  //           filter: true,
-  //           onCellValueChanged:
-  //             this.onCellEdit.bind(this)
-  //         }
-  //       ],
-  //       onGridReady: this.onGridReady.bind(this)
-  //     }
-
-  //   }
   //   if (this.sType == 2) {
 
   //     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicles');

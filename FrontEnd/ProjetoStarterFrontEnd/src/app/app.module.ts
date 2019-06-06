@@ -30,6 +30,7 @@ import { MatCardModule} from '@angular/material/card';
 import { CdkTableModule } from '@angular/cdk/table';
 import {ObserversModule} from '@angular/cdk/observers';
 import { IndividualListComponent } from './individual-list/individual-list.component';
+import { PetListComponent } from './pet-list/pet-list.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { IndividualListComponent } from './individual-list/individual-list.compo
     BeneficiaryMobileDeviceComponent,
     TelephoneComponent,
     IndividualListComponent,
+    PetListComponent,
   ],
   imports: [
     ObserversModule,
