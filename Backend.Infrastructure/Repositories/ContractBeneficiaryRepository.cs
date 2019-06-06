@@ -32,7 +32,7 @@ namespace Backend.Infrastructure.Repositories
             .Where(cb => cb.SignedContract.ContractIndividualIsActive)
             .ToList();
 
-        public ContractBeneficiary Remove(Guid id)
+        public bool Remove(Guid id)
         {
             throw new NotImplementedException();
         }
