@@ -52,7 +52,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   private handle_editUser(data: any) {
-    console.log('rafael is awesome + 10');
     console.log(data);
 
     this.contractHolder.patchValue(data);
