@@ -255,6 +255,27 @@ namespace Backend.Infrastructure.Repositories
 
                     _db.AddRange(vm.IndividualAddresses);
                     _db.AddRange(vm.IndividualTelephones);
+
+                    foreach (var benAdd in vm.IndividualAddresses)
+                    {
+                        _db.Add(new BeneficiaryAddress
+                        {
+                            BeneficiaryAddressId = Guid.NewGuid(),
+                            BeneficiaryId = individual.BeneficiaryId,
+                            AddressId = benAdd.AddressId
+                        });
+                    }
+
+                    foreach (var indTel in vm.IndividualTelephones)
+                    {
+                        _db.Add(new BeneficiaryTelephone
+                        {
+                            BeneficiaryTelephoneId = Guid.NewGuid(),
+                            BeneficiaryId = individual.BeneficiaryId,
+                            TelephoneId = indTel.TelephoneId
+                        });
+                    }
+
                 }
 
                 _db.SaveChanges();
