@@ -33,6 +33,7 @@ import { IndividualListComponent } from './individual-list/individual-list.compo
 import { PetListComponent } from './pet-list/pet-list.component';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { RealtiesListComponent } from './realties-list/realties-list.component';
+import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-list.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { RealtiesListComponent } from './realties-list/realties-list.component';
     PetListComponent,
     VehicleListComponent,
     RealtiesListComponent,
+    MobileDeviceListComponent,
   ],
   imports: [
     ObserversModule,
