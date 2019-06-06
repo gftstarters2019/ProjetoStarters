@@ -17,9 +17,15 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(Realty t)
+        public bool Add(Realty realty)
         {
-            throw new NotImplementedException();
+            if (realty != null)
+            {
+                _db.Realties.Add(realty);
+                if (_db.SaveChanges() == 1)
+                    return true;
+            }
+            return false;
         }
 
         public Realty Find(Guid id)

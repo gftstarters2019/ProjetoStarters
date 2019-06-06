@@ -20,10 +20,19 @@ namespace Beneficiaries.WebAPI.Controllers
         private readonly IReadOnlyRepository<ContractBeneficiary> _contractsReadOnlyRepository;
 
         private readonly IReadOnlyRepository<Individual> _individualReadOnlyRepository;
+        private readonly IWriteRepository<Individual> _individualWriteRepository;
+
         private readonly IReadOnlyRepository<Pet> _petReadOnlyRepository;
+        private readonly IWriteRepository<Pet> _petWriteRepository;
+
         private readonly IReadOnlyRepository<MobileDevice> _mobileDeviceReadOnlyRepository;
+        private readonly IWriteRepository<MobileDevice> _mobileWriteRepository;
+
         private readonly IReadOnlyRepository<Realty> _realtyReadOnlyRepository;
+        private readonly IWriteRepository<Realty> _realtyWriteRepository;
+
         private readonly IReadOnlyRepository<Vehicle> _vehicleReadOnlyRepository;
+        private readonly IWriteRepository<Vehicle> _vehicleWriteRepository;
 
         /// <summary>
         /// BeneficiaryController constructor
@@ -35,12 +44,16 @@ namespace Beneficiaries.WebAPI.Controllers
             IReadOnlyRepository<Pet> petReadOnlyRepository,
             IReadOnlyRepository<MobileDevice> mobileDeviceReadOnlyRepository,
             IReadOnlyRepository<Realty> realtyReadOnlyRepository,
-            IReadOnlyRepository<Vehicle> vehicleReadOnlyRepository)
+            IReadOnlyRepository<Vehicle> vehicleReadOnlyRepository,
+            IWriteRepository<Individual> individualWriteRepository)
         {
             _beneficiaryReadOnlyRepository = beneficiaryReadOnlyRepository;
             _beneficiaryWriteRepository = beneficiaryWriteRepository;
             _contractsReadOnlyRepository = contractsReadOnlyRepository;
+
             _individualReadOnlyRepository = individualReadOnlyRepository;
+            _individualWriteRepository = individualWriteRepository;
+
             _petReadOnlyRepository = petReadOnlyRepository;
             _mobileDeviceReadOnlyRepository = mobileDeviceReadOnlyRepository;
             _realtyReadOnlyRepository = realtyReadOnlyRepository;
@@ -102,9 +115,9 @@ namespace Beneficiaries.WebAPI.Controllers
             //individual.IndividualId = Guid.NewGuid();
 
             if (!IndividualIsValid(individual))
-                return Forbid();
+                return StatusCode(403);
 
-            _beneficiaryWriteRepository.Add(individual);
+            _individualWriteRepository.Add(individual);
 
             return Ok(individual);
         }
@@ -154,12 +167,11 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostMobileDevice([FromBody] MobileDevice mobileDevice)
         {
             mobileDevice.BeneficiaryId = Guid.NewGuid();
-            //mobileDevice.MobileDeviceId = Guid.NewGuid();
 
             if (!MobileDeviceIsValid(mobileDevice))
                 return Forbid();
 
-            _beneficiaryWriteRepository.Add(mobileDevice);
+            _mobWriteRepository.Add(mobileDevice);
 
             return Ok(mobileDevice);
         }
@@ -317,7 +329,6 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostVehicle([FromBody] Vehicle vehicle)
         {
             vehicle.BeneficiaryId = Guid.NewGuid();
-            //vehicle.VehicleId = Guid.NewGuid();
 
             if (!VehicleIsValid(vehicle))
                 return Forbid();
@@ -363,7 +374,11 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBeneficiary(Guid id)
         {
-            if (_contractsReadOnlyRepository.Get().Where(cb => cb.BeneficiaryId == id).ToList().Count > 0)
+            var beneficiariesContracts = _contractsReadOnlyRepository.Get()
+                .Where(cb => cb.BeneficiaryId == id)
+                .ToList();
+
+            if (beneficiariesContracts.Count > 0)
                 return Forbid();
 
             var obj = _beneficiaryReadOnlyRepository.Find(id);

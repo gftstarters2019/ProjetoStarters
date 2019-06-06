@@ -17,9 +17,15 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(MobileDevice t)
+        public bool Add(MobileDevice mobile)
         {
-            throw new NotImplementedException();
+            if (mobile != null)
+            {
+                _db.MobileDevices.Add(mobile);
+                if (_db.SaveChanges() == 1)
+                    return true;
+            }
+            return false;
         }
 
         public MobileDevice Find(Guid id)
