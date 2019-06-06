@@ -16,7 +16,7 @@
     </ng-template>
     <ng-template #telephoneBlock>
         <mat-form-field class ="phoneNumber">
-            <input matInput placeholder="Telephone Number" (change)="onSubmit()" [textMask] = "{mask:telephoneMask}" name="telephoneNumber" formControlName="telephoneNumber" required>
+            <input matInput placeholder="Telephone Number" [textMask] = "{mask:telephoneMask}" name="telephoneNumber" formControlName="telephoneNumber" required>
             <mat-error>Number is invalid</mat-error>
         </mat-form-field>
     </ng-template>
@@ -24,6 +24,6 @@
     
   </div>
   <div class="btn-telephone">
-    <!-- <button color="primary" mat-raised-button [disabled]="!telephone.valid" >Submit</button> -->
+    <!-- <button color="primary" mat-raised-button type="submit" >Add</button> -->
   </div>
 </form>

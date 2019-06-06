@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, AbstractControl, Validator } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, AbstractControl, Validator, FormArray } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
 import { EventListener } from '@angular/core/src/debug/debug_node';
+import { SubjectSubscriber, Subject } from 'rxjs/internal/Subject';
 
 export interface Telephone{
   id: string,
@@ -21,12 +22,13 @@ export class TelephoneComponent implements OnInit {
   cellphoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   telephoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
-  message:string;
+  // message:string;
   telephone = this.fb.group ({
     id: [''],
     telephoneNumber: ['', GenericValidator.telephoneValidator()],
     telephoneType: ''
   });
+
 
   @Output () addTelephone = new EventEmitter<any>();
   @Input() telephone2: FormGroup;
@@ -36,17 +38,18 @@ export class TelephoneComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.teste)
+    //debugger;
   }
 
   
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.teste.currentValue != changes.teste.previousValue)
-      this.addTelephone.emit(this.telephone.value);
+    if(changes.teste.currentValue != 0 && changes.teste.currentValue != changes.previousValue)
+        this.addTelephone.emit(this.telephone);
   }
 
-  public onSubmit(): void {
-    this.message=this.telephone.get(['id']).value;
-    //this.addTelephone.emit(this.telephone.value);
+  public onSubmit(values: any): void {
+    // this.message=this.telephone.get(['id']).value;
+    // this.addTelephone.emit(this.telephone.value);
   }
 
   chooseTelephone(): boolean {

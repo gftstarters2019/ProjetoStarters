@@ -1,12 +1,9 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
+import { Validators, FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { GenericValidator } from '../Validations/GenericValidator';
-import { TelephoneComponent } from '../telephone/telephone.component';
-import { TestBed } from '@angular/core/testing';
-
 
 @Component({
   selector: 'app-contract-holder',
@@ -38,15 +35,13 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   }
 
-  @Output() teste = new EventEmitter();
-
+  message: number = 0;
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
     this.setup_form();
     this.setup_form();
     
-    this.teste.emit(0);
   }
 
   ngAfterViewInit() {
@@ -56,25 +51,30 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   private setup_form() {
     this.contractHolder = this.chfb.group({
-      name: ['', Validators.pattern(GenericValidator.regexName)],
-      rg: ['', GenericValidator.rgLengthValidation()],
-      cpf: ['', GenericValidator.isValidCpf()],
-      birthdate: ['', GenericValidator.dateValidation()],
-      email: ['', Validators.required],
+      IndividualId: '',
+      IndividualName: ['', Validators.pattern(GenericValidator.regexName)],
+      IndividualRG: ['', GenericValidator.rgLengthValidation()],
+      IndividualCPF: ['', GenericValidator.isValidCpf()],
+      IndividualBirthDate: ['', GenericValidator.dateValidation()],
+      IndividualEmail: ['', Validators.required],
+      IsDeleted: false,
+
       
       idTelephone: this.chfb.array([]),
 
-      idAddress: this.chfb.array([
-        this.chfb.group({
-        })
-      ]),
+      IndividualTelephones: this.chfb.array([]),
+
+      idAddress: this.chfb.array([]),
   
     });
   }
   onSubmit(): void {
+    console.log("sub")
     
-    this.teste.emit(1);
+    this.message = 1;
 
+
+    console.log(this.contractHolder.controls.IndividualTelephones)
 
     let json = JSON.stringify(this.contractHolder.value);
     let httpOptions = {headers: new HttpHeaders ({
@@ -114,20 +114,22 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     if (!hasMax) {
             
       telephoneControl.push(this.chfb.group({
-        id: [''],
-        telephoneNumber: ['', GenericValidator.telephoneValidator()],
-        telephoneType: ''
-
-      }))
+        // id: [''],
+        // telephoneNumber: ['', GenericValidator.telephoneValidator()],
+        // telephoneType: ''
+      }));
     }
-
     this.showTelephonelist = !this.showTelephonelist;
   }
  
   handle_add_telphone($event: any) {
-    const telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
-    telephoneControl.push(this.chfb.group($event));
-  }
+    console.log("add telephone")
+    // let telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
+    // telephoneControl.push(this.chfb.group({}));
+    // telephoneControl.removeAt(telephoneControl.length - 1);
+    let IndividualTelephonesControl = this.contractHolder.controls.IndividualTelephones as FormArray;
+    IndividualTelephonesControl.push($event);
+  } 
   
   handle_add($event: any) {
     const addressControl = this.contractHolder.controls.idAddress as FormArray;
