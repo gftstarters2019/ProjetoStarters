@@ -38,8 +38,9 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public BeneficiaryTelephone Remove(BeneficiaryTelephone telephones)
+        public BeneficiaryTelephone Remove(Guid id)
         {
+            var telephones = Find(id);
             if (telephones != null)
             {
                 _db.Remove(telephones);

@@ -39,8 +39,9 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Individual Remove(Individual individual)
+        public Individual Remove(Guid id)
         {
+            var individual = Find(id);
             if(individual != null)
             {
                 _db.Remove(individual);

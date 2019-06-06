@@ -39,8 +39,9 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Contract Remove(Contract contract)
+        public Contract Remove(Guid id)
         {
+            var contract = Find(id);
             if(contract != null)
             {
                 _db.Remove(contract);

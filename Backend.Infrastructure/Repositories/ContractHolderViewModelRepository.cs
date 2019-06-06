@@ -157,7 +157,7 @@ namespace Backend.Infrastructure.Repositories
 
         }
 
-        public ContractHolderViewModel Remove(ContractHolderViewModel t)
+        public ContractHolderViewModel Remove(Guid id)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
         new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))

@@ -38,8 +38,9 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Address Remove(Address address)
+        public Address Remove(Guid id)
         {
+            var address = Find(id);
             if (address != null)
             {
                 _db.Remove(address);

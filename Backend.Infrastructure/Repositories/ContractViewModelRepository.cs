@@ -91,7 +91,7 @@ namespace Backend.Infrastructure.Repositories
                 var contract_beneficiary = new ContractBeneficiary()
                 {
                     BeneficiaryId = ben,
-                    SignedContractId = signedContract.ContractSignedId,
+                    SignedContractId = signedContract.SignedContractId,
                     ContractBeneficiaryId = Guid.NewGuid()
                 };
                 _db.Contract_Beneficiary.Add(contract_beneficiary);
@@ -111,7 +111,7 @@ namespace Backend.Infrastructure.Repositories
             var signedContract = new SignedContract()
             {
                 ContractId = contract.ContractId,
-                ContractSignedId = Guid.NewGuid(),
+                SignedContractId = Guid.NewGuid(),
                 IndividualId = contractHolder.BeneficiaryId,
                 ContractIndividualIsActive = viewModel.IsActive
             };
@@ -149,7 +149,7 @@ namespace Backend.Infrastructure.Repositories
                 {
                     var beneficiaries = _db
                         .Contract_Beneficiary
-                        .Where(cb => cb.SignedContractId == signedContract.ContractSignedId)
+                        .Where(cb => cb.SignedContractId == signedContract.SignedContractId)
                         .Select(cb => cb.BeneficiaryId)
                         .ToList();
 
@@ -159,6 +159,7 @@ namespace Backend.Infrastructure.Repositories
                         ExpiryDate = contract.ContractExpiryDate,
                         IsActive = signedContract.ContractIndividualIsActive,
                         Type = contract.ContractType,
+                        SignedContractId = signedContract.SignedContractId,
                         ContractHolderId = signedContract.IndividualId,
                         Beneficiaries = beneficiaries
                     };
@@ -168,7 +169,7 @@ namespace Backend.Infrastructure.Repositories
             return viewModelToReturn;
         }
 
-        public ContractViewModel Remove(ContractViewModel t)
+        public ContractViewModel Remove(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -176,6 +177,7 @@ namespace Backend.Infrastructure.Repositories
         public ContractViewModel Update(Guid id, ContractViewModel t)
         {
             throw new NotImplementedException();
+            //_db.SignedContracts.Where(sc => sc.SignedContractId == id).ToList();
         }
     }
 }

@@ -41,8 +41,9 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Beneficiary Remove(Beneficiary beneficiary)
+        public Beneficiary Remove(Guid id)
         {
+            var beneficiary = Find(id);
             if(beneficiary != null)
             {
                 _db.Remove(beneficiary);
