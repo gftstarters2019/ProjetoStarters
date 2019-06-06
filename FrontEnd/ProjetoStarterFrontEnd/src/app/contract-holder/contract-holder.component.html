@@ -82,15 +82,15 @@
   <div *ngIf="!showList" class="mat-elevation-z8">
     
     <div>
+     
+
       <ag-grid-angular
-      style="width: 100%; height: 1000px;" 
+      style="width: 100%; height: 4000px;" 
       [pagination]="true"
       class="ag-theme-material" 
       [paginationPageSize]=50
       [gridOptions]="gridOptions"
-      suppressClickEdit=true
-      [rowData]="rowData$ | async"> 
-      </ag-grid-angular>
+      [rowData]="rowData$ | async"></ag-grid-angular>
 
     </div>
   </div>

@@ -1,10 +1,11 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
-import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
+import { GridOptions, ColDef, RowSelectedEvent, RowClickedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
+import { ActionButtonComponent } from '../action-button/action-button.component';
 
 
 @Component({
@@ -27,11 +28,10 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   load_failure: boolean;
   contractHolder: FormGroup;
   addressForm: FormArray;
-
+  rowSelection;
   showList: boolean = true;
   showAddresslist: boolean = false;
   showTelephonelist: boolean = false;
-  components: { singleClickEditRenderer: any; };
   constructor(private chfb: FormBuilder, private http: HttpClient) {
 
   }
@@ -71,6 +71,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
   onSubmit(): void {
     console.log(this.contractHolder.value);
+    debugger;
 
    let json = JSON.stringify(this.contractHolder.value);
    let httpOptions = {headers: new HttpHeaders ({
@@ -136,8 +137,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   private setup_gridOptions() {
 
     this.gridOptions = {
-      onRowSelected: this.onRowSelected.bind(this),
+      onRowClicked: this.onRowClicked.bind(this),
       masterDetail: true,
+      
       columnDefs: [
         {
           headerName: 'Name',
@@ -145,7 +147,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           lockPosition: true,
           sortable: true,
           onCellValueChanged:
-            this.onCellEdit.bind(this),
+          this.onCellEdit.bind(this),
           filter: "agTextColumnFilter",
           filterParams: {
             filterOptions: ["contains", "notContains"],
@@ -168,7 +170,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
             suppressAndOrCondition: true,   
           }              
         },
-
+        
         {
           headerName: 'CPF',
           field: 'individualCPF',
@@ -177,7 +179,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           filter: true,
           onCellValueChanged: this.onCellEdit.bind(this),
         },
-
+        
         {
           headerName: 'RG',
           field: 'individualRG',
@@ -185,7 +187,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this)
         },
-
+        
         {
           headerName: 'Birthdate',
           field: 'individualBirthdate',
@@ -193,7 +195,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
         },
-
+        
         {
           headerName: 'Email',
           field: 'individualEmail',
@@ -204,25 +206,25 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
         {
           headerName: 'Edit/Delete',
           field: 'editDelete',
-          colId: "params",
           lockPosition: true,
-          cellRenderer: "singleClickEditRenderer"
-
-        }
-      ],
+          cellRendererFramework: ActionButtonComponent,
+          }
+        ],
+        
       
       detailCellRendererParams: {
-       
+        
         
         getDetailRowData: function (params) {
           params.successCallback(params.data.idAddress);
+          debugger;
+          console.log(params);
         },
         
-         
-        },
-        onGridReady: this.onGridReady.bind(this)
+        
+      },
+      onGridReady: this.onGridReady.bind(this)
       }
-      this.components = { singleClickEditRenderer: getRenderer() };
     }
     
     
@@ -232,9 +234,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       this.gridColumApi = params.columnApi;
     }
     
-    
     private setup_gridData() {
-      this.rowData$ = this.http.get<Array<any>>('https://contractholderwebapi.azurewebsites.net/api/ContractHolder');
+       this.rowData$ = this.http.get<Array<any>>('https://contractholderwebapi.azurewebsites.net/api/ContractHolder');
+      
     }
           
           private onCellEdit(params: any) {
@@ -243,24 +245,16 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
             
           }         
           
-          private onRowSelected(event: RowSelectedEvent) {
+          private onRowClicked(event: RowClickedEvent) {
             const { data } = event;
             this.contractHolder.getRawValue();
-            debugger;
-            console.log(data);
-            
             this.contractHolder.patchValue(data);
+             debugger;
+            
             
           }
+
+          
           
         }
-        function getRenderer() {
-          function CellRenderer() {}
-          CellRenderer.prototype.createGui = function() {
-            var template =
-              '<span><button id="theButton">#</button><span id="theValue" style="padding-left: 4px;"></span></span>';
-            var tempDiv = document.createElement("div");
-            tempDiv.innerHTML = template;
-            this.eGui = tempDiv.firstElementChild;
-          };
-        }
+      
