@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
+import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 
 
@@ -17,7 +18,7 @@ export interface Holder{
   value: string;
  }
 
-
+ 
 @Component({
   selector: 'app-contract',
   templateUrl: './contract.component.html',
@@ -67,9 +68,24 @@ export class ContractComponent implements OnInit {
     Type: ['', Validators.required],
     Category: ['', Validators.required],
     ExpiryDate: ['', Validators.required],
-    Status:['False', Validators.required],
+    isActive:['', Validators.required],
     beneficiaries: this.fb.array([])
   });
+
+  @ViewChild('slide')
+  matSlideToggle: MatSlideToggle;
+
+  focusTest() {
+    this.matSlideToggle.focus();
+  }
+  toggleTest() {
+    this.matSlideToggle.toggle();
+  }
+
+  get activateAcc() {
+    return this.contractform.get('isActive');
+  }  
+
 
   constructor(private fb: FormBuilder, private http: HttpClient) { }
 
@@ -87,7 +103,7 @@ export class ContractComponent implements OnInit {
   }
 
   public assignContractType(): void{
-    this.cType = this.contractform.get(['contractType']).value;
+    this.cType = this.contractform.get(['Type']).value;
   }
 
   createBeneficiary(): FormGroup {
@@ -199,10 +215,10 @@ export class ContractComponent implements OnInit {
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    //this.contract.getRawValue();
+    this.contractform.getRawValue();
     console.log(data);
 
-    //this.contract.patchValue(data);
+    this.contractform.patchValue(data);
 
   }
 

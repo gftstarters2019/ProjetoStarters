@@ -24,6 +24,7 @@ namespace Backend.Infrastructure.Repositories
 
         public IEnumerable<Beneficiary> Get() => _db
             .Beneficiaries
+            .Where(b => !b.IsDeleted)
             .ToList();
 
         public void Add(Beneficiary beneficiary)

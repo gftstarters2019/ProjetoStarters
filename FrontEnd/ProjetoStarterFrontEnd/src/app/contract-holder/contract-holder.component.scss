@@ -16,7 +16,24 @@ padding-right: 15px;
 }
 
 .addressBg {
-  padding-left: 2em;
-  padding-bottom: 2em;
-  padding-top: 2em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+button{
+  margin-left: 1em;
+  margin-right: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.btn-position {
+  float: right;
+  margin-right: 1em;
+}
+
+.titleContract {
+  text-align: center;
 }
