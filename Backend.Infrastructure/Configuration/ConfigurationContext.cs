@@ -13,7 +13,7 @@ namespace Backend.Infrastructure.Configuration
         }
 
         public DbSet<Individual> Individuals { get; set; }
-        public DbSet<Realty> Reaties { get; set; }
+        public DbSet<Realty> Realties { get; set; }
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<MobileDevice> MobileDevices { get; set; }

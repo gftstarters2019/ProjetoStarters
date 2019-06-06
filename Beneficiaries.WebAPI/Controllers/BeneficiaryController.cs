@@ -19,16 +19,32 @@ namespace Beneficiaries.WebAPI.Controllers
         private readonly IWriteRepository<Beneficiary> _beneficiaryWriteRepository;
         private readonly IReadOnlyRepository<ContractBeneficiary> _contractsReadOnlyRepository;
 
+        private readonly IReadOnlyRepository<Individual> _individualReadOnlyRepository;
+        private readonly IReadOnlyRepository<Pet> _petReadOnlyRepository;
+        private readonly IReadOnlyRepository<MobileDevice> _mobileDeviceReadOnlyRepository;
+        private readonly IReadOnlyRepository<Realty> _realtyReadOnlyRepository;
+        private readonly IReadOnlyRepository<Vehicle> _vehicleReadOnlyRepository;
+
         /// <summary>
         /// BeneficiaryController constructor
         /// </summary>
-        /// <param name="beneficiaryReadOnlyRepository"></param>
-        /// <param name="beneficiaryWriteRepository"></param>
-        public BeneficiaryController(IReadOnlyRepository<Beneficiary> beneficiaryReadOnlyRepository, IWriteRepository<Beneficiary> beneficiaryWriteRepository, IReadOnlyRepository<ContractBeneficiary> contractsReadOnlyRepository)
+        public BeneficiaryController(IReadOnlyRepository<Beneficiary> beneficiaryReadOnlyRepository,
+            IWriteRepository<Beneficiary> beneficiaryWriteRepository,
+            IReadOnlyRepository<ContractBeneficiary> contractsReadOnlyRepository,
+            IReadOnlyRepository<Individual> individualReadOnlyRepository,
+            IReadOnlyRepository<Pet> petReadOnlyRepository,
+            IReadOnlyRepository<MobileDevice> mobileDeviceReadOnlyRepository,
+            IReadOnlyRepository<Realty> realtyReadOnlyRepository,
+            IReadOnlyRepository<Vehicle> vehicleReadOnlyRepository)
         {
             _beneficiaryReadOnlyRepository = beneficiaryReadOnlyRepository;
             _beneficiaryWriteRepository = beneficiaryWriteRepository;
             _contractsReadOnlyRepository = contractsReadOnlyRepository;
+            _individualReadOnlyRepository = individualReadOnlyRepository;
+            _petReadOnlyRepository = petReadOnlyRepository;
+            _mobileDeviceReadOnlyRepository = mobileDeviceReadOnlyRepository;
+            _realtyReadOnlyRepository = realtyReadOnlyRepository;
+            _vehicleReadOnlyRepository = vehicleReadOnlyRepository;
         }
 
         /// <summary>
@@ -64,6 +80,16 @@ namespace Beneficiaries.WebAPI.Controllers
         }
 
         #region Individual
+        /// <summary>
+        /// Gets all Individuals beneficiaries.
+        /// </summary>
+        /// <returns>Individuals</returns>
+        [HttpGet("Individuals")]
+        public IActionResult GetIndividuals()
+        {
+            return Ok(_individualReadOnlyRepository.Get());
+        }
+
         /// <summary>
         /// Creates a new Individual in the database
         /// </summary>
@@ -109,6 +135,16 @@ namespace Beneficiaries.WebAPI.Controllers
         #endregion Individual
 
         #region MobileDevice
+        /// <summary>
+        /// Gets all MobileDevices beneficiaries.
+        /// </summary>
+        /// <returns>MobileDevices</returns>
+        [HttpGet("MobileDevices")]
+        public IActionResult GetMobileDevices()
+        {
+            return Ok(_mobileDeviceReadOnlyRepository.Get());
+        }
+
         /// <summary>
         /// Creates a new Mobile Device in the database
         /// </summary>
@@ -156,6 +192,16 @@ namespace Beneficiaries.WebAPI.Controllers
 
         #region Pet
         /// <summary>
+        /// Gets all Pets beneficiaries.
+        /// </summary>
+        /// <returns>Pets</returns>
+        [HttpGet("Pets")]
+        public IActionResult GetPets()
+        {
+            return Ok(_petReadOnlyRepository.Get());
+        }
+
+        /// <summary>
         /// Creates a new Pet in the database
         /// </summary>
         /// <param name="pet">Pet without IDs</param>
@@ -198,6 +244,16 @@ namespace Beneficiaries.WebAPI.Controllers
         #endregion Pet
 
         #region Realty
+        /// <summary>
+        /// Gets all Realties beneficiaries.
+        /// </summary>
+        /// <returns>Realties</returns>
+        [HttpGet("Realties")]
+        public IActionResult GetRealties()
+        {
+            return Ok(_realtyReadOnlyRepository.Get());
+        }
+
         /// <summary>
         /// Creates a new Realty in the database
         /// </summary>
@@ -242,6 +298,16 @@ namespace Beneficiaries.WebAPI.Controllers
         #endregion Realty
 
         #region Vehicle
+        /// <summary>
+        /// Gets all Vehicles beneficiaries.
+        /// </summary>
+        /// <returns>Vehicles</returns>
+        [HttpGet("Vehicles")]
+        public IActionResult GetVehicles()
+        {
+            return Ok(_vehicleReadOnlyRepository.Get());
+        }
+
         /// <summary>
         /// Creates a new Vehicle in the database
         /// </summary>

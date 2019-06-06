@@ -70,7 +70,7 @@ namespace Backend.Infrastructure.Repositories
                         .ToList();
                     break;
                 case Core.Enums.ContractType.RealStateInsurance:
-                    beneficiaries = _db.Reaties
+                    beneficiaries = _db.Realties
                         .Where(rea => viewModel.Beneficiaries.Contains(rea.BeneficiaryId))
                         .Select(rea => rea.BeneficiaryId)
                         .ToList();
@@ -250,7 +250,7 @@ namespace Backend.Infrastructure.Repositories
                         .ToList();
                     break;
                 case Core.Enums.ContractType.RealStateInsurance:
-                    beneficiaries = _db.Reaties
+                    beneficiaries = _db.Realties
                         .Where(rea => viewModel.Beneficiaries.Contains(rea.BeneficiaryId))
                         .Select(rea => rea.BeneficiaryId)
                         .ToList();
