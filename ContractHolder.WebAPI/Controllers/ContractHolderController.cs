@@ -1,4 +1,5 @@
-﻿using Backend.Application.ViewModels;
+﻿using Backend.Application.Singleton;
+using Backend.Application.ViewModels;
 using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Backend.Infrastructure.Services;
@@ -43,7 +44,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet]
         public IActionResult ContractHolders()
         {
-            return Ok(_contractHolderReadOnlyRepository.Get());
+            return Ok(_contractHolderViewModelReadOnlyRepository.Get());
         }
 
         /// <summary>
@@ -83,20 +84,48 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="individual">Updated Contract Holder object</param>
         /// <returns>Updated Contract Holder</returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateContractHolder(Guid id, [FromBody] Individual individual)
+        public IActionResult UpdateContractHolder(Guid id, [FromBody] ContractHolderViewModel newIndividualViewModel)
         {
-            if (!ContractHolderIsValid(individual))
-                return StatusCode(403);
+            //var oldContractHolder = _contractHolderReadOnlyRepository.Find(id);
 
-            var obj = _contractHolderReadOnlyRepository.Find(id);
+            //if (oldContractHolder != null)
+            //    return StatusCode(403);
 
-            obj.IndividualBirthdate = individual.IndividualBirthdate;
-            obj.IndividualCPF = individual.IndividualCPF;
-            obj.IndividualEmail = individual.IndividualEmail;
-            obj.IndividualName = individual.IndividualName;
-            obj.IndividualRG = individual.IndividualRG;
+            //var newIndividual = ViewModelCreator.IndividualFactory.Create(newIndividualViewModel);
+            
+            //if(newIndividual != null)
+            //{
+            //    oldContractHolder.IndividualBirthdate
+            //    oldContractHolder.IndividualCPF
+            //    oldContractHolder.IndividualEmail
+            //    oldContractHolder.IndividualName
+            //    oldContractHolder.IndividualRG
+            //}
 
-            return Ok(_contractHolderWriteRepository.Update(obj));
+
+            //if (_contractHolderWriteRepository.Update(oldContractHolder) != null)
+            //    return Ok();
+            return StatusCode(403);
+
+
+
+
+
+
+
+            //
+            //if (!ContractHolderIsValid(individual))
+            //    return StatusCode(403);
+
+            //var obj = _contractHolderReadOnlyRepository.Find(id);
+
+            //obj.IndividualBirthdate = individual.IndividualBirthdate;
+            //obj.IndividualCPF = individual.IndividualCPF;
+            //obj.IndividualEmail = individual.IndividualEmail;
+            //obj.IndividualName = individual.IndividualName;
+            //obj.IndividualRG = individual.IndividualRG;
+
+            //return Ok(_contractHolderWriteRepository.Update(obj));
 
         }
 
