@@ -34,8 +34,6 @@ export class BeneficiaryIndividualComponent implements OnInit {
   public individualPost(): void{
     
     let form = JSON.stringify(this.individualCreateForm.value);
-    console.log(form);
-    debugger;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -44,7 +42,6 @@ export class BeneficiaryIndividualComponent implements OnInit {
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual', form, httpOptions)
     .subscribe(data => {this.response = data});
     
-
     if(this.response != null){
       this.messageIndividualEvent.emit(this.response.beneficiaryId);
     }

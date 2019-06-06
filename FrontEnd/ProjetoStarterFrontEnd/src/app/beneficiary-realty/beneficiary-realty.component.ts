@@ -29,23 +29,19 @@ export class BeneficiaryRealtyComponent implements OnInit {
   ngOnInit() {
   }
 
-  // message:string;
-  // response:any;
+  response:any;
   public realtyPost(): void{
-    // this.message = this.address.message;
-    // this.realtyCreateForm.patchValue({addressId: this.message});
-    // let form = JSON.stringify(this.realtyCreateForm.value);
-    // console.log(form);
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type':  'application/json'
-    //   })
-    // };
-    // this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realty', form, httpOptions)
-    // .subscribe(data => { this.response = data});
+    let form = JSON.stringify(this.realtyCreateForm.value);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realty', form, httpOptions)
+    .subscribe(data => { this.response = data});
 
-    //if(this.response != null){
-      this.messageRealtyEvent.emit(this.realtyCreateForm);
-    //}
+    if(this.response != null){
+      this.messageRealtyEvent.emit(this.response.beneficiaryId);
+    }
   }
 }

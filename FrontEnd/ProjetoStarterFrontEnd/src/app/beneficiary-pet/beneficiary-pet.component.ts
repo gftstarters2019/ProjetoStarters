@@ -40,17 +40,17 @@ export class BeneficiaryPetComponent implements OnInit {
   response:any;
   public petPost(): void{
     
-    // let form = JSON.stringify(this.petCreateForm.value);
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type':  'application/json'
-    //   })
-    // };
-    // this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet', form, httpOptions)
-    // .subscribe(data => {this.response = data});
+    let form = JSON.stringify(this.petCreateForm.value);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet', form, httpOptions)
+    .subscribe(data => {this.response = data});
 
-    //if(this.response != null){
-      this.messagePetEvent.emit(this.petCreateForm);
-    //}
+    if(this.response != null){
+      this.messagePetEvent.emit(this.response.beneficiaryId);
+    }
   }
 }

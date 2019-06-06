@@ -41,17 +41,17 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
 
   public mobileDevicePost(): void{
     
-    // let form = JSON.stringify(this.mobileDeviceCreateForm.value);
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type':  'application/json'
-    //   })
-    // };
-    // this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevice', form, httpOptions)
-    // .subscribe(data => {this.response = data});
+    let form = JSON.stringify(this.mobileDeviceCreateForm.value);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevice', form, httpOptions)
+    .subscribe(data => {this.response = data});
 
-    //if(this.response != null){
-    this.messageMobilelEvent.emit(this.mobileDeviceCreateForm);
-    //}
+    if(this.response != null){
+      this.messageMobilelEvent.emit(this.response.beneficiaryId);
+    }
   }
 }
