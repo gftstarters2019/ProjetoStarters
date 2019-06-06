@@ -19,16 +19,32 @@ namespace Beneficiaries.WebAPI.Controllers
         private readonly IWriteRepository<Beneficiary> _beneficiaryWriteRepository;
         private readonly IReadOnlyRepository<ContractBeneficiary> _contractsReadOnlyRepository;
 
+        private readonly IReadOnlyRepository<Individual> _individualReadOnlyRepository;
+        private readonly IReadOnlyRepository<Pet> _petReadOnlyRepository;
+        private readonly IReadOnlyRepository<MobileDevice> _mobileDeviceReadOnlyRepository;
+        private readonly IReadOnlyRepository<Realty> _realtyReadOnlyRepository;
+        private readonly IReadOnlyRepository<Vehicle> _vehicleReadOnlyRepository;
+
         /// <summary>
         /// BeneficiaryController constructor
         /// </summary>
-        /// <param name="beneficiaryReadOnlyRepository"></param>
-        /// <param name="beneficiaryWriteRepository"></param>
-        public BeneficiaryController(IReadOnlyRepository<Beneficiary> beneficiaryReadOnlyRepository, IWriteRepository<Beneficiary> beneficiaryWriteRepository, IReadOnlyRepository<ContractBeneficiary> contractsReadOnlyRepository)
+        public BeneficiaryController(IReadOnlyRepository<Beneficiary> beneficiaryReadOnlyRepository,
+            IWriteRepository<Beneficiary> beneficiaryWriteRepository,
+            IReadOnlyRepository<ContractBeneficiary> contractsReadOnlyRepository,
+            IReadOnlyRepository<Individual> individualReadOnlyRepository,
+            IReadOnlyRepository<Pet> petReadOnlyRepository,
+            IReadOnlyRepository<MobileDevice> mobileDeviceReadOnlyRepository,
+            IReadOnlyRepository<Realty> realtyReadOnlyRepository,
+            IReadOnlyRepository<Vehicle> vehicleReadOnlyRepository)
         {
             _beneficiaryReadOnlyRepository = beneficiaryReadOnlyRepository;
             _beneficiaryWriteRepository = beneficiaryWriteRepository;
             _contractsReadOnlyRepository = contractsReadOnlyRepository;
+            _individualReadOnlyRepository = individualReadOnlyRepository;
+            _petReadOnlyRepository = petReadOnlyRepository;
+            _mobileDeviceReadOnlyRepository = mobileDeviceReadOnlyRepository;
+            _realtyReadOnlyRepository = realtyReadOnlyRepository;
+            _vehicleReadOnlyRepository = vehicleReadOnlyRepository;
         }
 
         /// <summary>
@@ -71,7 +87,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Individuals")]
         public IActionResult GetIndividuals()
         {
-            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(Individual)));
+            return Ok(_individualReadOnlyRepository.Get());
         }
 
         /// <summary>
@@ -126,7 +142,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("MobileDevices")]
         public IActionResult GetMobileDevices()
         {
-            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(MobileDevice)));
+            return Ok(_mobileDeviceReadOnlyRepository.Get());
         }
 
         /// <summary>
@@ -182,7 +198,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Pets")]
         public IActionResult GetPets()
         {
-            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(Pet)));
+            return Ok(_petReadOnlyRepository.Get());
         }
 
         /// <summary>
@@ -235,7 +251,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Realties")]
         public IActionResult GetRealties()
         {
-            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(Realty)));
+            return Ok(_realtyReadOnlyRepository.Get());
         }
 
         /// <summary>
@@ -289,7 +305,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Vehicles")]
         public IActionResult GetVehicles()
         {
-            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(Vehicle)));
+            return Ok(_vehicleReadOnlyRepository.Get());
         }
 
         /// <summary>
