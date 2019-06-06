@@ -7,10 +7,11 @@ namespace Backend.Application.ViewModels
 {
     public class RealtyViewModel
     {
-        public string RealtyMunicipalRegistration { get; set; }
-        public DateTime RealtyConstructionDate { get; set; }
-        public double RealtySaleValue { get; set; }
-        public double RealtyMarketValue { get; set; }
-        public Address RealtyAddress { get; set; }
+        public Guid Id { get; set; }
+        public string MunicipalRegistration { get; set; }
+        public DateTime ConstructionDate { get; set; }
+        public double SaleValue { get; set; }
+        public double MarketValue { get; set; }
+        public Address Address { get; set; }
     }
 }

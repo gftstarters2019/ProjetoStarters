@@ -28,7 +28,7 @@ namespace Backend.Infrastructure.Repositories
             }
             return false;
         }
-        
+
         public bool Remove(Guid id)
         {
             throw new NotImplementedException();
@@ -48,15 +48,16 @@ namespace Backend.Infrastructure.Repositories
         {
             List<RealtyViewModel> realtiesToReturn = new List<RealtyViewModel>();
             var realties = _db.Realties.ToList();
-            foreach(var realty in realties)
+            foreach (var realty in realties)
             {
                 realtiesToReturn.Add(new RealtyViewModel()
                 {
-                    RealtyConstructionDate = realty.RealtyConstructionDate,
-                    RealtyMarketValue = realty.RealtyMarketValue,
-                    RealtyMunicipalRegistration = realty.RealtyMunicipalRegistration,
-                    RealtySaleValue = realty.RealtySaleValue,
-                    RealtyAddress = _db
+                    Id = realty.BeneficiaryId,
+                    ConstructionDate = realty.RealtyConstructionDate,
+                    MarketValue = realty.RealtyMarketValue,
+                    MunicipalRegistration = realty.RealtyMunicipalRegistration,
+                    SaleValue = realty.RealtySaleValue,
+                    Address = _db
                                     .Addresses
                                     .Where(a => a.AddressId == _db.Beneficiary_Address
                                                                 .Where(ba => ba.BeneficiaryId == realty.BeneficiaryId)
