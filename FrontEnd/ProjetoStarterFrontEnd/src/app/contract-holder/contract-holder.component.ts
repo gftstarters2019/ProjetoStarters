@@ -16,13 +16,17 @@ import { ActionButtonComponent } from '../action-button/action-button.component'
 export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   rgMask = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/];
-  cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/,/\d/, '-', /\d/, /\d/];
+  cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+
+
 
   private columnDefs: Array<ColDef>;
   rowData$: Observable<Array<any>>;
   detailCellRendererParams;
   gridApi;
   gridColumApi;
+
+  calopsita2: boolean = false;
 
   gridOptions: GridOptions;
   load_failure: boolean;
@@ -45,7 +49,17 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // this.hideGridLoading()
+  }
+
+  private handle_editUser(data: any) {
+    console.log('rafael is awesome + 10');
+    console.log(data);
+
+    this.contractHolder.patchValue(data);
+  }
+
+  private handle_removeUser(data: any) {
+
   }
 
 
@@ -56,31 +70,33 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       individualCPF: ['', GenericValidator.isValidCpf()],
       individualBirthdate: ['', GenericValidator.dateValidation()],
       individualEmail: ['', Validators.required],
-      
+
       idTelephone: this.chfb.array([
-          this.chfb.group({
-          })
-        ]),
+        this.chfb.group({
+        })
+      ]),
 
       idAddress: this.chfb.array([
         this.chfb.group({
         })
       ]),
-  
+
     });
   }
   onSubmit(): void {
     console.log(this.contractHolder.value);
     debugger;
 
-   let json = JSON.stringify(this.contractHolder.value);
-   let httpOptions = {headers: new HttpHeaders ({
-     'Content-Type': 'application/json'
-   })};
-   this.http.post('https://httpbin.org/post', json,httpOptions).subscribe(data => console.log(data));
-   
+    let json = JSON.stringify(this.contractHolder.value);
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    this.http.post('https://httpbin.org/post', json, httpOptions).subscribe(data => console.log(data));
+
   }
-  
+
 
   showButton() {
     this.showList = !this.showList;
@@ -88,15 +104,15 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   showAddress() {
     const addressControl = this.contractHolder.controls.idAddress as FormArray;
-    const hasMax = addressControl.length >= 3; 
+    const hasMax = addressControl.length >= 3;
 
-    if (!hasMax) {      
+    if (!hasMax) {
       addressControl.push(this.chfb.group({
         street: ['', GenericValidator.regexName],
         type: ['', Validators.required],
         number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
         state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2)]],
-        neighborhood: [ '', GenericValidator.regexName],
+        neighborhood: ['', GenericValidator.regexName],
         country: ['', GenericValidator.regexName],
         zipCode: ['', Validators.required]
       }))
@@ -106,9 +122,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
   showTelephone() {
     const telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
-    const hasMax = telephoneControl.length >= 5; 
+    const hasMax = telephoneControl.length >= 5;
 
-    if (!hasMax) {      
+    if (!hasMax) {
       telephoneControl.push(this.chfb.group({
         telephoneNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(11), Validators.minLength(10)]],
         telephoneType: ['', Validators.required]
@@ -117,18 +133,18 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     this.showTelephonelist = !this.showTelephonelist;
   }
- 
+
   hanble_add_telphone($event: any) {
     const telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
-    telephoneControl.push(this.chfb.group ({
+    telephoneControl.push(this.chfb.group({
 
     }))
-  } 
-  
+  }
+
   handle_add($event: any) {
     const addressControl = this.contractHolder.controls.idAddress as FormArray;
     addressControl.push(this.chfb.group({
-  
+
     }))
   }
 
@@ -137,9 +153,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   private setup_gridOptions() {
 
     this.gridOptions = {
-      onRowClicked: this.onRowClicked.bind(this),
       masterDetail: true,
-      
+
       columnDefs: [
         {
           headerName: 'Name',
@@ -147,11 +162,11 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           lockPosition: true,
           sortable: true,
           onCellValueChanged:
-          this.onCellEdit.bind(this),
+            this.onCellEdit.bind(this),
           filter: "agTextColumnFilter",
           filterParams: {
             filterOptions: ["contains", "notContains"],
-            textFormatter: function(r) {
+            textFormatter: function (r) {
               if (r == null) return null;
               r = r.replace(new RegExp("[àáâãäå]", "g"), "a");
               r = r.replace(new RegExp("æ", "g"), "ae");
@@ -167,10 +182,10 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
             },
             debounceMs: 0,
             caseSensitive: true,
-            suppressAndOrCondition: true,   
-          }              
+            suppressAndOrCondition: true,
+          }
         },
-        
+
         {
           headerName: 'CPF',
           field: 'individualCPF',
@@ -179,7 +194,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           filter: true,
           onCellValueChanged: this.onCellEdit.bind(this),
         },
-        
+
         {
           headerName: 'RG',
           field: 'individualRG',
@@ -187,7 +202,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this)
         },
-        
+
         {
           headerName: 'Birthdate',
           field: 'individualBirthdate',
@@ -195,7 +210,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
         },
-        
+
         {
           headerName: 'Email',
           field: 'individualEmail',
@@ -208,53 +223,49 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           field: 'editDelete',
           lockPosition: true,
           cellRendererFramework: ActionButtonComponent,
+          cellRendererParams: {
+            onEdit: this.handle_editUser.bind(this)
           }
-        ],
-        
-      
+        },
+
+      ],
+
+
       detailCellRendererParams: {
-        
-        
+
+
         getDetailRowData: function (params) {
           params.successCallback(params.data.idAddress);
           debugger;
           console.log(params);
         },
-        
-        
+
+
       },
       onGridReady: this.onGridReady.bind(this)
-      }
     }
-    
-    
-    
-    onGridReady(params) {
-      this.gridApi = params.api;
-      this.gridColumApi = params.columnApi;
-    }
-    
-    private setup_gridData() {
-       this.rowData$ = this.http.get<Array<any>>('https://contractholderwebapi.azurewebsites.net/api/ContractHolder');
-      
-    }
-          
-          private onCellEdit(params: any) {
-            console.log(params.newValue);
-            console.log(params.data);
-            
-          }         
-          
-          private onRowClicked(event: RowClickedEvent) {
-            const { data } = event;
-            this.contractHolder.getRawValue();
-            this.contractHolder.patchValue(data);
-             debugger;
-            
-            
-          }
+  }
 
-          
-          
-        }
-      
+
+
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumApi = params.columnApi;
+  }
+
+  private setup_gridData() {
+    this.rowData$ = this.http.get<Array<any>>('https://contractholderwebapi.azurewebsites.net/api/ContractHolder');
+
+  }
+
+  private onCellEdit(params: any) {
+    console.log(params.newValue);
+    console.log(params.data);
+
+  }
+
+
+
+
+
+}

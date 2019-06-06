@@ -85,12 +85,14 @@
      
 
       <ag-grid-angular
-      style="width: 100%; height: 4000px;" 
+      style="width: 100%; height: 5000px;" 
       [pagination]="true"
       class="ag-theme-material" 
       [paginationPageSize]=50
       [gridOptions]="gridOptions"
-      [rowData]="rowData$ | async"></ag-grid-angular>
+      suppressClickEdit=true
+      [rowData]="rowData$ | async"> 
+      </ag-grid-angular>
 
     </div>
   </div>
