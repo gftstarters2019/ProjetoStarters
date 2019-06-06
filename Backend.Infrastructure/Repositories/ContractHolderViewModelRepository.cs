@@ -80,14 +80,75 @@ namespace Backend.Infrastructure.Repositories
 
         public ContractHolderViewModel Find(Guid id)
         {
-            throw new NotImplementedException();
+            Individual individual = _db.Individuals.Where(ind => (!ind.IsDeleted) && (ind.BeneficiaryId == id)).First();
+            var telephones = _db.Telephones.ToList();
+            var addresses = _db.Addresses.ToList();
+            var beneficiary_addresses = _db.Beneficiary_Address.ToList();
+            var individual_telephones = _db.Individual_Telephone.ToList();
+
+            ContractHolderViewModel ContractHolderViewModel = new ContractHolderViewModel();
+
+            ContractHolderViewModel.IndividualId = individual.BeneficiaryId;
+            ContractHolderViewModel.IndividualName = individual.IndividualName;
+            ContractHolderViewModel.IndividualCPF = individual.IndividualCPF;
+            ContractHolderViewModel.IndividualBirthdate = individual.IndividualBirthdate;
+            ContractHolderViewModel.IndividualEmail = individual.IndividualEmail;
+            ContractHolderViewModel.IndividualRG = individual.IndividualRG;
+
+            foreach (var beneficiary_address in beneficiary_addresses)
+            {
+                if (beneficiary_address.BeneficiaryId == individual.BeneficiaryId)
+                {
+                    foreach (var address in addresses)
+                    {
+                        if (address.AddressId == beneficiary_address.AddressId)
+                        {
+                            Address ad = new Address();
+
+                            ad.AddressId = address.AddressId;
+                            ad.AddressCity = address.AddressCity;
+                            ad.AddressComplement = address.AddressComplement;
+                            ad.AddressCountry = address.AddressCountry;
+                            ad.AddressNeighborhood = address.AddressNeighborhood;
+                            ad.AddressNumber = address.AddressNumber;
+                            ad.AddressState = address.AddressState;
+                            ad.AddressStreet = address.AddressStreet;
+                            ad.AddressType = address.AddressType;
+                            ad.AddressZipCode = address.AddressZipCode;
+
+                            ContractHolderViewModel.IndividualAddresses.Add(ad);
+                        }
+                    }
+                }
+            }
+
+            foreach (var individual_telephone in individual_telephones)
+            {
+                if (individual_telephone.BeneficiaryId == individual.BeneficiaryId)
+                {
+                    foreach (var telephone in telephones)
+                    {
+                        if (telephone.TelephoneId == individual_telephone.TelephoneId)
+                        {
+                            Telephone tel = new Telephone();
+
+                            tel.TelephoneId = telephone.TelephoneId;
+                            tel.TelephoneNumber = telephone.TelephoneNumber;
+                            tel.TelephoneType = telephone.TelephoneType;
+
+                            ContractHolderViewModel.IndividualTelephones.Add(tel);
+                        }
+                    }
+                }
+            }
+            return ContractHolderViewModel;
         }
 
         public IEnumerable<ContractHolderViewModel> Get()
         {
             List<ContractHolderViewModel> ContractHolders = new List<ContractHolderViewModel>();
 
-            var individuals = _db.Individuals.ToList();
+            var individuals = _db.Individuals.Where(ind => !ind.IsDeleted).ToList();
             var telephones = _db.Telephones.ToList();
             var addresses = _db.Addresses.ToList();
             var beneficiary_addresses = _db.Beneficiary_Address.ToList();
@@ -170,7 +231,7 @@ namespace Backend.Infrastructure.Repositories
             }
         }
 
-        public ContractHolderViewModel Update(Guid id, ContractHolderViewModel t)
+        public ContractHolderViewModel Update(Guid id, ContractHolderViewModel vm)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
         new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
