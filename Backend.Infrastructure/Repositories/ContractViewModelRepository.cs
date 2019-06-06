@@ -121,8 +121,9 @@ namespace Backend.Infrastructure.Repositories
         private Contract AddContract(ContractViewModel contractViewModel)
         {
             var contract = ViewModelCreator.ContractFactory.Create(contractViewModel);
-            //if(ContextBoundObject != null)
-            return _db.Contracts.Add(contract).Entity;
+            if(contract != null)
+                return _db.Contracts.Add(contract).Entity;
+            return null;
         }
 
         public ContractViewModel Find(Guid id)
@@ -132,7 +133,36 @@ namespace Backend.Infrastructure.Repositories
 
         public IEnumerable<ContractViewModel> Get()
         {
-            throw new NotImplementedException();
+            List<ContractViewModel> viewModelToReturn = new List<ContractViewModel>();
+
+            var contracts = _db.Contracts.Where(con => !con.ContractDeleted).ToList();
+            foreach (var contract in contracts)
+            {
+                var signedContracts = _db
+                    .SignedContracts
+                    .Where(sc => sc.ContractId == contract.ContractId)
+                    .ToList();
+
+                foreach (var signedContract in signedContracts)
+                {
+                    var beneficiaries = _db
+                        .Contract_Beneficiary
+                        .Where(cb => cb.SignedContractId == signedContract.ContractSignedId)
+                        .Select(cb => cb.BeneficiaryId)
+                        .ToList();
+                    var viewModelToAdd = new ContractViewModel()
+                    {
+                        Category = contract.ContractCategory,
+                        ExpiryDate = contract.ContractExpiryDate,
+                        IsActive = signedContract.ContractIndividualIsActive,
+                        Type = contract.ContractType,
+                        ContractHolderId = signedContract.IndividualId,
+                        Beneficiaries = beneficiaries
+                    };
+                    viewModelToReturn.Add(viewModelToAdd);
+                }
+            }
+            return viewModelToReturn;
         }
 
         public ContractViewModel Remove(ContractViewModel t)

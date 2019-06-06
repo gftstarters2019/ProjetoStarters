@@ -43,7 +43,7 @@ namespace Contract.WebAPI.Controllers
         [HttpGet]
         public IActionResult Contracts()
         {
-            return Ok(_contractReadOnlyRepository.Get());
+            return Ok(_contractViewModelReadOnlyRepository.Get());
         }
 
         /// <summary>
