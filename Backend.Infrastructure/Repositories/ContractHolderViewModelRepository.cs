@@ -218,24 +218,59 @@ namespace Backend.Infrastructure.Repositories
 
         }
 
-        public bool Remove(Guid id)
-        {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
-        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
-            {
-                //
-                throw new NotImplementedException();
-                _db.SaveChanges();
-
-                scope.Complete();
-            }
-        }
-
         public ContractHolderViewModel Update(Guid id, ContractHolderViewModel vm)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
         new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
+                var individual = _db.Individuals.Where(ind => ind.BeneficiaryId == id).First();
+                var beneficary_addresses = _db.Beneficiary_Address.Where(benAd => benAd.BeneficiaryId == individual.BeneficiaryId).ToList();
+                var individual_telephones = _db.Individual_Telephone.Where(indTel => indTel.BeneficiaryId == individual.BeneficiaryId).ToList();
+
+                if (vm.IsDeleted)
+                {
+                    individual.IsDeleted = vm.IsDeleted;
+                    _db.Update(individual);
+                }
+
+                else
+                {
+                    if (ViewModelCreator.IndividualFactory.Create(vm) == null ||
+                        ViewModelCreator.AddressFactory.CreateList(vm.IndividualAddresses).Count() != vm.IndividualAddresses.Count() ||
+                        ViewModelCreator.TelephoneFactory.CreateList(vm.IndividualTelephones).Count() != vm.IndividualTelephones.Count())
+                        return null;
+
+                    individual.IndividualBirthdate = vm.IndividualBirthdate;
+                    individual.IndividualCPF = vm.IndividualCPF;
+                    individual.IndividualEmail = vm.IndividualEmail;
+                    individual.IndividualName = vm.IndividualName;
+                    individual.IndividualRG = vm.IndividualRG;
+
+                    _db.Update(individual);
+
+                    if (beneficary_addresses.Count() > 0)
+                        _db.RemoveRange(beneficary_addresses);
+                    if (individual_telephones.Count() > 0)
+                        _db.RemoveRange(individual_telephones);
+
+                    _db.AddRange(vm.IndividualAddresses);
+                    _db.AddRange(vm.IndividualTelephones);
+                }
+
+                _db.SaveChanges();
+
+                scope.Complete();
+
+                return vm;
+            }
+        }
+
+        public bool Remove(Guid id)
+        {
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
+            {
+                
                 throw new NotImplementedException();
                 _db.SaveChanges();
 
