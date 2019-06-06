@@ -65,6 +65,16 @@ namespace Beneficiaries.WebAPI.Controllers
 
         #region Individual
         /// <summary>
+        /// Gets all Individuals beneficiaries.
+        /// </summary>
+        /// <returns>Individuals</returns>
+        [HttpGet("Individuals")]
+        public IActionResult GetIndividuals()
+        {
+            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(Individual)));
+        }
+
+        /// <summary>
         /// Creates a new Individual in the database
         /// </summary>
         /// <param name="individual">Individual without IDs</param>
@@ -109,6 +119,16 @@ namespace Beneficiaries.WebAPI.Controllers
         #endregion Individual
 
         #region MobileDevice
+        /// <summary>
+        /// Gets all MobileDevices beneficiaries.
+        /// </summary>
+        /// <returns>MobileDevices</returns>
+        [HttpGet("MobileDevices")]
+        public IActionResult GetMobileDevices()
+        {
+            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(MobileDevice)));
+        }
+
         /// <summary>
         /// Creates a new Mobile Device in the database
         /// </summary>
@@ -156,6 +176,16 @@ namespace Beneficiaries.WebAPI.Controllers
 
         #region Pet
         /// <summary>
+        /// Gets all Pets beneficiaries.
+        /// </summary>
+        /// <returns>Pets</returns>
+        [HttpGet("Pets")]
+        public IActionResult GetPets()
+        {
+            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(Pet)));
+        }
+
+        /// <summary>
         /// Creates a new Pet in the database
         /// </summary>
         /// <param name="pet">Pet without IDs</param>
@@ -198,6 +228,16 @@ namespace Beneficiaries.WebAPI.Controllers
         #endregion Pet
 
         #region Realty
+        /// <summary>
+        /// Gets all Realties beneficiaries.
+        /// </summary>
+        /// <returns>Realties</returns>
+        [HttpGet("Realties")]
+        public IActionResult GetRealties()
+        {
+            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(Realty)));
+        }
+
         /// <summary>
         /// Creates a new Realty in the database
         /// </summary>
@@ -242,6 +282,16 @@ namespace Beneficiaries.WebAPI.Controllers
         #endregion Realty
 
         #region Vehicle
+        /// <summary>
+        /// Gets all Vehicles beneficiaries.
+        /// </summary>
+        /// <returns>Vehicles</returns>
+        [HttpGet("Vehicles")]
+        public IActionResult GetVehicles()
+        {
+            return Ok(_beneficiaryReadOnlyRepository.Get().Where(b => b.GetType() == typeof(Vehicle)));
+        }
+
         /// <summary>
         /// Creates a new Vehicle in the database
         /// </summary>

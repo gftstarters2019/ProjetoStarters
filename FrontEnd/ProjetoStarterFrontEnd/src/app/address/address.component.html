@@ -1,15 +1,17 @@
 <form [formGroup]="address" (ngSubmit)="onSubmit()">
   <div class="first-container">
 
-    <mat-form-field>
+    <mat-form-field style="width: 600px;"> 
       <input matInput placeholder="Street/Avenue" name="street" formControlName="street" required>
       <mat-error>Street/Avenue is invalid!</mat-error>
     </mat-form-field>
+
     <mat-form-field class="select-type" style="width: 350px;">
       <mat-select formControlName="type"  placeholder="Select Type" required>
         <mat-option value="Commercial">Commercial</mat-option>
         <mat-option value="Residential">Residential</mat-option>
       </mat-select>
+      
     </mat-form-field>
     <mat-form-field style="width: 350px;" >
       <input matInput placeholder="Number" name="number" formControlName="number" required>
@@ -26,11 +28,11 @@
       <mat-error>Neighborhood is invalid!</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field style="width: 200px;">
       <input matInput type='Country' placeholder="Country" name="country" formControlName="country" required>
       <mat-error>Country is invalid!</mat-error>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field style="width: 150px;">
       <input matInput type='Zip code' [textMask]="{mask:zipCodeMask}" placeholder="Zip code" name="zipCode" formControlName="zipCode" required>
       <mat-error>Zip code is invalid!</mat-error>
 
