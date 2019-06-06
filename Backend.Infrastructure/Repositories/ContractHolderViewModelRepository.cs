@@ -236,12 +236,17 @@ namespace Backend.Infrastructure.Repositories
                 var beneficary_addresses = _db.Beneficiary_Address.Where(benAd => benAd.BeneficiaryId == individual.BeneficiaryId).ToList();
                 var individual_telephones = _db.Individual_Telephone.Where(indTel => indTel.BeneficiaryId == individual.BeneficiaryId).ToList();
 
+                //Soft Delete
                 if (vm.IsDeleted)
                 {
+                    if (_db.SignedContracts.Where(sigCon => (sigCon.ContractIndividualIsActive == true) && (sigCon.IndividualId == id)) != null)
+                        return null;
+
                     individual.IsDeleted = vm.IsDeleted;
                     _db.Update(individual);
                 }
 
+                //Update
                 else
                 {
                     if (ViewModelCreator.IndividualFactory.Create(vm) == null ||
