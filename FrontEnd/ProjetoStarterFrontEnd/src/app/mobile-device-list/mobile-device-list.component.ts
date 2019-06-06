@@ -37,8 +37,8 @@ export class MobileDeviceListComponent implements OnInit {
 
       columnDefs: [
         {
-          headerName: 'brand',
-          field: 'brand',
+          headerName: 'Brand',
+          field: 'mobileDeviceBrand',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -46,8 +46,8 @@ export class MobileDeviceListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'model',
-          field: 'model',
+          headerName: 'Model',
+          field: 'mobileDeviceModel',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -55,8 +55,8 @@ export class MobileDeviceListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'manufactoryYear',
-          field: 'manufactoryYear',
+          headerName: 'M0anufactory Year',
+          field: 'mobileDeviceManufactoringYear',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -64,8 +64,8 @@ export class MobileDeviceListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'serialNumber',
-          field: 'serialNumber',
+          headerName: 'Serial Number',
+          field: 'mobileDeviceSerialNumber',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -73,8 +73,8 @@ export class MobileDeviceListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'typedevice',
-          field: 'typedevice',
+          headerName: 'Type Device Mobile',
+          field: 'mobileDeviceType',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -82,8 +82,8 @@ export class MobileDeviceListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'invoicevalue',
-          field: 'invoicevalue',
+          headerName: 'Invoice Value',
+          field: 'mobileDeviceInvoiceValue',
           lockPosition: true,
           sortable: true,
           filter: true,

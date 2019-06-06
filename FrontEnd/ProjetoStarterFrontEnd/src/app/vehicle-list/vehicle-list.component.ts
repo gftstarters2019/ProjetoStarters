@@ -37,8 +37,8 @@ export class VehicleListComponent implements OnInit {
 
       columnDefs: [
         {
-          headerName: 'brand',
-          field: 'brand',
+          headerName: 'Brand',
+          field: 'vehicleBrand',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -46,8 +46,8 @@ export class VehicleListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'model',
-          field: 'model',
+          headerName: 'Model',
+          field: 'vehicleModel',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -55,8 +55,8 @@ export class VehicleListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'color',
-          field: 'color',
+          headerName: 'Color',
+          field: 'vehicleColor',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -64,8 +64,8 @@ export class VehicleListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'manufactoryYear',
-          field: 'manufactoryYear',
+          headerName: 'Manufactory Year',
+          field: 'vehicleManufactoringYear',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -73,8 +73,8 @@ export class VehicleListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'modelYear',
-          field: 'modelYear',
+          headerName: 'Model Year',
+          field: 'vehicleModelYear',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -82,8 +82,8 @@ export class VehicleListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'chassisNumber',
-          field: 'chassisNumber',
+          headerName: 'Chassis Number',
+          field: 'vehicleChassisNumber',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -91,8 +91,8 @@ export class VehicleListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'currentMileage',
-          field: 'currentMileage',
+          headerName: 'Current Mileage',
+          field: 'vehicleCurrentMileage',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -100,8 +100,8 @@ export class VehicleListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'currentFipeValue',
-          field: 'currentFipeValue',
+          headerName: 'Current Fipe Value',
+          field: 'vehicleCurrentFipeValue',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -109,8 +109,8 @@ export class VehicleListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'doneInspection',
-          field: 'doneInspection',
+          headerName: 'Done Inspection',
+          field: 'vehicleDoneInspection',
           lockPosition: true,
           sortable: true,
           filter: true,

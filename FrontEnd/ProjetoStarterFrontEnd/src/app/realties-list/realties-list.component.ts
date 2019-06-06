@@ -36,16 +36,7 @@ export class RealtiesListComponent implements OnInit {
 
       columnDefs: [
         {
-          headerName: 'street',
-          field: 'street',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          onCellValueChanged:
-            this.onCellEdit.bind(this)
-        },
-        {
-          headerName: 'type',
+          headerName: 'Typ',
           field: 'type',
           lockPosition: true,
           sortable: true,
@@ -54,7 +45,16 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'number',
+          headerName: 'Street',
+          field: 'street',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'No.',
           field: 'number',
           lockPosition: true,
           sortable: true,
@@ -63,7 +63,7 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'state',
+          headerName: 'State',
           field: 'state',
           lockPosition: true,
           sortable: true,
@@ -72,7 +72,7 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'neighborhood',
+          headerName: 'Neighborhood',
           field: 'neighborhood',
           lockPosition: true,
           sortable: true,
@@ -81,7 +81,7 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'country',
+          headerName: 'Country',
           field: 'country',
           lockPosition: true,
           sortable: true,
@@ -90,7 +90,7 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'zipcode',
+          headerName: 'Zip-Code',
           field: 'zipcode',
           lockPosition: true,
           sortable: true,
@@ -99,8 +99,8 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'municipalregistration',
-          field: 'municipalregistration',
+          headerName: 'Municipal Registration',
+          field: 'realtyMunicipalRegistration',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -108,8 +108,8 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'constructionDate',
-          field: 'constructionDate',
+          headerName: 'Construction Date',
+          field: 'realtyConstructionDate',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -117,8 +117,8 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'saleValue',
-          field: 'saleValue',
+          headerName: 'Sale Value',
+          field: 'realtySaleValue',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -126,8 +126,8 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'marketValue',
-          field: 'marketValue',
+          headerName: 'Market Value',
+          field: 'realtyMarketValue',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -143,7 +143,7 @@ export class RealtiesListComponent implements OnInit {
     this.gridColumApi = params.columnApi;
   }
   private setup_gridData() {
-    this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals');
+    this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realties');
   }
   private onCellEdit(params: any) {
     console.log(params.newValue);

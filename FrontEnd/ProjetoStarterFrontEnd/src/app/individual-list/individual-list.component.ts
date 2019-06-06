@@ -47,7 +47,7 @@ export class IndividualListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'cpf',
+          headerName: 'CPF',
           field: 'individualCPF',
           lockPosition: true,
           sortable: true,
@@ -56,7 +56,7 @@ export class IndividualListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'rg',
+          headerName: 'RG',
           field: 'individualRG',
           lockPosition: true,
           sortable: true,
@@ -65,7 +65,7 @@ export class IndividualListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'BirthDate',
+          headerName: 'Birth Date',
           field: 'individualBirthdate',
           lockPosition: true,
           sortable: true,
@@ -74,7 +74,7 @@ export class IndividualListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'email',
+          headerName: 'E-mail',
           field: 'individualEmail',
           lockPosition: true,
           sortable: true,

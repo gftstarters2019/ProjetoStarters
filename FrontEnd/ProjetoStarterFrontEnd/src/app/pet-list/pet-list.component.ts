@@ -36,7 +36,7 @@ export class PetListComponent implements OnInit {
       columnDefs: [
         {
           headerName: 'Name',
-          field: 'name',
+          field: 'petName',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -45,7 +45,7 @@ export class PetListComponent implements OnInit {
         },
         {
           headerName: 'Birth Date',
-          field: 'BirthDate',
+          field: 'petBirthdate',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -53,8 +53,8 @@ export class PetListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Especie',
-          field: 'especie',
+          headerName: 'Species',
+          field: 'petSpecies',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -63,7 +63,7 @@ export class PetListComponent implements OnInit {
         },
         {
           headerName: 'Breed',
-          field: 'breed',
+          field: 'petBreed',
           lockPosition: true,
           sortable: true,
           filter: true,
