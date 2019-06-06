@@ -38,18 +38,20 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Address Remove(Address address)
+        public bool Remove(Guid id)
         {
+            var address = Find(id);
             if (address != null)
             {
                 _db.Remove(address);
                 _db.SaveChanges();
+                return true;
             }
 
-            return address;
+            return false;
         }
 
-        public Address Update(Address address)
+        public Address Update(Guid id, Address address)
         {
             if (address != null)
             {

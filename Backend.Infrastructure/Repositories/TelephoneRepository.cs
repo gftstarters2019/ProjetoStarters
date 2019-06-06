@@ -38,18 +38,20 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Telephone Remove(Telephone telephone)
+        public bool Remove(Guid id)
         {
+            var telephone = Find(id);
             if(telephone != null)
             {
                 _db.Remove(telephone);
                 _db.SaveChanges();
+                return true;
             }
 
-            return telephone;
+            return false;
         }
 
-        public Telephone Update(Telephone telephone)
+        public Telephone Update(Guid id, Telephone telephone)
         {
             if(telephone != null)
             {

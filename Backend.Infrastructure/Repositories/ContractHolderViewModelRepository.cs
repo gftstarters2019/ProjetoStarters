@@ -157,7 +157,7 @@ namespace Backend.Infrastructure.Repositories
 
         }
 
-        public ContractHolderViewModel Remove(ContractHolderViewModel t)
+        public bool Remove(Guid id)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
         new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -170,7 +170,7 @@ namespace Backend.Infrastructure.Repositories
             }
         }
 
-        public ContractHolderViewModel Update(ContractHolderViewModel t)
+        public ContractHolderViewModel Update(Guid id, ContractHolderViewModel t)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
         new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))

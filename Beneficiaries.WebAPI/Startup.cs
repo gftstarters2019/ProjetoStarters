@@ -49,6 +49,12 @@ namespace Beneficiaries.WebAPI
             services.AddScoped<IWriteRepository<Beneficiary>, BeneficiaryRepository>();
             services.AddScoped<IReadOnlyRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
 
+            services.AddScoped<IReadOnlyRepository<Individual>, IndividualRepository>();
+            services.AddScoped<IReadOnlyRepository<MobileDevice>, MobileDeviceRepository>();
+            services.AddScoped<IReadOnlyRepository<Realty>, RealtyRepository>();
+            services.AddScoped<IReadOnlyRepository<Pet>, PetRepository>();
+            services.AddScoped<IReadOnlyRepository<Vehicle>, VehicleRepository>();
+
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
             ConfigureSwagger(services);

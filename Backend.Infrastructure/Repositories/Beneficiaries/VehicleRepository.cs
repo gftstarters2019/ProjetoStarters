@@ -8,28 +8,28 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractBeneficiaryRepository : IReadOnlyRepository<ContractBeneficiary>, IWriteRepository<ContractBeneficiary>
+    public class VehicleRepository : IReadOnlyRepository<Vehicle>, IWriteRepository<Vehicle>
     {
         private readonly ConfigurationContext _db;
 
-        public ContractBeneficiaryRepository(ConfigurationContext db)
+        public VehicleRepository(ConfigurationContext db)
         {
             _db = db;
         }
 
-        public bool Add(ContractBeneficiary t)
+        public bool Add(Vehicle t)
         {
             throw new NotImplementedException();
         }
 
-        public ContractBeneficiary Find(Guid id)
+        public Vehicle Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ContractBeneficiary> Get() => _db
-            .Contract_Beneficiary
-            .Where(cb => cb.SignedContract.ContractIndividualIsActive)
+        public IEnumerable<Vehicle> Get() => _db
+            .Vehicles
+            .Where(i => !i.IsDeleted)
             .ToList();
 
         public bool Remove(Guid id)
@@ -37,7 +37,7 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public ContractBeneficiary Update(Guid id, ContractBeneficiary t)
+        public Vehicle Update(Guid id, Vehicle t)
         {
             throw new NotImplementedException();
         }

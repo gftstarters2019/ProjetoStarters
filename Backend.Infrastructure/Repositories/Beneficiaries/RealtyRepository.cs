@@ -8,28 +8,28 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractBeneficiaryRepository : IReadOnlyRepository<ContractBeneficiary>, IWriteRepository<ContractBeneficiary>
+    public class RealtyRepository : IReadOnlyRepository<Realty>, IWriteRepository<Realty>
     {
         private readonly ConfigurationContext _db;
 
-        public ContractBeneficiaryRepository(ConfigurationContext db)
+        public RealtyRepository(ConfigurationContext db)
         {
             _db = db;
         }
 
-        public bool Add(ContractBeneficiary t)
+        public bool Add(Realty t)
         {
             throw new NotImplementedException();
         }
 
-        public ContractBeneficiary Find(Guid id)
+        public Realty Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ContractBeneficiary> Get() => _db
-            .Contract_Beneficiary
-            .Where(cb => cb.SignedContract.ContractIndividualIsActive)
+        public IEnumerable<Realty> Get() => _db
+            .Realties
+            .Where(i => !i.IsDeleted)
             .ToList();
 
         public bool Remove(Guid id)
@@ -37,7 +37,7 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public ContractBeneficiary Update(Guid id, ContractBeneficiary t)
+        public Realty Update(Guid id, Realty t)
         {
             throw new NotImplementedException();
         }

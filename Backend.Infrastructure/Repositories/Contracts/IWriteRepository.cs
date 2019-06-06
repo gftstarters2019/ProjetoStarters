@@ -7,7 +7,7 @@ namespace Backend.Infrastructure.Repositories.Contracts
     public interface IWriteRepository<T>
     {
         bool Add(T t);
-        T Remove(T t);
-        T Update(T t);
+        bool Remove(Guid id);
+        T Update(Guid id, T t);
     }
 }
