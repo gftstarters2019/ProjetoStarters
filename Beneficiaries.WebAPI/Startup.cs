@@ -50,10 +50,20 @@ namespace Beneficiaries.WebAPI
             services.AddScoped<IReadOnlyRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
 
             services.AddScoped<IReadOnlyRepository<Individual>, IndividualRepository>();
+            services.AddScoped<IWriteRepository<Individual>, IndividualRepository>();
+
             services.AddScoped<IReadOnlyRepository<MobileDevice>, MobileDeviceRepository>();
+            services.AddScoped<IWriteRepository<MobileDevice>, MobileDeviceRepository>();
+
             services.AddScoped<IReadOnlyRepository<Realty>, RealtyRepository>();
+            services.AddScoped<IWriteRepository<Realty>, RealtyRepository>();
+
             services.AddScoped<IReadOnlyRepository<Pet>, PetRepository>();
+            services.AddScoped<IWriteRepository<Pet>, PetRepository>();
+
             services.AddScoped<IReadOnlyRepository<Vehicle>, VehicleRepository>();
+            services.AddScoped<IWriteRepository<Vehicle>, VehicleRepository>();
+
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 

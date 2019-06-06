@@ -20,10 +20,19 @@ namespace Beneficiaries.WebAPI.Controllers
         private readonly IReadOnlyRepository<ContractBeneficiary> _contractsReadOnlyRepository;
 
         private readonly IReadOnlyRepository<Individual> _individualReadOnlyRepository;
+        private readonly IWriteRepository<Individual> _individualWriteRepository;
+
         private readonly IReadOnlyRepository<Pet> _petReadOnlyRepository;
+        private readonly IWriteRepository<Pet> _petWriteRepository;
+
         private readonly IReadOnlyRepository<MobileDevice> _mobileDeviceReadOnlyRepository;
+        private readonly IWriteRepository<MobileDevice> _mobileWriteRepository;
+
         private readonly IReadOnlyRepository<Realty> _realtyReadOnlyRepository;
+        private readonly IWriteRepository<Realty> _realtyWriteRepository;
+
         private readonly IReadOnlyRepository<Vehicle> _vehicleReadOnlyRepository;
+        private readonly IWriteRepository<Vehicle> _vehicleWriteRepository;
 
         /// <summary>
         /// BeneficiaryController constructor
@@ -32,15 +41,23 @@ namespace Beneficiaries.WebAPI.Controllers
             IWriteRepository<Beneficiary> beneficiaryWriteRepository,
             IReadOnlyRepository<ContractBeneficiary> contractsReadOnlyRepository,
             IReadOnlyRepository<Individual> individualReadOnlyRepository,
+            IWriteRepository<Individual> individualWriteRepository,
             IReadOnlyRepository<Pet> petReadOnlyRepository,
+            IWriteRepository<Pet> petWriteRepository,
             IReadOnlyRepository<MobileDevice> mobileDeviceReadOnlyRepository,
+            IWriteRepository<MobileDevice> mobileDeviceWriteRepository,
             IReadOnlyRepository<Realty> realtyReadOnlyRepository,
-            IReadOnlyRepository<Vehicle> vehicleReadOnlyRepository)
+            IWriteRepository<Realty> realtyWriteRepository,
+            IReadOnlyRepository<Vehicle> vehicleReadOnlyRepository,
+            IWriteRepository<Vehicle> vehicleWriteRepository)
         {
             _beneficiaryReadOnlyRepository = beneficiaryReadOnlyRepository;
             _beneficiaryWriteRepository = beneficiaryWriteRepository;
             _contractsReadOnlyRepository = contractsReadOnlyRepository;
+
             _individualReadOnlyRepository = individualReadOnlyRepository;
+            _individualWriteRepository = individualWriteRepository;
+
             _petReadOnlyRepository = petReadOnlyRepository;
             _mobileDeviceReadOnlyRepository = mobileDeviceReadOnlyRepository;
             _realtyReadOnlyRepository = realtyReadOnlyRepository;
@@ -102,9 +119,9 @@ namespace Beneficiaries.WebAPI.Controllers
             //individual.IndividualId = Guid.NewGuid();
 
             if (!IndividualIsValid(individual))
-                return Forbid();
+                return StatusCode(403);
 
-            _beneficiaryWriteRepository.Add(individual);
+            _individualWriteRepository.Add(individual);
 
             return Ok(individual);
         }
@@ -154,12 +171,11 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostMobileDevice([FromBody] MobileDevice mobileDevice)
         {
             mobileDevice.BeneficiaryId = Guid.NewGuid();
-            //mobileDevice.MobileDeviceId = Guid.NewGuid();
 
             if (!MobileDeviceIsValid(mobileDevice))
                 return Forbid();
 
-            _beneficiaryWriteRepository.Add(mobileDevice);
+            _mobileWriteRepository.Add(mobileDevice);
 
             return Ok(mobileDevice);
         }
@@ -214,7 +230,7 @@ namespace Beneficiaries.WebAPI.Controllers
 
             //if (!PetIsValid(pet))
             //    return Forbid();
-            _beneficiaryWriteRepository.Add(pet);
+            _petWriteRepository.Add(pet);
 
             return Ok(pet);
         }
@@ -268,7 +284,7 @@ namespace Beneficiaries.WebAPI.Controllers
             if (!RealtyIsValid(realty))
                 return Forbid();
 
-            _beneficiaryWriteRepository.Add(realty);
+            _realtyWriteRepository.Add(realty);
 
             return Ok(realty);
         }
@@ -321,7 +337,7 @@ namespace Beneficiaries.WebAPI.Controllers
             if (!VehicleIsValid(vehicle))
                 return Forbid();
 
-            _beneficiaryWriteRepository.Add(vehicle);
+            _vehicleWriteRepository.Add(vehicle);
 
             return Ok(vehicle);
         }
