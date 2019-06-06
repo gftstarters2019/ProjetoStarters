@@ -1,29 +1,17 @@
 <mat-card>
-  <mat-form-field>
-    <mat-label>Select Type:</mat-label>
-    <mat-select formControlName="BType" name="btypes">
-      <mat-option *ngFor="let btype of btypes" [value]="btype.value">
-        {{btype.viewValue}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button mat-raised-button color="primary" type="button" (click)="TypeTable()">Filter</button>
-
+  <form [formGroup]="selectType">
+    <mat-form-field>
+      <mat-label>Select Type:</mat-label>
+      <mat-select formControlName="Type" name="btypes">
+        <mat-option *ngFor="let btype of btypes" [value]="btype.value">
+          {{btype.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="button" (click)="TypeTable()">Filter</button>
+  </form>
 </mat-card>
 <mat-card>
-  <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-  </mat-form-field>
-
-  <mat-table #table [dataSource]="dataSource">
-
-      <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.columnDef">
-        <mat-header-cell *cdkHeaderCellDef>{{ column.header }}</mat-header-cell>
-        <mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-
-  <mat-paginator [pageSizeOptions]="[50]" showFirstLastButtons></mat-paginator>
+  <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true" class="ag-theme-material"
+    [masterDetail]="true" [gridOptions]="gridOptions" [rowData]="rowData$ | async"></ag-grid-angular>
 </mat-card>

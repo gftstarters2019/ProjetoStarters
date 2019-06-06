@@ -63,9 +63,6 @@ export class ContractComponent implements OnInit {
 
   ngOnInit() {}
 
-  // displayedColumns: string[] = ['name', 'CPF'];
-  // dataSource = new MatTableDataSource();
-
   
   public showList(): void {
     this.showlist = !this.showlist;
@@ -101,8 +98,4 @@ export class ContractComponent implements OnInit {
     this.beneficiaries.value[this.beneficiaries.length-1].id = $event;
   }
 
-  // getData() {
-  //   this.httpClient.get('minhaapi')
-  //     .subscribe((data: Holder) => this.dataSource.data.push(data));
-  // }
 }
