@@ -31,6 +31,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import {ObserversModule} from '@angular/cdk/observers';
 import { IndividualListComponent } from './individual-list/individual-list.component';
 import { PetListComponent } from './pet-list/pet-list.component';
+import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { PetListComponent } from './pet-list/pet-list.component';
     TelephoneComponent,
     IndividualListComponent,
     PetListComponent,
+    VehicleListComponent,
   ],
   imports: [
     ObserversModule,
