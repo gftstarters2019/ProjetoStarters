@@ -54,17 +54,17 @@ export class BeneficiaryVehicleComponent implements OnInit {
 
   public vehiclePost(): void{
     
-    let form = JSON.stringify(this.vehicleCreateForm.value);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle', form, httpOptions)
-    .subscribe(data => {this.response = data});
+    // let form = JSON.stringify(this.vehicleCreateForm.value);
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type':  'application/json'
+    //   })
+    // };
+    // this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle', form, httpOptions)
+    // .subscribe(data => {this.response = data});
     
-    if(this.response != null){
-      this.messageVehicleEvent.emit(this.response.beneficiaryId);
-    }
+    //if(this.response != null){
+    this.messageVehicleEvent.emit(this.vehicleCreateForm);
+    //}
   }
 }

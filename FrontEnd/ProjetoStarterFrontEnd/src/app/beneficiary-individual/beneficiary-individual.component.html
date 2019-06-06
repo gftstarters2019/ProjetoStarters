@@ -10,12 +10,12 @@
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 45%;">
-            <input matInput placeholder="CPF" name="individualCpf" [textMask]="{mask: cpfMask}" formControlName="individualCpf" required>
+            <input matInput placeholder="CPF" name="individualCPF" [textMask]="{mask: cpfMask}" formControlName="individualCPF" required>
             <mat-error>CPF is invalid!</mat-error>
         </mat-form-field>
 
         <mat-form-field style="width: 45%;">
-            <input matInput placeholder="RG" name="individualRg" [textMask]="{mask: rgMask}" formControlName="individualRg" required>
+            <input matInput placeholder="RG" name="individualRG" [textMask]="{mask: rgMask}" formControlName="individualRG" required>
             <mat-error>RG is invalid!</mat-error>
         </mat-form-field>
     </div>
@@ -37,8 +37,8 @@
       </div>
 
       <div>
-          <button mat-raised-button color="primary" (click)="individualPost()" type="submit" [disabled]="!individualCreateForm.valid"
-              style="margin-top: 10px">Submit</button>
+          <button mat-raised-button color="primary" (click)="individualPost()" [disabled]="!individualCreateForm.valid"
+              style="margin-top: 10px">Add</button>
       </div>
   </div>
 </form>

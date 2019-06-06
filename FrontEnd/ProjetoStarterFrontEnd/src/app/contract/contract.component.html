@@ -13,34 +13,22 @@
 
       <mat-form-field>
         <mat-label>Contract Holder's name:</mat-label>
-        <mat-select formControlName="holdername" name="holder">
-          <mat-option *ngFor="let holder of holders" [value]="holder.value">
-            {{holder.viewValue}}
+        <mat-select formControlName="contractHolderId" name="contractHolderId">
+          <mat-option *ngFor="let holder of holders" [value]="holder.beneficiaryId">
+            {{holder.individualName}}
             <mat-error></mat-error>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Contract Holder's CPF:</mat-label>
-        <mat-select formControlName="holderCPF" name="cpf">
-          <mat-option *ngFor="let cpf of cpfs" [value]="cpf.value">
-            {{cpf.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-
-
       <button class="btn-list" mat-raised-button color="primary" type="button" [routerLink]="['/contract-holder']">New Contract Holder</button>
-
 
       <mat-divider></mat-divider>
       <mat-card>
         <mat-form-field>
           <mat-label>Select Contract Type:</mat-label>
-          <mat-select formControlName="contractType" name="types">
-            <mat-option *ngFor="let type of types" [value]="type.value">
+          <mat-select formControlName="type" name="types">
+            <mat-option *ngFor="let type of contractTypes" [value]="type.value">
               {{type.viewValue}}
             </mat-option>
           </mat-select>
@@ -48,8 +36,8 @@
 
         <mat-form-field>
           <mat-label>Select Contract Category:</mat-label>
-          <mat-select formControlName="contractCategory" name="category">
-            <mat-option *ngFor="let category of categories" [value]="category.value">
+          <mat-select formControlName="category" name="category">
+            <mat-option *ngFor="let category of contractCategories" [value]="category.value">
               {{category.viewValue}}
             </mat-option>
           </mat-select>
@@ -59,7 +47,7 @@
 
         <mat-form-field>
           <input matInput [matDatepicker]="contractExpiryDate" placeholder="Contract Expiry Date"
-            formControlName="contractExpiryDate" required>
+            formControlName="expiryDate" required>
           <mat-datepicker-toggle matSuffix [for]="contractExpiryDate"></mat-datepicker-toggle>
           <mat-datepicker #contractExpiryDate></mat-datepicker>
         </mat-form-field>
@@ -72,49 +60,52 @@
       <app-beneficiarylist-add></app-beneficiarylist-add>
       <mat-divider></mat-divider>
       <mat-card>
-        <button mat-raised-button color="primary" type="button" (click)="assignContractType(); addBeneficiary();">Add Beneficiary</button>
         <div *ngIf="cType == 'Health Plan' || cType=='Dental Plan' || cType=='Life Insurance Plan'">
           <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i">
-                <app-beneficiary-individual (messageIndividualEvent)="receiveMessage($event)"></app-beneficiary-individual>
+              <app-beneficiary-individual (messageIndividualEvent)="receiveMessage($event)"></app-beneficiary-individual> <br>
+              <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i)">Remove Beneficiary</button>
             </div>
           </div>
         </div>
         <div *ngIf="cType == 'Animal Health Plan'">
           <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i">
-                <app-beneficiary-pet (messagePetEvent)="receiveMessage($event)"></app-beneficiary-pet>
+              <app-beneficiary-pet (messagePetEvent)="receiveMessage($event)"></app-beneficiary-pet>
             </div>
           </div>
         </div>
         <div *ngIf="cType == 'Real Estate Insurance'">
           <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i">
-                <app-beneficiary-realty (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
+              <app-beneficiary-realty (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
             </div>
           </div>
         </div>
         <div *ngIf="cType == 'Car insurance'">
           <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i">
-                <app-beneficiary-vehicle (messageVehicleEvent)="receiveMessage($event)"></app-beneficiary-vehicle>
+              <app-beneficiary-vehicle (messageVehicleEvent)="receiveMessage($event)"></app-beneficiary-vehicle>
             </div>
           </div>
         </div>
         <div *ngIf="cType == 'Mobile device Insurance'">
-            <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
-              <div [formGroupName]="i">
-                  <app-beneficiary-mobile-device (messageMobileEvent)="receiveMessage($event)"></app-beneficiary-mobile-device>
-              </div>
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
+            <div [formGroupName]="i">
+              <app-beneficiary-mobile-device (messageMobileEvent)="receiveMessage($event)"></app-beneficiary-mobile-device>
             </div>
           </div>
-
+        </div>
+        
       </mat-card>
+      <div>
+        <button mat-raised-button color="primary" type="button" (click)="assignContractType(); addBeneficiary();">Add Beneficiary</button>
+      </div>
       <mat-divider></mat-divider>
       <mat-card>
 
         <button class="btn-list" mat-raised-button color="primary" (click)="clearBeneficiary()" type="button">Clear</button>
-        <button class="btn-list" mat-raised-button color="primary" type="button">Submit</button>
+        <button class="btn-list" mat-raised-button color="primary" type="button" (click)="postContract()">Submit</button>
       </mat-card>
       <mat-divider></mat-divider>
       <mat-card>

@@ -1,5 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 export interface Type {
   value: string;
@@ -10,8 +12,12 @@ export interface Category {
   viewValue: string;
 }
 export interface Holder{
-  value: string;
-  viewValue:string;
+  beneficiaryId: string;
+  individualBirthdate: string;
+  individualCPF: string;
+  individualEmail: string;
+  individualName: string;
+  individualRG: string;
 }
 export interface CPF{
   value: string;
@@ -28,17 +34,16 @@ export class ContractComponent implements OnInit {
   public showlist: boolean = true;
   public showlist2: boolean = true;
   beneficiaries: FormArray;
-
-  holders: Holder[]=[
-    {value: '',viewValue:''},
-  ]
+  aux: FormArray;
+  
+  holders: Holder[];
   cpfs: CPF[]=[
     {value: '',viewValue:''},
   ]
 
   cType:any;
 
-  types: Type[] = [
+  contractTypes: Type[] = [
     { value: 'Health Plan', viewValue: 'Contract Health Plan' },
     { value: 'Animal Health Plan', viewValue: 'Contract Animal Health Plan' },
     { value: 'Dental Plan', viewValue: 'Contract Dental Plan' },
@@ -47,7 +52,7 @@ export class ContractComponent implements OnInit {
     { value: 'Car insurance', viewValue: 'Contract Car insurance' },
     { value: 'Mobile device Insurance', viewValue: 'Contract Mobile device Insurance' },
   ];
-  categories: Category[] = [
+  contractCategories: Category[] = [
     { value: 'Iron', viewValue: 'Contract Iron' },
     { value: 'Bronze', viewValue: 'Contract Bronze' },
     { value: 'Silver', viewValue: 'Contract Silver' },
@@ -57,20 +62,22 @@ export class ContractComponent implements OnInit {
   ];
 
   contractform = this.fb.group({
-    holdername: ['', Validators.required],
-    holderCPF: ['', Validators.required],
-    contractId: ['', Validators.required],
-    contractType: ['', Validators.required],
-    contractCategory: ['', Validators.required],
-    contractExpiryDate: ['', Validators.required],
-    contractIniatalDate: ['', Validators.required],
-    contractStatus:['False', Validators.required],
+    contractHolderId: ['', Validators.required],
+    type: ['', Validators.required],
+    category: ['', Validators.required],
+    expiryDate: ['', Validators.required],
+    isActive:['False', Validators.required],
     beneficiaries: this.fb.array([])
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private http: HttpClient) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[] )=> {
+      this.holders = data;
+    }); 
+  }
   
   public showList(): void {
     this.showlist = !this.showlist;
@@ -80,12 +87,12 @@ export class ContractComponent implements OnInit {
   }
 
   public assignContractType(): void{
-    this.cType = this.contractform.get(['contractType']).value;
+    this.cType = this.contractform.get(['type']).value;
   }
 
   createBeneficiary(): FormGroup {
     return this.fb.group({
-      id: ''
+      beneficiaryId: ''
     });
   }
 
@@ -94,6 +101,11 @@ export class ContractComponent implements OnInit {
     if(this.beneficiaries.length<5){
       this.beneficiaries.push(this.createBeneficiary());
     }
+    console.log(this.holders);
+  }
+
+  receiveMessage($event) {
+    this.beneficiaries.value[this.beneficiaries.length-1].beneficiaryId = $event;
   }
 
   clearBeneficiary(): void{
@@ -102,7 +114,20 @@ export class ContractComponent implements OnInit {
     this.cType = '';
   }
 
-  receiveMessage($event) {
-    this.beneficiaries.value[this.beneficiaries.length-1].id = $event;
+  removeBeneficiary(i){
+    this.beneficiaries.removeAt(i);
+  }
+
+  postContract(){
+    console.log(this.contractform.value);
+    let form = JSON.stringify(this.contractform.value);
+    console.log(form);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+    .subscribe(data => console.log(data));
   }
 }

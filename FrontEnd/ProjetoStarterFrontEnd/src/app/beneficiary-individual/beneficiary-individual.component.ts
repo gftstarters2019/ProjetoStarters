@@ -17,8 +17,8 @@ export class BeneficiaryIndividualComponent implements OnInit {
 
   individualCreateForm= this.formBuilder.group({
     individualName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
-    individualCpf: new FormControl('', GenericValidator.isValidCpf()),
-    individualRg: new FormControl('', GenericValidator.rgLengthValidation()),
+    individualCPF: new FormControl('', GenericValidator.isValidCpf()),
+    individualRG: new FormControl('', GenericValidator.rgLengthValidation()),
     individualBirthdate: new FormControl('', GenericValidator.dateValidation()),
     individualEmail: new FormControl('', Validators.required)
   });
@@ -26,6 +26,7 @@ export class BeneficiaryIndividualComponent implements OnInit {
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    
   }
 
   response:any;
@@ -33,6 +34,8 @@ export class BeneficiaryIndividualComponent implements OnInit {
   public individualPost(): void{
     
     let form = JSON.stringify(this.individualCreateForm.value);
+    console.log(form);
+    debugger;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -40,6 +43,7 @@ export class BeneficiaryIndividualComponent implements OnInit {
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual', form, httpOptions)
     .subscribe(data => {this.response = data});
+    
 
     if(this.response != null){
       this.messageIndividualEvent.emit(this.response.beneficiaryId);
