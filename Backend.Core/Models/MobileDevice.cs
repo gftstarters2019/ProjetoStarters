@@ -6,7 +6,6 @@ namespace Backend.Core.Models
 {
     public class MobileDevice : Beneficiary
     {
-        public Guid MobileDeviceId { get; set; }
         [MaxLength(15)]
         public string MobileDeviceBrand { get; set; }
         [MaxLength(20)]
