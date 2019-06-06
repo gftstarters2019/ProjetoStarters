@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
@@ -14,11 +13,11 @@ export interface Category {
   value: number;
   viewValue: string;
 }
-export interface Holder{
+export interface Holder {
   value: string;
- }
+}
 
- 
+
 @Component({
   selector: 'app-contract',
   templateUrl: './contract.component.html',
@@ -40,11 +39,11 @@ export class ContractComponent implements OnInit {
   load_failure: boolean;
 
 
-  holders: Holder[]=[
-    {value: ''}
+  holders: Holder[] = [
+    { value: '' }
   ]
-  
-  cType:any;
+
+  cType: any;
 
   types: Type[] = [
     { value: 0, viewValue: 'Contract Health Plan' },
@@ -68,24 +67,9 @@ export class ContractComponent implements OnInit {
     Type: ['', Validators.required],
     Category: ['', Validators.required],
     ExpiryDate: ['', Validators.required],
-    isActive:['', Validators.required],
+    isActive: ['', Validators.required],
     beneficiaries: this.fb.array([])
   });
-
-  @ViewChild('slide')
-  matSlideToggle: MatSlideToggle;
-
-  focusTest() {
-    this.matSlideToggle.focus();
-  }
-  toggleTest() {
-    this.matSlideToggle.toggle();
-  }
-
-  get activateAcc() {
-    return this.contractform.get('isActive');
-  }  
-
 
   constructor(private fb: FormBuilder, private http: HttpClient) { }
 
@@ -94,7 +78,7 @@ export class ContractComponent implements OnInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
   }
-  
+
   public showList(): void {
     this.showlist = !this.showlist;
   }
@@ -102,7 +86,7 @@ export class ContractComponent implements OnInit {
     this.showlist2 = !this.showlist2;
   }
 
-  public assignContractType(): void{
+  public assignContractType(): void {
     this.cType = this.contractform.get(['Type']).value;
   }
 
@@ -114,19 +98,19 @@ export class ContractComponent implements OnInit {
 
   addBeneficiary(): void {
     this.beneficiaries = this.contractform.get('beneficiaries') as FormArray;
-    if(this.beneficiaries.length<5){
+    if (this.beneficiaries.length < 5) {
       this.beneficiaries.push(this.createBeneficiary());
     }
   }
 
-  clearBeneficiary(): void{
+  clearBeneficiary(): void {
     this.beneficiaries.controls.pop();
-    
+
     this.cType = '';
   }
 
   receiveMessage($event) {
-    this.beneficiaries.value[this.beneficiaries.length-1].id = $event;
+    this.beneficiaries.value[this.beneficiaries.length - 1].id = $event;
   }
 
   //AG-grid Table Contract
@@ -140,8 +124,8 @@ export class ContractComponent implements OnInit {
       columnDefs: [
 
         {
-          headerName: 'Contract Holder Name',
-          field: 'name',
+          headerName: 'Contract Holder ',
+          field: 'contractHolderId',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -151,23 +135,24 @@ export class ContractComponent implements OnInit {
 
         {
           headerName: 'Category',
-          field: 'Category',
+          field: 'category',
           lockPosition: true,
           sortable: true,
           filter: true,
           onCellValueChanged:
-            this.onCellEdit.bind(this)
+            this.onCellEdit.bind(this),
+
         },
 
         {
           headerName: 'Type',
-          field: 'Type',
+          field: 'type',
           lockPosition: true,
           sortable: true,
           filter: true,
           onCellValueChanged:
-            this.onCellEdit.bind(this)
-        },
+            this.onCellEdit.bind(this),
+       },
 
         {
           headerName: 'Beneficiaries ',
@@ -180,7 +165,7 @@ export class ContractComponent implements OnInit {
         },
         {
           headerName: 'Expire Date',
-          field: 'ExpiryDate',
+          field: 'expiryDate',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -189,7 +174,7 @@ export class ContractComponent implements OnInit {
         },
         {
           headerName: 'Status',
-          field: 'Status',
+          field: 'isActive',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -197,7 +182,7 @@ export class ContractComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
       ]
-      
+
     }
   }
   onGridReady(params) {
