@@ -47,7 +47,7 @@ export class ContractComponent implements OnInit {
     { value: 'Health Plan', viewValue: 'Contract Health Plan' },
     { value: 'Animal Health Plan', viewValue: 'Contract Animal Health Plan' },
     { value: 'Dental Plan', viewValue: 'Contract Dental Plan' },
-    { value: 'Life insurance Plan', viewValue: 'Contract Life insurance Plan' },
+    { value: 'Life Insurance Plan', viewValue: 'Contract Life insurance Plan' },
     { value: 'Real Estate Insurance', viewValue: 'Contract Real Estate Insurance' },
     { value: 'Car insurance', viewValue: 'Contract Car insurance' },
     { value: 'Mobile device Insurance', viewValue: 'Contract Mobile device Insurance' },
