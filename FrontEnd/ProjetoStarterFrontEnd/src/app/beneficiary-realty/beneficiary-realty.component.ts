@@ -38,10 +38,11 @@ export class BeneficiaryRealtyComponent implements OnInit {
       })
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realty', form, httpOptions)
-    .subscribe(data => { this.response = data});
-
-    if(this.response != null){
-      this.messageRealtyEvent.emit(this.response.beneficiaryId);
-    }
+    .subscribe(data => { 
+      this.response = data;
+      if(this.response != null){
+        this.messageRealtyEvent.emit(this.response.beneficiaryId);
+      }
+    });
   }
 }

@@ -61,10 +61,11 @@ export class BeneficiaryVehicleComponent implements OnInit {
       })
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle', form, httpOptions)
-    .subscribe(data => {this.response = data});
-    
-    if(this.response != null){
-      this.messageVehicleEvent.emit(this.response.beneficiaryId);
-    }
+    .subscribe(data => {
+      this.response = data;
+      if(this.response != null){
+        this.messageVehicleEvent.emit(this.response.beneficiaryId);
+      }
+    });
   }
 }

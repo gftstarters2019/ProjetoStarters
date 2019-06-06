@@ -24,7 +24,7 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   ];
   
   mobileDeviceCreateForm= this.formBuilder.group({
-    mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
     mobileDeviceModel: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
     mobileDeviceManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
     mobileDeviceSerialNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
@@ -48,10 +48,11 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
       })
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevice', form, httpOptions)
-    .subscribe(data => {this.response = data});
-
-    if(this.response != null){
-      this.messageMobilelEvent.emit(this.response.beneficiaryId);
-    }
+    .subscribe(data => {
+      this.response = data;
+      if(this.response != null){
+        this.messageMobilelEvent.emit(this.response.beneficiaryId);
+      }
+    });
   }
 }

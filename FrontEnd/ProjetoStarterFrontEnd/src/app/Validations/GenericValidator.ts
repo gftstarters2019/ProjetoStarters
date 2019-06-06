@@ -4,8 +4,8 @@ export class GenericValidator {
     constructor() {}
 
     static regexName = new RegExp(/^[A-ZÀ-Ÿ][A-zÀ-ÿ']+\s([A-zÀ-ÿ']\s?)*[A-ZÀ-Ÿ][A-zÀ-ÿ']+$/);
-    static regexAlphaNumeric = new RegExp(/^[a-zA-Z-ã]+[0-9]+\s[(a-zA-Z]+[0-9]+$/);
-
+    static regexAlphaNumeric = new RegExp(/^[a-z\d\-_\s]+$/i);
+    static regexSimpleName = new RegExp(/^[A-ZÀ-Ÿ][A-zÀ-ÿ']+$/);
 
     /**
      * Valida se o CPF é valido. Deve-se ser informado o cpf sem máscara.

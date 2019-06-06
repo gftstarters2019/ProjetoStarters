@@ -47,10 +47,14 @@ export class BeneficiaryPetComponent implements OnInit {
       })
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet', form, httpOptions)
-    .subscribe(data => {this.response = data});
+    .subscribe(data => {
+      this.response = data;
+      if(this.response != null)
+        this.messagePetEvent.emit(this.response.beneficiaryId);
+    });
 
-    if(this.response != null){
-      this.messagePetEvent.emit(this.response.beneficiaryId);
-    }
+    //if(this.response != null){
+      ;
+    //}
   }
 }

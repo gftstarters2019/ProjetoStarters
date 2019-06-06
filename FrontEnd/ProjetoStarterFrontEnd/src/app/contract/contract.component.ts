@@ -1,18 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { Observable } from 'rxjs';
 
 export interface Type {
-  value: string;
+  value: number;
   viewValue: string;
 }
 export interface Category {
-  value: string;
+  value: number;
   viewValue: string;
 }
 export interface Holder{
-  beneficiaryId: string;
+  individualId: string;
   individualBirthdate: string;
   individualCPF: string;
   individualEmail: string;
@@ -34,31 +33,29 @@ export class ContractComponent implements OnInit {
   public showlist: boolean = true;
   public showlist2: boolean = true;
   beneficiaries: FormArray;
-  aux: FormArray;
+  aux;
   
   holders: Holder[];
-  cpfs: CPF[]=[
-    {value: '',viewValue:''},
-  ]
+  
 
   cType:any;
 
   contractTypes: Type[] = [
-    { value: 'Health Plan', viewValue: 'Contract Health Plan' },
-    { value: 'Animal Health Plan', viewValue: 'Contract Animal Health Plan' },
-    { value: 'Dental Plan', viewValue: 'Contract Dental Plan' },
-    { value: 'Life Insurance Plan', viewValue: 'Contract Life insurance Plan' },
-    { value: 'Real Estate Insurance', viewValue: 'Contract Real Estate Insurance' },
-    { value: 'Car insurance', viewValue: 'Contract Car insurance' },
-    { value: 'Mobile device Insurance', viewValue: 'Contract Mobile device Insurance' },
+    { value: 0, viewValue: 'Contract Health Plan' },
+    { value: 1, viewValue: 'Contract Animal Health Plan' },
+    { value: 2, viewValue: 'Contract Dental Plan' },
+    { value: 3, viewValue: 'Contract Life insurance Plan' },
+    { value: 4, viewValue: 'Contract Real Estate Insurance' },
+    { value: 5, viewValue: 'Contract Car insurance' },
+    { value: 6, viewValue: 'Contract Mobile device Insurance' },
   ];
   contractCategories: Category[] = [
-    { value: 'Iron', viewValue: 'Contract Iron' },
-    { value: 'Bronze', viewValue: 'Contract Bronze' },
-    { value: 'Silver', viewValue: 'Contract Silver' },
-    { value: 'Gold', viewValue: 'Contract Gold' },
-    { value: 'Platinum', viewValue: 'Contract Platinum' },
-    { value: 'Diamond', viewValue: 'Contract Diamond' },
+    { value: 0, viewValue: 'Contract Iron' },
+    { value: 1, viewValue: 'Contract Bronze' },
+    { value: 2, viewValue: 'Contract Silver' },
+    { value: 3, viewValue: 'Contract Gold' },
+    { value: 4, viewValue: 'Contract Platinum' },
+    { value: 5, viewValue: 'Contract Diamond' },
   ];
 
   contractform = this.fb.group({
@@ -70,11 +67,16 @@ export class ContractComponent implements OnInit {
     beneficiaries: this.fb.array([])
   });
 
+  contractAux= this.fb.group({
+    beneficiaries: this.fb.array([])
+  });
+
   constructor(private fb: FormBuilder, private http: HttpClient) { }
 
   ngOnInit() {
 
     this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[] )=> {
+      console.log(data);
       this.holders = data;
     }); 
   }
@@ -97,7 +99,7 @@ export class ContractComponent implements OnInit {
   }
 
   addBeneficiary(): void {
-    this.beneficiaries = this.contractform.get('beneficiaries') as FormArray;
+    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
     if(this.beneficiaries.length<5){
       this.beneficiaries.push(this.createBeneficiary());
     }
@@ -105,7 +107,12 @@ export class ContractComponent implements OnInit {
   }
 
   receiveMessage($event) {
+    console.log($event);
+    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
+    this.aux = this.contractform.get('beneficiaries');
     this.beneficiaries.value[this.beneficiaries.length-1].beneficiaryId = $event;
+    //this.aux.value[this.beneficiaries.length-1] = $event;
+    console.log(this.contractform);
   }
 
   clearBeneficiary(): void{
@@ -120,6 +127,13 @@ export class ContractComponent implements OnInit {
 
   postContract(){
     console.log(this.contractform.value);
+    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
+    this.aux = this.contractform.get('beneficiaries');
+    let i = 0;
+    for(i = 0; i<this.beneficiaries.length; i++)
+    {
+      this.aux.value[this.beneficiaries.length-1] = this.beneficiaries.value[this.beneficiaries.length-1].beneficiaryId
+    }
     let form = JSON.stringify(this.contractform.value);
     console.log(form);
     const httpOptions = {

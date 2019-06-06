@@ -15,7 +15,7 @@
         <mat-form-field style="width: 300px;">
           <mat-label>Contract Holder's name:</mat-label>
           <mat-select formControlName="contractHolderId" name="contractHolderId">
-              <mat-option *ngFor="let holder of holders" [value]="holder.beneficiaryId">
+              <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
                   {{holder.individualName}}
                   <mat-error></mat-error>
               </mat-option>
@@ -65,8 +65,8 @@
           
           <button mat-raised-button color="primary" type="button" (click)="assignContractType(); addBeneficiary();">Add Beneficiary</button>
 
-        <div *ngIf="cType == 'Health Plan' || cType=='Dental Plan' || cType=='Life Insurance Plan'">
-          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
+        <div *ngIf="cType == 0 || cType==2 || cType==3">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i" class="contractCard">
                 
               
@@ -78,8 +78,8 @@
             </div>
           </div>
         </div>
-        <div *ngIf="cType == 'Animal Health Plan'">
-          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
+        <div *ngIf="cType == 1">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('contractBeneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i"  class="contractCard">
 
                 <mat-card>
@@ -89,8 +89,8 @@
             </div>
           </div>
         </div>
-        <div *ngIf="cType == 'Real Estate Insurance'">
-          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
+        <div *ngIf="cType == 4">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('contractBeneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i"  class="contractCard">
                
               <mat-card>
@@ -100,8 +100,8 @@
             </div>
           </div>
         </div>
-        <div *ngIf="cType == 'Car insurance'">
-          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
+        <div *ngIf="cType == 5">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('contractBeneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i"  class="contractCard">
                 <mat-card>
                   <app-beneficiary-vehicle (messageVehicleEvent)="receiveMessage($event)"></app-beneficiary-vehicle>
@@ -109,8 +109,8 @@
             </div>
           </div>
         </div>
-        <div *ngIf="cType == 'Mobile device Insurance'">
-            <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
+        <div *ngIf="cType == 6">
+            <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('contractBeneficiaries')['controls']; let i = index;">
               <div [formGroupName]="i"  class="contractCard">
                   <mat-card>
                     <app-beneficiary-mobile-device (messageMobileEvent)="receiveMessage($event)"></app-beneficiary-mobile-device>
@@ -129,7 +129,7 @@
         <br><br>
         <button class="btn-list" mat-raised-button color="primary" type="button" (click)="postContract()">Submit</button>
         
-        
+
         <br><br>
         <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList()">Listing
           Contract</button>
