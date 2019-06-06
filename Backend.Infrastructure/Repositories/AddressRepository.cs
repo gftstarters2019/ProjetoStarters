@@ -25,13 +25,17 @@ namespace Backend.Infrastructure.Repositories
             .Addresses
             .ToList();
 
-        public void Add(Address address)
+        public bool Add(Address address)
         {
             if (address != null)
             {
                 _db.Add(address);
-                _db.SaveChanges();
+                if (_db.SaveChanges() == 1)
+                    return true;
+
+                return false;
             }
+            return false;
         }
 
         public Address Remove(Address address)

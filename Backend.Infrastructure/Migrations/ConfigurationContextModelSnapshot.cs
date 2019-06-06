@@ -59,7 +59,7 @@ namespace Backend.Infrastructure.Migrations
 
                     b.HasKey("BeneficiaryId");
 
-                    b.ToTable("Beneficiaries");
+                    b.ToTable("Beneficiary");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Beneficiary");
                 });
@@ -79,7 +79,7 @@ namespace Backend.Infrastructure.Migrations
 
                     b.HasIndex("BeneficiaryId");
 
-                    b.ToTable("Individual_Address");
+                    b.ToTable("Beneficiary_Address");
                 });
 
             modelBuilder.Entity("Backend.Core.Models.BeneficiaryTelephone", b =>
@@ -182,8 +182,6 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<string>("IndividualEmail")
                         .HasMaxLength(30);
 
-                    b.Property<Guid>("IndividualId");
-
                     b.Property<string>("IndividualName")
                         .HasMaxLength(50);
 
@@ -199,8 +197,6 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<string>("MobileDeviceBrand")
                         .HasMaxLength(15);
-
-                    b.Property<Guid>("MobileDeviceId");
 
                     b.Property<double>("MobileDeviceInvoiceValue");
 
@@ -226,8 +222,6 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<string>("PetBreed")
                         .HasMaxLength(30);
 
-                    b.Property<Guid>("PetId");
-
                     b.Property<string>("PetName")
                         .HasMaxLength(40);
 
@@ -241,8 +235,6 @@ namespace Backend.Infrastructure.Migrations
                     b.HasBaseType("Backend.Core.Models.Beneficiary");
 
                     b.Property<DateTime>("RealtyConstructionDate");
-
-                    b.Property<Guid>("RealtyId");
 
                     b.Property<double>("RealtyMarketValue");
 
@@ -270,8 +262,6 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<bool>("VehicleDoneInspection");
 
-                    b.Property<Guid>("VehicleId");
-
                     b.Property<DateTime>("VehicleManufactoringYear");
 
                     b.Property<string>("VehicleModel");
@@ -286,12 +276,12 @@ namespace Backend.Infrastructure.Migrations
                     b.HasOne("Backend.Core.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Backend.Core.Models.Beneficiary", "Beneficiary")
                         .WithMany()
                         .HasForeignKey("BeneficiaryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Backend.Core.Models.BeneficiaryTelephone", b =>
@@ -299,12 +289,12 @@ namespace Backend.Infrastructure.Migrations
                     b.HasOne("Backend.Core.Models.Beneficiary", "Beneficiary")
                         .WithMany()
                         .HasForeignKey("BeneficiaryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Backend.Core.Models.Telephone", "Telephone")
                         .WithMany()
                         .HasForeignKey("TelephoneId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Backend.Core.Models.ContractBeneficiary", b =>
@@ -312,12 +302,12 @@ namespace Backend.Infrastructure.Migrations
                     b.HasOne("Backend.Core.Models.Beneficiary", "Beneficiary")
                         .WithMany()
                         .HasForeignKey("BeneficiaryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Backend.Core.Models.SignedContract", "SignedContract")
                         .WithMany()
                         .HasForeignKey("SignedContractId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Backend.Core.Models.SignedContract", b =>
@@ -325,12 +315,12 @@ namespace Backend.Infrastructure.Migrations
                     b.HasOne("Backend.Core.Models.Contract", "ContractSignedContract")
                         .WithMany()
                         .HasForeignKey("ContractId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Backend.Core.Models.Individual", "ContractSignedIndividual")
                         .WithMany()
                         .HasForeignKey("IndividualId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

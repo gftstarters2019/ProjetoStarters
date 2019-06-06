@@ -20,19 +20,23 @@ namespace Backend.Infrastructure.Repositories
 
         public Individual Find(Guid id) => _db
             .Individuals
-            .FirstOrDefault(ind => ind.IndividualId == id);
+            .FirstOrDefault(ind => ind.BeneficiaryId == id);
 
         public IEnumerable<Individual> Get() => _db
-            .Individuals
-            .ToList();
+              .Individuals
+              .ToList();
 
-        public void Add(Individual individual)
+        public bool Add(Individual individual)
         {
             if(individual != null)
             {
                 _db.Add(individual);
-                _db.SaveChanges();
+                if (_db.SaveChanges() == 1)
+                    return true;
+
+                return false;
             }
+            return false;
         }
 
         public Individual Remove(Individual individual)

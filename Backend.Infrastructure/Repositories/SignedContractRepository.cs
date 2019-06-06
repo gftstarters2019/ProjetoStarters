@@ -17,7 +17,7 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public void Add(SignedContract t)
+        public bool Add(SignedContract t)
         {
             throw new NotImplementedException();
         }

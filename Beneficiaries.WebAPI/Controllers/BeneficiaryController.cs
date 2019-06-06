@@ -73,7 +73,7 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostIndividual([FromBody] Individual individual)
         {
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
 
             if (!IndividualIsValid(individual))
                 return Forbid();
@@ -118,7 +118,7 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostMobileDevice([FromBody] MobileDevice mobileDevice)
         {
             mobileDevice.BeneficiaryId = Guid.NewGuid();
-            mobileDevice.MobileDeviceId = Guid.NewGuid();
+            //mobileDevice.MobileDeviceId = Guid.NewGuid();
 
             if (!MobileDeviceIsValid(mobileDevice))
                 return Forbid();
@@ -164,10 +164,10 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostPet([FromBody] Pet pet)
         {
             pet.BeneficiaryId = Guid.NewGuid();
-            pet.PetId = Guid.NewGuid();
+            //pet.PetId = Guid.NewGuid();
 
-            if (!PetIsValid(pet))
-                return Forbid();
+            //if (!PetIsValid(pet))
+            //    return Forbid();
             _beneficiaryWriteRepository.Add(pet);
 
             return Ok(pet);
@@ -182,8 +182,8 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Pet/{id}")]
         public IActionResult UpdatePet(Guid id, [FromBody] Pet pet)
         {
-            if (!PetIsValid(pet))
-                return Forbid();
+            //if (!PetIsValid(pet))
+            //    return Forbid();
 
             var obj = (Pet)_beneficiaryReadOnlyRepository.Find(id);
 
@@ -207,7 +207,7 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostRealty([FromBody] Realty realty)
         {
             realty.BeneficiaryId = Guid.NewGuid();
-            realty.RealtyId = Guid.NewGuid();
+            //realty.RealtyId = Guid.NewGuid();
 
             if (!RealtyIsValid(realty))
                 return Forbid();
@@ -251,7 +251,7 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostVehicle([FromBody] Vehicle vehicle)
         {
             vehicle.BeneficiaryId = Guid.NewGuid();
-            vehicle.VehicleId = Guid.NewGuid();
+            //vehicle.VehicleId = Guid.NewGuid();
 
             if (!VehicleIsValid(vehicle))
                 return Forbid();
@@ -330,17 +330,7 @@ namespace Beneficiaries.WebAPI.Controllers
             return true;
         }
 
-        /// <summary>
-        /// Verifies if Pet is valid
-        /// </summary>
-        /// <param name="pet">Pet to be verified</param>
-        /// <returns>If Pet is valid</returns>
-        public static bool PetIsValid(Pet pet)
-        {
-            if (!DateIsValid(pet.PetBirthdate))
-                return false;
-            return true;
-        }
+        
 
         /// <summary>
         /// Verifies if Realty is valid

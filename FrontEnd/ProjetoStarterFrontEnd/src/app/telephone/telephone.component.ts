@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, AbstractControl, Validator } from '@angular/forms';
 
 export interface Telephone{
@@ -12,6 +12,8 @@ export interface Telephone{
   templateUrl: './telephone.component.html',
   styleUrls: ['./telephone.component.scss']
 })
+
+
 export class TelephoneComponent implements OnInit {
 
   cellphoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
@@ -23,7 +25,8 @@ export class TelephoneComponent implements OnInit {
     telephoneNumber: ['', this.telephoneValidator],
     telephoneType: ''
   });
-
+  @Output () addTelephone = new EventEmitter<any>();
+  @Input() telephone2: FormGroup;
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -31,6 +34,7 @@ export class TelephoneComponent implements OnInit {
 
   public onSubmit(): void {
     this.message=this.telephone.get(['id']).value;
+    this.addTelephone.emit(this.telephone.value);
   }
 
   chooseTelephone(): boolean {

@@ -82,4 +82,14 @@ export class GenericValidator {
       }
     }
 
+    static rgLengthValidation() {
+      return (control: AbstractControl): {[key:string]: boolean} | null => {
+        let rgNumber = control.value;
+        rgNumber = rgNumber.replace(/\D+/g, '');
+        if (rgNumber.length < 9)
+          return {"rgNumberIsTooShort": true};
+        return null;
+      }
+    }
+
 }
