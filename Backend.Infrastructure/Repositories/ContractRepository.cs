@@ -39,16 +39,17 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Contract Remove(Guid id)
+        public bool Remove(Guid id)
         {
             var contract = Find(id);
             if(contract != null)
             {
                 _db.Remove(contract);
                 _db.SaveChanges();
+                return true;
             }
 
-            return contract;
+            return false;
         }
 
         public Contract Update(Guid id, Contract contract)

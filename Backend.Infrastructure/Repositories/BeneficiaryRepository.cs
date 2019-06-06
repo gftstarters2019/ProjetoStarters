@@ -41,15 +41,16 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Beneficiary Remove(Guid id)
+        public bool Remove(Guid id)
         {
             var beneficiary = Find(id);
             if(beneficiary != null)
             {
                 _db.Remove(beneficiary);
                 _db.SaveChanges();
+                return true;
             }
-            return beneficiary;
+            return false;
         }
 
         public Beneficiary Update(Guid id, Beneficiary beneficiary)

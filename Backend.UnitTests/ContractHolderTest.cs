@@ -34,17 +34,17 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
+            signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
 
             //assert
             //Assert.AreEqual(individual.IndividualId, signedContract.IndividualId);
-            Assert.AreEqual(individual, signedContract.ContractSignedIndividual);
+            Assert.AreEqual(individual, signedContract.SignedContractIndividual);
 
         }
 
@@ -77,11 +77,11 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
+            signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
 
@@ -116,11 +116,11 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
+            signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
 
@@ -152,11 +152,11 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
+            signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
 
@@ -208,11 +208,11 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
+            signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
             //act
