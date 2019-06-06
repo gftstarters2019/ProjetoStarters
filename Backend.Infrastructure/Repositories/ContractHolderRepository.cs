@@ -39,18 +39,20 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Individual Remove(Individual individual)
+        public bool Remove(Guid id)
         {
+            var individual = Find(id);
             if(individual != null)
             {
                 _db.Remove(individual);
                 _db.SaveChanges();
+                return true;
             }
 
-            return individual;
+            return false;
         }
 
-        public Individual Update(Individual individual)
+        public Individual Update(Guid id, Individual individual)
         {
             if(individual != null)
             {

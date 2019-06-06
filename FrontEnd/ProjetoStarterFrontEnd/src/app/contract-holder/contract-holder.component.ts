@@ -4,6 +4,7 @@ import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { GenericValidator } from '../Validations/GenericValidator';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -17,13 +18,10 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/,/\d/, '-', /\d/, /\d/];
 
   private columnDefs: Array<ColDef>;
-  private rowData;
-  private paginationPageSize;
+  rowData$: Observable<Array<any>>;
   detailCellRendererParams;
   gridApi;
   gridColumApi;
-
-  
 
   gridOptions: GridOptions;
   load_failure: boolean;
@@ -33,6 +31,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   showList: boolean = true;
   showAddresslist: boolean = false;
   showTelephonelist: boolean = false;
+  components: { singleClickEditRenderer: any; };
   constructor(private chfb: FormBuilder, private http: HttpClient) {
 
   }
@@ -52,11 +51,11 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   private setup_form() {
     this.contractHolder = this.chfb.group({
-      name: ['', Validators.pattern(GenericValidator.regexName)],
-      rg: ['', GenericValidator.rgLengthValidation()],
-      cpf: ['', GenericValidator.isValidCpf()],
-      birthdate: ['', GenericValidator.dateValidation()],
-      email: ['', Validators.required],
+      individualName: ['', Validators.pattern(GenericValidator.regexName)],
+      individualRG: ['', GenericValidator.rgLengthValidation()],
+      individualCPF: ['', GenericValidator.isValidCpf()],
+      individualBirthdate: ['', GenericValidator.dateValidation()],
+      individualEmail: ['', Validators.required],
       
       idTelephone: this.chfb.array([
           this.chfb.group({
@@ -135,149 +134,133 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
 
   private setup_gridOptions() {
-    this.gridOptions = {
-      rowSelection: 'single',
 
+    this.gridOptions = {
       onRowSelected: this.onRowSelected.bind(this),
       masterDetail: true,
-
       columnDefs: [
         {
           headerName: 'Name',
-          field: 'name',
+          field: 'individualName',
           lockPosition: true,
           sortable: true,
-          filter: true,
           onCellValueChanged:
-            this.onCellEdit.bind(this)
+            this.onCellEdit.bind(this),
+          filter: "agTextColumnFilter",
+          filterParams: {
+            filterOptions: ["contains", "notContains"],
+            textFormatter: function(r) {
+              if (r == null) return null;
+              r = r.replace(new RegExp("[àáâãäå]", "g"), "a");
+              r = r.replace(new RegExp("æ", "g"), "ae");
+              r = r.replace(new RegExp("ç", "g"), "c");
+              r = r.replace(new RegExp("[èéêë]", "g"), "e");
+              r = r.replace(new RegExp("[ìíîï]", "g"), "i");
+              r = r.replace(new RegExp("ñ", "g"), "n");
+              r = r.replace(new RegExp("[òóôõøö]", "g"), "o");
+              r = r.replace(new RegExp("œ", "g"), "oe");
+              r = r.replace(new RegExp("[ùúûü]", "g"), "u");
+              r = r.replace(new RegExp("[ýÿ]", "g"), "y");
+              return r;
+            },
+            debounceMs: 0,
+            caseSensitive: true,
+            suppressAndOrCondition: true,   
+          }              
         },
 
         {
           headerName: 'CPF',
-          field: 'cpf',
+          field: 'individualCPF',
           lockPosition: true,
           sortable: true,
           filter: true,
-          editable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
         },
 
         {
           headerName: 'RG',
-          field: 'rg',
+          field: 'individualRG',
           lockPosition: true,
-          editable: true,
+          sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this)
         },
 
         {
           headerName: 'Birthdate',
-          field: 'birthdate',
+          field: 'individualBirthdate',
           lockPosition: true,
           sortable: true,
-          editable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
-          // valueFormatter: (data) => data.value ? moment(data.value).format('L') : null,
         },
 
         {
           headerName: 'Email',
-          field: 'email',
+          field: 'individualEmail',
           lockPosition: true,
           sortable: true,
-          editable: true,
           onCellValueChanged: this.onCellEdit.bind(this)
         },
         {
           headerName: 'Edit/Delete',
           field: 'editDelete',
           colId: "params",
-          width: 60,
           lockPosition: true,
+          cellRenderer: "singleClickEditRenderer"
+
         }
       ],
-
+      
       detailCellRendererParams: {
-        detailGridOptions: {
-          columnDefs: [
-            { field: "street" },
-            { field: "type" },
-            { field: "number" },
-            { field: "state" },
-            { field: "neighborhood" },
-            { field: "country" },
-            { field: "zipcode" }
-          ],
-
-          onFirstDataRendered(params) {
-            params.api.sizeColumnsToFit();
-          }
-          
-        },
+       
         
         getDetailRowData: function (params) {
-          debugger;
           params.successCallback(params.data.idAddress);
         },
-
-        template: function(params) {
         
-          var personName = params.data.name;
-          debugger;
-          return (
-            '<div style="height: 100%; background-color: #EDF6FF; padding: 20px; box-sizing: border-box;">' +
-            '  <div style="height: 10%;">Name: ' +
-            personName +
-            "</div>" +
-            '  <div ref="eDetailGrid" style="height: 90%;"></div>' +
-            "</div>"
-          );
-        }
-        
-
-
-
-      },
-      onGridReady: this.onGridReady.bind(this)
-    }
-
-
-
-
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridColumApi = params.columnApi;
-  }
-
-
-  private setup_gridData() {
-    this.rowData = this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe(
-      value => {
-        this.rowData = value;
-      },
-      failure => {
-        console.error(failure);
-        
-        
+         
+        },
+        onGridReady: this.onGridReady.bind(this)
       }
-      );
+      this.components = { singleClickEditRenderer: getRenderer() };
     }
     
-  private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
-
-  }
-
-  private onRowSelected(event: RowSelectedEvent) {
-    const { data } = event;
-    this.contractHolder.getRawValue();
-    console.log(data);
-   
-    this.contractHolder.patchValue(data);
-   
-  }
-
-}
+    
+    
+    onGridReady(params) {
+      this.gridApi = params.api;
+      this.gridColumApi = params.columnApi;
+    }
+    
+    
+    private setup_gridData() {
+      this.rowData$ = this.http.get<Array<any>>('https://contractholderwebapi.azurewebsites.net/api/ContractHolder');
+    }
+          
+          private onCellEdit(params: any) {
+            console.log(params.newValue);
+            console.log(params.data);
+            
+          }         
+          
+          private onRowSelected(event: RowSelectedEvent) {
+            const { data } = event;
+            this.contractHolder.getRawValue();
+            debugger;
+            console.log(data);
+            
+            this.contractHolder.patchValue(data);
+            
+          }
+          
+        }
+        function getRenderer() {
+          function CellRenderer() {}
+          CellRenderer.prototype.createGui = function() {
+            var template =
+              '<span><button id="theButton">#</button><span id="theValue" style="padding-left: 4px;"></span></span>';
+            var tempDiv = document.createElement("div");
+            tempDiv.innerHTML = template;
+            this.eGui = tempDiv.firstElementChild;
+          };
+        }

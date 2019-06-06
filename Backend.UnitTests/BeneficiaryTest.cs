@@ -18,7 +18,7 @@ namespace UnitTests
             //arrange
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -26,7 +26,7 @@ namespace UnitTests
             
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
-            beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
+            //beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             beneficiary.IndividualCPF = "45301152978";
             beneficiary.IndividualRG = "458559463";
@@ -41,16 +41,16 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            signedContract.SignedContractId = Guid.NewGuid();
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
             var contractBeneficiary = new ContractBeneficiary();
             contractBeneficiary.ContractBeneficiaryId = Guid.NewGuid();
-            contractBeneficiary.SignedContractId = signedContract.ContractSignedId;
+            contractBeneficiary.SignedContractId = signedContract.SignedContractId;
             contractBeneficiary.BeneficiaryId = beneficiary.BeneficiaryId;
             contractBeneficiary.SignedContract = signedContract;
             contractBeneficiary.Beneficiary = beneficiary;
@@ -68,7 +68,7 @@ namespace UnitTests
             //arange
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -83,16 +83,16 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            signedContract.SignedContractId = Guid.NewGuid();
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
             var contractBeneficiary = new ContractBeneficiary();
             contractBeneficiary.ContractBeneficiaryId = Guid.NewGuid();
-            contractBeneficiary.SignedContractId = signedContract.ContractSignedId;
+            contractBeneficiary.SignedContractId = signedContract.SignedContractId;
             contractBeneficiary.BeneficiaryId = individual.BeneficiaryId;
             contractBeneficiary.SignedContract = signedContract;
             contractBeneficiary.Beneficiary = individual;
@@ -165,7 +165,7 @@ namespace UnitTests
             //act
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime();
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -173,7 +173,7 @@ namespace UnitTests
             
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
-            beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
+            //beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             beneficiary.IndividualCPF = "45301152897";
             beneficiary.IndividualRG = "458559462";
@@ -192,7 +192,7 @@ namespace UnitTests
             address.AddressType = AddressType.Commercial;
 
             var realty = new Realty();
-            realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
+            //realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("080eef5c-6d09-441b-af39-5802d9201701");
             //realty.RealtyAddress = address;
             realty.RealtyMunicipalRegistration = "abc68dfr98721dxe1";
@@ -201,7 +201,7 @@ namespace UnitTests
             realty.RealtyMarketValue = 1000000.00;
 
             var mobileDevice = new MobileDevice();
-            mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
+            //mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
             mobileDevice.BeneficiaryId = new Guid("98d052e2-10bf-4d26-8aa2-39c1e72800ea");
             mobileDevice.MobileDeviceBrand = "Motorola";
             mobileDevice.MobileDeviceModel = "Moto G3";
@@ -211,7 +211,7 @@ namespace UnitTests
             mobileDevice.MobileDeviceInvoiceValue = 800.00;
 
             var pet = new Pet();
-            pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
+            //pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
             pet.BeneficiaryId = new Guid("0ed6cf6e-c95a-4635-8d47-a751d2b8953d");
             pet.PetName = "Robson";
             pet.PetSpecies = PetSpecies.Canis_lupus_familiaris;
@@ -219,7 +219,7 @@ namespace UnitTests
             pet.PetBirthdate = new DateTime(2016, 02, 28);
 
             var vehicle = new Vehicle();
-            vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
+            //vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
             vehicle.BeneficiaryId = new Guid("694d2c31-78e0-4d9e-b952-4042ebf7f59d");
             vehicle.VehicleBrand = "Chevrolet";
             vehicle.VehicleModel = "Celta";
@@ -239,29 +239,29 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            signedContract.SignedContractId = Guid.NewGuid();
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
             var contractBeneficiary = new ContractBeneficiary();
             contractBeneficiary.ContractBeneficiaryId = Guid.NewGuid();
-            contractBeneficiary.SignedContractId = signedContract.ContractSignedId;
+            contractBeneficiary.SignedContractId = signedContract.SignedContractId;
             contractBeneficiary.BeneficiaryId = individual.BeneficiaryId;
             contractBeneficiary.SignedContract = signedContract;
             contractBeneficiary.Beneficiary = individual;
 
             //assert
-            Assert.AreEqual(beneficiary.IndividualId, individualId);
+            //Assert.AreEqual(beneficiary.IndividualId, individualId);
             Assert.AreEqual(beneficiary.BeneficiaryId, beneficiaryId);
             Assert.AreEqual(beneficiary.IndividualBirthdate, individualBirthdate);
             Assert.AreEqual(beneficiary.IndividualCPF, individualCPF);
             Assert.AreEqual(beneficiary.IndividualRG, individualRG);
             Assert.AreEqual(beneficiary.IndividualEmail, individualEmail);
             
-            Assert.AreEqual(realty.RealtyId, realtyId);
+            //Assert.AreEqual(realty.RealtyId, realtyId);
             Assert.AreEqual(realty.BeneficiaryId, realtyBeneficiaryId);
             //Assert.AreEqual(realty.RealtyAddress, realtyAddress);
             Assert.AreEqual(realty.RealtyMunicipalRegistration, realtyMunicipalRegistration);
@@ -269,7 +269,7 @@ namespace UnitTests
             Assert.AreEqual(realty.RealtySaleValue, realtySaleValue);
             Assert.AreEqual(realty.RealtyMarketValue, realtyMarketValue);
 
-            Assert.AreEqual(mobileDevice.MobileDeviceId, mobileDeviceId);
+            //Assert.AreEqual(mobileDevice.MobileDeviceId, mobileDeviceId);
             Assert.AreEqual(mobileDevice.BeneficiaryId, mobileDeviceBeneficiaryId);
             Assert.AreEqual(mobileDevice.MobileDeviceBrand, mobileDeviceBrand);
             Assert.AreEqual(mobileDevice.MobileDeviceModel, mobileDeviceModel);
@@ -278,14 +278,14 @@ namespace UnitTests
             Assert.AreEqual(mobileDevice.MobileDeviceType, mobileDeviceType);
             Assert.AreEqual(mobileDevice.MobileDeviceInvoiceValue, mobileDeviceInvoiceValue);
 
-            Assert.AreEqual(pet.PetId, petId);
+            //Assert.AreEqual(pet.PetId, petId);
             Assert.AreEqual(pet.BeneficiaryId, petBeneficiaryId);
             Assert.AreEqual(pet.PetName, petName);
             Assert.AreEqual(pet.PetSpecies, petSpecies);
             Assert.AreEqual(pet.PetBreed, petBreed);
             Assert.AreEqual(pet.PetBirthdate, petBirthdate);
 
-            Assert.AreEqual(vehicle.VehicleId, vehicleId);
+            //Assert.AreEqual(vehicle.VehicleId, vehicleId);
             Assert.AreEqual(vehicle.BeneficiaryId, vehicleBeneficiaryId);
             Assert.AreEqual(vehicle.VehicleBrand, vehicleBrand);
             Assert.AreEqual(vehicle.VehicleModel, vehicleModel);
@@ -305,7 +305,7 @@ namespace UnitTests
             //arrange
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -313,7 +313,7 @@ namespace UnitTests
             
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
-            beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
+            //beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             beneficiary.IndividualCPF = "45301152978";
             beneficiary.IndividualRG = "458559463";
@@ -332,7 +332,7 @@ namespace UnitTests
             address.AddressType = AddressType.Commercial;
 
             var realty = new Realty();
-            realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
+            //realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("fe0216e8-e70a-4c7c-a5ae-f0b8e1319885");
             //realty.RealtyAddress = address;
             realty.RealtyMunicipalRegistration = "abc68dfr98721dxe1";
@@ -341,7 +341,7 @@ namespace UnitTests
             realty.RealtyMarketValue = 1000000.00;
 
             var mobileDevice = new MobileDevice();
-            mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
+            //mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
             mobileDevice.BeneficiaryId = new Guid("98d052e2-10bf-4d26-8aa2-39c1e72800ea");
             mobileDevice.MobileDeviceBrand = "Motorola";
             mobileDevice.MobileDeviceModel = "Moto G3";
@@ -351,7 +351,7 @@ namespace UnitTests
             mobileDevice.MobileDeviceInvoiceValue = 800.00;
 
             var pet = new Pet();
-            pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
+            //pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
             pet.BeneficiaryId = new Guid("0ed6cf6e-c95a-4635-8d47-a751d2b8953d");
             pet.PetName = "Robson";
             pet.PetSpecies = PetSpecies.Canis_lupus_familiaris;
@@ -359,7 +359,7 @@ namespace UnitTests
             pet.PetBirthdate = new DateTime(2016, 02, 28);
 
             var vehicle = new Vehicle();
-            vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
+            //vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
             vehicle.BeneficiaryId = new Guid("694d2c31-78e0-4d9e-b952-4042ebf7f59d");
             vehicle.VehicleBrand = "Chevrolet";
             vehicle.VehicleModel = "Celta";
@@ -379,11 +379,11 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            signedContract.SignedContractId = Guid.NewGuid();
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
 
@@ -409,7 +409,7 @@ namespace UnitTests
             //arrange
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -417,7 +417,7 @@ namespace UnitTests
             
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
-            beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
+           // beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             beneficiary.IndividualCPF = "45301152978";
             beneficiary.IndividualRG = "458559463";
@@ -436,7 +436,7 @@ namespace UnitTests
             address.AddressType = AddressType.Commercial;
 
             var realty = new Realty();
-            realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
+            //realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("080eef5c-6d09-441b-af39-5802d9201701");
             //realty.RealtyAddress = address;
             realty.RealtyMunicipalRegistration = "abc68dfr98721dxe1";
@@ -445,7 +445,7 @@ namespace UnitTests
             realty.RealtyMarketValue = 1000000.00;
 
             var mobileDevice = new MobileDevice();
-            mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
+            //mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
             mobileDevice.BeneficiaryId = new Guid("98d052e2-10bf-4d26-8aa2-39c1e72800ea");
             mobileDevice.MobileDeviceBrand = "Motorola";
             mobileDevice.MobileDeviceModel = "Moto G3";
@@ -455,7 +455,7 @@ namespace UnitTests
             mobileDevice.MobileDeviceInvoiceValue = 800.00;
 
             var pet = new Pet();
-            pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
+            //pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
             pet.BeneficiaryId = new Guid("0ed6cf6e-c95a-4635-8d47-a751d2b8953d");
             pet.PetName = "Robson";
             pet.PetSpecies = PetSpecies.Canis_lupus_familiaris;
@@ -463,7 +463,7 @@ namespace UnitTests
             pet.PetBirthdate = new DateTime(2016, 02, 28);
 
             var vehicle = new Vehicle();
-            vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
+            //vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
             vehicle.BeneficiaryId = new Guid("694d2c31-78e0-4d9e-b952-4042ebf7f59d");
             vehicle.VehicleBrand = "Chevrolet";
             vehicle.VehicleModel = "Celta";
@@ -483,17 +483,17 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            signedContract.SignedContractId = Guid.NewGuid();
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
             //act
             var updatedBeneficiary = new Individual();
             updatedBeneficiary.BeneficiaryId = Guid.NewGuid();
-            updatedBeneficiary.IndividualId = Guid.NewGuid();
+            //updatedBeneficiary.IndividualId = Guid.NewGuid();
             updatedBeneficiary.IndividualBirthdate = new DateTime(2018, 05, 28, 7, 0, 0);
             updatedBeneficiary.IndividualCPF = "45301152975";
             updatedBeneficiary.IndividualRG = "458559464";
@@ -512,7 +512,7 @@ namespace UnitTests
             newAddress.AddressType = AddressType.Home;
 
             var updatedRealty = new Realty();
-            updatedRealty.RealtyId = Guid.NewGuid();
+            //updatedRealty.RealtyId = Guid.NewGuid();
             updatedRealty.BeneficiaryId = Guid.NewGuid();
             //updatedRealty.RealtyAddress = newAddress;
             updatedRealty.RealtyMunicipalRegistration = "abc68dfy98721dze1";
@@ -521,7 +521,7 @@ namespace UnitTests
             updatedRealty.RealtyMarketValue = 2000000.00;
 
             var updatedMobileDevice = new MobileDevice();
-            updatedMobileDevice.MobileDeviceId = Guid.NewGuid();
+            //updatedMobileDevice.MobileDeviceId = Guid.NewGuid();
             updatedMobileDevice.BeneficiaryId = Guid.NewGuid();
             updatedMobileDevice.MobileDeviceBrand = "Lenovo";
             updatedMobileDevice.MobileDeviceModel = "Ideapad 320";
@@ -531,7 +531,7 @@ namespace UnitTests
             updatedMobileDevice.MobileDeviceInvoiceValue = 2800.00;
 
             var updatedPet = new Pet();
-            updatedPet.PetId = Guid.NewGuid();
+            //updatedPet.PetId = Guid.NewGuid();
             updatedPet.BeneficiaryId = Guid.NewGuid();
             updatedPet.PetName = "Tyson";
             updatedPet.PetSpecies = PetSpecies.Felis_catus;
@@ -539,7 +539,7 @@ namespace UnitTests
             updatedPet.PetBirthdate = new DateTime(2015, 05, 12);
 
             var updatedVehicle = new Vehicle();
-            updatedVehicle.VehicleId = Guid.NewGuid();
+            //updatedVehicle.VehicleId = Guid.NewGuid();
             updatedVehicle.BeneficiaryId = Guid.NewGuid();
             updatedVehicle.VehicleBrand = "Ford";
             updatedVehicle.VehicleModel = "Focus";
@@ -552,14 +552,14 @@ namespace UnitTests
             updatedVehicle.VehicleDoneInspection = false;
 
             //assert
-            Assert.AreNotEqual(updatedBeneficiary.IndividualId, beneficiary.IndividualId);
+            //Assert.AreNotEqual(updatedBeneficiary.IndividualId, beneficiary.IndividualId);
             Assert.AreNotEqual(updatedBeneficiary.BeneficiaryId, beneficiary.BeneficiaryId);
             Assert.AreNotEqual(updatedBeneficiary.IndividualBirthdate, beneficiary.IndividualBirthdate);
             Assert.AreNotEqual(updatedBeneficiary.IndividualCPF, beneficiary.IndividualCPF);
             Assert.AreNotEqual(updatedBeneficiary.IndividualRG, beneficiary.IndividualRG);
             Assert.AreNotEqual(updatedBeneficiary.IndividualEmail, beneficiary.IndividualEmail);
 
-            Assert.AreNotEqual(updatedRealty.RealtyId, realty.RealtyId);
+            //Assert.AreNotEqual(updatedRealty.RealtyId, realty.RealtyId);
             Assert.AreNotEqual(updatedRealty.BeneficiaryId, realty.BeneficiaryId);
             //Assert.AreNotEqual(updatedRealty.RealtyAddress, realty.RealtyAddress);
             Assert.AreNotEqual(updatedRealty.RealtyMunicipalRegistration, realty.RealtyMunicipalRegistration);
@@ -567,7 +567,7 @@ namespace UnitTests
             Assert.AreNotEqual(updatedRealty.RealtySaleValue, realty.RealtySaleValue);
             Assert.AreNotEqual(updatedRealty.RealtyMarketValue, realty.RealtyMarketValue);
 
-            Assert.AreNotEqual(updatedMobileDevice.MobileDeviceId, mobileDevice.MobileDeviceId);
+            //Assert.AreNotEqual(updatedMobileDevice.MobileDeviceId, mobileDevice.MobileDeviceId);
             Assert.AreNotEqual(updatedMobileDevice.BeneficiaryId, mobileDevice.BeneficiaryId);
             Assert.AreNotEqual(updatedMobileDevice.MobileDeviceBrand, mobileDevice.MobileDeviceBrand);
             Assert.AreNotEqual(updatedMobileDevice.MobileDeviceModel, mobileDevice.MobileDeviceModel);
@@ -576,14 +576,14 @@ namespace UnitTests
             Assert.AreNotEqual(updatedMobileDevice.MobileDeviceType, mobileDevice.MobileDeviceType);
             Assert.AreNotEqual(updatedMobileDevice.MobileDeviceInvoiceValue, mobileDevice.MobileDeviceInvoiceValue);
 
-            Assert.AreNotEqual(updatedPet.PetId, pet.PetId);
+            //Assert.AreNotEqual(updatedPet.PetId, pet.PetId);
             Assert.AreNotEqual(updatedPet.BeneficiaryId, pet.BeneficiaryId);
             Assert.AreNotEqual(updatedPet.PetName, pet.PetName);
             Assert.AreNotEqual(updatedPet.PetSpecies, pet.PetSpecies);
             Assert.AreNotEqual(updatedPet.PetBreed, pet.PetBreed);
             Assert.AreNotEqual(updatedPet.PetBirthdate, pet.PetBirthdate);
 
-            Assert.AreNotEqual(updatedVehicle.VehicleId, vehicle.VehicleId);
+            //Assert.AreNotEqual(updatedVehicle.VehicleId, vehicle.VehicleId);
             Assert.AreNotEqual(updatedVehicle.BeneficiaryId, vehicle.BeneficiaryId);
             Assert.AreNotEqual(updatedVehicle.VehicleBrand, vehicle.VehicleBrand);
             Assert.AreNotEqual(updatedVehicle.VehicleModel, vehicle.VehicleModel);
@@ -603,7 +603,7 @@ namespace UnitTests
             //arrange
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -611,7 +611,7 @@ namespace UnitTests
             
             var beneficiary = new Individual();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
-            beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
+            //beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             beneficiary.IndividualCPF = "45301152978";
             beneficiary.IndividualRG = "458559463";
@@ -630,7 +630,7 @@ namespace UnitTests
             address.AddressType = AddressType.Commercial;
 
             var realty = new Realty();
-            realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
+            //realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("080eef5c-6d09-441b-af39-5802d9201701");
             //realty.RealtyAddress = address;
             realty.RealtyMunicipalRegistration = "abc68dfr98721dxe1";
@@ -639,7 +639,7 @@ namespace UnitTests
             realty.RealtyMarketValue = 1000000.00;
 
             var mobileDevice = new MobileDevice();
-            mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
+            //mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
             mobileDevice.BeneficiaryId = new Guid("98d052e2-10bf-4d26-8aa2-39c1e72800ea");
             mobileDevice.MobileDeviceBrand = "Motorola";
             mobileDevice.MobileDeviceModel = "Moto G3";
@@ -649,7 +649,7 @@ namespace UnitTests
             mobileDevice.MobileDeviceInvoiceValue = 800.00;
 
             var pet = new Pet();
-            pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
+            //pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
             pet.BeneficiaryId = new Guid("0ed6cf6e-c95a-4635-8d47-a751d2b8953d");
             pet.PetName = "Robson";
             pet.PetSpecies = PetSpecies.Canis_lupus_familiaris;
@@ -657,7 +657,7 @@ namespace UnitTests
             pet.PetBirthdate = new DateTime(2016, 02, 28);
 
             var vehicle = new Vehicle();
-            vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
+            //vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
             vehicle.BeneficiaryId = new Guid("694d2c31-78e0-4d9e-b952-4042ebf7f59d");
             vehicle.VehicleBrand = "Chevrolet";
             vehicle.VehicleModel = "Celta";
@@ -677,11 +677,11 @@ namespace UnitTests
             contract.ContractDeleted = false;
 
             var signedContract = new SignedContract();
-            signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            signedContract.SignedContractId = Guid.NewGuid();
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
-            signedContract.ContractSignedIndividual = individual;
-            signedContract.ContractSignedContract = contract;
+            signedContract.SignedContractIndividual = individual;
+            signedContract.SignedContractContract = contract;
             signedContract.ContractIndividualIsActive = true;
 
             //act

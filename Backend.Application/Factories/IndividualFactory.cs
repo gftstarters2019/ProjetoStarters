@@ -22,15 +22,16 @@ namespace Backend.Application.Factories
         {
             if (IndividualIsValid(vm))
             {
-                individual = new Individual();
-
-                //individual.IndividualId = Guid.NewGuid();
-                individual.BeneficiaryId = Guid.NewGuid();
-                individual.IndividualCPF = vm.IndividualCPF;
-                individual.IndividualName = vm.IndividualName;
-                individual.IndividualRG = vm.IndividualRG;
-                individual.IndividualEmail = vm.IndividualEmail;
-                individual.IndividualBirthdate = vm.IndividualBirthdate;
+                individual = new Individual
+                {
+                    BeneficiaryId = Guid.NewGuid(),
+                    IsDeleted = false,
+                    IndividualCPF = vm.IndividualCPF,
+                    IndividualName = vm.IndividualName,
+                    IndividualRG = vm.IndividualRG,
+                    IndividualEmail = vm.IndividualEmail,
+                    IndividualBirthdate = vm.IndividualBirthdate
+                };
             }
             
             return individual;

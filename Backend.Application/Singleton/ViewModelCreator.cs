@@ -10,6 +10,7 @@ namespace Backend.Application.Singleton
     public sealed class ViewModelCreator
     {
         private static IndividualFactory individualFactory = null;
+        private static ContractFactory contractFactory = null;
         private static TelephoneFactory telephoneFactory = null;
         private static AddressFactory addressFactory = null;
         private static readonly object padlock = new object();
@@ -33,6 +34,24 @@ namespace Backend.Application.Singleton
                     }
                 }
                 return individualFactory;
+            }
+        }
+
+        public static ContractFactory ContractFactory
+        {
+            get
+            {
+                if (contractFactory == null)
+                {
+                    lock (padlock)
+                    {
+                        if (contractFactory == null)
+                        {
+                            contractFactory = new ContractFactory();
+                        }
+                    }
+                }
+                return contractFactory;
             }
         }
 
