@@ -317,7 +317,6 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostVehicle([FromBody] Vehicle vehicle)
         {
             vehicle.BeneficiaryId = Guid.NewGuid();
-            //vehicle.VehicleId = Guid.NewGuid();
 
             if (!VehicleIsValid(vehicle))
                 return Forbid();
@@ -363,7 +362,11 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBeneficiary(Guid id)
         {
-            if (_contractsReadOnlyRepository.Get().Where(cb => cb.BeneficiaryId == id).ToList().Count > 0)
+            var beneficiariesContracts = _contractsReadOnlyRepository.Get()
+                .Where(cb => cb.BeneficiaryId == id)
+                .ToList();
+
+            if (beneficiariesContracts.Count > 0)
                 return Forbid();
 
             var obj = _beneficiaryReadOnlyRepository.Find(id);
