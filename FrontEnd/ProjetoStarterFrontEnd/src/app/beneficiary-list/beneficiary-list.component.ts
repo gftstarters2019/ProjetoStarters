@@ -31,14 +31,6 @@ export class BeneficiaryListComponent implements OnInit {
     Type: ['', Validators.required],
   });
 
-  individual = this.fb.group({
-    name: ['', Validators.required],
-    cpf: ['', Validators.required],
-    rg: ['', Validators.required],
-    BirthDate: ['', Validators.required],
-    email: ['', Validators.required]
-  });
-
   btypes: BType[] = [
     { value: 0, viewValue: 'Beneficiary Individual' },
     { value: 1, viewValue: 'Beneficiary Pet' },
@@ -57,396 +49,337 @@ export class BeneficiaryListComponent implements OnInit {
 
   TypeTable(): void {
     this.sType = this.selectType.get(['Type']).value;
+}
+  
+  //   if (this.sType == 1) {
 
-    if (this.sType == 0) {
+  //     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets');
+  //     this.gridOptions = {
+  //       rowSelection: 'single',
 
-      this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals');
-      this.gridOptions = {
-        rowSelection: 'single',
+  //       //  onRowSelected: this.onRowSelected.bind(this),
+  //       masterDetail: true,
 
-        // onRowSelected: this.onRowSelected.bind(this),
-        masterDetail: true,
+  //       columnDefs: [
+  //         {
+  //           headerName: 'Name',
+  //           field: 'name',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'Birth Date',
+  //           field: 'BirthDate',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'Especie',
+  //           field: 'especie',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'Breed',
+  //           field: 'breed',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         }
+  //       ],
+  //       onGridReady: this.onGridReady.bind(this)
+  //     }
 
-        columnDefs: [
-          {
-            headerName: 'Name',
-            field: 'name',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'cpf',
-            field: 'cpf',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'rg',
-            field: 'rg',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'BirthDate',
-            field: 'BirthDate',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'email',
-            field: 'email',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          }
-        ],
-        onGridReady: this.onGridReady.bind(this)
-      }
+  //   }
+  //   if (this.sType == 2) {
 
-    }
-    if (this.sType == 1) {
+  //     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicles');
+  //     this.gridOptions = {
+  //       rowSelection: 'single',
 
-      this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets');
-      this.gridOptions = {
-        rowSelection: 'single',
+  //       // onRowSelected: this.onRowSelected.bind(this),
+  //       masterDetail: true,
 
-        //  onRowSelected: this.onRowSelected.bind(this),
-        masterDetail: true,
+  //       columnDefs: [
+  //         {
+  //           headerName: 'brand',
+  //           field: 'brand',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'model',
+  //           field: 'model',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'color',
+  //           field: 'color',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'manufactoryYear',
+  //           field: 'manufactoryYear',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'modelYear',
+  //           field: 'modelYear',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'chassisNumber',
+  //           field: 'chassisNumber',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'currentMileage',
+  //           field: 'currentMileage',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'currentFipeValue',
+  //           field: 'currentFipeValue',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'doneInspection',
+  //           field: 'doneInspection',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         }
+  //       ],
+  //       onGridReady: this.onGridReady.bind(this)
+  //     }
+  //   }
+  //   if (this.sType == 3) {
 
-        columnDefs: [
-          {
-            headerName: 'Name',
-            field: 'name',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'Birth Date',
-            field: 'BirthDate',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'Especie',
-            field: 'especie',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'Breed',
-            field: 'breed',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          }
-        ],
-        onGridReady: this.onGridReady.bind(this)
-      }
+  //     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realties');
+  //     this.gridOptions = {
+  //       rowSelection: 'single',
 
-    }
-    if (this.sType == 2) {
+  //       // onRowSelected: this.onRowSelected.bind(this),
+  //       masterDetail: true,
 
-      this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicles');
-      this.gridOptions = {
-        rowSelection: 'single',
+  //       columnDefs: [
+  //         {
+  //           headerName: 'street',
+  //           field: 'street',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'type',
+  //           field: 'type',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'number',
+  //           field: 'number',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'state',
+  //           field: 'state',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'neighborhood',
+  //           field: 'neighborhood',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'country',
+  //           field: 'country',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'zipcode',
+  //           field: 'zipcode',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'municipalregistration',
+  //           field: 'municipalregistration',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'constructionDate',
+  //           field: 'constructionDate',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'saleValue',
+  //           field: 'saleValue',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'marketValue',
+  //           field: 'marketValue',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //       ],
+  //       onGridReady: this.onGridReady.bind(this)
+  //     }
+  //   }
+  //   if (this.sType == 4) {
 
-        // onRowSelected: this.onRowSelected.bind(this),
-        masterDetail: true,
+  //     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevices');
+  //     this.gridOptions = {
+  //       rowSelection: 'single',
 
-        columnDefs: [
-          {
-            headerName: 'brand',
-            field: 'brand',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'model',
-            field: 'model',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'color',
-            field: 'color',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'manufactoryYear',
-            field: 'manufactoryYear',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'modelYear',
-            field: 'modelYear',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'chassisNumber',
-            field: 'chassisNumber',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'currentMileage',
-            field: 'currentMileage',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'currentFipeValue',
-            field: 'currentFipeValue',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'doneInspection',
-            field: 'doneInspection',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          }
-        ],
-        onGridReady: this.onGridReady.bind(this)
-      }
-    }
-    if (this.sType == 3) {
+  //       // onRowSelected: this.onRowSelected.bind(this),
+  //       masterDetail: true,
 
-      this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realties');
-      this.gridOptions = {
-        rowSelection: 'single',
+  //       columnDefs: [
+  //         {
+  //           headerName: 'brand',
+  //           field: 'brand',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'model',
+  //           field: 'model',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'manufactoryYear',
+  //           field: 'manufactoryYear',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'serialNumber',
+  //           field: 'serialNumber',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'typedevice',
+  //           field: 'typedevice',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         },
+  //         {
+  //           headerName: 'invoicevalue',
+  //           field: 'invoicevalue',
+  //           lockPosition: true,
+  //           sortable: true,
+  //           filter: true,
+  //           onCellValueChanged:
+  //             this.onCellEdit.bind(this)
+  //         }
+  //       ],
+  //       onGridReady: this.onGridReady.bind(this)
+  //     }
 
-        // onRowSelected: this.onRowSelected.bind(this),
-        masterDetail: true,
-
-        columnDefs: [
-          {
-            headerName: 'street',
-            field: 'street',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'type',
-            field: 'type',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'number',
-            field: 'number',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'state',
-            field: 'state',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'neighborhood',
-            field: 'neighborhood',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'country',
-            field: 'country',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'zipcode',
-            field: 'zipcode',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'municipalregistration',
-            field: 'municipalregistration',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'constructionDate',
-            field: 'constructionDate',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'saleValue',
-            field: 'saleValue',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'marketValue',
-            field: 'marketValue',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-        ],
-        onGridReady: this.onGridReady.bind(this)
-      }
-    }
-    if (this.sType == 4) {
-
-      this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevices');
-      this.gridOptions = {
-        rowSelection: 'single',
-
-        // onRowSelected: this.onRowSelected.bind(this),
-        masterDetail: true,
-
-        columnDefs: [
-          {
-            headerName: 'brand',
-            field: 'brand',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'model',
-            field: 'model',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'manufactoryYear',
-            field: 'manufactoryYear',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'serialNumber',
-            field: 'serialNumber',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'typedevice',
-            field: 'typedevice',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'invoicevalue',
-            field: 'invoicevalue',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          }
-        ],
-        onGridReady: this.onGridReady.bind(this)
-      }
-
-    }
-  }
+  //   }
+  // }
   //AG-grid Table Contract
   private setup_gridOptions() {
 
@@ -460,7 +393,7 @@ export class BeneficiaryListComponent implements OnInit {
       columnDefs: [
         {
           headerName: 'Name',
-          field: 'name',
+          field: 'individualName',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -469,7 +402,7 @@ export class BeneficiaryListComponent implements OnInit {
         },
         {
           headerName: 'cpf',
-          field: 'cpf',
+          field: 'individualCPF',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -478,7 +411,7 @@ export class BeneficiaryListComponent implements OnInit {
         },
         {
           headerName: 'rg',
-          field: 'rg',
+          field: 'individualRG',
           lockPosition: true,
           sortable: true,
           filter: true,

@@ -29,6 +29,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { MatCardModule} from '@angular/material/card';
 import { CdkTableModule } from '@angular/cdk/table';
 import {ObserversModule} from '@angular/cdk/observers';
+import { IndividualListComponent } from './individual-list/individual-list.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import {ObserversModule} from '@angular/cdk/observers';
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
     TelephoneComponent,
+    IndividualListComponent,
   ],
   imports: [
     ObserversModule,
