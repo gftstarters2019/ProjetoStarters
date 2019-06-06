@@ -33,41 +33,50 @@ namespace Backend.Infrastructure.Repositories
 
                 // Telephone
                 var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.IndividualTelephones);
-                if (telephones.Count != vm.IndividualTelephones.Count || !telephones.Any())
-                    return false;
-                if (telephones.Count > 0)
+                if (vm.IndividualTelephones.Count() != 0)
                 {
-                    foreach (var telephone in telephones)
+                    if (telephones.Count != vm.IndividualTelephones.Count || !telephones.Any())
+                        return false;
+
+                    if (telephones.Count > 0)
                     {
-                        _db.Add(telephone);
-
-                        _db.Add(new BeneficiaryTelephone
+                        foreach (var telephone in telephones)
                         {
-                            BeneficiaryTelephoneId = Guid.NewGuid(),
-                            BeneficiaryId = individual.BeneficiaryId,
-                            TelephoneId = telephone.TelephoneId
-                        });
+                            _db.Add(telephone);
 
+                            _db.Add(new BeneficiaryTelephone
+                            {
+                                BeneficiaryTelephoneId = Guid.NewGuid(),
+                                BeneficiaryId = individual.BeneficiaryId,
+                                TelephoneId = telephone.TelephoneId
+                            });
+
+                        }
                     }
                 }
 
                 // Address
                 var addresses = ViewModelCreator.AddressFactory.CreateList(vm.IndividualAddresses);
-                if (addresses.Count != vm.IndividualAddresses.Count || !addresses.Any())
-                    return false;
-                if (addresses.Count > 0)
+
+                if (vm.IndividualAddresses.Count() != 0)
                 {
-                    foreach (var address in addresses)
+                    if (addresses.Count != vm.IndividualAddresses.Count || !addresses.Any())
+                        return false;
+
+                    if (addresses.Count > 0)
                     {
-                        _db.Add(address);
-
-                        _db.Add(new BeneficiaryAddress
+                        foreach (var address in addresses)
                         {
-                            BeneficiaryAddressId = Guid.NewGuid(),
-                            BeneficiaryId = individual.BeneficiaryId,
-                            AddressId = address.AddressId
-                        });
+                            _db.Add(address);
 
+                            _db.Add(new BeneficiaryAddress
+                            {
+                                BeneficiaryAddressId = Guid.NewGuid(),
+                                BeneficiaryId = individual.BeneficiaryId,
+                                AddressId = address.AddressId
+                            });
+
+                        }
                     }
                 }
 
