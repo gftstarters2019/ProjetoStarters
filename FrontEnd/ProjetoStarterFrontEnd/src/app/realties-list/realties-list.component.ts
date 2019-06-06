@@ -36,8 +36,8 @@ export class RealtiesListComponent implements OnInit {
 
       columnDefs: [
         {
-          headerName: 'Typ',
-          field: 'type',
+          headerName: 'Type',
+          field: 'addressType',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -46,7 +46,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Street',
-          field: 'street',
+          field: 'addressStreet',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -55,7 +55,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'No.',
-          field: 'number',
+          field: 'addressNumber',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -63,8 +63,8 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'State',
-          field: 'state',
+          headerName: 'Complement',
+          field: 'addressComplement',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -73,7 +73,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Neighborhood',
-          field: 'neighborhood',
+          field: 'addressNeighborhood',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -81,8 +81,27 @@ export class RealtiesListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
+          headerName: 'City',
+          field: 'addressCity',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'State',
+          field: 'addressState',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        
+        {
           headerName: 'Country',
-          field: 'country',
+          field: 'addressCountry',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -91,7 +110,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Zip-Code',
-          field: 'zipcode',
+          field: 'addressZipCode',
           lockPosition: true,
           sortable: true,
           filter: true,
