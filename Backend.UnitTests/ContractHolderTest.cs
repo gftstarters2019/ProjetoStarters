@@ -18,7 +18,7 @@ namespace UnitTests
             //arrange
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -35,7 +35,7 @@ namespace UnitTests
 
             var signedContract = new SignedContract();
             signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;
@@ -43,7 +43,7 @@ namespace UnitTests
 
 
             //assert
-            Assert.AreEqual(individual.IndividualId, signedContract.IndividualId);
+            //Assert.AreEqual(individual.IndividualId, signedContract.IndividualId);
             Assert.AreEqual(individual, signedContract.ContractSignedIndividual);
 
         }
@@ -62,7 +62,7 @@ namespace UnitTests
             //act
             var individual = new Individual();
             individual.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
-            individual.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
+            //individual.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -78,7 +78,7 @@ namespace UnitTests
 
             var signedContract = new SignedContract();
             signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;
@@ -86,7 +86,7 @@ namespace UnitTests
 
 
             //assert
-            Assert.AreEqual(individual.IndividualId, individualId);
+            //Assert.AreEqual(individual.IndividualId, individualId);
             Assert.AreEqual(individual.BeneficiaryId, beneficiaryId);
             Assert.AreEqual(individual.IndividualBirthdate, individualBirthdate);
             Assert.AreEqual(individual.IndividualCPF, individualCPF);
@@ -101,7 +101,7 @@ namespace UnitTests
             //arrange
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -117,7 +117,7 @@ namespace UnitTests
 
             var signedContract = new SignedContract();
             signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;
@@ -125,10 +125,10 @@ namespace UnitTests
 
 
             //act
-            var individualId = individual.IndividualId;
+            //var individualId = individual.IndividualId;
 
             //assert
-            Assert.AreEqual(individual.IndividualId, individualId);
+            //Assert.AreEqual(individual.IndividualId, individualId);
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace UnitTests
             //arrange
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -153,7 +153,7 @@ namespace UnitTests
 
             var signedContract = new SignedContract();
             signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;
@@ -171,14 +171,14 @@ namespace UnitTests
 
             //act
             updatedIndividual.BeneficiaryId = beneficiaryId;
-            updatedIndividual.IndividualId = individualId;
+            //updatedIndividual.IndividualId = individualId;
             updatedIndividual.IndividualBirthdate = individualBirthdate;
             updatedIndividual.IndividualCPF = individualCPF;
             updatedIndividual.IndividualRG = individualRG;
             updatedIndividual.IndividualEmail = individualEmail;
 
             //assert
-            Assert.AreNotEqual(individual.IndividualId, updatedIndividual.IndividualId);
+            //Assert.AreNotEqual(individual.IndividualId, updatedIndividual.IndividualId);
             Assert.AreNotEqual(individual.BeneficiaryId, updatedIndividual.BeneficiaryId);
             Assert.AreNotEqual(individual.IndividualBirthdate, updatedIndividual.IndividualBirthdate);
             Assert.AreNotEqual(individual.IndividualCPF, updatedIndividual.IndividualCPF);
@@ -193,7 +193,7 @@ namespace UnitTests
             //arrange
             var individual = new Individual();
             individual.BeneficiaryId = Guid.NewGuid();
-            individual.IndividualId = Guid.NewGuid();
+            //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
             individual.IndividualCPF = "45301152897";
             individual.IndividualRG = "458559462";
@@ -209,7 +209,7 @@ namespace UnitTests
 
             var signedContract = new SignedContract();
             signedContract.ContractSignedId = Guid.NewGuid();
-            signedContract.IndividualId = individual.IndividualId;
+            //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
             signedContract.ContractSignedIndividual = individual;
             signedContract.ContractSignedContract = contract;

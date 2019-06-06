@@ -33,7 +33,7 @@ namespace Backend.Infrastructure.Repositories
 
                 // Telephone
                 var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.IndividualTelephones);
-                if (!telephones.Any())
+                if (telephones.Count != vm.IndividualTelephones.Count || !telephones.Any())
                     return false;
                 if (telephones.Count > 0)
                 {
@@ -53,7 +53,7 @@ namespace Backend.Infrastructure.Repositories
 
                 // Address
                 var addresses = ViewModelCreator.AddressFactory.CreateList(vm.IndividualAddresses);
-                if (!addresses.Any())
+                if (addresses.Count != vm.IndividualAddresses.Count || !addresses.Any())
                     return false;
                 if (addresses.Count > 0)
                 {
@@ -85,7 +85,76 @@ namespace Backend.Infrastructure.Repositories
 
         public IEnumerable<ContractHolderViewModel> Get()
         {
-            throw new NotImplementedException();
+            List<ContractHolderViewModel> ContractHolders = new List<ContractHolderViewModel>();
+
+            var individuals = _db.Individuals.ToList();
+            var telephones = _db.Telephones.ToList();
+            var addresses = _db.Addresses.ToList();
+            var beneficiary_addresses = _db.Beneficiary_Address.ToList();
+            var individual_telephones = _db.Individual_Telephone.ToList();
+
+            foreach (var individual in individuals)
+            {
+                ContractHolderViewModel vm = new ContractHolderViewModel();
+                vm.IndividualId = individual.BeneficiaryId;
+                vm.IndividualName = individual.IndividualName;
+                vm.IndividualCPF = individual.IndividualCPF;
+                vm.IndividualBirthdate = individual.IndividualBirthdate;
+                vm.IndividualEmail = individual.IndividualEmail;
+                vm.IndividualRG = individual.IndividualRG;
+
+                foreach (var beneficiary_address in beneficiary_addresses)
+                {
+                    if(beneficiary_address.BeneficiaryId == individual.BeneficiaryId)
+                    {
+                        foreach (var address in addresses)
+                        {
+                            if(address.AddressId == beneficiary_address.AddressId)
+                            {
+                                Address ad = new Address();
+
+                                ad.AddressId = address.AddressId;
+                                ad.AddressCity = address.AddressCity;
+                                ad.AddressComplement = address.AddressComplement;
+                                ad.AddressCountry = address.AddressCountry;
+                                ad.AddressNeighborhood = address.AddressNeighborhood;
+                                ad.AddressNumber = address.AddressNumber;
+                                ad.AddressState = address.AddressState;
+                                ad.AddressStreet = address.AddressStreet;
+                                ad.AddressType = address.AddressType;
+                                ad.AddressZipCode = address.AddressZipCode;
+
+                                vm.IndividualAddresses.Add(ad);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var individual_telephone in individual_telephones)
+                {
+                    if(individual_telephone.BeneficiaryId == individual.BeneficiaryId)
+                    {
+                        foreach (var telephone in telephones)
+                        {
+                            if(telephone.TelephoneId == individual_telephone.TelephoneId)
+                            {
+                                Telephone tel = new Telephone();
+
+                                tel.TelephoneId = telephone.TelephoneId;
+                                tel.TelephoneNumber = telephone.TelephoneNumber;
+                                tel.TelephoneType = telephone.TelephoneType;
+
+                                vm.IndividualTelephones.Add(tel);
+                            }
+                        }
+                    }
+                }
+
+                ContractHolders.Add(vm);
+            }
+
+            return ContractHolders;
+
         }
 
         public ContractHolderViewModel Remove(ContractHolderViewModel t)
