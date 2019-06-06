@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Backend.Application.ViewModels;
 using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
@@ -55,7 +56,7 @@ namespace Beneficiaries.WebAPI
             services.AddScoped<IReadOnlyRepository<MobileDevice>, MobileDeviceRepository>();
             services.AddScoped<IWriteRepository<MobileDevice>, MobileDeviceRepository>();
 
-            services.AddScoped<IReadOnlyRepository<Realty>, RealtyRepository>();
+            services.AddScoped<IReadOnlyRepository<RealtyViewModel>, RealtyRepository>();
             services.AddScoped<IWriteRepository<Realty>, RealtyRepository>();
 
             services.AddScoped<IReadOnlyRepository<Pet>, PetRepository>();
