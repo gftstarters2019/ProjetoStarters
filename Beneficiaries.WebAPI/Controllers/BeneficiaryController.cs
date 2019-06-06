@@ -544,7 +544,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <returns>If date is valid</returns>
         public static bool DateIsValid(DateTime date)
         {
-            return date != null ? date > DateTime.Today : false;
+            return date != null ? date < DateTime.Today : false;
         }
 
         /// <summary>
