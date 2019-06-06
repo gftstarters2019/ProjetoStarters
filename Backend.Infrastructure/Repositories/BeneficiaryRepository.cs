@@ -51,7 +51,7 @@ namespace Backend.Infrastructure.Repositories
             return beneficiary;
         }
 
-        public Beneficiary Update(Beneficiary beneficiary)
+        public Beneficiary Update(Guid id, Beneficiary beneficiary)
         {
             if(beneficiary != null)
             {

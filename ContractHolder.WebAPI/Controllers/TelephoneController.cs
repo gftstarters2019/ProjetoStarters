@@ -109,7 +109,7 @@ namespace ContractHolder.WebAPI.Controllers
 
             if (Validate(telephone))
             {
-                return Ok(_telephoneWriteRepository.Update(obj));
+                return Ok(_telephoneWriteRepository.Update(id, obj));
             }
             else
                 return Conflict();

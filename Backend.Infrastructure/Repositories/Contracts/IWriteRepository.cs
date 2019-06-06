@@ -8,6 +8,6 @@ namespace Backend.Infrastructure.Repositories.Contracts
     {
         bool Add(T t);
         T Remove(T t);
-        T Update(T t);
+        T Update(Guid id, T t);
     }
 }

@@ -135,7 +135,9 @@ namespace Backend.Infrastructure.Repositories
         {
             List<ContractViewModel> viewModelToReturn = new List<ContractViewModel>();
 
-            var contracts = _db.Contracts.Where(con => !con.ContractDeleted).ToList();
+            var contracts = _db.Contracts
+                .Where(con => !con.ContractDeleted)
+                .ToList();
             foreach (var contract in contracts)
             {
                 var signedContracts = _db
@@ -150,6 +152,7 @@ namespace Backend.Infrastructure.Repositories
                         .Where(cb => cb.SignedContractId == signedContract.ContractSignedId)
                         .Select(cb => cb.BeneficiaryId)
                         .ToList();
+
                     var viewModelToAdd = new ContractViewModel()
                     {
                         Category = contract.ContractCategory,
@@ -170,7 +173,7 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public ContractViewModel Update(ContractViewModel t)
+        public ContractViewModel Update(Guid id, ContractViewModel t)
         {
             throw new NotImplementedException();
         }

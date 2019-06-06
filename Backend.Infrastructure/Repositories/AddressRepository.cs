@@ -49,7 +49,7 @@ namespace Backend.Infrastructure.Repositories
             return address;
         }
 
-        public Address Update(Address address)
+        public Address Update(Guid id, Address address)
         {
             if (address != null)
             {

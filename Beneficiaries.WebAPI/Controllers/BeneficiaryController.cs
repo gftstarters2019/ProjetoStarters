@@ -104,7 +104,7 @@ namespace Beneficiaries.WebAPI.Controllers
             obj.IndividualName = individual.IndividualName;
             obj.IndividualRG = individual.IndividualRG;
 
-            return Ok(_beneficiaryWriteRepository.Update(obj));
+            return Ok(_beneficiaryWriteRepository.Update(id, obj));
         }
         #endregion Individual
 
@@ -150,7 +150,7 @@ namespace Beneficiaries.WebAPI.Controllers
             obj.MobileDeviceSerialNumber = mobileDevice.MobileDeviceSerialNumber;
             obj.MobileDeviceType = mobileDevice.MobileDeviceType;
 
-            return Ok(_beneficiaryWriteRepository.Update(obj));
+            return Ok(_beneficiaryWriteRepository.Update(id, obj));
         }
         #endregion MobileDevice
 
@@ -193,7 +193,7 @@ namespace Beneficiaries.WebAPI.Controllers
             obj.PetName = pet.PetName;
             obj.PetSpecies = pet.PetSpecies;
 
-            return Ok(_beneficiaryWriteRepository.Update(obj));
+            return Ok(_beneficiaryWriteRepository.Update(id, obj));
         }
         #endregion Pet
 
@@ -237,7 +237,7 @@ namespace Beneficiaries.WebAPI.Controllers
             obj.RealtyMunicipalRegistration = realty.RealtyMunicipalRegistration;
             obj.RealtySaleValue = realty.RealtySaleValue;
 
-            return Ok(_beneficiaryWriteRepository.Update(obj));
+            return Ok(_beneficiaryWriteRepository.Update(id, obj));
         }
         #endregion Realty
 
@@ -285,7 +285,7 @@ namespace Beneficiaries.WebAPI.Controllers
             obj.VehicleModel = vehicle.VehicleModel;
             obj.VehicleModelYear = vehicle.VehicleModelYear;
 
-            return Ok(_beneficiaryWriteRepository.Update(obj));
+            return Ok(_beneficiaryWriteRepository.Update(id, obj));
         }
         #endregion Vehicle
 
@@ -305,7 +305,7 @@ namespace Beneficiaries.WebAPI.Controllers
             if (obj != null)
             {
                 obj.IsDeleted = !obj.IsDeleted;
-                return Ok(_beneficiaryWriteRepository.Update(obj));
+                return Ok(_beneficiaryWriteRepository.Update(id, obj));
             }
 
             return NotFound(obj);

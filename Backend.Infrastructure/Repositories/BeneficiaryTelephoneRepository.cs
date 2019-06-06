@@ -49,7 +49,7 @@ namespace Backend.Infrastructure.Repositories
             return telephones;
         }
 
-        public BeneficiaryTelephone Update(BeneficiaryTelephone telephones)
+        public BeneficiaryTelephone Update(Guid id, BeneficiaryTelephone telephones)
         {
             if (telephones != null)
             {

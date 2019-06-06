@@ -37,7 +37,7 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public ContractBeneficiary Update(ContractBeneficiary t)
+        public ContractBeneficiary Update(Guid id, ContractBeneficiary t)
         {
             throw new NotImplementedException();
         }

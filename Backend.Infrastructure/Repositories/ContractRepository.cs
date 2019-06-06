@@ -50,7 +50,7 @@ namespace Backend.Infrastructure.Repositories
             return contract;
         }
 
-        public Contract Update(Contract contract)
+        public Contract Update(Guid id, Contract contract)
         {
             if(contract != null)
             {

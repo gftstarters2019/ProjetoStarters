@@ -111,15 +111,19 @@ namespace Contract.WebAPI.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Updates a Contract
+        /// </summary>
+        /// <param name="id">GUID of the Contract to update</param>
+        /// <param name="contractViewModel">ContractViewModel with updated values</param>
+        /// <returns>Updated Contract</returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateContract(Guid id, [FromBody] Backend.Core.Models.Contract contract)
+        public IActionResult UpdateContract(Guid id, [FromBody] ContractViewModel contractViewModel)
         {
-            //Implementar Validações
-            var obj = _contractReadOnlyRepository.Find(id);
-
-            obj.ContractId = contract.ContractId;
-
-            return Ok(_contractWriteRepository.Update(obj));
+            var updatedContract = _contractViewModelWriteRepository.Update(id, contractViewModel);
+            if (updatedContract == null)
+                return StatusCode(403);
+            return Ok(updatedContract);
         }
 
         /// <summary>
@@ -130,7 +134,8 @@ namespace Contract.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteContract(Guid id)
         {
-            if (_signedContractReadOnlyRepository.Get().Where(sc => sc.ContractIndividualIsActive).ToList().Count > 0)
+            if (_signedContractReadOnlyRepository.Get()
+                .Where(sc => sc.ContractIndividualIsActive && sc.ContractId == id).ToList().Count > 0)
                 return Forbid();
 
             var contract = _contractReadOnlyRepository.Find(id);
@@ -138,7 +143,7 @@ namespace Contract.WebAPI.Controllers
             if (contract != null)
             {
                 contract.ContractDeleted = !contract.ContractDeleted;
-                return Ok(_contractWriteRepository.Update(contract));
+                return Ok(_contractWriteRepository.Update(id, contract));
             }
 
             return NotFound(contract);

@@ -50,7 +50,7 @@ namespace Backend.Infrastructure.Repositories
             return individual;
         }
 
-        public Individual Update(Individual individual)
+        public Individual Update(Guid id, Individual individual)
         {
             if(individual != null)
             {
