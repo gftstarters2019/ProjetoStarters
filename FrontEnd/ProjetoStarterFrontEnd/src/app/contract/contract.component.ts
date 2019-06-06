@@ -66,7 +66,7 @@ export class ContractComponent implements OnInit {
     type: ['', Validators.required],
     category: ['', Validators.required],
     expiryDate: ['', Validators.required],
-    isActive:['False', Validators.required],
+    isActive:['false', Validators.required],
     beneficiaries: this.fb.array([])
   });
 

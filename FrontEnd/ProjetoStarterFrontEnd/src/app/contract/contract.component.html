@@ -51,10 +51,10 @@
           
         
           <mat-form-field>
-            <input matInput [matDatepicker]="contractExpiryDate" placeholder="Contract Expiry Date"
+            <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" name ="expiryDate"
             formControlName="expiryDate" required>
             <mat-datepicker-toggle matSuffix [for]="expiryDate"></mat-datepicker-toggle>
-            <mat-datepicker #contractExpiryDate></mat-datepicker>
+            <mat-datepicker #expiryDate></mat-datepicker>
           </mat-form-field> <br>
           
           <mat-label>Contract Status: </mat-label>
@@ -126,10 +126,11 @@
       
 
         <button class="btn-list" mat-raised-button color="primary" (click)="clearBeneficiary()" type="button">Clear</button>
+        <br><br>
         <button class="btn-list" mat-raised-button color="primary" type="button" (click)="postContract()">Submit</button>
-      </mat-card>
-      <mat-divider></mat-divider>
-      <mat-card>
+        
+        
+        <br><br>
         <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList()">Listing
           Contract</button>
         <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList2()">Listing
@@ -187,6 +188,4 @@
 
 
     </form>
-
-
 </div>
