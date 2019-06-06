@@ -17,9 +17,15 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(Vehicle t)
+        public bool Add(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            if (vehicle != null)
+            {
+                _db.Vehicles.Add(vehicle);
+                if (_db.SaveChanges() == 1)
+                    return true;
+            }
+            return false;
         }
 
         public Vehicle Find(Guid id)

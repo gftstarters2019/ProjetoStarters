@@ -17,9 +17,15 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(Individual t)
+        public bool Add(Individual individual)
         {
-            throw new NotImplementedException();
+            if (individual != null)
+            {
+                _db.Individuals.Add(individual);
+                if (_db.SaveChanges() == 1)
+                    return true;
+            }
+            return false;
         }
 
         public Individual Find(Guid id)
