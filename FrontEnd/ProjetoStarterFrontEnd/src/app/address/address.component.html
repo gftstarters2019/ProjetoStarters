@@ -1,10 +1,8 @@
 <form [formGroup]="address" (ngSubmit)="onSubmit()">
   <div class="first-container">
 
-    <mat-form-field>
+    <mat-form-field style="width: 600px;">
       <input matInput placeholder="Street/Avenue" name="street" formControlName="AddressStreet" required>
-    <mat-form-field style="width: 600px;"> 
-      <input matInput placeholder="Street/Avenue" name="street" formControlName="street" required>
       <mat-error>Street/Avenue is invalid!</mat-error>
     </mat-form-field>
 
@@ -23,17 +21,15 @@
   <div class="second-container">
     <mat-form-field style="width: 300px;">
       <input matInput placeholder="State" name="state" formControlName="AddressState" required>
-      <mat-error>State is invalid!</mat-error>
+    <mat-error>State is invalid!</mat-error>
     </mat-form-field>
     <mat-form-field style="width: 300px;">
       <input matInput placeholder="Neighborhood" name="neighborhood" formControlName="AddressNeighborhood" required>
       <mat-error>Neighborhood is invalid!</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
-      <input matInput type='Country' placeholder="Country" name="country" formControlName="AddressCountry" required>
     <mat-form-field style="width: 200px;">
-      <input matInput type='Country' placeholder="Country" name="country" formControlName="country" required>
+      <input matInput type='Country' placeholder="Country" name="country" formControlName="AddressCountry" required>
       <mat-error>Country is invalid!</mat-error>
     </mat-form-field>
     <mat-form-field>

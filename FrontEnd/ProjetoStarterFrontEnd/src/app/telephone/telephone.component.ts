@@ -24,7 +24,6 @@ export class TelephoneComponent implements OnInit {
 
   // message:string;
   telephone = this.fb.group ({
-    TelephoneId: [''],
     TelephoneNumber: ['', GenericValidator.telephoneValidator()],
     TelephoneType: ''
   });
@@ -40,10 +39,18 @@ export class TelephoneComponent implements OnInit {
     
   }
 
+  unMaskValues(): void {
+    let telephoneNumber = this.telephone.controls.TelephoneNumber.value;
+    telephoneNumber = telephoneNumber.replace(/\D+/g, '');
+    this.telephone.controls.TelephoneNumber.setValue(telephoneNumber);
+  }
+
   
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.pushPermission.currentValue != 0 && changes.pushPermission.currentValue != changes.previousValue)
-        this.addTelephone.emit(this.telephone);
+    if(changes.pushPermission.currentValue != 0 && changes.pushPermission.currentValue != changes.pushPermission.previousValue) {
+      this.unMaskValues();
+      this.addTelephone.emit(this.telephone);      
+    }
   }
 
   public onSubmit(values: any): void {

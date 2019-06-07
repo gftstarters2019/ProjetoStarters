@@ -35,13 +35,12 @@ export class AddressComponent implements OnInit {
   //addressAdd: FormArray;
 
   address = this.fb.group ({
-    AddressId: [''],
-    AddressStreet: ['', Validators.pattern(GenericValidator.regexName)],
+    AddressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
     AddressType: ['', Validators.required],
     AddressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
     AddressState: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
-    AddressNeighborhood: [ '', Validators.pattern(GenericValidator.regexName)],
-    AddressCountry: ['', Validators.pattern(GenericValidator.regexName)],
+    AddressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
+    AddressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
     AddressZipCode: ['', this.zipCodeValidation],
     AddressCity: [''],
     AddressComplement: ['']
@@ -56,9 +55,17 @@ export class AddressComponent implements OnInit {
     //console.log(this.address.value);
   }
 
+  unMaskValues(): void {
+    let zipCode = this.address.controls.AddressZipCode.value;
+    zipCode = zipCode.replace(/\D+/g, '');
+    this.address.controls.AddressZipCode.setValue(zipCode);
+  }
+
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.addressPushPermission.currentValue != 0 && changes.addressPushPermission.currentValue != changes.addressPushPermission.previousValue)
-        this.addAddress.emit(this.address);
+    if(changes.addressPushPermission.currentValue != 0 && changes.addressPushPermission.currentValue != changes.addressPushPermission.previousValue) {
+      this.unMaskValues();
+      this.addAddress.emit(this.address);
+    }
   }
 
   public onSubmit(): void {

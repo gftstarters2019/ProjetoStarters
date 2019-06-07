@@ -62,26 +62,29 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   }
 
+  unMaskValues(): void {
+    let rg = this.contractHolder.controls.IndividualRG.value;
+    rg = rg.replace(/\D+/g, '');
+    this.contractHolder.controls.IndividualRG.setValue(rg);
+    
+    let cpf = this.contractHolder.controls.IndividualCPF.value;
+    cpf = cpf.replace(/\D+/g, '');
+    this.contractHolder.controls.IndividualCPF.setValue(cpf);
+  }
+
 
   private setup_form() {
     this.contractHolder = this.chfb.group({
-      IndividualId: '',
       IndividualName: ['', Validators.pattern(GenericValidator.regexName)],
-      IndividualRG: ['', GenericValidator.rgLengthValidation()],
       IndividualCPF: ['', GenericValidator.isValidCpf()],
-      IndividualBirthDate: ['', GenericValidator.dateValidation()],
+      IndividualRG: ['', GenericValidator.rgLengthValidation()],
       IndividualEmail: ['', Validators.required],
-      IsDeleted: false,
-
-      
-      idTelephone: this.chfb.array([]),
-
+      IndividualBirthDate: ['', GenericValidator.dateValidation()],
       IndividualTelephones: this.chfb.array([]),
+      IndividualAddresses: this.chfb.array([]),
 
-      idAddress: this.chfb.array([]),
-
-      IndividualAddresses: this.chfb.array([])
-  
+      idTelephone: this.chfb.array([]),
+      idAddress: this.chfb.array([])
     });
   }
 
@@ -89,9 +92,14 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     this.message = 1;
   } 
   onSubmit(): void {
+
+    this.unMaskValues();
+    
+
     console.log(this.contractHolder.value);
 
     let json = JSON.stringify(this.contractHolder.value);
+    console.log(json);
     let httpOptions = {headers: new HttpHeaders ({
      'Content-Type': 'application/json'
    })};
