@@ -51,7 +51,7 @@ export class ContractComponent implements OnInit {
 
   cType: any;
 
-  contracTypes: Type[] = [
+  contractTypes: Type[] = [
     { value: 0, viewValue: 'Contract Health Plan' },
     { value: 1, viewValue: 'Contract Animal Health Plan' },
     { value: 2, viewValue: 'Contract Dental Plan' },

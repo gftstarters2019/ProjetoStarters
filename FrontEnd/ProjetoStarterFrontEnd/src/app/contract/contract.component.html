@@ -6,33 +6,27 @@
     <h2 class="titleContract">Contract</h2>
   </mat-label>
 
-
-
-  
-    <form [formGroup]="contractform">
-      <div class="contractCard">
-      <mat-card >
-        <mat-form-field style="width: 300px;">
-          <mat-label>Contract Holder's name:</mat-label>
-          <mat-select formControlName="contractHolderId" name="contractHolderId">
-              <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
-                  {{holder.individualName}}
-                  <mat-error></mat-error>
-              </mat-option>
-          </mat-select>
-        </mat-form-field>  
-       </mat-card>
-    </div>
-
-
-
   <form [formGroup]="contractform">
     <div class="contractCard">
+
+        <div class="contractCard">
+            <mat-card >
+              <mat-form-field style="width: 300px;">
+                <mat-label>Contract Holder's name:</mat-label>
+                <mat-select formControlName="contractHolderId" name="contractHolderId">
+                    <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
+                        {{holder.individualName}}
+                        <mat-error></mat-error>
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>  
+             </mat-card>
+          </div>
 
         <mat-card >
           <mat-form-field>
             <mat-label>Select Contract Type:</mat-label>
-            <mat-select formControlName="type" name="types">
+            <mat-select formControlName="type" name="type">
              <mat-option *ngFor="let type of contractTypes" [value]="type.value">
                {{type.viewValue}}
               </mat-option>
