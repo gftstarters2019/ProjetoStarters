@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
+import { ActionButtonComponent } from '../action-button/action-button.component';
+import { timingSafeEqual } from 'crypto';
 
 
 export interface Type {
@@ -33,6 +35,8 @@ export class ContractComponent implements OnInit {
   rowData$: any;
   paginationPageSize;
   detailCellRendererParams;
+  // calopsita2: boolean = false;
+
 
   gridApi;
   gridColumApi;
@@ -69,7 +73,8 @@ export class ContractComponent implements OnInit {
     category: ['', Validators.required],
     expiryDate: ['', Validators.required],
     isActive: ['', Validators.required],
-    beneficiaries: this.fb.array([])
+    beneficiaries: this.fb.array([]),
+    signedContractId:['']
   });
 
   constructor(private fb: FormBuilder, private http: HttpClient) { }
@@ -113,6 +118,20 @@ export class ContractComponent implements OnInit {
   receiveMessage($event) {
     this.beneficiaries.value[this.beneficiaries.length - 1].id = $event;
   }
+
+  private edit_contract(data: any) {
+  this.contractform.patchValue(data);
+  }
+
+  private remove_contract(data: any) {
+    let signedContractId = this.contractform.value.signedContractId;
+    this.rowData$ = this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`);
+  }
+
+  // public contract_request(): void{    
+  //   let form;
+  // }
+
 
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -182,7 +201,17 @@ export class ContractComponent implements OnInit {
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
-      ]
+        {
+          headerName: 'Edit/Delete',
+          field: 'editDelete',
+          lockPosition: true,
+          cellRendererFramework: ActionButtonComponent,
+          cellRendererParams: {
+            onEdit: this.edit_contract.bind(this),
+            onRemove: this.remove_contract.bind(this)
+          },
+        },
+      ],
 
     }
   }

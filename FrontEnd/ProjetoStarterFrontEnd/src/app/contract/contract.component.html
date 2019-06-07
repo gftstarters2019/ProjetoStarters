@@ -133,7 +133,7 @@
 
     <button class="btn-list" mat-raised-button color="primary" (click)="clearBeneficiary()" type="button">Clear</button>
     <br><br>
-    <button class="btn-list" class="btn-position" mat-raised-button color="primary" type="button">Submit
+    <button class="btn-list" class="btn-position" mat-raised-button color="primary" (click)="contract_request()"type="submit" [disabled] = "!contractform.valid">Submit
       Contract</button>
 
     <br><br>
@@ -153,9 +153,14 @@
             </mat-expansion-panel-header>
 
             <mat-nav-list>
-              <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true"
-                [paginationPageSize]="paginationPageSize" class="ag-theme-material" [masterDetail]="true"
-                [gridOptions]="gridOption" [rowData]="rowData$ | async">
+              <ag-grid-angular 
+              style="width: 100%; height: 1000px;" 
+              [pagination]="true"
+              [paginationPageSize]="paginationPageSize" 
+              class="ag-theme-material" 
+              [masterDetail]="true"
+              [gridOptions]="gridOption" 
+              [rowData]="rowData$ | async">
               </ag-grid-angular>
             </mat-nav-list>
 
