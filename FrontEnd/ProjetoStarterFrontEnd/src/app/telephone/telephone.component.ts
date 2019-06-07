@@ -1,8 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, AbstractControl, Validator, FormArray } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
-import { EventListener } from '@angular/core/src/debug/debug_node';
-import { SubjectSubscriber, Subject } from 'rxjs/internal/Subject';
 
 export interface Telephone{
   id: string,
@@ -22,7 +20,6 @@ export class TelephoneComponent implements OnInit {
   cellphoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   telephoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
-  // message:string;
   telephone = this.fb.group ({
     TelephoneNumber: ['', GenericValidator.telephoneValidator()],
     TelephoneType: ''

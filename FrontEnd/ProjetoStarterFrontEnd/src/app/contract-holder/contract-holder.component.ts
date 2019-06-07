@@ -106,7 +106,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     console.log(this.contractHolder.value);
 
     let json = JSON.stringify(this.contractHolder.value);
-    console.log(json);
     let httpOptions = {headers: new HttpHeaders ({
      'Content-Type': 'application/json'
    })};
@@ -125,13 +124,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     if (!hasMax) {
       addressControl.push(this.chfb.group({
-        // street: ['', GenericValidator.regexName],
-        // type: ['', Validators.required],
-        // number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
-        // state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2)]],
-        // neighborhood: [ '', GenericValidator.regexName],
-        // country: ['', GenericValidator.regexName],
-        // zipCode: ['', Validators.required]
       }))
     }
 
@@ -143,19 +135,12 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     if (!hasMax) {
       telephoneControl.push(this.chfb.group({
-        // id: [''],
-        // telephoneNumber: ['', GenericValidator.telephoneValidator()],
-        // telephoneType: ''
       }));
     }
     this.showTelephonelist = !this.showTelephonelist;
   }
  
   handle_add_telphone($event: any) {
-    console.log("add telephone")
-    // let telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
-    // telephoneControl.push(this.chfb.group({}));
-    // telephoneControl.removeAt(telephoneControl.length - 1);
     let IndividualTelephonesControl = this.contractHolder.controls.IndividualTelephones as FormArray;
     IndividualTelephonesControl.push($event);
   } 
