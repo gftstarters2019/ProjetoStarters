@@ -17,7 +17,7 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public void Add(ContractBeneficiary t)
+        public bool Add(ContractBeneficiary t)
         {
             throw new NotImplementedException();
         }
@@ -32,12 +32,12 @@ namespace Backend.Infrastructure.Repositories
             .Where(cb => cb.SignedContract.ContractIndividualIsActive)
             .ToList();
 
-        public ContractBeneficiary Remove(ContractBeneficiary t)
+        public bool Remove(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public ContractBeneficiary Update(ContractBeneficiary t)
+        public ContractBeneficiary Update(Guid id, ContractBeneficiary t)
         {
             throw new NotImplementedException();
         }
