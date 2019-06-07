@@ -21,8 +21,8 @@ export class TelephoneComponent implements OnInit {
   telephoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
   telephone = this.fb.group ({
-    TelephoneNumber: ['', GenericValidator.telephoneValidator()],
-    TelephoneType: ''
+    telephoneNumber: ['', GenericValidator.telephoneValidator()],
+    telephoneType: ''
   });
 
 
@@ -37,9 +37,9 @@ export class TelephoneComponent implements OnInit {
   }
 
   unMaskValues(): void {
-    let telephoneNumber = this.telephone.controls.TelephoneNumber.value;
+    let telephoneNumber = this.telephone.controls.telephoneNumber.value;
     telephoneNumber = telephoneNumber.replace(/\D+/g, '');
-    this.telephone.controls.TelephoneNumber.setValue(telephoneNumber);
+    this.telephone.controls.telephoneNumber.setValue(telephoneNumber);
   }
 
   

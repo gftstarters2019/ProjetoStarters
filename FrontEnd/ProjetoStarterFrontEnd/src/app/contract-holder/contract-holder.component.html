@@ -1,4 +1,3 @@
-
 <!-- Contract Holder Form -->
 
 <mat-label>
@@ -10,55 +9,53 @@
   <div class="addressBg"> 
     <mat-card> 
   <mat-form-field style="width: 500px;">
-    <input matInput placeholder="Name" name="name" maxlength="50" required formControlName="IndividualName" >
+    <input matInput placeholder="Name" name="individualName" maxlength="50" required formControlName="individualName" >
     <mat-error>Name is invalid!</mat-error>
   </mat-form-field> <br>
   
   <mat-form-field style="width: 250px;">
-    <input matInput placeholder="RG" name="rg" [textMask]="{mask: rgMask}" formControlName="IndividualRG" required>
-    <mat-error>RG is invalid!</mat-error>
-  </mat-form-field>
-
-
+      <input matInput placeholder="RG" name="individualRG" [textMask]="{mask: rgMask}" formControlName="individualRG" required>
+      <mat-error>RG is invalid!</mat-error>
+  </mat-form-field>  
+  
   <mat-form-field style="width: 250px;">
-    <input matInput placeholder="CPF" id="cpf" [textMask]="{mask: cpfMask}" value="" name="cpf" type="text" formControlName="IndividualCPF" required>
-    <mat-error>CPF is invalid!</mat-error>
-    <span id="cpfResponse"></span>
-
-
+      <input matInput placeholder="CPF" id="individualCPF" [textMask]="{mask: cpfMask}" value="" name="individualCPF" type="text" formControlName="individualCPF" required>
+      <mat-error>CPF is invalid!</mat-error>
+      <span id="cpfResponse"></span>       
     <script></script>
   </mat-form-field> <br>
 
   <mat-form-field style="width: 250px;">
-    <input matInput [matDatepicker]="picker" placeholder="Birthdate" id="birthdate" formControlName="IndividualBirthDate" required>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error>Date is invalid!</mat-error>
-  </mat-form-field>
-
-  <mat-form-field style="width: 350px;">
-    <input matInput placeholder="Email" name="email" type= "email" maxlength="30" formControlName="IndividualEmail" required email>
-    <mat-error>E-mail is invalid!</mat-error>
-  </mat-form-field>
-
+      <input matInput [matDatepicker]="picker" placeholder="Birthdate" id="individualBirthdate" formControlName="individualBirthDate" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error>Date is invalid!</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field style="width: 350px;">
+        <input matInput placeholder="Email" name="individualEmail" type= "email" maxlength="30" formControlName="individualEmail" required email>
+        <mat-error>E-mail is invalid!</mat-error>
+      </mat-form-field>
+    </mat-card>
+  </div>
                               <!-- Telephone Component -->
-  <div formArrayName="idTelephone" *ngFor="let telephone2 of contractHolder.get('idTelephone')['controls'];">
+  <div class="addressBg" formArrayName="idTelephone" *ngFor="let telefone of contractHolder.get('idTelephone')['controls'];">
     <mat-card>
-      <app-telephone [telephone2]="telephone2" [pushPermission]="message" (addTelephone)="handle_add_telphone($event)"></app-telephone>
-    </mat-card> <br>
-  </div> 
-  <br> <br> 
-  <button mat-raised-button color="primary" type="button" (click)="showTelephone()">
-      <mat-icon class="material-icons">add</mat-icon>
- </button> 
+      <app-telephone [telephone2]="telefone" [pushPermission]="message" (addTelephone)="handle_add_telphone($event)"></app-telephone>
+
+    </mat-card> 
+  </div>  
+          <button mat-raised-button color="primary" type="button" (click)="showTelephone()">
+              <mat-icon class="material-icons">add</mat-icon>
+         </button>      
                   <!-- Final do Telephone Component -->
 
                   <!-- Address Component -->
-  <div formArrayName="idAddress" *ngFor="let item of contractHolder.get('idAddress')['controls'];">    
-    <mat-card class="addressBg">
+  <div class="addressBg"formArrayName="idAddress" *ngFor="let item of contractHolder.get('idAddress')['controls'];">    
+    <mat-card >
       <app-address [address2]="item" [addressPushPermission]="message" (addAddress)="handle_add_address($event)"> </app-address>
-    </mat-card> <br>
-  </div>  <br> <br> <br>
+    </mat-card> 
+  </div>  
   
   <button mat-raised-button color="primary" type="button" (click)="showAddress()">
        <mat-icon class="material-icons">add</mat-icon>
@@ -67,7 +64,8 @@
  
   
                 <!-- Final do Address -->
-  <button button color="primary" mat-raised-button type="submit" (click)="changeMessageValue()">Submit</button> <br> <br>
+                <br>
+  <button class="btn-position" button color="primary" (click)=changeMessageValue() mat-raised-button type="submit" [disabled]="!contractHolder.valid">Submit Contract Holder</button> <br> <br>
   <br> <br> <br>
 
   <button mat-raised-button color="primary" type="button" (click)="showButton()">Show Contract Holder</button>
@@ -91,4 +89,4 @@
 
     </div>
   </div>
-
+</form>

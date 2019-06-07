@@ -35,15 +35,15 @@ export class AddressComponent implements OnInit {
   //addressAdd: FormArray;
 
   address = this.fb.group ({
-    AddressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
-    AddressType: ['', Validators.required],
-    AddressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
-    AddressState: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
-    AddressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
-    AddressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
-    AddressZipCode: ['', this.zipCodeValidation],
-    AddressCity: [''],
-    AddressComplement: ['']
+    addressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressType: ['', Validators.required],
+    addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
+    addressState: ['', [Validators.pattern(/^[[A-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
+    addressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressZipCode: ['', this.zipCodeValidation],
+    addressCity: [''],
+    addressComplement: ['']
   });
   //message: any;
 
@@ -56,9 +56,9 @@ export class AddressComponent implements OnInit {
   }
 
   unMaskValues(): void {
-    let zipCode = this.address.controls.AddressZipCode.value;
+    let zipCode = this.address.controls.addressZipCode.value;
     zipCode = zipCode.replace(/\D+/g, '');
-    this.address.controls.AddressZipCode.setValue(zipCode);
+    this.address.controls.addressZipCode.setValue(zipCode);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -69,15 +69,10 @@ export class AddressComponent implements OnInit {
   }
 
   public onSubmit(): void {
-
-    // console.log(this.address.value);
-    // this.add.emit(this.address.value);
-
-    // this.message=this.address.get(['id']).value;
   }
 
    emitValue() {
-     this.add.emit(this.address.value)
+     this.addAddress.emit(this.address.value)
    }
 
   createAddress(): FormGroup {
@@ -86,12 +81,12 @@ export class AddressComponent implements OnInit {
     });
   }
 
-  addAddress(): void {
-    this.addressAdd = this.address.get('addressAdd') as FormArray;
-    if(this.addressAdd.length<5){
-      this.addressAdd.push(this.createAddress());
-    }
-  }
+  // addAddress(): void {
+  //   this.addressAdd = this.address.get('addressAdd') as FormArray;
+  //   if(this.addressAdd.length<5){
+  //     this.addressAdd.push(this.createAddress());
+  //   }
+  // }
   
   zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
     let zipCodeNumber = control.value;

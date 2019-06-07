@@ -53,12 +53,11 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   private handle_editUser(data: any) {
        this.contractHolder.patchValue(data);
-     }
+    }
     
     private handle_deleteUser(data: any) {
-     
     let json = JSON.stringify(this.contractHolder.value);
-    let id = this.contractHolder.value.individualId;
+    let id = data.individualId;
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -70,25 +69,25 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   unMaskValues(): void {
-    let rg = this.contractHolder.controls.IndividualRG.value;
+    let rg = this.contractHolder.controls.individualRG.value;
     rg = rg.replace(/\D+/g, '');
-    this.contractHolder.controls.IndividualRG.setValue(rg);
+    this.contractHolder.controls.individualRG.setValue(rg);
     
-    let cpf = this.contractHolder.controls.IndividualCPF.value;
+    let cpf = this.contractHolder.controls.individualCPF.value;
     cpf = cpf.replace(/\D+/g, '');
-    this.contractHolder.controls.IndividualCPF.setValue(cpf);
+    this.contractHolder.controls.individualCPF.setValue(cpf);
   }
 
 
   private setup_form() {
     this.contractHolder = this.chfb.group({
-      IndividualName: ['', Validators.pattern(GenericValidator.regexName)],
-      IndividualCPF: ['', GenericValidator.isValidCpf()],
-      IndividualRG: ['', GenericValidator.rgLengthValidation()],
-      IndividualEmail: ['', Validators.required],
-      IndividualBirthDate: ['', GenericValidator.dateValidation()],
-      IndividualTelephones: this.chfb.array([]),
-      IndividualAddresses: this.chfb.array([]),
+      individualName: ['', Validators.pattern(GenericValidator.regexName)],
+      individualCPF: ['', GenericValidator.isValidCpf()],
+      individualRG: ['', GenericValidator.rgLengthValidation()],
+      individualEmail: ['', Validators.required],
+      individualBirthDate: ['', GenericValidator.dateValidation()],
+      individualTelephones: this.chfb.array([]),
+      individualAddresses: this.chfb.array([]),
 
       idTelephone: this.chfb.array([]),
       idAddress: this.chfb.array([])
@@ -106,6 +105,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     console.log(this.contractHolder.value);
 
     let json = JSON.stringify(this.contractHolder.value);
+    console.log(json)
     let httpOptions = {headers: new HttpHeaders ({
      'Content-Type': 'application/json'
    })};
@@ -141,14 +141,14 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
  
   handle_add_telphone($event: any) {
-    let IndividualTelephonesControl = this.contractHolder.controls.IndividualTelephones as FormArray;
-    IndividualTelephonesControl.push($event);
+    let individualTelephonesControl = this.contractHolder.controls.individualTelephones as FormArray;
+    individualTelephonesControl.push($event);
   } 
   
   handle_add_address($event: any) {
     console.log("add address")
-    let IndividualAddressesControl = this.contractHolder.controls.IndividualAddresses as FormArray;
-    IndividualAddressesControl.push($event);
+    let individualAddressesControl = this.contractHolder.controls.individualAddresses as FormArray;
+    individualAddressesControl.push($event);
   }
 
 
