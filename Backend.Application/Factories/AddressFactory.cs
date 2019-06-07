@@ -55,16 +55,20 @@ namespace Backend.Application.Factories
         /// <returns></returns>
         private bool Validate(Address address)
         {
-            Regex regexLetters = new Regex("^[a-zA-Z]+$");
+            Regex regexLetters = new Regex("^[a-zA-Z-ã]+\\s?[a-zA-Z-ã]+\\s?\\w+$");
+            Regex regexState = new Regex("^[[a-zA-Z]+$");
 
             if (!new Regex("^[0-9]+$").IsMatch(address.AddressNumber))
                 return false;
 
-            if (!new Regex("^\\d{5}(?:[-\\s]\\d{3})?$").IsMatch(address.AddressZipCode))
+            if (!new Regex("^\\d+$").IsMatch(address.AddressZipCode) || address.AddressZipCode.Length != 8)
+                return false;
+
+            if (!regexState.IsMatch(address.AddressState) || address.AddressState.Length != 2)
                 return false;
 
             if (!regexLetters.IsMatch(address.AddressStreet) || !regexLetters.IsMatch(address.AddressComplement) || !regexLetters.IsMatch(address.AddressNeighborhood) ||
-                    !regexLetters.IsMatch(address.AddressCity) || !regexLetters.IsMatch(address.AddressState) || !regexLetters.IsMatch(address.AddressCountry))
+                    !regexLetters.IsMatch(address.AddressCity) || !regexLetters.IsMatch(address.AddressCountry))
                 return false;
 
             return true;

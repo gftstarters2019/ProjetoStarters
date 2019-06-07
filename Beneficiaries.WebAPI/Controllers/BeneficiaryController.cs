@@ -1,4 +1,5 @@
-﻿using Backend.Core;
+﻿using Backend.Application.ViewModels;
+using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace Beneficiaries.WebAPI.Controllers
         private readonly IReadOnlyRepository<MobileDevice> _mobileDeviceReadOnlyRepository;
         private readonly IWriteRepository<MobileDevice> _mobileWriteRepository;
 
-        private readonly IReadOnlyRepository<Realty> _realtyReadOnlyRepository;
+        private readonly IReadOnlyRepository<RealtyViewModel> _realtyReadOnlyRepository;
         private readonly IWriteRepository<Realty> _realtyWriteRepository;
 
         private readonly IReadOnlyRepository<Vehicle> _vehicleReadOnlyRepository;
@@ -46,7 +47,7 @@ namespace Beneficiaries.WebAPI.Controllers
             IWriteRepository<Pet> petWriteRepository,
             IReadOnlyRepository<MobileDevice> mobileDeviceReadOnlyRepository,
             IWriteRepository<MobileDevice> mobileDeviceWriteRepository,
-            IReadOnlyRepository<Realty> realtyReadOnlyRepository,
+            IReadOnlyRepository<RealtyViewModel> realtyReadOnlyRepository,
             IWriteRepository<Realty> realtyWriteRepository,
             IReadOnlyRepository<Vehicle> vehicleReadOnlyRepository,
             IWriteRepository<Vehicle> vehicleWriteRepository)
@@ -286,7 +287,6 @@ namespace Beneficiaries.WebAPI.Controllers
         public IActionResult PostRealty([FromBody] Realty realty)
         {
             realty.BeneficiaryId = Guid.NewGuid();
-            //realty.RealtyId = Guid.NewGuid();
 
             if (!RealtyIsValid(realty))
                 return Forbid();
