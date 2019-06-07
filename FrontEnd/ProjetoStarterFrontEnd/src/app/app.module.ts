@@ -13,10 +13,10 @@ import { MaterialModule } from './material/material.module';
 
 import { ContractComponent } from './contract/contract.component';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
-import { ContractListComponent } from './contract-list/contract-list.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
+
 import { TableListComponent } from './table-list/table-list.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { BeneficiaryIndividualComponent } from './beneficiary-individual/beneficiary-individual.component';
@@ -34,6 +34,8 @@ import { PetListComponent } from './pet-list/pet-list.component';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { RealtiesListComponent } from './realties-list/realties-list.component';
 import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-list.component';
+import {MatCardModule} from '@angular/material/card';
+import { ActionButtonComponent } from './action-button/action-button.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,6 @@ import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-li
     ContractHolderComponent,
     AddressComponent,
     ContractComponent,
-    ContractListComponent,
     BeneficiaryListComponent,
     SidebarComponent,
     TableListComponent,
@@ -51,6 +52,8 @@ import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-li
     BeneficiaryVehicleComponent,
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
+    TelephoneComponent,
+    ActionButtonComponent
     TelephoneComponent,
     IndividualListComponent,
     PetListComponent,
@@ -66,17 +69,18 @@ import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-li
     AppRoutingModule,
     MatDialogModule,
     MaterialModule,
-    AgGridModule,
+    AgGridModule.withComponents([
+      ActionButtonComponent,
+    ]),
     MatCardModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CdkTableModule,
+
     TextMaskModule
   ],
   exports: [
     MaterialModule,
    AgGridModule,
-   CdkTableModule,
   ],
   
   providers: [],
