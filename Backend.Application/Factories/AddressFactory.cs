@@ -18,6 +18,7 @@ namespace Backend.Application.Factories
 
         public List<Address> CreateList(List<Address> vm_addresses)
         {
+            addresses = new List<Address>();
             foreach (var ad in vm_addresses)
             {
                 if (Validate(ad))
@@ -41,8 +42,9 @@ namespace Backend.Application.Factories
 
             if (addresses.Count != vm_addresses.Count || addresses.Count > 3)
             {
-                addresses.Clear();
-                return addresses;
+                return null;
+                //addresses.Clear();
+                //return addresses;
             }
 
             return addresses;
