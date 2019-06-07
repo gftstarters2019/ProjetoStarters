@@ -49,11 +49,11 @@
                   <!-- Address Component -->
   <div formArrayName="idAddress" *ngFor="let item of contractHolder.get('idAddress')['controls'];">    
     <mat-card class="addressBg">
-      <app-address [address2]="item" (addAddress)="handle_add($event)"> </app-address>
+      <app-address [address2]="item" [addressPushPermission]="message" (addAddress)="handle_add_address($event)"> </app-address>
     </mat-card> <br>
   </div>  <br> <br> <br>
   
-  <button mat-raised-button color="primary"  (click)="showAddress()">
+  <button mat-raised-button color="primary" type="button" (click)="showAddress()">
        <mat-icon class="material-icons">add</mat-icon>
   </button> 
   

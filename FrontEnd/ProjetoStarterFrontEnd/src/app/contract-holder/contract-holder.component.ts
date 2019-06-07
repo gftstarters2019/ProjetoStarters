@@ -36,6 +36,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   message: number = 0;
+
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
@@ -65,6 +66,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       IndividualTelephones: this.chfb.array([]),
 
       idAddress: this.chfb.array([]),
+
+      IndividualAddresses: this.chfb.array([])
   
     });
   }
@@ -79,7 +82,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     let httpOptions = {headers: new HttpHeaders ({
      'Content-Type': 'application/json'
    })};
-   this.http.post('https://httpbin.org/post', json,httpOptions).subscribe(data => console.log(data));
+   this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json,httpOptions).subscribe(data => console.log(data));
    
   }
   
@@ -94,13 +97,13 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     if (!hasMax) {      
       addressControl.push(this.chfb.group({
-        street: ['', GenericValidator.regexName],
-        type: ['', Validators.required],
-        number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
-        state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2)]],
-        neighborhood: [ '', GenericValidator.regexName],
-        country: ['', GenericValidator.regexName],
-        zipCode: ['', Validators.required]
+        // street: ['', GenericValidator.regexName],
+        // type: ['', Validators.required],
+        // number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
+        // state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2)]],
+        // neighborhood: [ '', GenericValidator.regexName],
+        // country: ['', GenericValidator.regexName],
+        // zipCode: ['', Validators.required]
       }))
     }
 
@@ -130,11 +133,10 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     IndividualTelephonesControl.push($event);
   } 
   
-  handle_add($event: any) {
-    const addressControl = this.contractHolder.controls.idAddress as FormArray;
-    addressControl.push(this.chfb.group({
-  
-    }))
+  handle_add_address($event: any) {
+    console.log("add address")
+    let IndividualAddressesControl = this.contractHolder.controls.IndividualAddresses as FormArray;
+    IndividualAddressesControl.push($event);
   }
 
 
