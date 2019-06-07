@@ -228,7 +228,11 @@ namespace Backend.Infrastructure.Repositories
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
         new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
-                var individual = _db.Individuals.Where(ind => ind.BeneficiaryId == id).First();
+                var individual = _db.Individuals.Where(ind => ind.BeneficiaryId == id).FirstOrDefault();
+
+                if (individual == null)
+                    return null;
+
                 var beneficary_addresses = _db.Beneficiary_Address.Where(benAd => benAd.BeneficiaryId == individual.BeneficiaryId).ToList();
                 var individual_telephones = _db.Individual_Telephone.Where(indTel => indTel.BeneficiaryId == individual.BeneficiaryId).ToList();
 

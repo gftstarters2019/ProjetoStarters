@@ -32,12 +32,12 @@ export class BeneficiaryVehicleComponent implements OnInit {
   @Output() messageVehicleEvent = new EventEmitter<any>();
   
   vehicleCreateForm= this.formBuilder.group({
-    vehicleBrand: new FormControl('', Validators.pattern(GenericValidator.regexName)),
-    vehicleModel: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
+    vehicleBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+    vehicleModel: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
     vehicleManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
     vehicleModelYear: new FormControl('', GenericValidator.dateValidation()),
     vehicleColor: new FormControl('', Validators.required),
-    vehicleChassisNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
+    vehicleChassisNumber: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
     vehicleCurrentMileage: new FormControl('', GenericValidator.negativeValidation()),
     vehicleCurrentFipeValue: new FormControl('', GenericValidator.negativeValidation()),
     vehicleDoneInspection: new FormControl(false)
@@ -61,10 +61,11 @@ export class BeneficiaryVehicleComponent implements OnInit {
       })
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicle', form, httpOptions)
-    .subscribe(data => {this.response = data});
-    
-    if(this.response != null){
-      this.messageVehicleEvent.emit(this.response.beneficiaryId);
-    }
+    .subscribe(data => {
+      this.response = data;
+      if(this.response != null){
+        this.messageVehicleEvent.emit(this.response.beneficiaryId);
+      }
+    });
   }
 }
