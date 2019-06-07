@@ -26,10 +26,10 @@ export class BeneficiaryPetComponent implements OnInit {
   @Output() messagePetEvent = new EventEmitter<any>();
 
   petCreateForm= this.formBuilder.group({
-    petName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    petName: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
     petBirthdate: new FormControl('', GenericValidator.dateValidation()),
     petSpecies: new FormControl('', Validators.required),
-    petBreed: new FormControl('', Validators.pattern(GenericValidator.regexName))
+    petBreed: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName))
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
@@ -52,9 +52,5 @@ export class BeneficiaryPetComponent implements OnInit {
       if(this.response != null)
         this.messagePetEvent.emit(this.response.beneficiaryId);
     });
-
-    //if(this.response != null){
-      ;
-    //}
   }
 }

@@ -100,48 +100,50 @@ export class ContractComponent implements OnInit {
 
   addBeneficiary(): void {
     this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
+    this.aux = this.contractform.get('beneficiaries') as FormArray;
     if(this.beneficiaries.length<5){
       this.beneficiaries.push(this.createBeneficiary());
+      this.aux.push(this.createBeneficiary());
     }
-    console.log(this.holders);
   }
 
   receiveMessage($event) {
-    console.log($event);
     this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
-    this.aux = this.contractform.get('beneficiaries');
+
     this.beneficiaries.value[this.beneficiaries.length-1].beneficiaryId = $event;
-    //this.aux.value[this.beneficiaries.length-1] = $event;
-    console.log(this.contractform);
   }
 
   clearBeneficiary(): void{
+    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
+    this.aux = this.contractform.get('beneficiaries') as FormArray;
     this.beneficiaries.controls.pop();
-    
+    this.aux.controls.pop();
     this.cType = '';
   }
 
   removeBeneficiary(i){
+    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
+    this.aux = this.contractform.get('beneficiaries') as FormArray;
     this.beneficiaries.removeAt(i);
+    this.aux.removeAt(i);
   }
 
   postContract(){
-    console.log(this.contractform.value);
     this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
-    this.aux = this.contractform.get('beneficiaries');
-    let i = 0;
-    for(i = 0; i<this.beneficiaries.length; i++)
-    {
-      this.aux.value[this.beneficiaries.length-1] = this.beneficiaries.value[this.beneficiaries.length-1].beneficiaryId
+      this.aux = this.contractform.get('beneficiaries') as FormArray;
+      this.aux.controls.pop();
+      let i;
+      for (i = 0; i < this.beneficiaries.length; i++) {
+          this.aux.value[i] = this.beneficiaries.value[i].beneficiaryId;
+      }
+      let form = JSON.stringify(this.contractform.value);
+      console.log(form);
+      const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json'
+          })
+      };
+      this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+          .subscribe(data => console.log(data));
     }
-    let form = JSON.stringify(this.contractform.value);
-    console.log(form);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
-    .subscribe(data => console.log(data));
-  }
 }

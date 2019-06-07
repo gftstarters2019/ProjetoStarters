@@ -32,29 +32,26 @@ export class BeneficiaryIndividualComponent implements OnInit {
   response:any;
 
   public individualPost(): void{
-    // let cpf = this.individualCreateForm.get('individualCPF').value;
-    // cpf = cpf.replace(/\D+/g, '');
-    // this.individualCreateForm.get('individualCPF').setValue(cpf);
+    let cpf = this.individualCreateForm.get('individualCPF').value;
+    cpf = cpf.replace(/\D+/g, '');
+    this.individualCreateForm.get('individualCPF').setValue(cpf);
 
-    // let rg = this.individualCreateForm.get('individualRG').value;
-    // rg = rg.replace(/\D+/g, '');
-    // this.individualCreateForm.get('individualRG').setValue(rg);
+    let rg = this.individualCreateForm.get('individualRG').value;
+    rg = rg.replace(/\D+/g, '');
+    this.individualCreateForm.get('individualRG').setValue(rg);
 
-    // let form = JSON.stringify(this.individualCreateForm.value);
-    // console.log(form);
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type':  'application/json'
-    //   })
-    // };
-    // this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual', form, httpOptions)
-    // .subscribe(data => {
-    //   this.response = data;
-    //   if(this.response != null){
-    //     this.messageIndividualEvent.emit(this.response.beneficiaryId);
-    //   }
-    // });
-    
-    this.messageIndividualEvent.emit(123);
+    let form = JSON.stringify(this.individualCreateForm.value);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual', form, httpOptions)
+    .subscribe(data => {
+      this.response = data;
+      if(this.response != null){
+        this.messageIndividualEvent.emit(this.response.beneficiaryId);
+      }
+    });
   }
 }
