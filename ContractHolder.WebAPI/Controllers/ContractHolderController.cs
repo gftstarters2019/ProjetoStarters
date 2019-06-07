@@ -56,6 +56,10 @@ namespace ContractHolder.WebAPI.Controllers
         public IActionResult ContractHolder(Guid id)
         {
             var obj = _contractHolderViewModelReadOnlyRepository.Find(id);
+
+            if (obj == null)
+                return NotFound();
+
             return Ok(obj);
         }
 

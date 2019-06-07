@@ -67,7 +67,7 @@ namespace Backend.Application.Factories
         public static bool NameIsValid(string name)
         {
             //Validando se só tem letras no Nome
-            if (!new Regex("^[a-zA-Z]+$").IsMatch(name))
+            if (!new Regex("^[A-ZÀ-Ÿ][A-zÀ-ÿ']+\\s([A-zÀ-ÿ']\\s?)*[A-ZÀ-Ÿ][A-zÀ-ÿ']+$").IsMatch(name))
                 return false;
 
             return true;
