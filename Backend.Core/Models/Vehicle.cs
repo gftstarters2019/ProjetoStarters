@@ -6,7 +6,6 @@ namespace Backend.Core.Models
 {
     public class Vehicle : Beneficiary
     {
-        public Guid VehicleId { get; set; }
         public string VehicleBrand { get; set; }
         public string VehicleModel { get; set; }
         public DateTime VehicleManufactoringYear { get; set; }

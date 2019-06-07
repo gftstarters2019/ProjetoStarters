@@ -25,7 +25,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   gridApi;
   gridColumApi;
 
-  calopsita2: boolean = false;
 
   gridOptions: GridOptions;
   load_failure: boolean;
@@ -53,12 +52,20 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   private handle_editUser(data: any) {
+       this.contractHolder.patchValue(data);
+     }
+    
+    private handle_deleteUser(data: any) {
+     
+    let json = JSON.stringify(this.contractHolder.value);
+    let id = this.contractHolder.value.individualId;
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => console.log(data));      
     console.log(data);
-
-    this.contractHolder.patchValue(data);
-  }
-
-  private handle_removeUser(data: any) {
 
   }
 
@@ -235,7 +242,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           lockPosition: true,
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
-            onEdit: this.handle_editUser.bind(this)
+            onEdit: this.handle_editUser.bind(this),
+            onDelete: this.handle_deleteUser.bind(this)
           }
         },
 
@@ -247,7 +255,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
         getDetailRowData: function (params) {
           params.successCallback(params.data.idAddress);
-          debugger;
           console.log(params);
         },
 

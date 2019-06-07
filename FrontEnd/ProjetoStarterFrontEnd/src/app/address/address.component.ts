@@ -76,23 +76,22 @@ export class AddressComponent implements OnInit {
     // this.message=this.address.get(['id']).value;
   }
 
-  //  emitValue() {
-  //    this.add.emit(this.address.value)
-  //    debugger;
-  //  }
+   emitValue() {
+     this.add.emit(this.address.value)
+   }
 
-  // createAddress(): FormGroup {
-  //   return this.fb.group({
-  //     id: ''
-  //   });
-  // }
+  createAddress(): FormGroup {
+    return this.fb.group({
+      id: ''
+    });
+  }
 
-  // addAddress(): void {
-  //   this.addressAdd = this.address.get('addressAdd') as FormArray;
-  //   if(this.addressAdd.length<5){
-  //     this.addressAdd.push(this.createAddress());
-  //   }
-  // }
+  addAddress(): void {
+    this.addressAdd = this.address.get('addressAdd') as FormArray;
+    if(this.addressAdd.length<5){
+      this.addressAdd.push(this.createAddress());
+    }
+  }
   
   zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
     let zipCodeNumber = control.value;
