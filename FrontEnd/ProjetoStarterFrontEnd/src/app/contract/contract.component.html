@@ -37,7 +37,7 @@
       <mat-card>
         <mat-form-field>
           <mat-label>Select Contract Type:</mat-label>
-          <mat-select formControlName="Type" name="types">
+          <mat-select formControlName="type" name="types">
             <mat-option *ngFor="let type of types" [value]="type.value">
               {{type.viewValue}}
             </mat-option>
@@ -46,7 +46,7 @@
 
         <mat-form-field>
           <mat-label>Select Contract Category:</mat-label>
-          <mat-select formControlName="Category" name="category">
+          <mat-select formControlName="category" name="category">
             <mat-option *ngFor="let category of categories" [value]="category.value">
               {{category.viewValue}}
             </mat-option>
@@ -55,10 +55,10 @@
 
 
         <mat-form-field>
-          <input matInput [matDatepicker]="ExpiryDate" placeholder="Contract Expiry Date" formControlName="ExpiryDate"
+          <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" formControlName="expiryDate"
             required>
-          <mat-datepicker-toggle matSuffix [for]="ExpiryDate"></mat-datepicker-toggle>
-          <mat-datepicker #ExpiryDate></mat-datepicker>
+          <mat-datepicker-toggle matSuffix [for]="expiryDate"></mat-datepicker-toggle>
+          <mat-datepicker #expiryDate></mat-datepicker>
         </mat-form-field> <br>
 
         <mat-label>Contract Status: </mat-label>

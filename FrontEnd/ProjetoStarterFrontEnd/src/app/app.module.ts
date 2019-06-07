@@ -27,14 +27,12 @@ import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/be
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MatCardModule} from '@angular/material/card';
-import { CdkTableModule } from '@angular/cdk/table';
 import {ObserversModule} from '@angular/cdk/observers';
 import { IndividualListComponent } from './individual-list/individual-list.component';
 import { PetListComponent } from './pet-list/pet-list.component';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { RealtiesListComponent } from './realties-list/realties-list.component';
 import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-list.component';
-import {MatCardModule} from '@angular/material/card';
 import { ActionButtonComponent } from './action-button/action-button.component';
 
 @NgModule({
@@ -53,7 +51,7 @@ import { ActionButtonComponent } from './action-button/action-button.component';
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
     TelephoneComponent,
-    ActionButtonComponent
+    ActionButtonComponent,
     TelephoneComponent,
     IndividualListComponent,
     PetListComponent,

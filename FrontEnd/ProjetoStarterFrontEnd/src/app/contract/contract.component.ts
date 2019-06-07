@@ -65,9 +65,9 @@ export class ContractComponent implements OnInit {
   ];
 
   contractform = this.fb.group({
-    Type: ['', Validators.required],
-    Category: ['', Validators.required],
-    ExpiryDate: ['', Validators.required],
+    type: ['', Validators.required],
+    category: ['', Validators.required],
+    expiryDate: ['', Validators.required],
     isActive: ['', Validators.required],
     beneficiaries: this.fb.array([])
   });
