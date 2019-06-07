@@ -59,9 +59,16 @@ namespace Beneficiaries.WebAPI.Controllers
             _individualWriteRepository = individualWriteRepository;
 
             _petReadOnlyRepository = petReadOnlyRepository;
+            _petWriteRepository = petWriteRepository;
+
             _mobileDeviceReadOnlyRepository = mobileDeviceReadOnlyRepository;
+            _mobileWriteRepository = mobileDeviceWriteRepository;
+
             _realtyReadOnlyRepository = realtyReadOnlyRepository;
+            _realtyWriteRepository = realtyWriteRepository;
+
             _vehicleReadOnlyRepository = vehicleReadOnlyRepository;
+            _vehicleWriteRepository = vehicleWriteRepository;
         }
 
         /// <summary>
@@ -537,7 +544,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <returns>If date is valid</returns>
         public static bool DateIsValid(DateTime date)
         {
-            return date != null ? date > DateTime.Today : false;
+            return date != null ? date < DateTime.Today : false;
         }
 
         /// <summary>

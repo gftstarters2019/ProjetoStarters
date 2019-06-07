@@ -55,7 +55,11 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult ContractHolder(Guid id)
         {
-            var obj = _contractHolderReadOnlyRepository.Find(id);
+            var obj = _contractHolderViewModelReadOnlyRepository.Find(id);
+
+            if (obj == null)
+                return NotFound();
+
             return Ok(obj);
         }
 
@@ -67,9 +71,6 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel vm)
         {
-            //if (!ContractHolderIsValid(individual))
-            //    return StatusCode(403);
-
             if (!_contractHolderViewModelWriteRepository.Add(vm))
                 return StatusCode(403);
 
@@ -80,53 +81,16 @@ namespace ContractHolder.WebAPI.Controllers
         /// <summary>
         /// Updates a Contract Holder
         /// </summary>
-        /// <param name="id">GUID of the chosen Contract Holder</param>
-        /// <param name="individual">Updated Contract Holder object</param>
-        /// <returns>Updated Contract Holder</returns>
+        /// <param name="id"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateContractHolder(Guid id, [FromBody] ContractHolderViewModel newIndividualViewModel)
+        public IActionResult UpdateContractHolder(Guid id, [FromBody] ContractHolderViewModel vm)
         {
-            //var oldContractHolder = _contractHolderReadOnlyRepository.Find(id);
+            if(_contractHolderViewModelWriteRepository.Update(id, vm) == null)
+                return StatusCode(403);
 
-            //if (oldContractHolder != null)
-            //    return StatusCode(403);
-
-            //var newIndividual = ViewModelCreator.IndividualFactory.Create(newIndividualViewModel);
-            
-            //if(newIndividual != null)
-            //{
-            //    oldContractHolder.IndividualBirthdate
-            //    oldContractHolder.IndividualCPF
-            //    oldContractHolder.IndividualEmail
-            //    oldContractHolder.IndividualName
-            //    oldContractHolder.IndividualRG
-            //}
-
-
-            //if (_contractHolderWriteRepository.Update(oldContractHolder) != null)
-            //    return Ok();
-            return StatusCode(403);
-
-
-
-
-
-
-
-            //
-            //if (!ContractHolderIsValid(individual))
-            //    return StatusCode(403);
-
-            //var obj = _contractHolderReadOnlyRepository.Find(id);
-
-            //obj.IndividualBirthdate = individual.IndividualBirthdate;
-            //obj.IndividualCPF = individual.IndividualCPF;
-            //obj.IndividualEmail = individual.IndividualEmail;
-            //obj.IndividualName = individual.IndividualName;
-            //obj.IndividualRG = individual.IndividualRG;
-
-            //return Ok(_contractHolderWriteRepository.Update(obj));
-
+            return Ok(vm);
         }
 
         /// <summary>
@@ -137,15 +101,19 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteContractHolder(Guid id)
         {
-            if (_contractsReadOnlyRepository.Get().Where(sc => sc.IndividualId == id).ToList().Count > 0)
-                return Forbid();
+            //if (_contractsReadOnlyRepository.Get().Where(sc => sc.IndividualId == id).ToList().Count > 0)
+            //    return Forbid();
 
-            var contractHolder = _contractHolderReadOnlyRepository.Find(id);
+            var contractHolder = _contractHolderViewModelReadOnlyRepository.Find(id);
 
             if (contractHolder != null)
             {
                 contractHolder.IsDeleted = !contractHolder.IsDeleted;
-                return Ok(_contractHolderWriteRepository.Update(id, contractHolder));
+
+                if (_contractHolderViewModelWriteRepository.Update(id, contractHolder) == null)
+                    return StatusCode(403);
+
+                return Ok(_contractHolderViewModelWriteRepository.Update(id, contractHolder));
             }
             else return NotFound(contractHolder);
         }
