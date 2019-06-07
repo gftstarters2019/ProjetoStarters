@@ -9,11 +9,10 @@ import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AddressComponent } from './address/address.component';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './material/material.module';
 
 import { ContractComponent } from './contract/contract.component';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
-import { ContractListComponent } from './contract-list/contract-list.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
@@ -36,7 +35,6 @@ import { ActionButtonComponent } from './action-button/action-button.component';
     ContractHolderComponent,
     AddressComponent,
     ContractComponent,
-    ContractListComponent,
     BeneficiaryListComponent,
     SidebarComponent,
     BeneficiarylistAddComponent,
