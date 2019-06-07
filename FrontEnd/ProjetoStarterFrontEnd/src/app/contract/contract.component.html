@@ -7,28 +7,22 @@
   </mat-label>
 
 
-  <mat-card class="card-contract">
-
-  
-    <form [formGroup]="contractform">
-      <div class="contractCard">
-      <mat-card >
-        <mat-form-field style="width: 300px;">
-          <mat-label>Contract Holder's name:</mat-label>
-          <mat-select formControlName="contractHolderId" name="contractHolderId">
-              <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
-                  {{holder.individualName}}
-                  <mat-error></mat-error>
-              </mat-option>
-          </mat-select>
-        </mat-form-field>  
-       </mat-card>
-    </div>
-
-
-
   <form [formGroup]="contractform">
     <div class="contractCard">
+
+        <div class="contractCard">
+            <mat-card >
+              <mat-form-field style="width: 300px;">
+                <mat-label>Contract Holder's name:</mat-label>
+                <mat-select formControlName="contractHolderId" name="contractHolderId">
+                    <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
+                        {{holder.individualName}}
+                        <mat-error></mat-error>
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>  
+             </mat-card>
+          </div>
 
         <mat-card >
           <mat-form-field>
@@ -63,7 +57,7 @@
         </mat-card> 
       </div>
           
-          <button mat-raised-button color="primary" type="button" (click)="assignContractType(); addBeneficiary();">Add Beneficiary</button>
+          
 
           <div *ngIf="cType == 0 || cType==2 || cType==3">
             <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
@@ -78,6 +72,7 @@
   
               </div>
             </div>
+          </div>
         <div *ngIf="cType == 1">
           <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i"  class="contractCard">
@@ -122,6 +117,8 @@
               </div>
             </div>
           </div>
+
+          <button mat-raised-button color="primary" type="button" (click)="assignContractType(); addBeneficiary();">Add Beneficiary</button>
 
      
         <br><br>

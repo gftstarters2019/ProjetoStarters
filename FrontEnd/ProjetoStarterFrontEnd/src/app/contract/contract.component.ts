@@ -9,7 +9,6 @@ export interface Type {
   value: number;
   viewValue: string;
 }
-
 export interface Category {
   value: number;
   viewValue: string;
@@ -45,9 +44,10 @@ export class ContractComponent implements OnInit {
   load_failure: boolean;
 
 
-    aux;
+  aux;
 
-    holders: Holder[];
+  holders: Holder[];
+
 
   cType: any;
 
@@ -57,7 +57,7 @@ export class ContractComponent implements OnInit {
     { value: 2, viewValue: 'Contract Dental Plan' },
     { value: 3, viewValue: 'Contract Life Insurance Plan' },
     { value: 4, viewValue: 'Contract Real Estate Insurance' },
-    { value: 5, viewValue: 'Contract Car insurance' },
+    { value: 5, viewValue: 'Contract Vehicle insurance' },
     { value: 6, viewValue: 'Contract Mobile device Insurance' },
   ];
   contractCategories: Category[] = [
@@ -74,7 +74,7 @@ export class ContractComponent implements OnInit {
     type: ['', Validators.required],
     category: ['', Validators.required],
     expiryDate: ['', Validators.required],
-    isActive:['false', Validators.required],
+    isActive:['true', Validators.required],
     beneficiaries: this.fb.array([])
   });
 
@@ -88,12 +88,13 @@ export class ContractComponent implements OnInit {
     this.setup_gridData();
     this.setup_gridOptions();
     this.paginationPageSize = 50;
-    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[] )=> {
-      console.log(data);
-      this.holders = data;
+
+    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
+        console.log(data);
+        this.holders = data;
     }); 
   }
-  
+
   public showList(): void {
     this.showlist = !this.showlist;
   }
@@ -122,7 +123,7 @@ export class ContractComponent implements OnInit {
 
   receiveMessage($event) {
     this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
-
+    
     this.beneficiaries.value[this.beneficiaries.length-1].beneficiaryId = $event;
   }
 
@@ -139,6 +140,24 @@ export class ContractComponent implements OnInit {
     this.aux = this.contractform.get('beneficiaries') as FormArray;
     this.beneficiaries.removeAt(i);
     this.aux.removeAt(i);
+  }
+
+  postContract() {
+      this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
+      this.aux = this.contractform.get('beneficiaries') as FormArray;
+      this.aux.controls.pop();
+      let i;
+      for (i = 0; i < this.beneficiaries.length; i++) {
+          this.aux.value[i] = this.beneficiaries.value[i].beneficiaryId;
+      }
+      let form = JSON.stringify(this.contractform.value);
+      const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json'
+          })
+      };
+      this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+          .subscribe(data => console.log(data));
   }
 
   //AG-grid Table Contract
@@ -234,23 +253,4 @@ export class ContractComponent implements OnInit {
     this.contractform.patchValue(data);
 
   }
-
-    postContract() {
-        this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
-        this.aux = this.contractform.get('beneficiaries') as FormArray;
-        this.aux.controls.pop();
-        let i;
-        for (i = 0; i < this.beneficiaries.length; i++) {
-            this.aux.value[i] = this.beneficiaries.value[i].beneficiaryId;
-        }
-        let form = JSON.stringify(this.contractform.value);
-        console.log(form);
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json'
-            })
-        };
-        this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
-            .subscribe(data => console.log(data));
-    }
 }
