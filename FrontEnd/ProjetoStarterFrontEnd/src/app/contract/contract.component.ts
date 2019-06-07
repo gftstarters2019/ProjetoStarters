@@ -88,7 +88,7 @@ export class ContractComponent implements OnInit {
   }
 
   public assignContractType(): void {
-    this.cType = this.contractform.get(['Type']).value;
+    this.cType = this.contractform.get(['type']).value;
   }
 
   createBeneficiary(): FormGroup {
