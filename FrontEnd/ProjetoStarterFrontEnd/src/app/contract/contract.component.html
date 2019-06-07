@@ -1,11 +1,11 @@
 <div class="container">
 
-  
-   
-    <mat-label>
-      <h2 class="titleContract">Contract</h2>
-    </mat-label>
-   
+
+
+  <mat-label>
+    <h2 class="titleContract">Contract</h2>
+  </mat-label>
+
 
 
   
@@ -26,9 +26,8 @@
 
 
 
-      <button class="btn-list" mat-raised-button color="primary" type="button" [routerLink]="['/contract-holder']" >New Contract Holder</button>
-
-      <div class="contractCard"> 
+  <form [formGroup]="contractform">
+    <div class="contractCard">
 
         <mat-card >
           <mat-form-field>
@@ -141,53 +140,43 @@
       
    <div class="contractCard">
 
-     <mat-card>        
-       <mat-accordion *ngIf="!showlist;">
-         <mat-expansion-panel>
-           <mat-expansion-panel-header class="listpanel-header">
-             <mat-panel-title>
-               Contract's List
+      <mat-card>
+        <mat-accordion *ngIf="!showlist;">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header class="listpanel-header">
+              <mat-panel-title>
+                Contract's List
               </mat-panel-title>
             </mat-expansion-panel-header>
-            
+
             <mat-nav-list>
-              <app-contract-list></app-contract-list>
+              <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true"
+                [paginationPageSize]="paginationPageSize" class="ag-theme-material" [masterDetail]="true"
+                [gridOptions]="gridOption" [rowData]="rowData$ | async">
+              </ag-grid-angular>
             </mat-nav-list>
-            
-            
-            <button class="btn-update" mat-raised-button color="primary" type="button">Update</button>
-            <button class="btn-delete" mat-raised-button color="primary" type="button">Delete</button>
-            
-            
-            
+
           </mat-expansion-panel>
         </mat-accordion>
       </mat-card>
     </div>
-      
 
-        <mat-accordion *ngIf="!showlist2;">
-          <mat-expansion-panel>
-            <mat-expansion-panel-header class="listpanel-header">
-              <mat-panel-title>
-                Beneficiary's List
-              </mat-panel-title>
-            </mat-expansion-panel-header>
 
-            <mat-nav-list>
-              <app-beneficiary-list></app-beneficiary-list>
+    <mat-accordion *ngIf="!showlist2;">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header class="listpanel-header">
+          <mat-panel-title>
+            Beneficiary's List
+          </mat-panel-title>
+        </mat-expansion-panel-header>
 
-            </mat-nav-list>
+        <mat-nav-list>
+          <app-beneficiary-list></app-beneficiary-list>
 
-        
+        </mat-nav-list>
 
-              <button class="btn-update" mat-raised-button color="primary" type="button">Update</button>
-              <button class="btn-delete" mat-raised-button color="primary" type="button">Delete</button>
-
-          
-
-          </mat-expansion-panel>
-        </mat-accordion>
+      </mat-expansion-panel>
+    </mat-accordion>
 
 
     </form>
