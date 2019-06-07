@@ -25,6 +25,7 @@ namespace Backend.Application.Factories
                 individual = new Individual
                 {
                     BeneficiaryId = Guid.NewGuid(),
+                    IsDeleted = false,
                     IndividualCPF = vm.IndividualCPF,
                     IndividualName = vm.IndividualName,
                     IndividualRG = vm.IndividualRG,

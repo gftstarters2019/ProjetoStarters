@@ -103,7 +103,6 @@ namespace Backend.Infrastructure.Repositories
                     if (_db.Contracts.Where(con => con.ContractId == beneficiarySignedContract.ContractId && con.ContractType == viewModel.Type).Any())
                         return false;
                 }
-
                 var contract_beneficiary = new ContractBeneficiary()
                 {
                     BeneficiaryId = ben,
@@ -301,7 +300,6 @@ namespace Backend.Infrastructure.Repositories
                     if (_db.Contracts.Where(con => con.ContractId == beneficiarySignedContract.ContractId && con.ContractType == viewModel.Type).Any())
                         return false;
                 }
-
                 var contract_beneficiary = new ContractBeneficiary()
                 {
                     BeneficiaryId = ben,

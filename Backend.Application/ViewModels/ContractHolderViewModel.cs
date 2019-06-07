@@ -22,6 +22,7 @@ namespace Backend.Application.ViewModels
         [MaxLength(30)]
         public string IndividualEmail { get; set; }
         public DateTime IndividualBirthdate { get; set; }
+        public bool IsDeleted { get; set; }
 
         public List<Telephone> IndividualTelephones { get; set; }
         public List<Address> IndividualAddresses { get; set; }
