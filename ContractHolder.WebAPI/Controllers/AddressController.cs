@@ -95,7 +95,7 @@ namespace ContractHolder.WebAPI.Controllers
 
             if (Validate(address))
             {
-                return Ok(_addressWriteRepository.Update(obj));
+                return Ok(_addressWriteRepository.Update(id, obj));
             }
             else
                 return Conflict();

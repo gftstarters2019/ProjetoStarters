@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Backend.Application.ViewModels;
 using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
@@ -48,6 +49,22 @@ namespace Beneficiaries.WebAPI
             services.AddScoped<IReadOnlyRepository<Beneficiary>, BeneficiaryRepository>();
             services.AddScoped<IWriteRepository<Beneficiary>, BeneficiaryRepository>();
             services.AddScoped<IReadOnlyRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
+
+            services.AddScoped<IReadOnlyRepository<Individual>, IndividualRepository>();
+            services.AddScoped<IWriteRepository<Individual>, IndividualRepository>();
+
+            services.AddScoped<IReadOnlyRepository<MobileDevice>, MobileDeviceRepository>();
+            services.AddScoped<IWriteRepository<MobileDevice>, MobileDeviceRepository>();
+
+            services.AddScoped<IReadOnlyRepository<RealtyViewModel>, RealtyRepository>();
+            services.AddScoped<IWriteRepository<Realty>, RealtyRepository>();
+
+            services.AddScoped<IReadOnlyRepository<Pet>, PetRepository>();
+            services.AddScoped<IWriteRepository<Pet>, PetRepository>();
+
+            services.AddScoped<IReadOnlyRepository<Vehicle>, VehicleRepository>();
+            services.AddScoped<IWriteRepository<Vehicle>, VehicleRepository>();
+
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 

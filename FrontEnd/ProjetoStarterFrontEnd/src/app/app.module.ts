@@ -9,11 +9,10 @@ import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AddressComponent } from './address/address.component';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './material/material.module';
 
 import { ContractComponent } from './contract/contract.component';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
-import { ContractListComponent } from './contract-list/contract-list.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
@@ -27,7 +26,13 @@ import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-rea
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule} from '@angular/material/card';
+import {ObserversModule} from '@angular/cdk/observers';
+import { IndividualListComponent } from './individual-list/individual-list.component';
+import { PetListComponent } from './pet-list/pet-list.component';
+import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
+import { RealtiesListComponent } from './realties-list/realties-list.component';
+import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-list.component';
 import { ActionButtonComponent } from './action-button/action-button.component';
 
 @NgModule({
@@ -36,20 +41,26 @@ import { ActionButtonComponent } from './action-button/action-button.component';
     ContractHolderComponent,
     AddressComponent,
     ContractComponent,
-    ContractListComponent,
     BeneficiaryListComponent,
     SidebarComponent,
-    BeneficiarylistAddComponent,
     TableListComponent,
+    BeneficiarylistAddComponent,
     BeneficiaryIndividualComponent,
     BeneficiaryPetComponent,
     BeneficiaryVehicleComponent,
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
     TelephoneComponent,
-    ActionButtonComponent
+    ActionButtonComponent,
+    TelephoneComponent,
+    IndividualListComponent,
+    PetListComponent,
+    VehicleListComponent,
+    RealtiesListComponent,
+    MobileDeviceListComponent,
   ],
   imports: [
+    ObserversModule,
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
