@@ -6,7 +6,6 @@ namespace Backend.Core.Models
 {
     public class Pet : Beneficiary
     {
-        public Guid PetId { get; set; }
         [MaxLength(40)]
         public string PetName { get; set; }
         public PetSpecies PetSpecies { get; set; }

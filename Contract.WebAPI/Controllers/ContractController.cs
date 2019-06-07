@@ -1,4 +1,5 @@
-﻿using Backend.Core.Enums;
+﻿using Backend.Application.ViewModels;
+using Backend.Core.Enums;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,6 +8,9 @@ using System.Linq;
 
 namespace Contract.WebAPI.Controllers
 {
+    /// <summary>
+    /// Contract API
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ContractController : ControllerBase
@@ -15,18 +19,31 @@ namespace Contract.WebAPI.Controllers
         private readonly IWriteRepository<Backend.Core.Models.Contract> _contractWriteRepository;
         private readonly IReadOnlyRepository<Backend.Core.Models.SignedContract> _signedContractReadOnlyRepository;
 
-        public ContractController(IReadOnlyRepository<Backend.Core.Models.Contract> contractReadOnlyRepository, IWriteRepository<Backend.Core.Models.Contract> contractWriteRepository, IReadOnlyRepository<Backend.Core.Models.SignedContract> signedContractReadOnlyRepository)
+        private readonly IReadOnlyRepository<ContractViewModel> _contractViewModelReadOnlyRepository;
+        private readonly IWriteRepository<ContractViewModel> _contractViewModelWriteRepository;
+
+        /// <summary>
+        /// ContractController constructor
+        /// </summary>
+        public ContractController(IReadOnlyRepository<Backend.Core.Models.Contract> contractReadOnlyRepository, IWriteRepository<Backend.Core.Models.Contract> contractWriteRepository, IReadOnlyRepository<Backend.Core.Models.SignedContract> signedContractReadOnlyRepository,
+            IReadOnlyRepository<ContractViewModel> contractViewModelReadOnlyRepository,
+            IWriteRepository<ContractViewModel> contractViewModelWriteRepository)
         {
             _contractReadOnlyRepository = contractReadOnlyRepository;
             _contractWriteRepository = contractWriteRepository;
             _signedContractReadOnlyRepository = signedContractReadOnlyRepository;
+            _contractViewModelReadOnlyRepository = contractViewModelReadOnlyRepository;
+            _contractViewModelWriteRepository = contractViewModelWriteRepository;
         }
 
-        // GET api/Contract
+        /// <summary>
+        /// Gets all Contracts
+        /// </summary>
+        /// <returns>All Contracts</returns>
         [HttpGet]
         public IActionResult Contracts()
         {
-            return Ok(_contractReadOnlyRepository.Get());
+            return Ok(_contractViewModelReadOnlyRepository.Get());
         }
 
         /// <summary>
@@ -68,7 +85,11 @@ namespace Contract.WebAPI.Controllers
             return Ok(types);
         }
 
-        // GET api/Contract/5
+        /// <summary>
+        /// Gets a specific Contract
+        /// </summary>
+        /// <param name="id">ID of the chosen Contract</param>
+        /// <returns>Chosen Contract</returns>
         [HttpGet("{id}")]
         public IActionResult Contract(Guid id)
         {
@@ -76,25 +97,33 @@ namespace Contract.WebAPI.Controllers
             return Ok(obj);
         }
 
+        /// <summary>
+        /// Creates a new Contract
+        /// </summary>
+        /// <param name="contract">Contract to be created</param>
+        /// <returns>Created Contract</returns>
         [HttpPost]
-        public IActionResult PostContract([FromBody] Backend.Core.Models.Contract contract)
+        public IActionResult PostContract([FromBody] ContractViewModel contract)
         {
-            if (!ContractIsValid(contract))
-                return StatusCode(403); //Forbbiden
+            if (!_contractViewModelWriteRepository.Add(contract))
+                return StatusCode(403);
 
-            _contractWriteRepository.Add(contract);
-            return Ok(contract);
+            return Ok();
         }
 
+        /// <summary>
+        /// Updates a Contract
+        /// </summary>
+        /// <param name="id">GUID of the Contract to update</param>
+        /// <param name="contractViewModel">ContractViewModel with updated values</param>
+        /// <returns>Updated Contract</returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateContract(Guid id, [FromBody] Backend.Core.Models.Contract contract)
+        public IActionResult UpdateContract(Guid id, [FromBody] ContractViewModel contractViewModel)
         {
-            //Implementar Validações
-            var obj = _contractReadOnlyRepository.Find(id);
-
-            obj.ContractId = contract.ContractId;
-
-            return Ok(_contractWriteRepository.Update(obj));
+            var updatedContract = _contractViewModelWriteRepository.Update(id, contractViewModel);
+            if (updatedContract == null)
+                return StatusCode(403);
+            return Ok(updatedContract);
         }
 
         /// <summary>
@@ -105,7 +134,8 @@ namespace Contract.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteContract(Guid id)
         {
-            if (_signedContractReadOnlyRepository.Get().Where(sc => sc.ContractIndividualIsActive).ToList().Count > 0)
+            if (_signedContractReadOnlyRepository.Get()
+                .Where(sc => sc.ContractIndividualIsActive && sc.ContractId == id).ToList().Count > 0)
                 return Forbid();
 
             var contract = _contractReadOnlyRepository.Find(id);
@@ -113,7 +143,7 @@ namespace Contract.WebAPI.Controllers
             if (contract != null)
             {
                 contract.ContractDeleted = !contract.ContractDeleted;
-                return Ok(_contractWriteRepository.Update(contract));
+                return Ok(_contractWriteRepository.Update(id, contract));
             }
 
             return NotFound(contract);
