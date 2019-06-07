@@ -55,14 +55,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
      }
     
     private handle_deleteUser(data: any) {
-     
-    let json = JSON.stringify(this.contractHolder.value);
     let id = this.contractHolder.value.individualId;
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
+    
     this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => console.log(data));      
     console.log(data);
 
@@ -100,7 +94,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     };
     if (this.contractHolder.value.individualId == '') 
     {
-      this.http.post('https://httpbin.org/post', json, httpOptions).subscribe(data => console.log(data));
+      this.http.post('https://contractholderwebapi.azurewebsites.net/api/ContractHolder', json, httpOptions).subscribe(data => console.log(data));
      
     } 
     
@@ -242,6 +236,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
             onEdit: this.handle_editUser.bind(this),
             onDelete: this.handle_deleteUser.bind(this)
           }
+
+      
         },
 
       ],
