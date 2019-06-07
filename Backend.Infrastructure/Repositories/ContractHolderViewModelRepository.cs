@@ -21,25 +21,26 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Add(ContractHolderViewModel vm)
         {
-            if (vm != null)
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
-                // Individual
-                var individual = ViewModelCreator.IndividualFactory.Create(vm);
-
-                if (individual == null)
-                    return false;
-
-                _db.Add(individual);
-
-                // Telephone
-                var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones);
-                if (vm.individualTelephones.Count() != 0)
+                if (vm != null)
                 {
-                    if (telephones.Count != vm.individualTelephones.Count || !telephones.Any())
+                    // Individual
+                    var individual = ViewModelCreator.IndividualFactory.Create(vm);
+
+                    if (individual == null)
                         return false;
 
-                    if (telephones.Count > 0)
+                    _db.Add(individual);
+
+                    // Telephone
+                    if (vm.individualTelephones.Count() != 0)
                     {
+                        var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones);
+                        if (telephones.Count != vm.individualTelephones.Count)
+                            return false;
+
                         foreach (var telephone in telephones)
                         {
                             _db.Add(telephone);
@@ -50,21 +51,16 @@ namespace Backend.Infrastructure.Repositories
                                 BeneficiaryId = individual.BeneficiaryId,
                                 TelephoneId = telephone.TelephoneId
                             });
-
                         }
                     }
-                }
 
-                // Address
-                var addresses = ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses);
-
-                if (vm.individualAddresses.Count() != 0)
-                {
-                    if (addresses.Count != vm.individualAddresses.Count || !addresses.Any())
-                        return false;
-
-                    if (addresses.Count > 0)
+                    // Address
+                    if (vm.individualAddresses.Count() != 0)
                     {
+                        var addresses = ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses);
+                        if (addresses.Count != vm.individualAddresses.Count)
+                            return false;
+
                         foreach (var address in addresses)
                         {
                             _db.Add(address);
@@ -75,16 +71,17 @@ namespace Backend.Infrastructure.Repositories
                                 BeneficiaryId = individual.BeneficiaryId,
                                 AddressId = address.AddressId
                             });
-
                         }
                     }
+
+                    _db.SaveChanges();
+                    scope.Complete();
+                    return true;
+
                 }
-
-                _db.SaveChanges();
-                return true;
-
+                scope.Complete();
+                return false;
             }
-            return false;
         }
 
         public ContractHolderViewModel Find(Guid id)
@@ -214,7 +211,7 @@ namespace Backend.Infrastructure.Repositories
                         vm.individualTelephones.Add(tel);
                         
                     }
-                    
+
                 }
 
                 ContractHolders.Add(vm);
@@ -239,7 +236,7 @@ namespace Backend.Infrastructure.Repositories
                 //Soft Delete
                 if (vm.isDeleted)
                 {
-                    if (_db.SignedContracts.Where(sigCon => (sigCon.ContractIndividualIsActive == true) && (sigCon.IndividualId == id)) != null)
+                    if (_db.SignedContracts.Where(sigCon => (sigCon.ContractIndividualIsActive == true) && (sigCon.IndividualId == id)).Any())
                         return null;
 
                     individual.IsDeleted = vm.isDeleted;
@@ -305,7 +302,7 @@ namespace Backend.Infrastructure.Repositories
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
         new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
-                
+
                 throw new NotImplementedException();
                 _db.SaveChanges();
 
