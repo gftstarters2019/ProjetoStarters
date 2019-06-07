@@ -26,10 +26,10 @@ export class BeneficiaryPetComponent implements OnInit {
   @Output() messagePetEvent = new EventEmitter<any>();
 
   petCreateForm= this.formBuilder.group({
-    petName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
+    petName: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
     petBirthdate: new FormControl('', GenericValidator.dateValidation()),
     petSpecies: new FormControl('', Validators.required),
-    petBreed: new FormControl('', Validators.pattern(GenericValidator.regexName))
+    petBreed: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName))
   });
 
   constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
@@ -47,10 +47,10 @@ export class BeneficiaryPetComponent implements OnInit {
       })
     };
     this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet', form, httpOptions)
-    .subscribe(data => {this.response = data});
-
-    if(this.response != null){
-      this.messagePetEvent.emit(this.response.beneficiaryId);
-    }
+    .subscribe(data => {
+      this.response = data;
+      if(this.response != null)
+        this.messagePetEvent.emit(this.response.beneficiaryId);
+    });
   }
 }
