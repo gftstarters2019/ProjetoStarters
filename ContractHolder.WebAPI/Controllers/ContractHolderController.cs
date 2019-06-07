@@ -1,4 +1,6 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Application.Singleton;
+using Backend.Application.ViewModels;
+using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Backend.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,18 +21,19 @@ namespace ContractHolder.WebAPI.Controllers
     {
         private readonly IReadOnlyRepository<Individual> _contractHolderReadOnlyRepository;
         private readonly IWriteRepository<Individual> _contractHolderWriteRepository;
+        private readonly IReadOnlyRepository<ContractHolderViewModel> _contractHolderViewModelReadOnlyRepository;
+        private readonly IWriteRepository<ContractHolderViewModel> _contractHolderViewModelWriteRepository;
         private readonly IReadOnlyRepository<SignedContract> _contractsReadOnlyRepository;
 
         /// <summary>
         /// ContractHolderController constructor
         /// </summary>
-        /// <param name="contractHolderReadOnlyRepository"></param>
-        /// <param name="contractHolderWriteRepository"></param>
-        /// <param name="contractsReadOnlyRepository"></param>
-        public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository, IReadOnlyRepository<SignedContract> contractsReadOnlyRepository)
+        public ContractHolderController(IReadOnlyRepository<Individual> contractHolderReadOnlyRepository, IWriteRepository<Individual> contractHolderWriteRepository, IReadOnlyRepository<ContractHolderViewModel> contractHolderViewModelReadOnlyRepository, IWriteRepository<ContractHolderViewModel> contractHolderViewModelWriteRepository, IReadOnlyRepository<SignedContract> contractsReadOnlyRepository)
         {
             _contractHolderReadOnlyRepository = contractHolderReadOnlyRepository;
             _contractHolderWriteRepository = contractHolderWriteRepository;
+            _contractHolderViewModelReadOnlyRepository = contractHolderViewModelReadOnlyRepository;
+            _contractHolderViewModelWriteRepository = contractHolderViewModelWriteRepository;
             _contractsReadOnlyRepository = contractsReadOnlyRepository;
         }
 
@@ -41,7 +44,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet]
         public IActionResult ContractHolders()
         {
-            return Ok(_contractHolderReadOnlyRepository.Get());
+            return Ok(_contractHolderViewModelReadOnlyRepository.Get());
         }
 
         /// <summary>
@@ -52,50 +55,38 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult ContractHolder(Guid id)
         {
-            var obj = _contractHolderReadOnlyRepository.Find(id);
+            var obj = _contractHolderViewModelReadOnlyRepository.Find(id);
             return Ok(obj);
         }
 
         /// <summary>
         /// Creates a new Contract Holder
         /// </summary>
-        /// <param name="individual">Contract Hodler to be created</param>
+        /// <param name="vm">Contract Holder to be created</param>
         /// <returns>Created Contract Holder</returns>
         [HttpPost]
-        public IActionResult PostContractHolder([FromBody] Individual individual)
+        public IActionResult PostContractHolder([FromBody] ContractHolderViewModel vm)
         {
-            individual.IndividualId = Guid.NewGuid();
-
-            if (!ContractHolderIsValid(individual))
+            if (!_contractHolderViewModelWriteRepository.Add(vm))
                 return StatusCode(403);
 
-            _contractHolderWriteRepository.Add(individual);
-            SendWelcomeEmail(individual);
-            return Ok(individual);
+            //SendWelcomeEmail(vm);
+            return Ok(vm);
         }
 
         /// <summary>
         /// Updates a Contract Holder
         /// </summary>
-        /// <param name="id">GUID of the chosen Contract Holder</param>
-        /// <param name="individual">Updated Contract Holder object</param>
-        /// <returns>Updated Contract Holder</returns>
+        /// <param name="id"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateContractHolder(Guid id, [FromBody] Individual individual)
+        public IActionResult UpdateContractHolder(Guid id, [FromBody] ContractHolderViewModel vm)
         {
-            if (!ContractHolderIsValid(individual))
+            if(_contractHolderViewModelWriteRepository.Update(id, vm) == null)
                 return StatusCode(403);
 
-            var obj = _contractHolderReadOnlyRepository.Find(id);
-
-            obj.IndividualBirthdate = individual.IndividualBirthdate;
-            obj.IndividualCPF = individual.IndividualCPF;
-            obj.IndividualEmail = individual.IndividualEmail;
-            obj.IndividualName = individual.IndividualName;
-            obj.IndividualRG = individual.IndividualRG;
-
-            return Ok(_contractHolderWriteRepository.Update(obj));
-
+            return Ok(vm);
         }
 
         /// <summary>
@@ -106,15 +97,19 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteContractHolder(Guid id)
         {
-            if (_contractsReadOnlyRepository.Get().Where(sc => sc.IndividualId == id).ToList().Count > 0)
-                return Forbid();
+            //if (_contractsReadOnlyRepository.Get().Where(sc => sc.IndividualId == id).ToList().Count > 0)
+            //    return Forbid();
 
-            var contractHolder = _contractHolderReadOnlyRepository.Find(id);
+            var contractHolder = _contractHolderViewModelReadOnlyRepository.Find(id);
 
             if (contractHolder != null)
             {
                 contractHolder.IsDeleted = !contractHolder.IsDeleted;
-                return Ok(_contractHolderWriteRepository.Update(contractHolder));
+
+                if (_contractHolderViewModelWriteRepository.Update(id, contractHolder) == null)
+                    return StatusCode(403);
+
+                return Ok(_contractHolderViewModelWriteRepository.Update(id, contractHolder));
             }
             else return NotFound(contractHolder);
         }
@@ -209,15 +204,17 @@ namespace ContractHolder.WebAPI.Controllers
         //}
         #endregion Validations
 
+        #region SendEmail
         /// <summary>
         /// Sends welcome email to Contract Holder
         /// </summary>
-        /// <param name="individual">Individual to send the email</param>
-        public void SendWelcomeEmail(Individual individual)
-        {
-            new EmailService().SendEmail("Welcome!",
-                $"Welcome {individual.IndividualName}!",
-                individual.IndividualEmail);
-        }
+        /// <param name="vm">Individual to send the email</param>
+        //public void SendWelcomeEmail(ContractHolderViewModel vm)
+        //{
+        //    new EmailService().SendEmail("Welcome!",
+        //        $"Welcome {vm.IndividualName}!",
+        //        vm.IndividualEmail);
+        //}
+        #endregion SendEmail
     }
 }
