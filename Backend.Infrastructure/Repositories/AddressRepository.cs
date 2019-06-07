@@ -25,27 +25,33 @@ namespace Backend.Infrastructure.Repositories
             .Addresses
             .ToList();
 
-        public void Add(Address address)
+        public bool Add(Address address)
         {
             if (address != null)
             {
                 _db.Add(address);
-                _db.SaveChanges();
+                if (_db.SaveChanges() == 1)
+                    return true;
+
+                return false;
             }
+            return false;
         }
 
-        public Address Remove(Address address)
+        public bool Remove(Guid id)
         {
+            var address = Find(id);
             if (address != null)
             {
                 _db.Remove(address);
                 _db.SaveChanges();
+                return true;
             }
 
-            return address;
+            return false;
         }
 
-        public Address Update(Address address)
+        public Address Update(Guid id, Address address)
         {
             if (address != null)
             {
