@@ -4,8 +4,8 @@
 <mat-label>
     <h2 class="titleContract">Contract Holder</h2>
   </mat-label>
-
-<form [formGroup]="contractHolder" (ngSubmit)="onSubmit()">
+ 
+<form [formGroup]="contractHolder" (ngSubmit)="onSubmit()" >
   
   <div class="addressBg"> 
     <mat-card> 
@@ -62,22 +62,16 @@
        <mat-icon class="material-icons">add</mat-icon>
   </button> 
   
-  <!-- <button mat-raised-button color="primary" (click)="removeAddress()">
-      <mat-icon class="material-icons">remove</mat-icon>
- </button> <br> <br><br> <br> -->
  
   
                 <!-- Final do Address -->
                 <br>
-  <button class="btn-position" button color="primary" mat-raised-button type="submit">Submit Contract Holder</button> <br> <br>
+  <button class="btn-position" button color="primary"    mat-raised-button type="submit">Submit Contract Holder</button> <br> <br>
   <br> <br> <br>
 
-  <button mat-raised-button color="primary" (click)="showButton()">Show Contract Holder</button>
+  <button mat-raised-button color="primary" type="button" (click)="showButton()">Show Contract Holder</button>
 
 
-  <!-- <div>
-    {{ rowData$ | async | json }}
-  </div> -->
 
   <div *ngIf="!showList" class="mat-elevation-z8">
     
