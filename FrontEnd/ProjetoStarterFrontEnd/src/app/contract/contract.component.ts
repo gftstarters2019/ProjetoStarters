@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
+import { ActionButtonComponent } from '../action-button/action-button.component';
 
 
 export interface Type {
@@ -37,6 +38,8 @@ export class ContractComponent implements OnInit {
   rowData$: any;
   paginationPageSize;
   detailCellRendererParams;
+  // calopsita2: boolean = false;
+
 
   gridApi;
   gridColumApi;
@@ -75,7 +78,8 @@ export class ContractComponent implements OnInit {
     category: ['', Validators.required],
     expiryDate: ['', Validators.required],
     isActive:['true', Validators.required],
-    beneficiaries: this.fb.array([])
+      beneficiaries: this.fb.array([]),
+     signedContractId: ['']
   });
 
   contractAux= this.fb.group({
@@ -160,6 +164,18 @@ export class ContractComponent implements OnInit {
           .subscribe(data => console.log(data));
   }
 
+  private edit_contract(data: any) {
+  this.contractform.patchValue(data);
+  }
+
+  private remove_contract(data: any) {
+    let signedContractId = this.contractform.value.signedContractId;
+    this.rowData$ = this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`);
+  }
+
+
+
+
   //AG-grid Table Contract
   private setup_gridOptions() {
     this.gridOption = {
@@ -228,7 +244,17 @@ export class ContractComponent implements OnInit {
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
-      ]
+        {
+          headerName: 'Edit/Delete',
+          field: 'editDelete',
+          lockPosition: true,
+          cellRendererFramework: ActionButtonComponent,
+          cellRendererParams: {
+            onEdit: this.edit_contract.bind(this),
+            onRemove: this.remove_contract.bind(this)
+          },
+        },
+      ],
 
     }
   }
