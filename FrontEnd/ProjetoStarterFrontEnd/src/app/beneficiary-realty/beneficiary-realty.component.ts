@@ -2,7 +2,6 @@ import { AddressComponent } from './../address/address.component';
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Address } from '../address/address.component';
 import { GenericValidator } from '../Validations/GenericValidator';
 
 @Component({
