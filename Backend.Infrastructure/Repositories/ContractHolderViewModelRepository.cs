@@ -89,14 +89,17 @@ namespace Backend.Infrastructure.Repositories
 
         public ContractHolderViewModel Find(Guid id)
         {
-            Individual individual = _db.Individuals.Where(ind => (!ind.IsDeleted) && (ind.BeneficiaryId == id)).First();
-            var telephones = _db.Telephones.ToList();
-            var addresses = _db.Addresses.ToList();
-            var beneficiary_addresses = _db.Beneficiary_Address.ToList();
-            var individual_telephones = _db.Individual_Telephone.ToList();
+            Individual individual = _db.Individuals.Where(ind => (!ind.IsDeleted) && (ind.BeneficiaryId == id)).FirstOrDefault();
+
+            if (individual == null)
+                return null;
+
+            var beneficiary_addresses = _db.Beneficiary_Address.Where(benAd => (individual != null) && (benAd.BeneficiaryId == individual.BeneficiaryId)).ToList();
+            var individual_telephones = _db.Individual_Telephone.Where(indTel => indTel.BeneficiaryId == individual.BeneficiaryId).ToList();
 
             ContractHolderViewModel ContractHolderViewModel = new ContractHolderViewModel();
 
+            //Individual
             ContractHolderViewModel.IndividualId = individual.BeneficiaryId;
             ContractHolderViewModel.IndividualName = individual.IndividualName;
             ContractHolderViewModel.IndividualCPF = individual.IndividualCPF;
@@ -104,51 +107,45 @@ namespace Backend.Infrastructure.Repositories
             ContractHolderViewModel.IndividualEmail = individual.IndividualEmail;
             ContractHolderViewModel.IndividualRG = individual.IndividualRG;
 
+            //Addresses
             foreach (var beneficiary_address in beneficiary_addresses)
             {
-                if (beneficiary_address.BeneficiaryId == individual.BeneficiaryId)
+                var addresses = _db.Addresses.Where(ad => ad.AddressId == beneficiary_address.AddressId).ToList();
+
+                foreach (var address in addresses)
                 {
-                    foreach (var address in addresses)
-                    {
-                        if (address.AddressId == beneficiary_address.AddressId)
-                        {
-                            Address ad = new Address();
+                    Address ad = new Address();
 
-                            ad.AddressId = address.AddressId;
-                            ad.AddressCity = address.AddressCity;
-                            ad.AddressComplement = address.AddressComplement;
-                            ad.AddressCountry = address.AddressCountry;
-                            ad.AddressNeighborhood = address.AddressNeighborhood;
-                            ad.AddressNumber = address.AddressNumber;
-                            ad.AddressState = address.AddressState;
-                            ad.AddressStreet = address.AddressStreet;
-                            ad.AddressType = address.AddressType;
-                            ad.AddressZipCode = address.AddressZipCode;
+                    ad.AddressId = address.AddressId;
+                    ad.AddressCity = address.AddressCity;
+                    ad.AddressComplement = address.AddressComplement;
+                    ad.AddressCountry = address.AddressCountry;
+                    ad.AddressNeighborhood = address.AddressNeighborhood;
+                    ad.AddressNumber = address.AddressNumber;
+                    ad.AddressState = address.AddressState;
+                    ad.AddressStreet = address.AddressStreet;
+                    ad.AddressType = address.AddressType;
+                    ad.AddressZipCode = address.AddressZipCode;
 
-                            ContractHolderViewModel.IndividualAddresses.Add(ad);
-                        }
-                    }
-                }
+                    ContractHolderViewModel.IndividualAddresses.Add(ad);                    
+                }            
             }
 
+            //Telephones
             foreach (var individual_telephone in individual_telephones)
             {
-                if (individual_telephone.BeneficiaryId == individual.BeneficiaryId)
+                var telephones = _db.Telephones.Where(tel => tel.TelephoneId == individual_telephone.TelephoneId).ToList();
+
+                foreach (var telephone in telephones)
                 {
-                    foreach (var telephone in telephones)
-                    {
-                        if (telephone.TelephoneId == individual_telephone.TelephoneId)
-                        {
-                            Telephone tel = new Telephone();
+                    Telephone tel = new Telephone();
 
-                            tel.TelephoneId = telephone.TelephoneId;
-                            tel.TelephoneNumber = telephone.TelephoneNumber;
-                            tel.TelephoneType = telephone.TelephoneType;
+                    tel.TelephoneId = telephone.TelephoneId;
+                    tel.TelephoneNumber = telephone.TelephoneNumber;
+                    tel.TelephoneType = telephone.TelephoneType;
 
-                            ContractHolderViewModel.IndividualTelephones.Add(tel);
-                        }
-                    }
-                }
+                    ContractHolderViewModel.IndividualTelephones.Add(tel);
+                }               
             }
             return ContractHolderViewModel;
         }
@@ -158,13 +155,10 @@ namespace Backend.Infrastructure.Repositories
             List<ContractHolderViewModel> ContractHolders = new List<ContractHolderViewModel>();
 
             var individuals = _db.Individuals.Where(ind => !ind.IsDeleted).ToList();
-            var telephones = _db.Telephones.ToList();
-            var addresses = _db.Addresses.ToList();
-            var beneficiary_addresses = _db.Beneficiary_Address.ToList();
-            var individual_telephones = _db.Individual_Telephone.ToList();
 
             foreach (var individual in individuals)
             {
+                //Individuals
                 ContractHolderViewModel vm = new ContractHolderViewModel();
                 vm.IndividualId = individual.BeneficiaryId;
                 vm.IndividualName = individual.IndividualName;
@@ -173,58 +167,60 @@ namespace Backend.Infrastructure.Repositories
                 vm.IndividualEmail = individual.IndividualEmail;
                 vm.IndividualRG = individual.IndividualRG;
 
+                //Addresses
+                var beneficiary_addresses = _db.Beneficiary_Address.Where(benAdr => benAdr.BeneficiaryId == individual.BeneficiaryId).ToList();
+
                 foreach (var beneficiary_address in beneficiary_addresses)
                 {
-                    if(beneficiary_address.BeneficiaryId == individual.BeneficiaryId)
+                    var addresses = _db.Addresses.Where(ad => ad.AddressId == beneficiary_address.AddressId).ToList();
+
+                    foreach (var address in addresses)
                     {
-                        foreach (var address in addresses)
-                        {
-                            if(address.AddressId == beneficiary_address.AddressId)
-                            {
-                                Address ad = new Address();
 
-                                ad.AddressId = address.AddressId;
-                                ad.AddressCity = address.AddressCity;
-                                ad.AddressComplement = address.AddressComplement;
-                                ad.AddressCountry = address.AddressCountry;
-                                ad.AddressNeighborhood = address.AddressNeighborhood;
-                                ad.AddressNumber = address.AddressNumber;
-                                ad.AddressState = address.AddressState;
-                                ad.AddressStreet = address.AddressStreet;
-                                ad.AddressType = address.AddressType;
-                                ad.AddressZipCode = address.AddressZipCode;
+                        Address ad = new Address();
 
-                                vm.IndividualAddresses.Add(ad);
-                            }
-                        }
-                    }
+                        ad.AddressId = address.AddressId;
+                        ad.AddressCity = address.AddressCity;
+                        ad.AddressComplement = address.AddressComplement;
+                        ad.AddressCountry = address.AddressCountry;
+                        ad.AddressNeighborhood = address.AddressNeighborhood;
+                        ad.AddressNumber = address.AddressNumber;
+                        ad.AddressState = address.AddressState;
+                        ad.AddressStreet = address.AddressStreet;
+                        ad.AddressType = address.AddressType;
+                        ad.AddressZipCode = address.AddressZipCode;
+
+                        vm.IndividualAddresses.Add(ad);
+                        
+                    }                  
                 }
+
+                //Telephones
+                var individual_telephones = _db.Individual_Telephone.Where(indTel => indTel.BeneficiaryId == individual.BeneficiaryId).ToList();
 
                 foreach (var individual_telephone in individual_telephones)
                 {
-                    if(individual_telephone.BeneficiaryId == individual.BeneficiaryId)
+                    var telephones = _db.Telephones.Where(tel => tel.TelephoneId == individual_telephone.TelephoneId).ToList();
+
+                    foreach (var telephone in telephones)
                     {
-                        foreach (var telephone in telephones)
-                        {
-                            if(telephone.TelephoneId == individual_telephone.TelephoneId)
-                            {
-                                Telephone tel = new Telephone();
 
-                                tel.TelephoneId = telephone.TelephoneId;
-                                tel.TelephoneNumber = telephone.TelephoneNumber;
-                                tel.TelephoneType = telephone.TelephoneType;
+                        Telephone tel = new Telephone();
 
-                                vm.IndividualTelephones.Add(tel);
-                            }
-                        }
+                        tel.TelephoneId = telephone.TelephoneId;
+                        tel.TelephoneNumber = telephone.TelephoneNumber;
+                        tel.TelephoneType = telephone.TelephoneType;
+
+                        vm.IndividualTelephones.Add(tel);
+                        
                     }
+                    
                 }
 
                 ContractHolders.Add(vm);
             }
 
             return ContractHolders;
-
         }
 
         public ContractHolderViewModel Update(Guid id, ContractHolderViewModel vm)
