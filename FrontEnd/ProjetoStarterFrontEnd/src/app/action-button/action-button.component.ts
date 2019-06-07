@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-action-button',
@@ -9,8 +10,7 @@ import { ICellRendererParams } from 'ag-grid-community';
 })
 export class ActionButtonComponent implements OnInit, ICellRendererAngularComp {
 
-  @Input() recebeCalopsita2;
-  @Output() calopsita = new EventEmitter<any>();
+  
 
   params: ICellRendererParams;
   rendererParams: any;
@@ -36,7 +36,7 @@ export class ActionButtonComponent implements OnInit, ICellRendererAngularComp {
     this.rendererParams.onEdit(this.params.data);
   }
 
-  sendCalopsita() {
-    this.calopsita.emit(true);
-  }
+ handle_deleteUser() {
+    this.rendererParams.onDelete(this.params.data);
+ }
 }
