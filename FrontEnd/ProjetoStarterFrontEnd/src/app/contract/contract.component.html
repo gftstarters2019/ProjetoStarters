@@ -63,15 +63,14 @@
         </mat-card> 
       </div>
           
-          <button mat-raised-button color="primary" type="button" (click)="assignContractType(); addBeneficiary();">Add Beneficiary</button>
-
         <div *ngIf="cType == 0 || cType==2 || cType==3">
-          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('beneficiaries')['controls']; let i = index;">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i" class="contractCard">
                 
               
                   <mat-card>
                     <app-beneficiary-individual (messageIndividualEvent)="receiveMessage($event)"></app-beneficiary-individual>
+                    <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                   </mat-card>
                 
 
@@ -79,53 +78,57 @@
           </div>
         </div>
         <div *ngIf="cType == 1">
-          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('contractBeneficiaries')['controls']; let i = index;">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i"  class="contractCard">
 
                 <mat-card>
                   <app-beneficiary-pet (messagePetEvent)="receiveMessage($event)"></app-beneficiary-pet>
+                  <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                 </mat-card>
 
             </div>
           </div>
         </div>
         <div *ngIf="cType == 4">
-          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('contractBeneficiaries')['controls']; let i = index;">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i"  class="contractCard">
                
               <mat-card>
                   <app-beneficiary-realty (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
+                  <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                 </mat-card>
 
             </div>
           </div>
         </div>
         <div *ngIf="cType == 5">
-          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('contractBeneficiaries')['controls']; let i = index;">
+          <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i"  class="contractCard">
                 <mat-card>
                   <app-beneficiary-vehicle (messageVehicleEvent)="receiveMessage($event)"></app-beneficiary-vehicle>
+                  <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                 </mat-card>
             </div>
           </div>
         </div>
         <div *ngIf="cType == 6">
-            <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractAux.get('contractBeneficiaries')['controls']; let i = index;">
+            <div formArrayName="beneficiaries" *ngFor="let beneficiary of contractform.get('beneficiaries')['controls']; let i = index;">
               <div [formGroupName]="i"  class="contractCard">
                   <mat-card>
                     <app-beneficiary-mobile-device (messageMobileEvent)="receiveMessage($event)"></app-beneficiary-mobile-device>
+                    <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                   </mat-card>
               </div>
             </div>
           </div>
 
      
-     
+          <button mat-raised-button color="primary" type="button" (click)="assignContractType(); addBeneficiary();">Add Beneficiary</button>
 
 
       
 
-        <button class="btn-list" mat-raised-button color="primary" (click)="clearBeneficiary()" type="button">Clear</button>
+        
         <br><br>
         <button class="btn-list" mat-raised-button color="primary" type="button" (click)="postContract()">Submit</button>
         
