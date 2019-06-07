@@ -1,9 +1,11 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Validators, FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
-import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
+import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
+import { GridOptions, ColDef, RowSelectedEvent, RowClickedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { GenericValidator } from '../Validations/GenericValidator';
+import { Observable } from 'rxjs';
+import { ActionButtonComponent } from '../action-button/action-button.component';
 
 @Component({
   selector: 'app-contract-holder',
@@ -13,21 +15,23 @@ import { GenericValidator } from '../Validations/GenericValidator';
 export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   rgMask = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/];
-  cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/,/\d/, '-', /\d/, /\d/];
+  cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+
+
 
   private columnDefs: Array<ColDef>;
-  private rowData;
-  private paginationPageSize;
+  rowData$: Observable<Array<any>>;
   detailCellRendererParams;
   gridApi;
   gridColumApi;
 
+  calopsita2: boolean = false;
 
   gridOptions: GridOptions;
   load_failure: boolean;
   contractHolder: FormGroup;
   addressForm: FormArray;
-
+  rowSelection;
   showList: boolean = true;
   showAddresslist: boolean = false;
   showTelephonelist: boolean = false;
@@ -46,7 +50,16 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // this.hideGridLoading()
+  }
+
+  private handle_editUser(data: any) {
+    console.log(data);
+
+    this.contractHolder.patchValue(data);
+  }
+
+  private handle_removeUser(data: any) {
+
   }
 
 
@@ -76,7 +89,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     this.message = 1;
   } 
   onSubmit(): void {
-    console.log("sub")
+    console.log(this.contractHolder.value);
 
     let json = JSON.stringify(this.contractHolder.value);
     let httpOptions = {headers: new HttpHeaders ({
@@ -85,7 +98,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
    this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json,httpOptions).subscribe(data => console.log(data));
    
   }
-  
+
 
   showButton() {
     this.showList = !this.showList;
@@ -93,9 +106,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   showAddress() {
     const addressControl = this.contractHolder.controls.idAddress as FormArray;
-    const hasMax = addressControl.length >= 3; 
+    const hasMax = addressControl.length >= 3;
 
-    if (!hasMax) {      
+    if (!hasMax) {
       addressControl.push(this.chfb.group({
         // street: ['', GenericValidator.regexName],
         // type: ['', Validators.required],
@@ -111,10 +124,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
   showTelephone() {
     const telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
-    const hasMax = telephoneControl.length >= 5; 
+    const hasMax = telephoneControl.length >= 5;
 
     if (!hasMax) {
-            
       telephoneControl.push(this.chfb.group({
         // id: [''],
         // telephoneNumber: ['', GenericValidator.telephoneValidator()],
@@ -142,149 +154,121 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
 
   private setup_gridOptions() {
-    this.gridOptions = {
-      rowSelection: 'single',
 
-      onRowSelected: this.onRowSelected.bind(this),
+    this.gridOptions = {
       masterDetail: true,
 
       columnDefs: [
         {
           headerName: 'Name',
-          field: 'name',
+          field: 'individualName',
           lockPosition: true,
           sortable: true,
-          filter: true,
           onCellValueChanged:
-            this.onCellEdit.bind(this)
+            this.onCellEdit.bind(this),
+          filter: "agTextColumnFilter",
+          filterParams: {
+            filterOptions: ["contains", "notContains"],
+            textFormatter: function (r) {
+              if (r == null) return null;
+              r = r.replace(new RegExp("[àáâãäå]", "g"), "a");
+              r = r.replace(new RegExp("æ", "g"), "ae");
+              r = r.replace(new RegExp("ç", "g"), "c");
+              r = r.replace(new RegExp("[èéêë]", "g"), "e");
+              r = r.replace(new RegExp("[ìíîï]", "g"), "i");
+              r = r.replace(new RegExp("ñ", "g"), "n");
+              r = r.replace(new RegExp("[òóôõøö]", "g"), "o");
+              r = r.replace(new RegExp("œ", "g"), "oe");
+              r = r.replace(new RegExp("[ùúûü]", "g"), "u");
+              r = r.replace(new RegExp("[ýÿ]", "g"), "y");
+              return r;
+            },
+            debounceMs: 0,
+            caseSensitive: true,
+            suppressAndOrCondition: true,
+          }
         },
 
         {
           headerName: 'CPF',
-          field: 'cpf',
+          field: 'individualCPF',
           lockPosition: true,
           sortable: true,
           filter: true,
-          editable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
         },
 
         {
           headerName: 'RG',
-          field: 'rg',
+          field: 'individualRG',
           lockPosition: true,
-          editable: true,
+          sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this)
         },
 
         {
           headerName: 'Birthdate',
-          field: 'birthdate',
+          field: 'individualBirthdate',
           lockPosition: true,
           sortable: true,
-          editable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
-          // valueFormatter: (data) => data.value ? moment(data.value).format('L') : null,
         },
 
         {
           headerName: 'Email',
-          field: 'email',
+          field: 'individualEmail',
           lockPosition: true,
           sortable: true,
-          editable: true,
           onCellValueChanged: this.onCellEdit.bind(this)
         },
         {
           headerName: 'Edit/Delete',
           field: 'editDelete',
-          colId: "params",
-          width: 60,
           lockPosition: true,
-        }
+          cellRendererFramework: ActionButtonComponent,
+          cellRendererParams: {
+            onEdit: this.handle_editUser.bind(this)
+          }
+        },
+
       ],
 
+
       detailCellRendererParams: {
-        detailGridOptions: {
-          columnDefs: [
-            { field: "street" },
-            { field: "type" },
-            { field: "number" },
-            { field: "state" },
-            { field: "neighborhood" },
-            { field: "country" },
-            { field: "zipcode" }
-          ],
 
-          onFirstDataRendered(params) {
-            params.api.sizeColumnsToFit();
-          }
-          
-        },
-        
+
         getDetailRowData: function (params) {
-          debugger;
           params.successCallback(params.data.idAddress);
-        },
-
-        template: function(params) {
-        
-          var personName = params.data.name;
           debugger;
-          return (
-            '<div style="height: 100%; background-color: #EDF6FF; padding: 20px; box-sizing: border-box;">' +
-            '  <div style="height: 10%;">Name: ' +
-            personName +
-            "</div>" +
-            '  <div ref="eDetailGrid" style="height: 90%;"></div>' +
-            "</div>"
-          );
-        }
-        
-
+          console.log(params);
+        },
 
 
       },
       onGridReady: this.onGridReady.bind(this)
     }
-
-
-
-
   }
+
+
 
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
   }
 
-
   private setup_gridData() {
-    this.rowData = this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe(
-      value => {
-        this.rowData = value;
-      },
-      failure => {
-        console.error(failure);
-        
-        
-      }
-      );
-    }
-    
+    this.rowData$ = this.http.get<Array<any>>('https://contractholderwebapi.azurewebsites.net/api/ContractHolder');
+
+  }
+
   private onCellEdit(params: any) {
     console.log(params.newValue);
     console.log(params.data);
 
   }
 
-  private onRowSelected(event: RowSelectedEvent) {
-    const { data } = event;
-    this.contractHolder.getRawValue();
-    console.log(data);
-   
-    this.contractHolder.patchValue(data);
-   
-  }
+
+
+
 
 }

@@ -1,12 +1,19 @@
 
 <!-- Contract Holder Form -->
-<form [formGroup]="contractHolder" (ngSubmit)="onSubmit()">
 
+<mat-label>
+    <h2 class="titleContract">Contract Holder</h2>
+  </mat-label>
+
+<form [formGroup]="contractHolder" (ngSubmit)="onSubmit()">
+  
+  <div class="addressBg"> 
+    <mat-card> 
   <mat-form-field style="width: 500px;">
     <input matInput placeholder="Name" name="name" maxlength="50" required formControlName="IndividualName" >
     <mat-error>Name is invalid!</mat-error>
   </mat-form-field> <br>
-
+  
   <mat-form-field style="width: 250px;">
     <input matInput placeholder="RG" name="rg" [textMask]="{mask: rgMask}" formControlName="IndividualRG" required>
     <mat-error>RG is invalid!</mat-error>
@@ -67,19 +74,28 @@
   <br> <br> <br>
 
   <button mat-raised-button color="primary" (click)="showButton()">Show Contract Holder</button>
-  <div *ngIf="!showList" class="mat-elevation-z8">
 
+
+  <!-- <div>
+    {{ rowData$ | async | json }}
+  </div> -->
+
+  <div *ngIf="!showList" class="mat-elevation-z8">
+    
     <div>
+     
+
       <ag-grid-angular
-      style="width: 100%; height: 1000px;" 
+      style="width: 100%; height: 5000px;" 
       [pagination]="true"
       class="ag-theme-material" 
-      [masterDetail]="true"
+      [paginationPageSize]=50
       [gridOptions]="gridOptions"
-      
-      ></ag-grid-angular>
+      suppressClickEdit=true
+      [rowData]="rowData$ | async"> 
+      </ag-grid-angular>
 
     </div>
   </div>
-
 </form>
+
