@@ -239,7 +239,7 @@ namespace Backend.Infrastructure.Repositories
                 //Soft Delete
                 if (vm.IsDeleted)
                 {
-                    if (_db.SignedContracts.Where(sigCon => (sigCon.ContractIndividualIsActive == true) && (sigCon.IndividualId == id)) != null)
+                    if (_db.SignedContracts.Where(sigCon => (sigCon.ContractIndividualIsActive == true) && (sigCon.IndividualId == id)).Any())
                         return null;
 
                     individual.IsDeleted = vm.IsDeleted;
