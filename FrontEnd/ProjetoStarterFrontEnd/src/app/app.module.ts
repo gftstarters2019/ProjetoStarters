@@ -27,6 +27,7 @@ import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/be
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import {MatCardModule} from '@angular/material/card';
+import { ActionButtonComponent } from './action-button/action-button.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {MatCardModule} from '@angular/material/card';
     BeneficiaryVehicleComponent,
     BeneficiaryRealtyComponent,
     BeneficiaryMobileDeviceComponent,
-    TelephoneComponent
+    TelephoneComponent,
+    ActionButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +54,9 @@ import {MatCardModule} from '@angular/material/card';
     AppRoutingModule,
     MatDialogModule,
     MaterialModule,
-    AgGridModule,
+    AgGridModule.withComponents([
+      ActionButtonComponent,
+    ]),
     MatCardModule,
     ReactiveFormsModule,
     HttpClientModule,
