@@ -108,7 +108,7 @@ namespace ContractHolder.WebAPI.Controllers
 
             if (contractHolder != null)
             {
-                contractHolder.IsDeleted = !contractHolder.IsDeleted;
+                contractHolder.isDeleted = !contractHolder.isDeleted;
 
                 if (_contractHolderViewModelWriteRepository.Update(id, contractHolder) == null)
                     return StatusCode(403);
