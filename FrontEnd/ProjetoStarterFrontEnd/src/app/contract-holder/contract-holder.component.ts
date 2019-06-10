@@ -56,13 +56,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     }
     
     private handle_deleteUser(data: any) {
-    let json = JSON.stringify(this.contractHolder.value);
-    let id = data.individualId;
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
+    let id = this.contractHolder.value.individualId;
+    
     this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => console.log(data));      
     console.log(data);
 
@@ -98,19 +93,25 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     this.message = 1;
   } 
   onSubmit(): void {
-
-    this.unMaskValues();
-    
-
-    console.log(this.contractHolder.value);
-
     let json = JSON.stringify(this.contractHolder.value);
-    console.log(json)
-    let httpOptions = {headers: new HttpHeaders ({
-     'Content-Type': 'application/json'
-   })};
-   this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json,httpOptions).subscribe(data => console.log(data));
-   
+    
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    if (this.contractHolder.value.individualId == '') 
+    {
+      this.http.post('https://contractholderwebapi.azurewebsites.net/api/ContractHolder', json, httpOptions).subscribe(data => console.log(data));
+     
+    } 
+    
+    else {
+      let id = this.contractHolder.value.individualId;
+    this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`, json , httpOptions). subscribe(data => console.log(data));      
+
+  }
+  
   }
 
 
@@ -230,6 +231,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
             onEdit: this.handle_editUser.bind(this),
             onDelete: this.handle_deleteUser.bind(this)
           }
+
+      
         },
 
       ],
