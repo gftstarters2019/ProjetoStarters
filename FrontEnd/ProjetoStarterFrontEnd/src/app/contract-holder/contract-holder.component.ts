@@ -52,6 +52,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   private handle_editUser(data: any) {
        this.contractHolder.patchValue(data);
+
      }
     
     private handle_deleteUser(data: any) {
