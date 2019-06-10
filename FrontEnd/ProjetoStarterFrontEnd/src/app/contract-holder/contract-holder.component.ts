@@ -7,7 +7,6 @@ import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
 
-
 @Component({
   selector: 'app-contract-holder',
   templateUrl: './contract-holder.component.html',
@@ -39,12 +38,14 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   }
 
+  message: number = 0;
+
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
     this.setup_form();
-
-
+    this.setup_form();
+    
   }
 
   ngAfterViewInit() {
@@ -52,12 +53,11 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   private handle_editUser(data: any) {
        this.contractHolder.patchValue(data);
-     }
+    }
     
     private handle_deleteUser(data: any) {
-     
     let json = JSON.stringify(this.contractHolder.value);
-    let id = this.contractHolder.value.individualId;
+    let id = data.individualId;
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -68,48 +68,49 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   }
 
+  unMaskValues(): void {
+    let rg = this.contractHolder.controls.individualRG.value;
+    rg = rg.replace(/\D+/g, '');
+    this.contractHolder.controls.individualRG.setValue(rg);
+    
+    let cpf = this.contractHolder.controls.individualCPF.value;
+    cpf = cpf.replace(/\D+/g, '');
+    this.contractHolder.controls.individualCPF.setValue(cpf);
+  }
+
 
   private setup_form() {
     this.contractHolder = this.chfb.group({
-      individualId: '',
       individualName: ['', Validators.pattern(GenericValidator.regexName)],
-      individualRG: ['', GenericValidator.rgLengthValidation()],
       individualCPF: ['', GenericValidator.isValidCpf()],
-      individualBirthdate: ['', GenericValidator.dateValidation()],
+      individualRG: ['', GenericValidator.rgLengthValidation()],
       individualEmail: ['', Validators.required],
+      individualBirthDate: ['', GenericValidator.dateValidation()],
+      individualTelephones: this.chfb.array([]),
+      individualAddresses: this.chfb.array([]),
 
-      idTelephone: this.chfb.array([
-        this.chfb.group({
-        })
-      ]),
-
-      idAddress: this.chfb.array([
-        this.chfb.group({
-        })
-      ]),
-
+      idTelephone: this.chfb.array([]),
+      idAddress: this.chfb.array([])
     });
   }
-  onSubmit(): void {
-    let json = JSON.stringify(this.contractHolder.value);
-    
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    if (this.contractHolder.value.individualId == '') 
-    {
-      this.http.post('https://httpbin.org/post', json, httpOptions).subscribe(data => console.log(data));
-     
-    } 
-    
-    else {
-      let id = this.contractHolder.value.individualId;
-    this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`, json , httpOptions). subscribe(data => console.log(data));      
 
-  }
-  
+  changeMessageValue(): void {
+    this.message = 1;
+  } 
+  onSubmit(): void {
+
+    this.unMaskValues();
+    
+
+    console.log(this.contractHolder.value);
+
+    let json = JSON.stringify(this.contractHolder.value);
+    console.log(json)
+    let httpOptions = {headers: new HttpHeaders ({
+     'Content-Type': 'application/json'
+   })};
+   this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json,httpOptions).subscribe(data => console.log(data));
+   
   }
 
 
@@ -123,13 +124,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     if (!hasMax) {
       addressControl.push(this.chfb.group({
-        street: ['', GenericValidator.regexName],
-        type: ['', Validators.required],
-        number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
-        state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2)]],
-        neighborhood: ['', GenericValidator.regexName],
-        country: ['', GenericValidator.regexName],
-        zipCode: ['', Validators.required]
       }))
     }
 
@@ -141,26 +135,20 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     if (!hasMax) {
       telephoneControl.push(this.chfb.group({
-        telephoneNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(11), Validators.minLength(10)]],
-        telephoneType: ['', Validators.required]
-      }))
+      }));
     }
-
     this.showTelephonelist = !this.showTelephonelist;
   }
-
-  hanble_add_telphone($event: any) {
-    const telephoneControl = this.contractHolder.controls.idTelephone as FormArray;
-    telephoneControl.push(this.chfb.group({
-
-    }))
-  }
-
-  handle_add($event: any) {
-    const addressControl = this.contractHolder.controls.idAddress as FormArray;
-    addressControl.push(this.chfb.group({
-
-    }))
+ 
+  handle_add_telphone($event: any) {
+    let individualTelephonesControl = this.contractHolder.controls.individualTelephones as FormArray;
+    individualTelephonesControl.push($event);
+  } 
+  
+  handle_add_address($event: any) {
+    console.log("add address")
+    let individualAddressesControl = this.contractHolder.controls.individualAddresses as FormArray;
+    individualAddressesControl.push($event);
   }
 
 
