@@ -19,6 +19,7 @@ namespace Backend.Application.Factories
 
         public List<Telephone> CreateList(List<Telephone> vm_telephones)
         {
+            telephones = new List<Telephone>();
             foreach (var tel in vm_telephones)
             {
                 if (Validate(tel))
@@ -35,8 +36,9 @@ namespace Backend.Application.Factories
 
             if(telephones.Count != vm_telephones.Count  || telephones.Count > 5)
             {
-                telephones.Clear();
-                return telephones;
+                return null;
+                //telephones.Clear();
+                //return telephones;
             }
 
             return telephones;
