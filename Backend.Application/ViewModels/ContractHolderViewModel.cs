@@ -8,23 +8,23 @@ namespace Backend.Application.ViewModels
     public class ContractHolderViewModel
     {
         public ContractHolderViewModel(){
-            IndividualAddresses = new List<Address>();
-            IndividualTelephones = new List<Telephone>();
+            individualAddresses = new List<Address>();
+            individualTelephones = new List<Telephone>();
         }
 
-        public Guid IndividualId { get; set; }
+        public Guid individualId { get; set; }
         [MaxLength(50)]
-        public string IndividualName { get; set; }
+        public string individualName { get; set; }
         [MaxLength(11)]
-        public string IndividualCPF { get; set; }
+        public string individualCPF { get; set; }
         [MaxLength(9)]
-        public string IndividualRG { get; set; }
+        public string individualRG { get; set; }
         [MaxLength(30)]
-        public string IndividualEmail { get; set; }
-        public DateTime IndividualBirthdate { get; set; }
-        public bool IsDeleted { get; set; }
+        public string individualEmail { get; set; }
+        public DateTime individualBirthdate { get; set; }
+        public bool isDeleted { get; set; }
 
-        public List<Telephone> IndividualTelephones { get; set; }
-        public List<Address> IndividualAddresses { get; set; }
+        public List<Telephone> individualTelephones { get; set; }
+        public List<Address> individualAddresses { get; set; }
     }
 }
