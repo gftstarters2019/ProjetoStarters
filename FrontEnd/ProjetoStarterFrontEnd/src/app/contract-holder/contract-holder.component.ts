@@ -6,6 +6,7 @@ import "ag-grid-enterprise";
 import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { max } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contract-holder',
@@ -31,7 +32,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   contractHolder: FormGroup;
   addressForm: FormArray;
   rowSelection;
-  showList: boolean = true;
+  showList: boolean = false;
   showAddresslist: boolean = false;
   showTelephonelist: boolean = false;
   constructor(private chfb: FormBuilder, private http: HttpClient) {
@@ -39,7 +40,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   message: number = 0;
-
+  IndividualId: any = null;
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
@@ -52,15 +53,33 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   private handle_editUser(data: any) {
-       this.contractHolder.patchValue(data);
-<<<<<<< HEAD
+    debugger;
+    
+    this.IndividualId = data.individualId;
+    // this.showTelephone ();
+    
+    
+    let telephoneControl =  this.contractHolder.controls.idTelephone as FormArray;
+    telephoneControl.controls.pop();
+    const hasMax = telephoneControl.length >= 5;
+      if (!hasMax) { 
+        telephoneControl.push(this.chfb.group(data.individualTelephones[0]));
+      }
+      this.contractHolder.patchValue(data);
+      //  console.log(data.individualTelephones);
+       
+      let addressControl = this.contractHolder.controls.idAddress as FormArray;
+      addressControl.controls.pop();
+      const hasMaxAddress = addressControl.length >= 3;
+      let calopsita =0;
+      if (!hasMaxAddress) {
+        for(calopsita = 0; calopsita >= data.individualAddresses.length; calopsita++){
+          addressControl.push(this.chfb.group(data.individualAddresses[calopsita]));
 
-     }
-    
-    private handle_deleteUser(data: any) {
-    let id = this.contractHolder.value.individualId;
-    
-=======
+         }
+        debugger;
+        console.log(data.individualAddresses);
+      } 
     }
     
     private handle_deleteUser(data: any) {
@@ -71,7 +90,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
         'Content-Type': 'application/json'
       })
     };
->>>>>>> 039fdbb5896ed259e8e745c771e36a41e7e3145e
+
     this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => console.log(data));      
     console.log(data);
 
@@ -107,34 +126,25 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     this.message = 1;
   } 
   onSubmit(): void {
-<<<<<<< HEAD
-    let json = JSON.stringify(this.contractHolder.value);
-    
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    if (this.contractHolder.value.individualId == '') 
-    {
-      this.http.post('https://contractholderwebapi.azurewebsites.net/api/ContractHolder', json, httpOptions).subscribe(data => console.log(data));
-     
-    } 
-=======
-
+   
     this.unMaskValues();
->>>>>>> 039fdbb5896ed259e8e745c771e36a41e7e3145e
     
 
     console.log(this.contractHolder.value);
-
     let json = JSON.stringify(this.contractHolder.value);
     console.log(json)
     let httpOptions = {headers: new HttpHeaders ({
      'Content-Type': 'application/json'
    })};
+    if(this.IndividualId == null){
    this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json,httpOptions).subscribe(data => console.log(data));
-   
+  //  debugger;
+  }else {
+
+    this.http.put('https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}', json,httpOptions).subscribe(data => console.log(data)); 
+    console.log(json)
+    debugger;
+  }
   }
 
 

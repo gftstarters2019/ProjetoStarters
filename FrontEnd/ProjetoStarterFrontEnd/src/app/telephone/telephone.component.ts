@@ -20,21 +20,22 @@ export class TelephoneComponent implements OnInit {
   cellphoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   telephoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
-  telephone = this.fb.group ({
+   telephone = this.fb.group ({
     telephoneNumber: ['', GenericValidator.telephoneValidator()],
     telephoneType: ''
   });
 
 
   @Output () addTelephone = new EventEmitter<any>();
-  @Input() telephone2: FormGroup;
+   @Input() telephone2: FormGroup;
   @Input() pushPermission !: number;
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    
-  }
+    debugger;
+    console.log(this.telephone)
+  } 
 
   unMaskValues(): void {
     let telephoneNumber = this.telephone.controls.telephoneNumber.value;
