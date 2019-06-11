@@ -71,6 +71,7 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: colorFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -80,6 +81,9 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          }, 
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -89,6 +93,9 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          }, 
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -159,5 +166,40 @@ export class VehicleListComponent implements OnInit {
     // this.individual.getRawValue();
     console.log(data);
     // this.individual.patchValue(data);
+  }
+}
+function colorFormatter(params){
+  return colorValue(params.value);
+}
+function colorValue(number){
+  if(number == 0){
+    return "White";
+  }
+  if(number == 1){
+    return "Silver";
+  }
+  if(number == 2){
+    return "Black";
+  }
+  if(number == 3){
+    return "Gray";
+  }
+  if(number == 4){
+    return "Red";
+  }
+  if(number == 5){
+    return "Blue";
+  }
+  if(number == 6){
+    return "Brown";
+  }
+  if(number == 7){
+    return "Yellow";
+  }
+  if(number == 8){
+    return "Green";
+  }
+  if(number == 9){
+    return "Other";
   }
 }
