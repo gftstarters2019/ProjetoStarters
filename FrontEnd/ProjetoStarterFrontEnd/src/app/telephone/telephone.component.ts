@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, AbstractControl, Validator } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, AbstractControl, Validator, FormArray } from '@angular/forms';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Telephone{
   id: string,
@@ -12,47 +13,49 @@ export interface Telephone{
   templateUrl: './telephone.component.html',
   styleUrls: ['./telephone.component.scss']
 })
+
+
 export class TelephoneComponent implements OnInit {
 
   cellphoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   telephoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
-  message:string;
   telephone = this.fb.group ({
-    id: [''],
-    telephoneNumber: ['', this.telephoneValidator],
+    telephoneNumber: ['', GenericValidator.telephoneValidator()],
     telephoneType: ''
   });
+
+
+  @Output () addTelephone = new EventEmitter<any>();
+  @Input() telephone2: FormGroup;
+  @Input() pushPermission !: number;
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+    
+  }
+
+  unMaskValues(): void {
+    let telephoneNumber = this.telephone.controls.telephoneNumber.value;
+    telephoneNumber = telephoneNumber.replace(/\D+/g, '');
+    this.telephone.controls.telephoneNumber.setValue(telephoneNumber);
+  }
+
+  
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.pushPermission.currentValue != 0 && changes.pushPermission.currentValue != changes.pushPermission.previousValue) {
+      this.unMaskValues();
+      this.addTelephone.emit(this.telephone);      
+    }
   }
 
   public onSubmit(): void {
-    this.message=this.telephone.get(['id']).value;
   }
 
   chooseTelephone(): boolean {
     if(this.telephone.value.telephoneType == 'Cellphone')
       return true;
     return false;
-  }
-
-  telephoneValidator(control: AbstractControl): {[key:string]: boolean} | null {
-    let number = control.value;
-    let numberLength;
-    
-    if (number.length == 14)
-      numberLength = 11;
-    else
-      numberLength = 10;
-
-    number = number.replace(/\D+/g, '');
-
-    if(number.length < numberLength)
-      return {"NumberIsTooShort": true};
-    
-    return null;
-  }
+  }  
 }

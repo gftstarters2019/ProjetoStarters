@@ -2,7 +2,7 @@
   <div class="container">
     <mat-card>
       <p>Address Info</p>
-      <app-address (createEvent)="receiveMessage($event)"></app-address>
+      <app-address></app-address>
     </mat-card>
       
       <div class="flex-wrapper">
@@ -34,8 +34,8 @@
     </div>
 
     <div>
-        <button mat-raised-button color="primary" (click)="realtyPost()" type="submit" [disabled]="!realtyCreateForm.valid"
-            style="margin-top: 10px">Submit</button>
+        <button mat-raised-button color="primary" (click)="realtyPost()" [disabled]="!realtyCreateForm.valid"
+            style="margin-top: 10px">Add</button>
     </div>
   </div>
 </form>

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CellDatepickerComponent } from './cell-datepicker.component';
+import { ActionButtonComponent } from './action-button.component';
 
-describe('CellDatepickerComponent', () => {
-  let component: CellDatepickerComponent;
-  let fixture: ComponentFixture<CellDatepickerComponent>;
+describe('ActionButtonComponent', () => {
+  let component: ActionButtonComponent;
+  let fixture: ComponentFixture<ActionButtonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CellDatepickerComponent ]
+      declarations: [ ActionButtonComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CellDatepickerComponent);
+    fixture = TestBed.createComponent(ActionButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
