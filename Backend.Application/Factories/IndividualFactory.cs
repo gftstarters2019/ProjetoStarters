@@ -11,7 +11,7 @@ namespace Backend.Application.Factories
 {
     public class IndividualFactory : IFactory<Individual, ContractHolderViewModel>
     {
-        private Individual individual = null;
+        private Individual individual;
 
         /// <summary>
         /// Método para crear um individuo
@@ -20,6 +20,8 @@ namespace Backend.Application.Factories
         /// <returns></returns>
         public Individual Create(ContractHolderViewModel vm)
         {
+            individual = null;
+
             if (IndividualIsValid(vm))
             {
                 individual = new Individual

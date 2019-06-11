@@ -19,6 +19,11 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
+        /// <summary>
+        /// Add de Contract Holder
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public bool Add(ContractHolderViewModel vm)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -30,6 +35,8 @@ namespace Backend.Infrastructure.Repositories
                     var individual = ViewModelCreator.IndividualFactory.Create(vm);
 
                     if (individual == null)
+                        return false;
+                    else if (_db.Individuals.Where(ind => ind.IndividualCPF == individual.IndividualCPF).Any())
                         return false;
 
                     _db.Add(individual);
@@ -84,6 +91,11 @@ namespace Backend.Infrastructure.Repositories
             }
         }
 
+        /// <summary>
+        /// Find de Contract Holder
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ContractHolderViewModel Find(Guid id)
         {
             Individual individual = _db.Individuals.Where(ind => (!ind.IsDeleted) && (ind.BeneficiaryId == id)).FirstOrDefault();
@@ -147,6 +159,10 @@ namespace Backend.Infrastructure.Repositories
             return ContractHolderViewModel;
         }
 
+        /// <summary>
+        /// Get de Contract Holder
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<ContractHolderViewModel> Get()
         {
             List<ContractHolderViewModel> ContractHolders = new List<ContractHolderViewModel>();
@@ -220,6 +236,12 @@ namespace Backend.Infrastructure.Repositories
             return ContractHolders;
         }
 
+        /// <summary>
+        /// Update/Delete de Contract Holder
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public ContractHolderViewModel Update(Guid id, ContractHolderViewModel vm)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -249,6 +271,9 @@ namespace Backend.Infrastructure.Repositories
                     if (ViewModelCreator.IndividualFactory.Create(vm) == null ||
                         ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses).Count() != vm.individualAddresses.Count() ||
                         ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones).Count() != vm.individualTelephones.Count())
+                        return null;
+
+                    else if (_db.Individuals.Where(ind => ind.IndividualCPF == individual.IndividualCPF).Count() != 1)
                         return null;
 
                     individual.IndividualBirthdate = vm.individualBirthdate;
