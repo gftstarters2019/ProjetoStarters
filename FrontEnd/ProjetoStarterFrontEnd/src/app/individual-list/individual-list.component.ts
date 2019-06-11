@@ -30,13 +30,13 @@ export class IndividualListComponent implements OnInit {
 
   private edit_person(data: any) {
     //this.contractform.patchValue(data);
-    }
-  
-    private remove_person(data: any) {
-      //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals/${beneficiaryId}`);
-      console.log(this.rowData$);
-    }
-    
+  }
+
+  private remove_person(data: any) {
+    //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals/${beneficiaryId}`);
+    console.log(this.rowData$);
+  }
+
   //AG-grid Table Contract
   private setup_gridOptions() {
 
@@ -81,6 +81,9 @@ export class IndividualListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          }, 
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
