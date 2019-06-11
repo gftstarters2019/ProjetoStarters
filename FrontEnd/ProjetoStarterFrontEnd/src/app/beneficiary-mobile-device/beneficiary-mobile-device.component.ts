@@ -30,7 +30,7 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
     mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
     mobileDeviceModel: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
     mobileDeviceManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
-    mobileDeviceSerialNumber: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+    mobileDeviceSerialNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
     mobileDeviceType: new FormControl('', Validators.required),
     mobileDeviceInvoiceValue: new FormControl('', GenericValidator.negativeValidation())
   });

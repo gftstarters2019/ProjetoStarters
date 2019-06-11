@@ -37,13 +37,13 @@ export class AddressComponent implements OnInit {
   address = this.fb.group ({
     addressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
     addressType: ['', Validators.required],
-    addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
+    addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(6)]],
     addressState: ['', [Validators.pattern(/^[[A-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
     addressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
     addressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
     addressZipCode: ['', this.zipCodeValidation],
-    addressCity: [''],
-    addressComplement: ['']
+    addressCity: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressComplement: ['', Validators.pattern(GenericValidator.regexSimpleName)]
   });
   //message: any;
 
