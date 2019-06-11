@@ -9,6 +9,8 @@ import { GenericValidator } from '../Validations/GenericValidator';
 })
 export class BeneficiaryRealtyComponent implements OnInit {
 
+  zipCodeMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
+
   @Input() realtyForm: FormGroup;
 
   @Input() realtyPushPermission !: number;
