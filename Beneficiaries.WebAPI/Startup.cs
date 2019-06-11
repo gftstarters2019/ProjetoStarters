@@ -43,7 +43,7 @@ namespace Beneficiaries.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("BeneficiaryPermission",
-                builder => builder.AllowAnyHeader().AllowAnyOrigin());
+                builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
             services.AddScoped<IReadOnlyRepository<Beneficiary>, BeneficiaryRepository>();
