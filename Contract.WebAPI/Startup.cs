@@ -39,7 +39,7 @@ namespace Contract.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("ContractPermission",
-                builder => builder.AllowAnyHeader().AllowAnyOrigin());
+                builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
             services.AddScoped<IReadOnlyRepository<Backend.Core.Models.Contract>, ContractRepository>();
