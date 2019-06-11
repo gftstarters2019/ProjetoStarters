@@ -126,9 +126,28 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     this.message = 1;
   } 
   onSubmit(): void {
+
    
     this.unMaskValues();
+
+    let json = JSON.stringify(this.contractHolder.value);
     
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    if (this.contractHolder.value.individualId == '') 
+    {
+      this.http.post('https://contractholderwebapi.azurewebsites.net/api/ContractHolder', json, httpOptions).subscribe(data => console.log(data));
+     
+    } 
+
+    
+    else {
+      let id = this.contractHolder.value.individualId;
+    this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`, json , httpOptions). subscribe(data => console.log(data));      
+
 
     console.log(this.contractHolder.value);
     let json = JSON.stringify(this.contractHolder.value);
@@ -145,7 +164,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     console.log(json)
     debugger;
   }
-  }
+}
+
 
 
   showButton() {
@@ -262,10 +282,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
             onEdit: this.handle_editUser.bind(this),
-            onDelete: this.handle_deleteUser.bind(this)
-          }
+            onDelete: this.handle_deleteUser.bind(this),
+          },
 
-      
         },
 
       ],
