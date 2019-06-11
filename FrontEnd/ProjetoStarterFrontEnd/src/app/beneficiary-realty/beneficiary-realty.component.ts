@@ -27,7 +27,7 @@ export class BeneficiaryRealtyComponent implements OnInit {
     addressState: ['', [Validators.pattern(/^[[A-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
     addressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
     addressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
-    addressZipCode: ['', Validators.required],
+    addressZipCode: ['', this.zipCodeValidation],
     addressCity: [''],
     addressComplement: ['']
   });
