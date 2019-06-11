@@ -18,6 +18,7 @@ namespace Backend.Application.Factories
 
         public List<Address> CreateList(List<Address> vm_addresses)
         {
+            addresses = new List<Address>();
             foreach (var ad in vm_addresses)
             {
                 if (Validate(ad))
@@ -41,8 +42,9 @@ namespace Backend.Application.Factories
 
             if (addresses.Count != vm_addresses.Count || addresses.Count > 3)
             {
-                addresses.Clear();
-                return addresses;
+                return null;
+                //addresses.Clear();
+                //return addresses;
             }
 
             return addresses;
@@ -55,16 +57,20 @@ namespace Backend.Application.Factories
         /// <returns></returns>
         private bool Validate(Address address)
         {
-            Regex regexLetters = new Regex("^[a-zA-Z]+$");
+            Regex regexLetters = new Regex("^[a-zA-Z-ã]+\\s?[a-zA-Z-ã]+\\s?\\w+$");
+            Regex regexState = new Regex("^[[a-zA-Z]+$");
 
             if (!new Regex("^[0-9]+$").IsMatch(address.AddressNumber))
                 return false;
 
-            if (!new Regex("^\\d{5}(?:[-\\s]\\d{3})?$").IsMatch(address.AddressZipCode))
+            if (!new Regex("^\\d+$").IsMatch(address.AddressZipCode) || address.AddressZipCode.Length != 8)
+                return false;
+
+            if (!regexState.IsMatch(address.AddressState) || address.AddressState.Length != 2)
                 return false;
 
             if (!regexLetters.IsMatch(address.AddressStreet) || !regexLetters.IsMatch(address.AddressComplement) || !regexLetters.IsMatch(address.AddressNeighborhood) ||
-                    !regexLetters.IsMatch(address.AddressCity) || !regexLetters.IsMatch(address.AddressState) || !regexLetters.IsMatch(address.AddressCountry))
+                    !regexLetters.IsMatch(address.AddressCity) || !regexLetters.IsMatch(address.AddressCountry))
                 return false;
 
             return true;

@@ -56,6 +56,10 @@ namespace ContractHolder.WebAPI.Controllers
         public IActionResult ContractHolder(Guid id)
         {
             var obj = _contractHolderViewModelReadOnlyRepository.Find(id);
+
+            if (obj == null)
+                return NotFound();
+
             return Ok(obj);
         }
 
@@ -104,7 +108,7 @@ namespace ContractHolder.WebAPI.Controllers
 
             if (contractHolder != null)
             {
-                contractHolder.IsDeleted = !contractHolder.IsDeleted;
+                contractHolder.isDeleted = !contractHolder.isDeleted;
 
                 if (_contractHolderViewModelWriteRepository.Update(id, contractHolder) == null)
                     return StatusCode(403);
