@@ -40,7 +40,7 @@ namespace ContractHolder.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("ContractHolderPermission",
-                builder => builder.AllowAnyHeader().AllowAnyOrigin());
+                builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
             services.AddScoped<IReadOnlyRepository<Individual>, ContractHolderRepository>();
