@@ -28,11 +28,11 @@ export class IndividualListComponent implements OnInit {
     this.paginationPageSize = 50;
   }
 
-  private edit_person(data: any) {
+  private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
     }
   
-    private remove_person(data: any) {
+    private handle_deleteUser(data: any) {
       //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals/${beneficiaryId}`);
       console.log(this.rowData$);
     }
@@ -99,8 +99,8 @@ export class IndividualListComponent implements OnInit {
           lockPosition: true,
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
-            onEdit: this.edit_person.bind(this),
-            onRemove: this.remove_person.bind(this)
+            onEdit: this.handle_editUser.bind(this),
+            onRemove: this.handle_deleteUser.bind(this)
           }
         },
       ],

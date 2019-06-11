@@ -37,7 +37,7 @@ export class ContractComponent implements OnInit {
   rowData$: any;
   paginationPageSize;
   detailCellRendererParams;
-  // calopsita2: boolean = false;
+
 
 
   gridApi;
@@ -169,17 +169,14 @@ export class ContractComponent implements OnInit {
     }
   }
 
-  private edit_contract(data: any) {
+  private handle_editUser(data: any) {
     this.contractform.patchValue(data);
   }
 
-  private remove_contract(data: any) {
+  private handle_deleteUser(data: any) {
     let signedContractId = this.contractform.value.signedContractId;
     this.rowData$ = this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`);
   }
-
-
-
 
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -188,15 +185,14 @@ export class ContractComponent implements OnInit {
 
       onRowSelected: this.onRowSelected.bind(this),
       masterDetail: true,
-
       columnDefs: [
-
         {
           headerName: 'Contract Holder ',
           field: 'contractHolderId',
           lockPosition: true,
           sortable: true,
           filter: true,
+          // valueFormatter: currencyHolder,
           onCellValueChanged:
             this.onCellEdit.bind(this),
         },
@@ -229,6 +225,7 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: currencyBeneficiary,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -260,19 +257,17 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
-            onEdit: this.edit_contract.bind(this),
-            onRemove: this.remove_contract.bind(this)
-          },
+            onEdit: this.handle_editUser.bind(this),
+            onRemove: this.handle_deleteUser.bind(this)
+          }
         },
-      ],
+      ]
     }
   }
-
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
   }
-
 
   private setup_gridData() {
     this.rowData$ = this.http.get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
@@ -287,14 +282,14 @@ export class ContractComponent implements OnInit {
     const { data } = event;
     this.contractform.getRawValue();
     console.log(data);
-
     this.contractform.patchValue(data);
-
   }
 }
+//Function Formatting Category
 function currencyCategory(params) {
   return changeCategoryValue(params.value);
 }
+
 function changeCategoryValue(number) {
   if (number == 0) {
     return "Iron";
@@ -315,9 +310,12 @@ function changeCategoryValue(number) {
     return "Diamond"
   }
 }
+
+//function formatting Type
 function currencyType(params) {
   return changeTypValue(params.value);
 }
+
 function changeTypValue(number) {
   if (number == 0) {
     return "Health Plan";
@@ -342,6 +340,7 @@ function changeTypValue(number) {
   }
 }
 
+//function formatting Status
 function currencyStatus(params) {
   return changeStatusValue(params.value);
 }
@@ -352,3 +351,22 @@ function changeStatusValue(stats: boolean) {
     return "Inactive"
   }
 }
+// function formatting Beneficaries
+function currencyBeneficiary(params) {
+  return countBeneficiary(params.value);
+}
+
+function countBeneficiary(list: any) {
+  return list.length;
+}
+
+//function nested Beneficiaries table
+//function formating Holder
+// function currencyHolder(params){
+//   return namesHolderValue(params.value);
+// }
+// function namesHolderValue(id){
+//   if (id == this.holders.get(this.holders.individualName)){
+//     return this.holders.get(this.holders.individualName);
+//   }
+// }
