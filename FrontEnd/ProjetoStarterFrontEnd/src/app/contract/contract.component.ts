@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ModuleWithComponentFactories } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
@@ -165,7 +165,7 @@ export class ContractComponent implements OnInit {
         .subscribe(data => console.log(data));
     } else {
       this.http.put(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`, form, httpOptions)
-      .subscribe(data => console.log(data));
+        .subscribe(data => console.log(data));
     }
   }
 
@@ -238,6 +238,9 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -247,6 +250,7 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: currencyStatus,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -268,7 +272,7 @@ export class ContractComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
   }
-  
+
 
   private setup_gridData() {
     this.rowData$ = this.http.get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
@@ -291,49 +295,60 @@ export class ContractComponent implements OnInit {
 function currencyCategory(params) {
   return changeCategoryValue(params.value);
 }
-function changeCategoryValue(number){
-  if(number == 0){
+function changeCategoryValue(number) {
+  if (number == 0) {
     return "Iron";
   }
-  if(number == 1){
+  if (number == 1) {
     return "Bronze";
   }
-  if(number == 2){
+  if (number == 2) {
     return "Silver";
   }
-  if(number == 3){
+  if (number == 3) {
     return "Gold"
   }
-  if(number == 4){
+  if (number == 4) {
     return "Platium"
   }
-  if(number == 5){
+  if (number == 5) {
     return "Diamond"
   }
 }
-function currencyType(params){
+function currencyType(params) {
   return changeTypValue(params.value);
 }
-function changeTypValue(number){
-  if(number == 0){
+function changeTypValue(number) {
+  if (number == 0) {
     return "Health Plan";
   }
-  if(number == 1){
+  if (number == 1) {
     return "Animal Health Plan";
   }
-  if(number == 2){
+  if (number == 2) {
     return "Dental Plan";
   }
-  if(number == 3){
+  if (number == 3) {
     return "Life Insurance Plan"
   }
-  if(number == 4){
+  if (number == 4) {
     return "Real Estate Insurance"
   }
-  if(number == 5){
+  if (number == 5) {
     return "Vehicle Insurance"
   }
-  if(number == 6){
+  if (number == 6) {
     return "Mobile Device Insurance"
+  }
+}
+
+function currencyStatus(params) {
+  return changeStatusValue(params.value);
+}
+function changeStatusValue(stats: boolean) {
+  if (stats == true) {
+    return "Active";
+  } else {
+    return "Inactive"
   }
 }
