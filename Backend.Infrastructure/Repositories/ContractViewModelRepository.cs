@@ -89,6 +89,21 @@ namespace Backend.Infrastructure.Repositories
 
             foreach (var ben in beneficiaries)
             {
+                var signedContracts = _db
+                                      .SignedContracts
+                                      .Where(sc => sc.SignedContractId == _db
+                                                                          .Contract_Beneficiary
+                                                                          .Where(cb => cb.BeneficiaryId == ben)
+                                                                          .Select(cb => cb.SignedContractId).FirstOrDefault()
+                     && sc.ContractIndividualIsActive)
+                     .ToList();
+
+                foreach(var beneficiarySignedContract in signedContracts)
+                {
+                    if (_db.Contracts.Where(con => con.ContractId == beneficiarySignedContract.ContractId && con.ContractType == viewModel.Type).Any())
+                        return false;
+                }
+
                 var contract_beneficiary = new ContractBeneficiary()
                 {
                     BeneficiaryId = ben,
@@ -272,6 +287,21 @@ namespace Backend.Infrastructure.Repositories
 
             foreach (var ben in beneficiaries)
             {
+                var signedContracts = _db
+                      .SignedContracts
+                      .Where(sc => sc.SignedContractId == _db
+                                                          .Contract_Beneficiary
+                                                          .Where(cb => cb.BeneficiaryId == ben)
+                                                          .Select(cb => cb.SignedContractId).FirstOrDefault()
+                    && sc.ContractIndividualIsActive)
+                    .ToList();
+
+                foreach (var beneficiarySignedContract in signedContracts)
+                {
+                    if (_db.Contracts.Where(con => con.ContractId == beneficiarySignedContract.ContractId && con.ContractType == viewModel.Type).Any())
+                        return false;
+                }
+
                 var contract_beneficiary = new ContractBeneficiary()
                 {
                     BeneficiaryId = ben,

@@ -26,11 +26,11 @@ namespace Backend.Application.Factories
                 {
                     BeneficiaryId = Guid.NewGuid(),
                     IsDeleted = false,
-                    IndividualCPF = vm.IndividualCPF,
-                    IndividualName = vm.IndividualName,
-                    IndividualRG = vm.IndividualRG,
-                    IndividualEmail = vm.IndividualEmail,
-                    IndividualBirthdate = vm.IndividualBirthdate
+                    IndividualCPF = vm.individualCPF,
+                    IndividualName = vm.individualName,
+                    IndividualRG = vm.individualRG,
+                    IndividualEmail = vm.individualEmail,
+                    IndividualBirthdate = vm.individualBirthdate
                 };
             }
             
@@ -44,16 +44,16 @@ namespace Backend.Application.Factories
         /// <returns></returns>
         public static bool IndividualIsValid(ContractHolderViewModel vm)
         {
-            if (!NameIsValid(vm.IndividualName))
+            if (!NameIsValid(vm.individualName))
                 return false;
 
-            if (!CPFIsValid(vm.IndividualCPF))
+            if (!CPFIsValid(vm.individualCPF))
                 return false;
 
-            if (!EmailIsValid(vm.IndividualEmail))
+            if (!EmailIsValid(vm.individualEmail))
                 return false;
 
-            if (!RGIsValid(vm.IndividualRG))
+            if (!RGIsValid(vm.individualRG))
                 return false;
 
             return true;
@@ -67,7 +67,7 @@ namespace Backend.Application.Factories
         public static bool NameIsValid(string name)
         {
             //Validando se só tem letras no Nome
-            if (!new Regex("^[a-zA-Z]+$").IsMatch(name))
+            if (!new Regex("^[A-ZÀ-Ÿ][A-zÀ-ÿ']+\\s([A-zÀ-ÿ']\\s?)*[A-ZÀ-Ÿ][A-zÀ-ÿ']+$").IsMatch(name))
                 return false;
 
             return true;

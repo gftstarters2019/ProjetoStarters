@@ -50,7 +50,7 @@ export class TelephoneComponent implements OnInit {
     }
   }
 
-  public onSubmit(values: any): void {
+  public onSubmit(): void {
   }
 
   chooseTelephone(): boolean {

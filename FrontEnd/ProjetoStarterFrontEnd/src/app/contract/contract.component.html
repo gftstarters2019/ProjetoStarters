@@ -6,13 +6,12 @@
     <h2 class="titleContract">Contract</h2>
   </mat-label>
 
-
   <form [formGroup]="contractform">
     <div class="contractCard">
 
-        <div class="contractCardName">
-            <mat-card >
-              <mat-form-field style="width: 300px;">
+        <div >
+            <mat-card class="contractHolderName" >
+              <mat-form-field style="width: 350px;">
                 <mat-label>Contract Holder's name:</mat-label>
                 <mat-select formControlName="contractHolderId" name="contractHolderId">
                     <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
