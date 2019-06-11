@@ -59,6 +59,9 @@ export class PetListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          }, 
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -68,6 +71,7 @@ export class PetListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: SpeciesFormmatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -111,5 +115,25 @@ export class PetListComponent implements OnInit {
     // this.individual.getRawValue();
     console.log(data);
     // this.individual.patchValue(data);
+  }
+}
+function SpeciesFormmatter(params){
+  return speciesValue(params.value);
+}
+function speciesValue(number){
+  if(number == 0){
+    return "Canis Lupus Familiaris";
+  }
+  if(number == 1){
+    return "Felis Catus"
+  }
+  if(number == 2){
+return "Mesocricetus Auratus"
+  }
+  if(number == 3){
+    return "Nymphicus Hollandicus"
+  }
+  if(number == 4){
+    return "Ara Chloropterus"
   }
 }
