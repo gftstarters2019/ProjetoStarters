@@ -6,13 +6,12 @@
     <h2 class="titleContract">Contract</h2>
   </mat-label>
 
-
   <form [formGroup]="contractform">
     <div class="contractCard">
 
-        <div class="contractCard">
-            <mat-card >
-              <mat-form-field style="width: 300px;">
+        <div >
+            <mat-card class="contractHolderName" >
+              <mat-form-field style="width: 350px;">
                 <mat-label>Contract Holder's name:</mat-label>
                 <mat-select formControlName="contractHolderId" name="contractHolderId">
                     <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
@@ -142,9 +141,14 @@
             </mat-expansion-panel-header>
 
             <mat-nav-list>
-              <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true"
-                [paginationPageSize]="paginationPageSize" class="ag-theme-material" [masterDetail]="true"
-                [gridOptions]="gridOption" [rowData]="rowData$ | async">
+              <ag-grid-angular 
+              style="width: 100%; height: 1000px;" 
+              [pagination]="true"
+              [paginationPageSize]="paginationPageSize" 
+              class="ag-theme-material" 
+              [masterDetail]="true"
+              [gridOptions]="gridOption" 
+              [rowData]="rowData$ | async">
               </ag-grid-angular>
             </mat-nav-list>
 

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
+import { ActionButtonComponent } from '../action-button/action-button.component';
 
 @Component({
   selector: 'app-mobile-device-list',
@@ -25,6 +26,16 @@ export class MobileDeviceListComponent implements OnInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
   }
+
+  private edit_devices(data: any) {
+    //this.contractform.patchValue(data);
+    }
+  
+    private remove_devices(data: any) {
+      //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevices/${beneficiaryId}`);
+      console.log(this.rowData$);
+    }
+
   //AG-grid Table Contract
   private setup_gridOptions() {
 
@@ -89,7 +100,17 @@ export class MobileDeviceListComponent implements OnInit {
           filter: true,
           onCellValueChanged:
             this.onCellEdit.bind(this)
-        }
+          },
+          {
+            headerName: 'Edit/Delete',
+            field: 'editDelete',
+            lockPosition: true,
+            cellRendererFramework: ActionButtonComponent,
+            cellRendererParams: {
+              onEdit: this.edit_devices.bind(this),
+              onRemove: this.remove_devices.bind(this)
+            }
+          },
       ],
       onGridReady: this.onGridReady.bind(this)
     }
