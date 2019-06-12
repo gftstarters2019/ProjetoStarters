@@ -77,7 +77,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   private setup_form() {
     this.contractHolder = this.chfb.group({
       individualName: ['', Validators.pattern(GenericValidator.regexName)],
-      individualCPF: [''],
+      individualCPF: ['', GenericValidator.isValidCpf()],
       individualRG: ['', GenericValidator.rgLengthValidation()],
       individualEmail: ['', Validators.required],
       individualBirthDate: ['', GenericValidator.dateValidation()],
