@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -141,15 +142,15 @@ export class VehicleListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Edit/Delete',
+          headerName: 'Delete',
           field: 'editDelete',
           lockPosition: true,
-          cellRendererFramework: ActionButtonComponent,
+          cellRendererFramework: ActionButtonBeneficiariesComponent,
           cellRendererParams: {
-            onEdit: this.handle_editUser.bind(this),
-              onDelete: this.handle_deleteUser.bind(this)
+            onDelete: this.handle_deleteUser.bind(this)
           }
         },
+
       ],
       onGridReady: this.onGridReady.bind(this)
     }

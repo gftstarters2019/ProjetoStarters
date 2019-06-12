@@ -124,15 +124,10 @@
         <button class="btn-list" mat-raised-button color="primary" type="submit" (click)="changeMessageValue()">Submit</button>
         
 
-        <br><br>
-        <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList()">Listing
-          Contract</button>
-        <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList2()">Listing
-          Beneficiary</button>
-      
+        <br><br>      
    <div class="contractCard">
 
-        <mat-accordion *ngIf="!showlist;">
+        <mat-accordion>
           <mat-expansion-panel>
             <mat-expansion-panel-header class="listpanel-header">
               <mat-panel-title>
@@ -157,7 +152,7 @@
       </div>
 
 
-    <mat-accordion *ngIf="!showlist2;">
+    <mat-accordion >
       <mat-expansion-panel>
         <mat-expansion-panel-header class="listpanel-header">
           <mat-panel-title>

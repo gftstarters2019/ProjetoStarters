@@ -1,3 +1,4 @@
+import { ActionButtonBeneficiariesComponent } from './../action-button-beneficiaries/action-button-beneficiaries.component';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
@@ -27,10 +28,6 @@ export class IndividualListComponent implements OnInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
   }
-
-  private handle_editUser(data: any) {
-    //this.contractform.patchValue(data);
-    }
   
   private handle_deleteUser(data: any) {
     const id = data.beneficiaryId;
@@ -99,12 +96,11 @@ export class IndividualListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Edit/Delete',
+          headerName: 'Delete',
           field: 'editDelete',
           lockPosition: true,
-          cellRendererFramework: ActionButtonComponent,
+          cellRendererFramework: ActionButtonBeneficiariesComponent,
           cellRendererParams: {
-            onEdit: this.handle_editUser.bind(this),
             onDelete: this.handle_deleteUser.bind(this)
           }
         },

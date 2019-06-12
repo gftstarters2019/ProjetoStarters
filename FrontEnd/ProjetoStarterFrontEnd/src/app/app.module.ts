@@ -34,6 +34,7 @@ import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { RealtiesListComponent } from './realties-list/realties-list.component';
 import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-list.component';
 import { ActionButtonComponent } from './action-button/action-button.component';
+import { ActionButtonBeneficiariesComponent } from './action-button-beneficiaries/action-button-beneficiaries.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { ActionButtonComponent } from './action-button/action-button.component';
     VehicleListComponent,
     RealtiesListComponent,
     MobileDeviceListComponent,
+    ActionButtonBeneficiariesComponent,
   ],
   imports: [
     ObserversModule,
@@ -68,7 +70,7 @@ import { ActionButtonComponent } from './action-button/action-button.component';
     MatDialogModule,
     MaterialModule,
     AgGridModule.withComponents([
-      ActionButtonComponent,
+      ActionButtonComponent,ActionButtonBeneficiariesComponent,
     ]),
     MatCardModule,
     ReactiveFormsModule,
