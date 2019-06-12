@@ -41,7 +41,7 @@
                               <!-- Telephone Component -->
   <div class="addressBg" formArrayName="idTelephone" *ngFor="let telefone of contractHolder.get('idTelephone')['controls'];">
     <mat-card>
-      <app-telephone [telephone2]="telefone" [pushPermission]="message" (addTelephone)="handle_add_telphone($event)"></app-telephone>
+      <app-telephone [telephone2]="telefone"  [pushPermission]="message" (addTelephone)="handle_add_telphone($event)"></app-telephone>
 
     </mat-card> 
   </div>  
@@ -53,7 +53,7 @@
                   <!-- Address Component -->
   <div class="addressBg"formArrayName="idAddress" *ngFor="let item of contractHolder.get('idAddress')['controls'];">    
     <mat-card >
-      <app-address [address2]="item" [addressPushPermission]="message" (addAddress)="handle_add_address($event)"> </app-address>
+      <app-address [address2]="item"  [addressPushPermission]="message" (addAddress)="handle_add_address($event)"> </app-address>
     </mat-card> 
   </div>  
   

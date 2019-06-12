@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
+import { Validators, FormBuilder, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { GridOptions, ColDef, RowSelectedEvent, RowClickedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { GenericValidator } from '../Validations/GenericValidator';
@@ -54,7 +54,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   private handle_editUser(data: any) {
     debugger;
-    
+    console.log();
     this.IndividualId = data.individualId;
     // this.showTelephone ();
     
@@ -73,10 +73,10 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       const hasMaxAddress = addressControl.length >= 3;
       let calopsita =0;
       if (!hasMaxAddress) {
-        for(calopsita = 0; calopsita >= data.individualAddresses.length; calopsita++){
-          addressControl.push(this.chfb.group(data.individualAddresses[calopsita]));
+        addressControl.push(this.chfb.group(data.individualAddresses[0]));
+        // for(calopsita = 0; calopsita >= data.individualAddresses.length; calopsita++){
 
-         }
+        //  }
         debugger;
         console.log(data.individualAddresses);
       } 
@@ -92,6 +92,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     };
 
     this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => console.log(data));      
+    debugger;
     console.log(data);
 
   }
@@ -130,25 +131,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
    
     this.unMaskValues();
 
-    let json = JSON.stringify(this.contractHolder.value);
-    
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    if (this.contractHolder.value.individualId == '') 
-    {
-      this.http.post('https://contractholderwebapi.azurewebsites.net/api/ContractHolder', json, httpOptions).subscribe(data => console.log(data));
-     
-    } 
-
-    
-    else {
-      let id = this.contractHolder.value.individualId;
-    this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`, json , httpOptions). subscribe(data => console.log(data));      
-
-
     console.log(this.contractHolder.value);
     let json = JSON.stringify(this.contractHolder.value);
     console.log(json)
@@ -157,12 +139,14 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
    })};
     if(this.IndividualId == null){
    this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json,httpOptions).subscribe(data => console.log(data));
-  //  debugger;
-  }else {
+   
 
-    this.http.put('https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}', json,httpOptions).subscribe(data => console.log(data)); 
-    console.log(json)
+   debugger;
+  }else {
     debugger;
+
+    this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json,httpOptions).subscribe(data => console.log(data)); 
+    console.log(json)
   }
 }
 
@@ -173,11 +157,21 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   showAddress() {
+    debugger;
     const addressControl = this.contractHolder.controls.idAddress as FormArray;
     const hasMax = addressControl.length >= 3;
 
     if (!hasMax) {
       addressControl.push(this.chfb.group({
+        addressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressType: ['', Validators.required],
+    addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(6)]],
+    addressState: ['', [Validators.pattern(/^[[A-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
+    addressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressZipCode: ['', this.zipCodeValidation],
+    addressCity: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressComplement: ['', Validators.pattern(GenericValidator.regexSimpleName)]
       }))
     }
 
@@ -189,6 +183,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     if (!hasMax) {
       telephoneControl.push(this.chfb.group({
+        telephoneNumber: ['', [GenericValidator.telephoneValidator(), ]],
+        telephoneType: ''
       }));
     }
     this.showTelephonelist = !this.showTelephonelist;
@@ -322,7 +318,16 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   }
 
+  zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
+    let zipCodeNumber = control.value;
 
+    zipCodeNumber = zipCodeNumber.replace(/\D+/g, '');
+
+    if(zipCodeNumber.length < 8)
+      return {"zipCodeIsTooShort": true};
+    
+    return null;
+  }
 
 
 

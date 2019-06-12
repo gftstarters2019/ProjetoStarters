@@ -29,12 +29,9 @@ export class AddressComponent implements OnInit {
   @Output() addAddress = new EventEmitter<any>();
 
   @Input() address2: FormGroup;
-
   @Input() addressPushPermission !: number;
 
-  //addressAdd: FormArray;
-
-  address = this.fb.group ({
+    address = this.fb.group ({
     addressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
     addressType: ['', Validators.required],
     addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(6)]],

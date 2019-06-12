@@ -20,8 +20,8 @@ export class TelephoneComponent implements OnInit {
   cellphoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   telephoneMask = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
-   telephone = this.fb.group ({
-    telephoneNumber: ['', GenericValidator.telephoneValidator()],
+    telephone = this.fb.group ({
+    telephoneNumber: ['', [GenericValidator.telephoneValidator(), ]],
     telephoneType: ''
   });
 
