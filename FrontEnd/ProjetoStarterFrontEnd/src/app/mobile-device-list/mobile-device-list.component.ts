@@ -71,6 +71,9 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -89,6 +92,7 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: DeviceFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -98,6 +102,7 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: invoiceFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
           },
@@ -133,4 +138,22 @@ export class MobileDeviceListComponent implements OnInit {
     console.log(data);
     // this.individual.patchValue(data);
   }
+}
+function DeviceFormatter(params){
+  return deviceValue(params.value);
+}
+function deviceValue(number){
+  if(number == 0)
+  return "Smartphone";
+  if(number == 1)
+  return "Tablet";
+  if(number == 2)
+  return "Laptop";
+}
+
+function invoiceFormatter(params){
+  return "R$ " + invoiceValue(params.value);
+}
+function invoiceValue(number){
+  return number.toFixed(2);
 }
