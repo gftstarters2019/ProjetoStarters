@@ -28,15 +28,11 @@ export class MobileDeviceListComponent implements OnInit {
   }
 
   private edit_devices(data: any) {
-    //this.contractform.patchValue(data);
     }
   
     private remove_devices(data: any) {
-      //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevices/${beneficiaryId}`);
-      console.log(this.rowData$);
     }
 
-  //AG-grid Table Contract
   private setup_gridOptions() {
 
     this.gridOptions = {
@@ -123,14 +119,9 @@ export class MobileDeviceListComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevices');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
   }
 }

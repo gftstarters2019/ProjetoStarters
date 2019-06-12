@@ -27,12 +27,9 @@ export class PetListComponent implements OnInit {
     this.paginationPageSize = 50;
   }
   private edit_pets(data: any) {
-    //this.contractform.patchValue(data);
     }
   
     private remove_pets(data: any) {
-      //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets/${beneficiaryId}`);
-      console.log(this.rowData$);
     }
 
   private setup_gridOptions() {
@@ -102,14 +99,9 @@ export class PetListComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
   }
 }

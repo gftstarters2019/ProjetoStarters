@@ -84,7 +84,6 @@ export class ContractComponent implements OnInit {
     this.paginationPageSize = 50;
 
     this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
-      console.log(data);
       this.holders = data;
     });
   }
@@ -146,7 +145,6 @@ export class ContractComponent implements OnInit {
 
   onSubmit() {
     let form = JSON.stringify(this.contractform.value);
-    console.log(form);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -255,15 +253,12 @@ export class ContractComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
 
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
     this.contractform.getRawValue();
-    console.log(data);
 
     this.contractform.patchValue(data);
 

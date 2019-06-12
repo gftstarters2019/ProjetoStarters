@@ -2,9 +2,9 @@
   <div class="container">
     <mat-form-field class="telephone-type">
         <mat-select formControlName="telephoneType" placeholder="Select Type" required>
-          <mat-option value="Home">Home</mat-option>
-          <mat-option value="Commercial">Commercial</mat-option>
-          <mat-option value="Cellphone">Cellphone</mat-option>
+          <mat-option [value]="0">Home</mat-option>
+          <mat-option [value]="1">Commercial</mat-option>
+          <mat-option [value]="2">Cellphone</mat-option>
         </mat-select>
       </mat-form-field>
     <div *ngIf="chooseTelephone(); then cellphoneBlock else telephoneBlock"></div>

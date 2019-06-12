@@ -42,26 +42,24 @@ export class AddressComponent implements OnInit {
     addressCity: ['', Validators.pattern(GenericValidator.regexSimpleName)],
     addressComplement: ['', Validators.pattern(GenericValidator.regexSimpleName)]
   });
-  //message: any;
 
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     
-    //console.log(this.address.value);
   }
 
   unMaskValues(): void {
-    let zipCode = this.address.controls.addressZipCode.value;
+    let zipCode = this.address2.controls.addressZipCode.value;
     zipCode = zipCode.replace(/\D+/g, '');
-    this.address.controls.addressZipCode.setValue(zipCode);
+    this.address2.controls.addressZipCode.setValue(zipCode);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.addressPushPermission.currentValue != 0 && changes.addressPushPermission.currentValue != changes.addressPushPermission.previousValue) {
       this.unMaskValues();
-      this.addAddress.emit(this.address);
+      this.addAddress.emit(this.address2);
     }
   }
 
@@ -78,12 +76,6 @@ export class AddressComponent implements OnInit {
     });
   }
 
-  // addAddress(): void {
-  //   this.addressAdd = this.address.get('addressAdd') as FormArray;
-  //   if(this.addressAdd.length<5){
-  //     this.addressAdd.push(this.createAddress());
-  //   }
-  // }
   
   zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
     let zipCodeNumber = control.value;
