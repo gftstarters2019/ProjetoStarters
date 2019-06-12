@@ -13,9 +13,9 @@ import { TelephoneComponent } from './telephone/telephone.component';
 
 
 const routes: Routes = [
-  { path: '/contract-holder', component: ContractHolderComponent },
+  { path: 'contract-holder', component: ContractHolderComponent },
   { path: 'address', component: AddressComponent },
-  { path: '/contract', component: ContractComponent },
+  { path: 'contract', component: ContractComponent },
   { path:'individual', component: BeneficiaryIndividualComponent},
   { path:'pet', component: BeneficiaryPetComponent},
   { path:'realty', component: BeneficiaryRealtyComponent},
