@@ -36,7 +36,7 @@ namespace Backend.Infrastructure.Repositories
 
                     if (individual == null)
                         return false;
-                    else if (_db.Individuals.Where(ind => ind.IndividualCPF == individual.IndividualCPF).Any())
+                    else if (_db.Individuals.Where(ind => (ind.IndividualCPF == individual.IndividualCPF) && (ind.IsDeleted == false)).Any())
                         return false;
 
                     _db.Add(individual);
