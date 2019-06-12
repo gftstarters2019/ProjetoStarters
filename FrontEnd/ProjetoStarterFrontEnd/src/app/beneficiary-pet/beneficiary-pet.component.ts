@@ -1,6 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormControl, Validators, FormBuilder } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Species {
@@ -23,6 +22,10 @@ export class BeneficiaryPetComponent implements OnInit {
     {value: '4', name: 'Ara chloropterus'},
   ];
 
+  @Input() petForm: FormGroup;
+
+  @Input() petPushPermission !: number;
+
   @Output() messagePetEvent = new EventEmitter<any>();
 
   petCreateForm= this.formBuilder.group({
@@ -32,25 +35,15 @@ export class BeneficiaryPetComponent implements OnInit {
     petBreed: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName))
   });
 
-  constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
   }
 
-  response:any;
-  public petPost(): void{
-    
-    let form = JSON.stringify(this.petCreateForm.value);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pet', form, httpOptions)
-    .subscribe(data => {
-      this.response = data;
-      if(this.response != null)
-        this.messagePetEvent.emit(this.response.beneficiaryId);
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.petPushPermission.currentValue != 0 && changes.petPushPermission.currentValue != changes.petPushPermission.previousValue) {
+      
+      this.messagePetEvent.emit(this.petCreateForm);
+    }
   }
 }
