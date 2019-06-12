@@ -1,11 +1,12 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Validators, FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { GridOptions, ColDef, RowSelectedEvent, RowClickedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-contract-holder',
@@ -34,7 +35,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   showList: boolean = true;
   showAddresslist: boolean = false;
   showTelephonelist: boolean = false;
-  constructor(private chfb: FormBuilder, private http: HttpClient) {
+  constructor(private chfb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar) {
 
   }
 
@@ -59,7 +60,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     
     const id = data.individualId;
     
-    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => console.log(data));
+    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`).subscribe(response => response, error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));;
   }
 
   unMaskValues(): void {
@@ -76,7 +77,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   private setup_form() {
     this.contractHolder = this.chfb.group({
       individualName: ['', Validators.pattern(GenericValidator.regexName)],
-      individualCPF: ['', GenericValidator.isValidCpf()],
+      individualCPF: [''],
       individualRG: ['', GenericValidator.rgLengthValidation()],
       individualEmail: ['', Validators.required],
       individualBirthDate: ['', GenericValidator.dateValidation()],
@@ -91,26 +92,27 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   changeMessageValue(): void {
     this.message = 1;
   } 
+
   onSubmit(): void {
+
+    this.unMaskValues();
+
     let json = JSON.stringify(this.contractHolder.value);
-    
+    console.log(json)
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
-    if (this.contractHolder.value.individualId == '') 
-    {
-      this.http.post('https://contractholderwebapi.azurewebsites.net/api/ContractHolder', json, httpOptions).subscribe(data => console.log(data));
-     
-    } 
-    
-    else {
-      let id = this.contractHolder.value.individualId;
-    this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`, json , httpOptions). subscribe(data => console.log(data));      
 
+    this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json, httpOptions).subscribe(response => console.log(response), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
   }
-  
+
+  openSnackBar(message: string): void {
+    this._snackBar.open(message, '', {
+      duration: 4000,
+      
+    });
   }
 
 

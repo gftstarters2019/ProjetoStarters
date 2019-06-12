@@ -4,6 +4,7 @@ import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { MatSnackBar } from '@angular/material';
 
 
 export interface Type {
@@ -86,7 +87,7 @@ export class ContractComponent implements OnInit {
     beneficiaries: this.fb.array([])
   });
 
-  constructor(private fb: FormBuilder, private http: HttpClient) { }
+  constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.setup_gridData();
@@ -96,6 +97,13 @@ export class ContractComponent implements OnInit {
     this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
       console.log(data);
       this.holders = data;
+    });
+  }
+
+  public openSnackBar(message: string): void {
+    this._snackBar.open(message, '', {
+      duration: 4000,
+      
     });
   }
 
@@ -163,10 +171,10 @@ export class ContractComponent implements OnInit {
     };
     if (signedContractId == null) {
       this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
-        .subscribe(data => console.log(data));
+        .subscribe(data => console.log(data), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
     } else {
       this.http.put(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`, form, httpOptions)
-      .subscribe(data => console.log(data));
+      .subscribe(data => console.log(data), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
     }
   }
 
@@ -176,7 +184,7 @@ export class ContractComponent implements OnInit {
 
   private remove_contract(data: any) {
     let signedContractId = this.contractform.value.signedContractId;
-    this.rowData$ = this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`);
+    this.rowData$ = this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`).subscribe(data => data, error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato deletado com sucesso"));
   }
 
 
