@@ -1,21 +1,8 @@
-import { Holder } from './../contract/contract.component';
-import { FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
-
-export interface Holder {
-  individualId: string;
-  individualBirthdate: string;
-  individualCPF: string;
-  individualEmail: string;
-  individualName: string;
-  individualRG: string;
-  isDeleted: boolean;
-}
 
 @Component({
   selector: 'app-individual-list',
@@ -24,21 +11,6 @@ export interface Holder {
 })
 export class IndividualListComponent implements OnInit {
 
-  name: string;
-  cpf: string;
-  rg: string;
-  birthdate: any;
-  email: string;
-
-  holder = this.fb.group({
-    beneficiaryId: ['', Validators.required],
-    individualName: ['', Validators.required],
-    individualCPF: ['', Validators.required],
-    individualRG: ['', Validators.required],
-    individualBirthdate: ['true', Validators.required],
-    individualEmail: ['true', Validators.required],
-    isDeleted: ['true', Validators.required],
-  })
 
   detailCellRendererParams;
   gridApi;
@@ -48,7 +20,7 @@ export class IndividualListComponent implements OnInit {
   gridOptions: GridOptions;
   load_failure: boolean;
 
-  constructor(private http: HttpClient, public dialog: MatDialog, private fb: FormBuilder) { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.setup_gridData();
@@ -56,11 +28,17 @@ export class IndividualListComponent implements OnInit {
     this.paginationPageSize = 50;
   }
 
+  private handle_editUser(data: any) {
+    //this.contractform.patchValue(data);
+    }
+  
   private handle_deleteUser(data: any) {
-    //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals/${beneficiaryId}`);
-    console.log(this.rowData$);
-  }
+    const id = data.beneficiaryId;
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
 
+    this.setup_gridData();
+  }
+    
   //AG-grid Table Contract
   private setup_gridOptions() {
 
@@ -126,7 +104,8 @@ export class IndividualListComponent implements OnInit {
           lockPosition: true,
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
-            onRemove: this.handle_deleteUser.bind(this)
+            onEdit: this.handle_editUser.bind(this),
+            onDelete: this.handle_deleteUser.bind(this)
           }
         },
       ],

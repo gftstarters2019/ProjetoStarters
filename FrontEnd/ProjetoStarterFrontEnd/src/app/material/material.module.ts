@@ -76,7 +76,7 @@ import "ag-grid-enterprise";
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule,
+    MatTreeModule
   ],
   exports: [
     MatAutocompleteModule,
