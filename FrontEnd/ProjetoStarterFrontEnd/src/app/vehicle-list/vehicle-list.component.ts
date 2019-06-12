@@ -29,12 +29,12 @@ export class VehicleListComponent implements OnInit {
 
   private edit_vehicle(data: any) {
     //this.contractform.patchValue(data);
-    }
-  
-    private remove_vehicle(data: any) {
-      //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicles/${beneficiaryId}`);
-      console.log(this.rowData$);
-    }
+  }
+
+  private remove_vehicle(data: any) {
+    //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicles/${beneficiaryId}`);
+    console.log(this.rowData$);
+  }
 
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -71,6 +71,7 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: colorFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -80,6 +81,9 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -89,6 +93,9 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -107,6 +114,7 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: MileageFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -116,6 +124,7 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: FipeFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -125,6 +134,7 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: doneFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -160,4 +170,60 @@ export class VehicleListComponent implements OnInit {
     console.log(data);
     // this.individual.patchValue(data);
   }
+}
+function colorFormatter(params) {
+  return colorValue(params.value);
+}
+function colorValue(number) {
+  if (number == 0) {
+    return "White";
+  }
+  if (number == 1) {
+    return "Silver";
+  }
+  if (number == 2) {
+    return "Black";
+  }
+  if (number == 3) {
+    return "Gray";
+  }
+  if (number == 4) {
+    return "Red";
+  }
+  if (number == 5) {
+    return "Blue";
+  }
+  if (number == 6) {
+    return "Brown";
+  }
+  if (number == 7) {
+    return "Yellow";
+  }
+  if (number == 8) {
+    return "Green";
+  }
+  if (number == 9) {
+    return "Other";
+  }
+}
+function MileageFormatter(params) {
+  return mileageValue(params.value) + "Km";
+}
+function mileageValue(number) {
+  return number.toFixed(3);
+}
+function FipeFormatter(params) {
+  return "R$ " + FipeValue(params.value);
+}
+function FipeValue(number) {
+  return number.toFixed(2);
+}
+function doneFormatter(params) {
+  return doneValue(params.value);
+}
+function doneValue(bool){
+  if (bool == true)
+    return "Check";
+  else
+    return "UnCheck";
 }

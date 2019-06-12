@@ -143,6 +143,9 @@ export class RealtiesListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -152,6 +155,7 @@ export class RealtiesListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: SaleFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -161,6 +165,7 @@ export class RealtiesListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: MarketFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
           },
@@ -197,4 +202,16 @@ export class RealtiesListComponent implements OnInit {
     console.log(data);
     // this.individual.patchValue(data);
   }
+}
+function SaleFormatter(params){
+  return "R$ " + saleValue(params.value);
+}
+function saleValue(number){
+  return number.toFixed(2);
+}
+function MarketFormatter(params){
+  return "R$ " + marketvalue(params.value);
+}
+function marketvalue(number){
+  return number.toFixed(2);
 }
