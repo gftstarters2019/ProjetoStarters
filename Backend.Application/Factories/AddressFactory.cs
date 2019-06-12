@@ -57,7 +57,7 @@ namespace Backend.Application.Factories
         /// <returns></returns>
         private bool Validate(Address address)
         {
-            Regex regexLetters = new Regex("^[a-zA-Z-ã]+\\s?[a-zA-Z-ã]+\\s?\\w+$");
+            Regex regexLetters = new Regex("^[a-zA-Z-ãâáõóô]+(([',. -][a-zA-Z-ãâáõóô])?[a-zA-Z-ãâáõóô]*)*$");
             Regex regexState = new Regex("^[[a-zA-Z]+$");
 
             if (!new Regex("^[0-9]+$").IsMatch(address.AddressNumber))

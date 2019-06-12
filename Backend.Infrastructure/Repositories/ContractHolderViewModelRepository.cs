@@ -36,7 +36,7 @@ namespace Backend.Infrastructure.Repositories
 
                     if (individual == null)
                         return false;
-                    else if (_db.Individuals.Where(ind => (ind.IndividualCPF == individual.IndividualCPF) && (ind.IsDeleted == false)).Any())
+                    else if (_db.Individuals.Where(ind => (ind.IndividualCPF == individual.IndividualCPF) && (!ind.IsDeleted)).Any())
                         return false;
 
                     _db.Add(individual);
@@ -45,7 +45,10 @@ namespace Backend.Infrastructure.Repositories
                     if (vm.individualTelephones.Count() != 0)
                     {
                         var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones);
-                        if (telephones.Count != vm.individualTelephones.Count)
+
+                        if (telephones == null)
+                            return false;
+                        else if (telephones.Count != vm.individualTelephones.Count)
                             return false;
 
                         foreach (var telephone in telephones)
@@ -65,7 +68,10 @@ namespace Backend.Infrastructure.Repositories
                     if (vm.individualAddresses.Count() != 0)
                     {
                         var addresses = ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses);
-                        if (addresses.Count != vm.individualAddresses.Count)
+
+                        if (addresses == null)
+                            return false;
+                        else if (addresses.Count != vm.individualAddresses.Count)
                             return false;
 
                         foreach (var address in addresses)
