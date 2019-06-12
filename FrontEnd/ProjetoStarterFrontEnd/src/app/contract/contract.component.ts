@@ -1,26 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
+import "ag-grid-enterprise";
+import { ActionButtonComponent } from '../action-button/action-button.component';
 
 
 export interface Type {
-  value: string;
+  value: number;
   viewValue: string;
 }
 export interface Category {
-  value: string;
+  value: number;
   viewValue: string;
 }
-export interface Holder{
-  value: string;
-  viewValue:string;
+export interface Holder {
+  individualId: string;
+  individualBirthdate: string;
+  individualCPF: string;
+  individualEmail: string;
+  individualName: string;
+  individualRG: string;
 }
-export interface CPF{
-  value: string;
-  viewValue:string;
-}
-
-
 
 @Component({
   selector: 'app-contract',
@@ -31,48 +32,63 @@ export class ContractComponent implements OnInit {
 
   public showlist: boolean = true;
   public showlist2: boolean = true;
+  beneficiaries: FormArray;
 
+  rowData$: any;
+  paginationPageSize;
+  detailCellRendererParams;
 
-holders: Holder[]=[
-  {value: '',viewValue:''},
-]
-cpfs: CPF[]=[
-  {value: '',viewValue:''},
-]
+  gridApi;
+  gridColumApi;
+  gridOption: GridOptions;
+  load_failure: boolean;
+  holders: Holder[];
 
-  types: Type[] = [
-    { value: 'Health Plan', viewValue: 'Contract Health Plan' },
-    { value: 'Animal Health Plan', viewValue: 'Contract Animal Health Plan' },
-    { value: 'Dental Plan', viewValue: 'Contract Dental Plan' },
-    { value: 'Life insurance Plan', viewValue: 'Contract Life insurance Plan' },
-    { value: 'Real Estate Insurance', viewValue: 'Contract Real Estate Insurance' },
-    { value: 'Car insurance', viewValue: 'Contract Car insurance' },
-    { value: 'Mobile device Insurance', viewValue: 'Contract Mobile device Insurance' },
+  message: number = 0;
+
+  cType: any;
+
+  contractTypes: Type[] = [
+    { value: 0, viewValue: 'Contract Health Plan' },
+    { value: 1, viewValue: 'Contract Animal Health Plan' },
+    { value: 2, viewValue: 'Contract Dental Plan' },
+    { value: 3, viewValue: 'Contract Life Insurance Plan' },
+    { value: 4, viewValue: 'Contract Real State Insurance' },
+    { value: 5, viewValue: 'Contract Vehicle Insurance' },
+    { value: 6, viewValue: 'Contract Mobile Device Insurance' },
   ];
-  categories: Category[] = [
-    { value: 'Iron', viewValue: 'Contract Iron' },
-    { value: 'Bronze', viewValue: 'Contract Bronze' },
-    { value: 'Silver', viewValue: 'Contract Silver' },
-    { value: 'Gold', viewValue: 'Contract Gold' },
-    { value: 'Platinum', viewValue: 'Contract Platinum' },
-    { value: 'Diamond', viewValue: 'Contract Diamond' },
+  contractCategories: Category[] = [
+    { value: 0, viewValue: 'Contract Iron' },
+    { value: 1, viewValue: 'Contract Bronze' },
+    { value: 2, viewValue: 'Contract Silver' },
+    { value: 3, viewValue: 'Contract Gold' },
+    { value: 4, viewValue: 'Contract Platinum' },
+    { value: 5, viewValue: 'Contract Diamond' },
   ];
 
   contractform = this.fb.group({
-    holdername: ['', Validators.required],
-    holderCPF: ['', Validators.required],
-    contractId: ['', Validators.required],
-    contractType: ['', Validators.required],
-    contractCategory: ['', Validators.required],
-    contractExpiryDate: ['', Validators.required],
-    contractIniatalDate: ['', Validators.required],
-    contractStatus:['False', Validators.required]
+    contractHolderId: ['', Validators.required],
+    type: ['', Validators.required],
+    category: ['', Validators.required],
+    expiryDate: ['', Validators.required],
+    isActive: ['true', Validators.required],
+    beneficiaries: this.fb.array([]),
+    auxBeneficiaries: this.fb.array([])
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private http: HttpClient) { }
 
-  ngOnInit() {}
-  
+  ngOnInit() {
+    this.setup_gridData();
+    this.setup_gridOptions();
+    this.paginationPageSize = 50;
+
+    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
+      console.log(data);
+      this.holders = data;
+    });
+  }
+
   public showList(): void {
     this.showlist = !this.showlist;
   }
@@ -80,4 +96,176 @@ cpfs: CPF[]=[
     this.showlist2 = !this.showlist2;
   }
 
+  public assignContractType(): void {
+    let i =0;
+    this.cType = this.contractform.get(['type']).value;
+    if(this.cType != this.contractform.get('type')){
+      this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
+      for (i=0; i <= this.beneficiaries.length; i++){
+        this.beneficiaries.controls.pop();
+      }
+      this.beneficiaries = this.contractform.get('beneficiaries') as FormArray;
+      for (i=0; i <= this.beneficiaries.length; i++){
+        this.beneficiaries.controls.pop();
+      }
+    }
+  }
+
+  createBeneficiary(): FormGroup {
+    return this.fb.group({
+    });
+  }
+
+  addBeneficiary(): void {
+    
+    this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
+    if (this.beneficiaries.length < 5) {
+      this.beneficiaries.push(this.createBeneficiary());
+    }
+  }
+
+  receiveMessage($event) {
+    this.beneficiaries = this.contractform.get('beneficiaries') as FormArray;
+    this.beneficiaries.push($event);
+  }
+
+  clearBeneficiary(): void {
+    this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
+    this.beneficiaries.controls.pop();
+    this.cType = '';
+  }
+
+  removeBeneficiary(i) {
+    this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
+    this.beneficiaries.removeAt(i);
+  }
+
+  changeMessageValue(): void {
+    this.message = 1;
+  } 
+
+  onSubmit() {
+    let form = JSON.stringify(this.contractform.value);
+    console.log(form);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+    .subscribe(data => console.log(data));
+  }
+
+  private edit_contract(data: any) {
+    this.contractform.patchValue(data);
+  }
+
+  private remove_contract(data: any) {
+    let signedContractId = this.contractform.value.signedContractId;
+    this.rowData$ = this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`);
+  }
+
+  //AG-grid Table Contract
+  private setup_gridOptions() {
+    this.gridOption = {
+      rowSelection: 'single',
+
+      onRowSelected: this.onRowSelected.bind(this),
+      masterDetail: true,
+
+      columnDefs: [
+
+        {
+          headerName: 'Contract Holder ',
+          field: 'contractHolderId',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+
+        {
+          headerName: 'Category',
+          field: 'category',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this),
+
+        },
+
+        {
+          headerName: 'Type',
+          field: 'type',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this),
+        },
+
+        {
+          headerName: 'Beneficiaries ',
+          field: 'beneficiaries',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'Expire Date',
+          field: 'expiryDate',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'Status',
+          field: 'isActive',
+          lockPosition: true,
+          sortable: true,
+          filter: true,
+          onCellValueChanged:
+            this.onCellEdit.bind(this)
+        },
+        {
+          headerName: 'Edit/Delete',
+          field: 'editDelete',
+          lockPosition: true,
+          cellRendererFramework: ActionButtonComponent,
+          cellRendererParams: {
+            onEdit: this.edit_contract.bind(this),
+            onRemove: this.remove_contract.bind(this)
+          },
+        },
+      ],
+
+    }
+  }
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumApi = params.columnApi;
+  }
+  private setup_gridData() {
+    this.rowData$ = this.http.get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
+  }
+  private onCellEdit(params: any) {
+    console.log(params.newValue);
+    console.log(params.data);
+
+  }
+
+  private onRowSelected(event: RowSelectedEvent) {
+    const { data } = event;
+    this.contractform.getRawValue();
+    console.log(data);
+
+    this.contractform.patchValue(data);
+
+  }
 }

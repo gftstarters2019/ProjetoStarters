@@ -52,16 +52,52 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<Guid>("BeneficiaryId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("BeneficiaryDeleted");
-
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
+                    b.Property<bool>("IsDeleted");
+
                     b.HasKey("BeneficiaryId");
 
-                    b.ToTable("Beneficiaries");
+                    b.ToTable("Beneficiary");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Beneficiary");
+                });
+
+            modelBuilder.Entity("Backend.Core.Models.BeneficiaryAddress", b =>
+                {
+                    b.Property<Guid>("BeneficiaryAddressId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("AddressId");
+
+                    b.Property<Guid>("BeneficiaryId");
+
+                    b.HasKey("BeneficiaryAddressId");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("BeneficiaryId");
+
+                    b.ToTable("Beneficiary_Address");
+                });
+
+            modelBuilder.Entity("Backend.Core.Models.BeneficiaryTelephone", b =>
+                {
+                    b.Property<Guid>("BeneficiaryTelephoneId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("BeneficiaryId");
+
+                    b.Property<Guid>("TelephoneId");
+
+                    b.HasKey("BeneficiaryTelephoneId");
+
+                    b.HasIndex("BeneficiaryId");
+
+                    b.HasIndex("TelephoneId");
+
+                    b.ToTable("Individual_Telephone");
                 });
 
             modelBuilder.Entity("Backend.Core.Models.Contract", b =>
@@ -74,8 +110,6 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<bool>("ContractDeleted");
 
                     b.Property<DateTime>("ContractExpiryDate");
-
-                    b.Property<DateTime>("ContractInitialDate");
 
                     b.Property<int>("ContractType");
 
@@ -91,7 +125,7 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<Guid>("BeneficiaryId");
 
-                    b.Property<Guid?>("SignedContractId");
+                    b.Property<Guid>("SignedContractId");
 
                     b.HasKey("ContractBeneficiaryId");
 
@@ -102,45 +136,9 @@ namespace Backend.Infrastructure.Migrations
                     b.ToTable("Contract_Beneficiary");
                 });
 
-            modelBuilder.Entity("Backend.Core.Models.IndividualAddress", b =>
-                {
-                    b.Property<Guid>("IndividualAddressId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("AddressId");
-
-                    b.Property<Guid>("IndividualId");
-
-                    b.HasKey("IndividualAddressId");
-
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("IndividualId");
-
-                    b.ToTable("Individual_Address");
-                });
-
-            modelBuilder.Entity("Backend.Core.Models.IndividualTelephone", b =>
-                {
-                    b.Property<Guid>("IndividualTelephoneId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("IndividualId");
-
-                    b.Property<Guid>("TelephoneId");
-
-                    b.HasKey("IndividualTelephoneId");
-
-                    b.HasIndex("IndividualId");
-
-                    b.HasIndex("TelephoneId");
-
-                    b.ToTable("Individual_Telephone");
-                });
-
             modelBuilder.Entity("Backend.Core.Models.SignedContract", b =>
                 {
-                    b.Property<Guid>("ContractSignedId")
+                    b.Property<Guid>("SignedContractId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("ContractId");
@@ -149,7 +147,7 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<Guid>("IndividualId");
 
-                    b.HasKey("ContractSignedId");
+                    b.HasKey("SignedContractId");
 
                     b.HasIndex("ContractId");
 
@@ -176,8 +174,6 @@ namespace Backend.Infrastructure.Migrations
                 {
                     b.HasBaseType("Backend.Core.Models.Beneficiary");
 
-                    b.Property<Guid?>("AddressId");
-
                     b.Property<DateTime>("IndividualBirthdate");
 
                     b.Property<string>("IndividualCPF")
@@ -186,15 +182,11 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<string>("IndividualEmail")
                         .HasMaxLength(30);
 
-                    b.Property<Guid>("IndividualId");
-
                     b.Property<string>("IndividualName")
                         .HasMaxLength(50);
 
                     b.Property<string>("IndividualRG")
                         .HasMaxLength(9);
-
-                    b.HasIndex("AddressId");
 
                     b.HasDiscriminator().HasValue("Individual");
                 });
@@ -205,8 +197,6 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<string>("MobileDeviceBrand")
                         .HasMaxLength(15);
-
-                    b.Property<Guid>("MobileDeviceId");
 
                     b.Property<double>("MobileDeviceInvoiceValue");
 
@@ -232,13 +222,10 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<string>("PetBreed")
                         .HasMaxLength(30);
 
-                    b.Property<Guid>("PetId");
-
                     b.Property<string>("PetName")
                         .HasMaxLength(40);
 
-                    b.Property<string>("PetSpecies")
-                        .HasMaxLength(25);
+                    b.Property<int>("PetSpecies");
 
                     b.HasDiscriminator().HasValue("Pet");
                 });
@@ -247,11 +234,7 @@ namespace Backend.Infrastructure.Migrations
                 {
                     b.HasBaseType("Backend.Core.Models.Beneficiary");
 
-                    b.Property<Guid?>("RealtyAddressAddressId");
-
                     b.Property<DateTime>("RealtyConstructionDate");
-
-                    b.Property<Guid>("RealtyId");
 
                     b.Property<double>("RealtyMarketValue");
 
@@ -259,8 +242,6 @@ namespace Backend.Infrastructure.Migrations
                         .HasMaxLength(50);
 
                     b.Property<double>("RealtySaleValue");
-
-                    b.HasIndex("RealtyAddressAddressId");
 
                     b.HasDiscriminator().HasValue("Realty");
                 });
@@ -277,11 +258,9 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<double>("VehicleCurrentFipeValue");
 
-                    b.Property<short>("VehicleCurrentMileage");
+                    b.Property<int>("VehicleCurrentMileage");
 
                     b.Property<bool>("VehicleDoneInspection");
-
-                    b.Property<Guid>("VehicleId");
 
                     b.Property<DateTime>("VehicleManufactoringYear");
 
@@ -292,69 +271,56 @@ namespace Backend.Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("Vehicle");
                 });
 
+            modelBuilder.Entity("Backend.Core.Models.BeneficiaryAddress", b =>
+                {
+                    b.HasOne("Backend.Core.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Backend.Core.Models.Beneficiary", "Beneficiary")
+                        .WithMany()
+                        .HasForeignKey("BeneficiaryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Backend.Core.Models.BeneficiaryTelephone", b =>
+                {
+                    b.HasOne("Backend.Core.Models.Beneficiary", "Beneficiary")
+                        .WithMany()
+                        .HasForeignKey("BeneficiaryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Backend.Core.Models.Telephone", "Telephone")
+                        .WithMany()
+                        .HasForeignKey("TelephoneId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("Backend.Core.Models.ContractBeneficiary", b =>
                 {
                     b.HasOne("Backend.Core.Models.Beneficiary", "Beneficiary")
                         .WithMany()
                         .HasForeignKey("BeneficiaryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Backend.Core.Models.SignedContract", "SignedContract")
                         .WithMany()
-                        .HasForeignKey("SignedContractId");
-                });
-
-            modelBuilder.Entity("Backend.Core.Models.IndividualAddress", b =>
-                {
-                    b.HasOne("Backend.Core.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Backend.Core.Models.Individual", "Individual")
-                        .WithMany()
-                        .HasForeignKey("IndividualId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Backend.Core.Models.IndividualTelephone", b =>
-                {
-                    b.HasOne("Backend.Core.Models.Individual", "Individual")
-                        .WithMany()
-                        .HasForeignKey("IndividualId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Backend.Core.Models.Telephone", "Telephone")
-                        .WithMany()
-                        .HasForeignKey("TelephoneId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SignedContractId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Backend.Core.Models.SignedContract", b =>
                 {
-                    b.HasOne("Backend.Core.Models.Contract", "ContractSignedContract")
+                    b.HasOne("Backend.Core.Models.Contract", "SignedContractContract")
                         .WithMany()
                         .HasForeignKey("ContractId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Backend.Core.Models.Individual", "ContractSignedIndividual")
+                    b.HasOne("Backend.Core.Models.Individual", "SignedContractIndividual")
                         .WithMany()
                         .HasForeignKey("IndividualId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Backend.Core.Models.Individual", b =>
-                {
-                    b.HasOne("Backend.Core.Models.Address")
-                        .WithMany("AddressIndividuals")
-                        .HasForeignKey("AddressId");
-                });
-
-            modelBuilder.Entity("Backend.Core.Models.Realty", b =>
-                {
-                    b.HasOne("Backend.Core.Models.Address", "RealtyAddress")
-                        .WithMany()
-                        .HasForeignKey("RealtyAddressAddressId");
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

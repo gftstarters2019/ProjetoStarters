@@ -1,3 +1,39 @@
 table {
     width: 100%;
   }
+  .mat-form-field{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.tp-radio-button{
+padding-right: 15px;
+}
+
+.addressBg {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+button{
+  margin-left: 1em;
+  margin-right: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.btn-position {
+  float: right;
+  margin-right: 1em;
+}
+
+.titleContract {
+  text-align: center;
+}

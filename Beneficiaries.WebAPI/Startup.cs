@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Backend.Application.ViewModels;
 using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
@@ -12,6 +13,7 @@ using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,8 +35,36 @@ namespace Beneficiaries.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("BeneficiaryPermission"));
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("BeneficiaryPermission",
+                builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
+            });
+
             services.AddScoped<IReadOnlyRepository<Beneficiary>, BeneficiaryRepository>();
             services.AddScoped<IWriteRepository<Beneficiary>, BeneficiaryRepository>();
+            services.AddScoped<IReadOnlyRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
+
+            services.AddScoped<IReadOnlyRepository<Individual>, IndividualRepository>();
+            services.AddScoped<IWriteRepository<Individual>, IndividualRepository>();
+
+            services.AddScoped<IReadOnlyRepository<MobileDevice>, MobileDeviceRepository>();
+            services.AddScoped<IWriteRepository<MobileDevice>, MobileDeviceRepository>();
+
+            services.AddScoped<IReadOnlyRepository<RealtyViewModel>, RealtyRepository>();
+            services.AddScoped<IWriteRepository<Realty>, RealtyRepository>();
+
+            services.AddScoped<IReadOnlyRepository<Pet>, PetRepository>();
+            services.AddScoped<IWriteRepository<Pet>, PetRepository>();
+
+            services.AddScoped<IReadOnlyRepository<Vehicle>, VehicleRepository>();
+            services.AddScoped<IWriteRepository<Vehicle>, VehicleRepository>();
+
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
@@ -53,6 +83,8 @@ namespace Beneficiaries.WebAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors("BeneficiaryPermission");
 
             app.UseHttpsRedirection();
             app.UseMvc();

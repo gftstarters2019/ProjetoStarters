@@ -1,0 +1,39 @@
+<form [formGroup]="individualCreateForm">
+  <div class="container">
+
+      <div class="flex-wrapper">
+         <mat-form-field style="width: 60%;">
+            <input matInput placeholder="Full name" name="individualName" formControlName="individualName" required>
+             <mat-error>Name is invalid!</mat-error>
+         </mat-form-field>
+      </div>
+
+      <div class="flex-wrapper">
+        <mat-form-field style="width: 45%;">
+            <input matInput placeholder="CPF" name="individualCPF" [textMask]="{mask: cpfMask}" formControlName="individualCPF" required>
+            <mat-error>CPF is invalid!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field style="width: 45%;">
+            <input matInput placeholder="RG" name="individualRG" [textMask]="{mask: rgMask}" formControlName="individualRG" required>
+            <mat-error>RG is invalid!</mat-error>
+        </mat-form-field>
+    </div>
+
+      <div class="flex-wrapper">
+        <mat-form-field style="width: 30%;">
+          <input matInput [matDatepicker]="picker" placeholder="Birthdate" name="individualBirthdate" formControlName="individualBirthdate" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>BirthDate is invalid!</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="flex-wrapper">
+          <mat-form-field style="width: 60%;">
+              <input matInput placeholder="Email" type="email" name="individualEmail" formControlName="individualEmail" required>
+              <mat-error>E-mail is invalid!</mat-error>
+            </mat-form-field>
+      </div>
+  </div>
+</form>

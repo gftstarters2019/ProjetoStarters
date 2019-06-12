@@ -1,0 +1,82 @@
+<form [formGroup]="realtyCreateForm">
+  <div class="container">
+      <div class="flex-wrapper">
+          <mat-form-field style="width: 60%;">
+              <input matInput placeholder="Municipal Registration" name="realtyMunicipalRegistration" formControlName="realtyMunicipalRegistration" required>
+              <mat-error>Registration is invalid!</mat-error>
+          </mat-form-field>
+      </div>
+
+      <div class="flex-wrapper">
+        <mat-form-field style="width: 30%;">
+          <input matInput [matDatepicker]="picker" placeholder="Construction Date" name="realtyConstructionDate" formControlName="realtyConstructionDate" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Date is invalid!</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="flex-wrapper">
+        <mat-form-field style="width: 45%;">
+            <input matInput type="number" placeholder="Sale Value" name="realtySaleValue" formControlName="realtySaleValue" required>
+            <mat-error>Sale value is invalid!</mat-error>
+          </mat-form-field>
+
+        <mat-form-field style="width: 45%;">
+            <input matInput type="number" placeholder="Market Value" name="realtyMarketValue" formControlName="realtyMarketValue" required>
+            <mat-error>Market value is invalid!</mat-error>
+          </mat-form-field>
+    </div>
+
+    <mat-card>
+      <p>Address Info</p>
+      <div class="first-container">
+
+        <mat-form-field style="width: 600px;">
+          <input matInput placeholder="Street/Avenue" name="street" formControlName="addressStreet" required>
+          <mat-error>Street/Avenue is invalid!</mat-error>
+        </mat-form-field>
+    
+        <mat-form-field class="select-type" style="width: 350px;">
+          <mat-select formControlName="addressType"  placeholder="Select Type" required>
+            <mat-option value="Commercial">Commercial</mat-option>
+            <mat-option value="Home">Home</mat-option>
+          </mat-select>
+          
+        </mat-form-field>
+        <mat-form-field style="width: 350px;" >
+          <input matInput placeholder="Number" name="number" formControlName="addressNumber" required>
+          <mat-error>Number is invalid!</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="second-container">
+        <mat-form-field style="width: 300px;">
+          <input matInput placeholder="State" name="state" formControlName="addressState" required>
+        <mat-error>State is invalid!</mat-error>
+        </mat-form-field>
+        <mat-form-field style="width: 300px;">
+          <input matInput placeholder="Neighborhood" name="neighborhood" formControlName="addressNeighborhood" required>
+          <mat-error>Neighborhood is invalid!</mat-error>
+        </mat-form-field>
+    
+        <mat-form-field style="width: 200px;">
+          <input matInput type='Country' placeholder="Country" name="country" formControlName="addressCountry" required>
+          <mat-error>Country is invalid!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type='Zip code' [textMask]="{mask:zipCodeMask}" placeholder="Zip code" name="zipCode" formControlName="addressZipCode" required>
+        <mat-error>Zip code is invalid!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type='City'  placeholder="City" name="city" formControlName="addressCity" required>
+        <mat-error>City is invalid!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type='Complement'  placeholder="Complement" name="complement" formControlName="addressComplement">
+        <mat-error>Complement is invalid!</mat-error>
+          
+        </mat-form-field>
+      </div>
+    </mat-card>
+  </div>
+</form>

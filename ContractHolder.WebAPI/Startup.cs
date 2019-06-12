@@ -1,4 +1,5 @@
-﻿using Backend.Core;
+﻿using Backend.Application.ViewModels;
+using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
@@ -6,6 +7,7 @@ using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,8 +31,27 @@ namespace ContractHolder.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("ContractHolderPermission"));
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ContractHolderPermission",
+                builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
+            });
+
             services.AddScoped<IReadOnlyRepository<Individual>, ContractHolderRepository>();
             services.AddScoped<IWriteRepository<Individual>, ContractHolderRepository>();
+            services.AddScoped<IReadOnlyRepository<Telephone>, TelephoneRepository>();
+            services.AddScoped<IWriteRepository<Telephone>, TelephoneRepository>();
+            services.AddScoped<IReadOnlyRepository<Address>, AddressRepository>();
+            services.AddScoped<IWriteRepository<Address>, AddressRepository>();
+            services.AddScoped<IReadOnlyRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
+            services.AddScoped<IWriteRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
+            services.AddScoped<IReadOnlyRepository<SignedContract>, SignedContractRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
@@ -49,6 +70,8 @@ namespace ContractHolder.WebAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors("ContractHolderPermission");
 
             app.UseHttpsRedirection();
             app.UseMvc();
