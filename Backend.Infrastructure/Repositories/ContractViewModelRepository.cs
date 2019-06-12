@@ -6,6 +6,7 @@ using Backend.Infrastructure.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Transactions;
 
@@ -47,6 +48,13 @@ namespace Backend.Infrastructure.Repositories
         private bool AddContractBeneficiaries(ContractViewModel viewModel, SignedContract signedContract)
         {
             var beneficiaries = new List<Guid>();
+
+            var BeneficiaryIndividuals = new List<Individual>();
+            var BeneficiaryRealties = new List<Realty>();
+            var BeneficiaryMobiles = new List<MobileDevice>();
+            var BeneficiaryPets = new List<Pet>();
+            var BeneficiaryVehicles = new List<Vehicle>();
+
             switch (viewModel.Type)
             {
                 case Core.Enums.ContractType.DentalPlan:
@@ -56,6 +64,13 @@ namespace Backend.Infrastructure.Repositories
                         .Where(ind => viewModel.Beneficiaries.Contains(ind.BeneficiaryId))
                         .Select(ind => ind.BeneficiaryId)
                         .ToList();
+
+                    foreach (var ind in viewModel.BeneficiaryIndividuals)
+                    {
+                        if (!IndividualIsValid(ind))
+                            return false;
+                    }
+
                     break;
                 case Core.Enums.ContractType.AnimalHealthPlan:
                     beneficiaries = _db.Pets
@@ -68,18 +83,39 @@ namespace Backend.Infrastructure.Repositories
                         .Where(mob => viewModel.Beneficiaries.Contains(mob.BeneficiaryId))
                         .Select(mob => mob.BeneficiaryId)
                         .ToList();
+
+                    foreach (var mobile in viewModel.BeneficiaryMobiles)
+                    {
+                        if (!MobileDeviceIsValid(mobile))
+                            return false;
+                    }
+
                     break;
                 case Core.Enums.ContractType.RealStateInsurance:
                     beneficiaries = _db.Realties
                         .Where(rea => viewModel.Beneficiaries.Contains(rea.BeneficiaryId))
                         .Select(rea => rea.BeneficiaryId)
                         .ToList();
+
+                    foreach (var realty in viewModel.BeneficiaryRealties)
+                    {
+                        if (!RealtyIsValid(realty))
+                            return false;
+                    }
+
                     break;
                 case Core.Enums.ContractType.VehicleInsurance:
                     beneficiaries = _db.Vehicles
                         .Where(vec => viewModel.Beneficiaries.Contains(vec.BeneficiaryId))
                         .Select(vec => vec.BeneficiaryId)
                         .ToList();
+
+                    foreach (var vehicle in viewModel.BeneficiaryVehicles)
+                    {
+                        if (!VehicleIsValid(vehicle))
+                            return false;
+                    }
+
                     break;
                 default:
                     return false;
@@ -312,5 +348,129 @@ namespace Backend.Infrastructure.Repositories
             }
             return true;
         }
+
+        #region IndividualValidations
+        public static bool IndividualIsValid(Individual individual)
+        {
+            if (!CPFIsValid(individual.IndividualCPF))
+                return false;
+
+            if (!EmailIsValid(individual.IndividualEmail))
+                return false;
+
+            if (!DateIsValid(individual.IndividualBirthdate))
+                return false;
+            return true;
+        }
+
+        public static bool CPFIsValid(string cpf)
+        {
+            int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            string tempCpf;
+            string digito;
+            int soma;
+            int resto;
+            cpf = cpf.Trim();
+            cpf = cpf.Replace(".", "").Replace("-", "");
+            if (cpf.Length != 11)
+                return false;
+            tempCpf = cpf.Substring(0, 9);
+            soma = 0;
+
+            for (int i = 0; i < 9; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
+            resto = soma % 11;
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+            digito = resto.ToString();
+            tempCpf = tempCpf + digito;
+            soma = 0;
+            for (int i = 0; i < 10; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
+            resto = soma % 11;
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+            digito = digito + resto.ToString();
+            return cpf.EndsWith(digito);
+        }
+
+        public static bool EmailIsValid(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
+        public static bool DateIsValid(DateTime date)
+        {
+            return date != null ? date < DateTime.Today : false;
+        }
+        #endregion IndividualValidations
+
+        #region RealtyValidations
+        public static bool RealtyIsValid(Realty realty)
+        {
+            if (realty.RealtyMarketValue < 0 && realty.RealtySaleValue < 0)
+                return false;
+
+            //if (!CEPIsValid(realty.RealtyAddress.AddressZipCode))
+            //    return false;
+
+            if (!DateIsValid(realty.RealtyConstructionDate))
+                return false;
+
+            return true;
+        }
+
+        public static bool CEPIsValid(string cep)
+        {
+            if (cep.Length == 8)
+            {
+                cep = cep.Substring(0, 5) + "-" + cep.Substring(5, 3);
+            }
+            return System.Text.RegularExpressions.Regex.IsMatch(cep, "[0-9]{5}-[0-9]{3}");
+        }
+        #endregion RealtyValidations
+
+        #region VehicleValidations
+        public static bool VehicleIsValid(Vehicle vehicle)
+        {
+            if (!DateIsValid(vehicle.VehicleManufactoringYear))
+                return false;
+
+            if (!DateIsValid(vehicle.VehicleModelYear))
+                return false;
+
+            if (vehicle.VehicleCurrentFipeValue < 0 && vehicle.VehicleCurrentMileage <= 0)
+                return false;
+
+            return true;
+        }
+        #endregion VehicleValidations
+
+        #region MobileDeviceValidations
+        public static bool MobileDeviceIsValid(MobileDevice mobileDevice)
+        {
+            if (!DateIsValid(mobileDevice.MobileDeviceManufactoringYear))
+                return false;
+
+            if (mobileDevice.MobileDeviceInvoiceValue <= 0)
+                return false;
+
+            return true;
+        }
+        #endregion MobileDeviceValidations
     }
 }
