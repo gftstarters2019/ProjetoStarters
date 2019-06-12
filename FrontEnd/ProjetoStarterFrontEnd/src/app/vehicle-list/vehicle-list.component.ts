@@ -27,11 +27,18 @@ export class VehicleListComponent implements OnInit {
     this.paginationPageSize = 50;
   }
 
-  private edit_vehicle(data: any) {
+  private handle_editUser(data: any) {
+    //this.contractform.patchValue(data);
     }
   
-    private remove_vehicle(data: any) {
-    }
+  private handle_deleteUser(data: any) {
+    const id = data.beneficiaryId;
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
+
+    this.setup_gridData();
+  }
+
+  //AG-grid Table Contract
   private setup_gridOptions() {
 
     this.gridOptions = {
@@ -129,8 +136,8 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
-            onEdit: this.edit_vehicle.bind(this),
-            onRemove: this.remove_vehicle.bind(this)
+            onEdit: this.handle_editUser.bind(this),
+              onDelete: this.handle_deleteUser.bind(this)
           }
         },
       ],

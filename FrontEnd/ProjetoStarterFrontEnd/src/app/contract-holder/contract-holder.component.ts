@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Validators, FormBuilder, FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { GridOptions, ColDef, RowSelectedEvent, RowClickedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
-import { max } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-contract-holder',
@@ -36,7 +36,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   showList: boolean = false;
   showAddresslist: boolean = false;
   showTelephonelist: boolean = false;
-  constructor(private chfb: FormBuilder, private http: HttpClient, private location: Location) {
+    constructor(private chfb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) {
 
   }
 
@@ -57,8 +57,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     
     this.IndividualId = data.individualId;
     this.contractHolder.patchValue(data);
-    // data.individualBirthDate = JSON.parse(data.individualBirthDate);
-    // this.contractHolder.get('individualBirthDate').setValue(JSON.parse(data.individualBirthDate)); 
     
     
     let telephoneControl =  this.contractHolder.controls.idTelephone as FormArray;
@@ -66,7 +64,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     const hasMax = telephoneControl.length >= 5;
       if (!hasMax) {
         if (data.individualTelephones != ''){
-          debugger;
           telephoneControl.push(this.chfb.group(data.individualTelephones[0]));
         }  
       }
@@ -93,9 +90,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       })
     };
 
-    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => console.log(data));      
+    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData());      
     
-    this.setup_gridData();
+    
 
   }
 
@@ -128,29 +125,32 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   changeMessageValue(): void {
     this.message = 1;
   } 
+
   onSubmit(): void {
 
-   
     this.unMaskValues();
+
     let json = JSON.stringify(this.contractHolder.value);
-  
-    let httpOptions = {headers: new HttpHeaders ({
-     'Content-Type': 'application/json'
-   })};
-    if(this.IndividualId == null){
-   this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json,httpOptions).subscribe(data =>  this.load());
-  
-    
-  }else {
-   
-
-    this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json,httpOptions).subscribe(data => this.load()); 
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+      if (this.IndividualId == null) {
+      this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json, httpOptions).subscribe(response => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
   }
-  // this.load();
-  
- 
-}
+    else {
 
+
+    this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
+}
+}
+  openSnackBar(message: string): void {
+    this._snackBar.open(message, '', {
+      duration: 5000,
+      
+    });
+  }
 
 
   showButton() {
