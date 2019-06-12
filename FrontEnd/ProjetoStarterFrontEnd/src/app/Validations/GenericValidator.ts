@@ -4,8 +4,8 @@ export class GenericValidator {
     constructor() {}
 
     static regexName = new RegExp(/^[A-ZÀ-Ÿ][A-zÀ-ÿ']+\s([A-zÀ-ÿ']\s?)*[A-ZÀ-Ÿ][A-zÀ-ÿ']+$/);
-    static regexAlphaNumeric = new RegExp(/^[a-zA-Z-ã]+[0-9]+\s[(a-zA-Z]+[0-9]+$/);
-    static regexSimpleName = new RegExp(/^[A-ZÀ-Ÿ][A-zÀ-ÿ']+$/);
+    static regexAlphaNumeric = new RegExp(/^[^_]\w[^_]+$/);
+    static regexSimpleName = new RegExp(/^[a-zA-Z-ãâáõóô]+(([',. -][a-zA-Z-ãâáõóô])?[a-zA-Z-ãâáõóô]*)*$/);
 
     /**
      * Valida se o CPF é valido. Deve-se ser informado o cpf sem máscara.
@@ -90,6 +90,25 @@ export class GenericValidator {
           return {"rgNumberIsTooShort": true};
         return null;
       }
+    }
+    static telephoneValidator() {
+      return (control: AbstractControl): {[key:string]: boolean} | null => {
+        let number = control.value;
+      let numberLength;
+      
+      if (number.length == 14)
+        numberLength = 11;
+      else
+        numberLength = 10;
+  
+      number = number.replace(/\D+/g, '');
+  
+      if(number.length < numberLength)
+        return {"NumberIsTooShort": true};
+      
+      return null;
+      }
+      
     }
 
 }

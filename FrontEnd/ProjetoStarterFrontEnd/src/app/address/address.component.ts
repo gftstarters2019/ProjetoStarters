@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
 import {MatCardModule} from '@angular/material/card';
@@ -26,43 +26,53 @@ export class AddressComponent implements OnInit {
 
   zipCodeMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
   
-  @Output() add = new EventEmitter<any>();
+  @Output() addAddress = new EventEmitter<any>();
 
   @Input() address2: FormGroup;
 
+  @Input() addressPushPermission !: number;
 
-  addressAdd: FormArray;
+  //addressAdd: FormArray;
 
   address = this.fb.group ({
-    id: [''],
-    street: ['', Validators.pattern(GenericValidator.regexName)],
-    type: ['', Validators.required],
-    number: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
-    state: ['', [Validators.pattern(/^[[a-zA-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
-    neighborhood: [ '', Validators.pattern(GenericValidator.regexName)],
-    country: ['', Validators.pattern(GenericValidator.regexName)],
-    zipCode: ['', this.zipCodeValidation]
+    addressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressType: ['', Validators.required],
+    addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(6)]],
+    addressState: ['', [Validators.pattern(/^[[A-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
+    addressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressZipCode: ['', this.zipCodeValidation],
+    addressCity: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+    addressComplement: ['', Validators.pattern(GenericValidator.regexSimpleName)]
   });
-  message: any;
+  //message: any;
 
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     
-    console.log(this.address.value);
+    //console.log(this.address.value);
+  }
+
+  unMaskValues(): void {
+    let zipCode = this.address.controls.addressZipCode.value;
+    zipCode = zipCode.replace(/\D+/g, '');
+    this.address.controls.addressZipCode.setValue(zipCode);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.addressPushPermission.currentValue != 0 && changes.addressPushPermission.currentValue != changes.addressPushPermission.previousValue) {
+      this.unMaskValues();
+      this.addAddress.emit(this.address);
+    }
   }
 
   public onSubmit(): void {
-
-    console.log(this.address.value);
-    this.add.emit(this.address.value);
-
-    this.message=this.address.get(['id']).value;
-   }
+  }
 
    emitValue() {
-     this.add.emit(this.address.value)
+     this.addAddress.emit(this.address.value)
    }
 
   createAddress(): FormGroup {
@@ -71,12 +81,12 @@ export class AddressComponent implements OnInit {
     });
   }
 
-  addAddress(): void {
-    this.addressAdd = this.address.get('addressAdd') as FormArray;
-    if(this.addressAdd.length<5){
-      this.addressAdd.push(this.createAddress());
-    }
-  }
+  // addAddress(): void {
+  //   this.addressAdd = this.address.get('addressAdd') as FormArray;
+  //   if(this.addressAdd.length<5){
+  //     this.addressAdd.push(this.createAddress());
+  //   }
+  // }
   
   zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
     let zipCodeNumber = control.value;
