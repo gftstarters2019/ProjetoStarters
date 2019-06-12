@@ -273,7 +273,7 @@ namespace Backend.Infrastructure.Repositories
                         ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones).Count() != vm.individualTelephones.Count())
                         return null;
 
-                    else if (_db.Individuals.Where(ind => ind.IndividualCPF == individual.IndividualCPF).Count() != 1)
+                    else if (individual.IndividualCPF != vm.individualCPF)
                         return null;
 
                     individual.IndividualBirthdate = vm.individualBirthdate;
