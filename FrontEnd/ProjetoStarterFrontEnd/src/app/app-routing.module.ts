@@ -22,7 +22,7 @@ const routes: Routes = [
   { path:'vehicle', component: BeneficiaryVehicleComponent},
   { path: 'mobile', component: BeneficiaryMobileDeviceComponent },
   { path: 'telephone', component: TelephoneComponent },
-  { path: '', pathMatch: 'full', redirectTo: '/contract-holder' }
+  { path: '', pathMatch: 'full', redirectTo: 'contract-holder' }
 ]
 
 @NgModule({
