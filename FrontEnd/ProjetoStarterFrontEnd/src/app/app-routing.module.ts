@@ -13,16 +13,16 @@ import { TelephoneComponent } from './telephone/telephone.component';
 
 
 const routes: Routes = [
-  { path: 'contract-holder', component: ContractHolderComponent },
+  { path: '/contract-holder', component: ContractHolderComponent },
   { path: 'address', component: AddressComponent },
-  { path: 'contract', component: ContractComponent },
+  { path: '/contract', component: ContractComponent },
   { path:'individual', component: BeneficiaryIndividualComponent},
   { path:'pet', component: BeneficiaryPetComponent},
   { path:'realty', component: BeneficiaryRealtyComponent},
   { path:'vehicle', component: BeneficiaryVehicleComponent},
   { path: 'mobile', component: BeneficiaryMobileDeviceComponent },
   { path: 'telephone', component: TelephoneComponent },
-  { path: '', pathMatch: 'full', redirectTo: 'contract-holder' }
+  { path: '', pathMatch: 'full', redirectTo: '/contract-holder' }
 ]
 
 @NgModule({
