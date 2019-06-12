@@ -163,14 +163,18 @@ export class ContractComponent implements OnInit {
     this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions).subscribe(data => data, error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
   }
 
-  private edit_contract(data: any) {
+  private handle_editUser(data: any) {
     this.contractform.patchValue(data);
-  }
+ }
+ 
+ private handle_deleteUser(data: any) {
+ 
+ const id = data.signedContractId;
+ 
+ this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => response, error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
 
-  private remove_contract(data: any) {
-    let signedContractId = this.contractform.value.signedContractId;
-    this.rowData$ = this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`).subscribe(data => data, error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato deletado com sucesso"));
-  }
+ this.setup_gridData();
+}
 
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -246,8 +250,8 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
-            onEdit: this.edit_contract.bind(this),
-            onRemove: this.remove_contract.bind(this)
+            onEdit: this.handle_editUser.bind(this),
+            onDelete: this.handle_deleteUser.bind(this),
           },
         },
       ],
