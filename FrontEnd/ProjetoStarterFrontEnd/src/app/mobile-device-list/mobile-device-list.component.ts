@@ -38,7 +38,6 @@ export class MobileDeviceListComponent implements OnInit {
     this.setup_gridData();
   }
 
-  //AG-grid Table Contract
   private setup_gridOptions() {
 
     this.gridOptions = {
@@ -125,14 +124,9 @@ export class MobileDeviceListComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevices');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
   }
 }
