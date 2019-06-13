@@ -22,10 +22,10 @@ namespace Backend.Application.ViewModels
         /// </summary>
         public List<Guid> Beneficiaries { get; set; }
 
-        public List<Individual> BeneficiaryIndividuals { get; set; }
-        public List<Realty> BeneficiaryRealties { get; set; }
-        public List<MobileDevice> BeneficiaryMobiles { get; set; }
-        public List<Pet> BeneficiaryPets { get; set; }
-        public List<Vehicle> BeneficiaryVehicles { get; set; }
+        public List<Individual> Individuals { get; set; }
+        public List<Realty> Realties { get; set; }
+        public List<MobileDevice> MobileDevices { get; set; }
+        public List<Pet> Pets { get; set; }
+        public List<Vehicle> Vehicles { get; set; }
     }
 }
