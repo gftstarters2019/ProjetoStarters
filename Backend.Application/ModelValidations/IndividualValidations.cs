@@ -1,72 +1,41 @@
-﻿using Backend.Application.Factories.Interfaces;
-using Backend.Application.ViewModels;
-using Backend.Core.Models;
+﻿using Backend.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Backend.Application.Factories
+namespace Backend.Application.ModelValidations
 {
-    public class IndividualFactory : IFactory<Individual, ContractHolderViewModel>
+    public static class IndividualValidations
     {
-        private Individual individual;
-
-        /// <summary>
-        /// Método para crear um individuo
-        /// </summary>
-        /// <param name="vm"></param>
-        /// <returns></returns>
-        public Individual Create(ContractHolderViewModel vm)
+        public static bool IndividualIsValid(Individual individual)
         {
-            individual = null;
-
-            if (IndividualIsValid(vm))
-            {
-                individual = new Individual
-                {
-                    BeneficiaryId = Guid.NewGuid(),
-                    IsDeleted = false,
-                    IndividualCPF = vm.individualCPF,
-                    IndividualName = vm.individualName,
-                    IndividualRG = vm.individualRG,
-                    IndividualEmail = vm.individualEmail,
-                    IndividualBirthdate = vm.individualBirthdate
-                };
-            }
-            
-            return individual;
-        }
-
-        /// <summary>
-        /// Método para fazer o controle das validações
-        /// </summary>
-        public static bool IndividualIsValid(ContractHolderViewModel vm)
-        {
-            if (!NameIsValid(vm.individualName))
+            if (!NameIsValid(individual.IndividualName))
                 return false;
 
-            if (!CPFIsValid(vm.individualCPF))
+            if (!CPFIsValid(individual.IndividualCPF))
                 return false;
 
-            if (!EmailIsValid(vm.individualEmail))
+            if (!EmailIsValid(individual.IndividualEmail))
                 return false;
 
-            if (!RGIsValid(vm.individualRG))
+            if (!RGIsValid(individual.IndividualRG))
+                return false;
+
+            if (!ValidationsHelper.DateIsValid(individual.IndividualBirthdate))
                 return false;
 
             return true;
         }
-
         /// <summary>
         /// Validação de Nome
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static bool NameIsValid(string name)
+        private static bool NameIsValid(string name)
         {
-            //Validando se só tem letras no Nome
+            // Validando se só tem letras no Nome
             if (!new Regex("^[A-ZÀ-Ÿ][A-zÀ-ÿ']+\\s([A-zÀ-ÿ']\\s?)*[A-ZÀ-Ÿ][A-zÀ-ÿ']+$").IsMatch(name))
                 return false;
 
@@ -78,7 +47,7 @@ namespace Backend.Application.Factories
         /// </summary>
         /// <param name="cpf"></param>
         /// <returns></returns>
-        public static bool CPFIsValid(string cpf)
+        private static bool CPFIsValid(string cpf)
         {
             int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
             int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
@@ -119,7 +88,7 @@ namespace Backend.Application.Factories
         /// </summary>
         /// <param name="emailaddress"></param>
         /// <returns></returns>
-        public static bool EmailIsValid(string emailaddress)
+        private static bool EmailIsValid(string emailaddress)
         {
             try
             {
@@ -138,7 +107,7 @@ namespace Backend.Application.Factories
         /// </summary>
         /// <param name="rg"></param>
         /// <returns></returns>
-        public static bool RGIsValid(string rg)
+        private static bool RGIsValid(string rg)
         {
             //Validando se só tem numeros no RG
             if (!new Regex("^[0-9]+$").IsMatch(rg))
