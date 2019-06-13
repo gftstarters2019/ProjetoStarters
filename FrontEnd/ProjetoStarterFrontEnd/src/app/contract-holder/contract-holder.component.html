@@ -39,10 +39,10 @@
     </mat-card>
   </div>
                               <!-- Telephone Component -->
-  <div class="addressBg" formArrayName="idTelephone" *ngFor="let telefone of contractHolder.get('idTelephone')['controls'];">
+  <div class="addressBg" formArrayName="idTelephone" *ngFor="let telefone of contractHolder.get('idTelephone')['controls']; let i = index">
     <mat-card>
       <app-telephone [telephone2]="telefone"  [pushPermission]="message" (addTelephone)="handle_add_telphone($event)"></app-telephone>
-
+      <button mat-raised-button color="primary" type="button" (click)="removeTelephone(i)"><mat-icon class="material-icons">remove</mat-icon> Remove Telephone</button>
     </mat-card> 
   </div>  
           <button mat-raised-button color="primary" type="button" (click)="showTelephone()"> 
@@ -51,9 +51,10 @@
                   <!-- Final do Telephone Component -->
 
                   <!-- Address Component -->
-  <div class="addressBg"formArrayName="idAddress" *ngFor="let item of contractHolder.get('idAddress')['controls'];">    
+  <div class="addressBg"formArrayName="idAddress" *ngFor="let item of contractHolder.get('idAddress')['controls']; let i = index">    
     <mat-card >
       <app-address  [address2]="item" [addressPushPermission]="message" (addAddress)="handle_add_address($event)"> </app-address>
+      <button mat-raised-button color="primary" type="button" (click)="removeAddress(i)"><mat-icon class="material-icons">remove</mat-icon> Remove Address</button>
     </mat-card> 
   </div>  
   

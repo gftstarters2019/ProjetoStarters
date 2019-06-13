@@ -31,7 +31,7 @@ export interface Holder {
   styleUrls: ['./contract.component.scss']
 })
 export class ContractComponent implements OnInit {
-
+  color = 'primary';
   public showlist: boolean = true;
   public showlist2: boolean = true;
   beneficiaries: FormArray;
