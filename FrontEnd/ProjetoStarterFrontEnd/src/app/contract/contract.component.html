@@ -66,7 +66,7 @@
   
   
                     <mat-card>
-                      <app-beneficiary-individual [individualPushPermission]="message" (messageIndividualEvent)="receiveMessage($event)"></app-beneficiary-individual>
+                      <app-beneficiary-individual [individualForm]="beneficiary" [individualPushPermission]="message" (messageIndividualEvent)="receiveMessage($event)"></app-beneficiary-individual>
                       <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                     </mat-card>
   
@@ -79,7 +79,7 @@
             <div [formGroupName]="i"  class="contractCard">
 
                 <mat-card>
-                  <app-beneficiary-pet [petPushPermission]="message" (messagePetEvent)="receiveMessage($event)"></app-beneficiary-pet>
+                  <app-beneficiary-pet [petForm]="beneficiary" [petPushPermission]="message" (messagePetEvent)="receiveMessage($event)"></app-beneficiary-pet>
                   <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                 </mat-card>
 
@@ -91,7 +91,7 @@
             <div [formGroupName]="i"  class="contractCard">
                
               <mat-card>
-                  <app-beneficiary-realty [realtyPushPermission]="message" (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
+                  <app-beneficiary-realty [realtyForm]="beneficiary" [realtyPushPermission]="message" (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
                   <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                 </mat-card>
 
@@ -102,7 +102,7 @@
           <div formArrayName="auxBeneficiaries" *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
             <div [formGroupName]="i"  class="contractCard">
                 <mat-card>
-                  <app-beneficiary-vehicle [vehiclePushPermission]="message" (messageVehicleEvent)="receiveMessage($event)"></app-beneficiary-vehicle>
+                  <app-beneficiary-vehicle [vehicleForm]="beneficiary" [vehiclePushPermission]="message" (messageVehicleEvent)="receiveMessage($event)"></app-beneficiary-vehicle>
                   <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                 </mat-card>
             </div>
@@ -112,7 +112,7 @@
             <div formArrayName="auxBeneficiaries" *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
               <div [formGroupName]="i"  class="contractCard">
                   <mat-card>
-                    <app-beneficiary-mobile-device [mobilePushPermission]="message" (messageMobileEvent)="receiveMessage($event)"></app-beneficiary-mobile-device>
+                    <app-beneficiary-mobile-device [mobileForm]="beneficiary" [mobilePushPermission]="message" (messageMobileEvent)="receiveMessage($event)"></app-beneficiary-mobile-device>
                     <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
                   </mat-card>
               </div>

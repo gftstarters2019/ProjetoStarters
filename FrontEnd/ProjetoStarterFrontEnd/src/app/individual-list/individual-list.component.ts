@@ -33,7 +33,9 @@ export class IndividualListComponent implements OnInit {
     }
   
   private handle_deleteUser(data: any) {
+    console.log(data);
     const id = data.beneficiaryId;
+    console.log(id);
     this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
 
     this.setup_gridData();
