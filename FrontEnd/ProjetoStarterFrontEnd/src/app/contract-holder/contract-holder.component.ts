@@ -61,21 +61,29 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     
     let telephoneControl =  this.contractHolder.controls.idTelephone as FormArray;
     telephoneControl.controls.pop();
+    let a =0;
     const hasMax = telephoneControl.length >= 5;
       if (!hasMax) {
         if (data.individualTelephones != ''){
-          telephoneControl.push(this.chfb.group(data.individualTelephones[0]));
+           for (a = 0; a < data.individualTelephones.length; a++){
+            
+            telephoneControl.push(this.chfb.group(data.individualTelephones[a]));
+        }
         }  
       }
        
       let addressControl = this.contractHolder.controls.idAddress as FormArray;
       addressControl.controls.pop();
+      let b =0;
       const hasMaxAddress = addressControl.length >= 3;
       if (!hasMaxAddress) {
         if (data.individualAddresses != '')
-        {       
-          addressControl.push(this.chfb.group(data.individualAddresses[0]));
-        }
+        { 
+          for(b = 0 ;b < data.individualAddresses.length; b++) 
+               
+                 addressControl.push(this.chfb.group(data.individualAddresses[b]));
+                
+      }
        
       }
 
@@ -90,7 +98,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       })
     };
 
-    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData());      
+    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      
     
     
 
