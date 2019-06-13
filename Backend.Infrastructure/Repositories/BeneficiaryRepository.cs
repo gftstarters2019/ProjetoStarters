@@ -18,10 +18,47 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Beneficiary Find(Guid id) => _db
-            //.Beneficiaries
-            .Individuals
-            .FirstOrDefault(ben => ben.BeneficiaryId == id);
+        public Beneficiary Find(Guid id)
+        {
+            Beneficiary beneficiary;
+
+            // Individual
+            beneficiary = _db
+                            .Individuals
+                            .FirstOrDefault(ben => ben.BeneficiaryId == id);
+            if (beneficiary != null)
+                return beneficiary;
+            
+            // Pet
+            beneficiary = _db
+                            .Pets
+                            .FirstOrDefault(ben => ben.BeneficiaryId == id);
+            if (beneficiary != null)
+                return beneficiary;
+
+            // Mobile Device
+            beneficiary = _db
+                            .MobileDevices
+                            .FirstOrDefault(ben => ben.BeneficiaryId == id);
+            if (beneficiary != null)
+                return beneficiary;
+
+            // Realty
+            beneficiary = _db
+                            .Realties
+                            .FirstOrDefault(ben => ben.BeneficiaryId == id);
+            if (beneficiary != null)
+                return beneficiary;
+
+            // Vehicle
+            beneficiary = _db
+                            .Vehicles
+                            .FirstOrDefault(ben => ben.BeneficiaryId == id);
+            if (beneficiary != null)
+                return beneficiary;
+
+            return null;
+        }
 
         public IEnumerable<Beneficiary> Get() => _db
             //.Beneficiaries

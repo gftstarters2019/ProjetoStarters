@@ -56,11 +56,10 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     }
     
     private handle_deleteUser(data: any) {
-    let id = this.contractHolder.value.individualId;
     
-    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => console.log(data));      
-    console.log(data);
-
+    const id = data.individualId;
+    
+    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => console.log(data));
   }
 
   unMaskValues(): void {
@@ -229,10 +228,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
             onEdit: this.handle_editUser.bind(this),
-            onDelete: this.handle_deleteUser.bind(this)
-          }
+            onDelete: this.handle_deleteUser.bind(this),
+          },
 
-      
         },
 
       ],
