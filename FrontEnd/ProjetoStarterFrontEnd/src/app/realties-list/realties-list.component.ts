@@ -28,14 +28,17 @@ export class RealtiesListComponent implements OnInit {
     this.paginationPageSize = 50;
   }
 
-  private edit_realties(data: any) {
+  private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
+    }
+  
+  private handle_deleteUser(data: any) {
+    const id = data.id;
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
+
+    this.setup_gridData();
   }
 
-  private remove_realties(data: any) {
-    //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realties/${beneficiaryId}`);
-    console.log(this.rowData$);
-  }
   //AG-grid Table Contract
   private setup_gridOptions() {
 
@@ -175,8 +178,8 @@ export class RealtiesListComponent implements OnInit {
             lockPosition: true,
             cellRendererFramework: ActionButtonComponent,
             cellRendererParams: {
-              onEdit: this.edit_realties.bind(this),
-              onRemove: this.remove_realties.bind(this)
+              onEdit: this.handle_editUser.bind(this),
+              onDelete: this.handle_deleteUser.bind(this)
             }
           },
       ],

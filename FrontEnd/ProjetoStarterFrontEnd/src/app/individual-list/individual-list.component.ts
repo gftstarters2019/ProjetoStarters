@@ -28,15 +28,17 @@ export class IndividualListComponent implements OnInit {
     this.paginationPageSize = 50;
   }
 
-  private edit_person(data: any) {
+  private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
-  }
+    }
+  
+  private handle_deleteUser(data: any) {
+    const id = data.beneficiaryId;
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
 
-  private remove_person(data: any) {
-    //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals/${beneficiaryId}`);
-    console.log(this.rowData$);
+    this.setup_gridData();
   }
-
+    
   //AG-grid Table Contract
   private setup_gridOptions() {
 
@@ -102,8 +104,8 @@ export class IndividualListComponent implements OnInit {
           lockPosition: true,
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
-            onEdit: this.edit_person.bind(this),
-            onRemove: this.remove_person.bind(this)
+            onEdit: this.handle_editUser.bind(this),
+            onDelete: this.handle_deleteUser.bind(this)
           }
         },
       ],
