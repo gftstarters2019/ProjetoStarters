@@ -190,14 +190,9 @@ export class RealtiesListComponent implements OnInit {
 
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
   }
 }

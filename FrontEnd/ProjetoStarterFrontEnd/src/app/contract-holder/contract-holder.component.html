@@ -26,7 +26,7 @@
   </mat-form-field> <br>
 
   <mat-form-field style="width: 250px;">
-      <input matInput [matDatepicker]="picker" placeholder="Birthdate" id="individualBirthdate" formControlName="individualBirthDate" required>
+      <input matInput [matDatepicker]="picker" placeholder="Birthdate" id="individualBirthdate" formControlName="individualBirthdate" required>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error>Date is invalid!</mat-error>
@@ -41,24 +41,24 @@
                               <!-- Telephone Component -->
   <div class="addressBg" formArrayName="idTelephone" *ngFor="let telefone of contractHolder.get('idTelephone')['controls'];">
     <mat-card>
-      <app-telephone [telephone2]="telefone" [pushPermission]="message" (addTelephone)="handle_add_telphone($event)"></app-telephone>
+      <app-telephone [telephone2]="telefone"  [pushPermission]="message" (addTelephone)="handle_add_telphone($event)"></app-telephone>
 
     </mat-card> 
   </div>  
-          <button mat-raised-button color="primary" type="button" (click)="showTelephone()">
-              <mat-icon class="material-icons">add</mat-icon>
+          <button mat-raised-button color="primary" type="button" (click)="showTelephone()"> 
+              <mat-icon class="material-icons">add</mat-icon> Add Telephone
          </button>      
                   <!-- Final do Telephone Component -->
 
                   <!-- Address Component -->
   <div class="addressBg"formArrayName="idAddress" *ngFor="let item of contractHolder.get('idAddress')['controls'];">    
     <mat-card >
-      <app-address [address2]="item" [addressPushPermission]="message" (addAddress)="handle_add_address($event)"> </app-address>
+      <app-address  [address2]="item" [addressPushPermission]="message" (addAddress)="handle_add_address($event)"> </app-address>
     </mat-card> 
   </div>  
   
-  <button mat-raised-button color="primary" type="button" (click)="showAddress()">
-       <mat-icon class="material-icons">add</mat-icon>
+  <button mat-raised-button color="primary" type="button" (click)="showAddress()"> 
+       <mat-icon class="material-icons">add</mat-icon>Add Address
   </button> 
   
  
@@ -67,9 +67,6 @@
                 <br>
   <button class="btn-position" button color="primary" (click)=changeMessageValue() mat-raised-button type="submit" [disabled]="!contractHolder.valid">Submit Contract Holder</button> <br> <br>
   <br> <br> <br>
-
-  <button mat-raised-button color="primary" type="button" (click)="showButton()">Show Contract Holder</button>
-
 
 
   <div *ngIf="!showList" class="mat-elevation-z8">
