@@ -4,6 +4,7 @@ import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { MatSnackBar } from '@angular/material';
 
 
 export interface Type {
@@ -76,7 +77,7 @@ export class ContractComponent implements OnInit {
     auxBeneficiaries: this.fb.array([])
   });
 
-  constructor(private fb: FormBuilder, private http: HttpClient) { }
+  constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.setup_gridData();
@@ -84,8 +85,14 @@ export class ContractComponent implements OnInit {
     this.paginationPageSize = 50;
 
     this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
-      console.log(data);
       this.holders = data;
+    });
+  }
+
+  public openSnackBar(message: string): void {
+    this._snackBar.open(message, '', {
+      duration: 4000,
+      
     });
   }
 
@@ -146,24 +153,26 @@ export class ContractComponent implements OnInit {
 
   onSubmit() {
     let form = JSON.stringify(this.contractform.value);
-    console.log(form);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
-    this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
-    .subscribe(data => console.log(data));
+    this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions).subscribe(data => data, error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
   }
 
-  private edit_contract(data: any) {
+  private handle_editUser(data: any) {
     this.contractform.patchValue(data);
-  }
+ }
+ 
+ private handle_deleteUser(data: any) {
+ 
+ const id = data.signedContractId;
+ 
+ this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => response, error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
 
-  private remove_contract(data: any) {
-    let signedContractId = this.contractform.value.signedContractId;
-    this.rowData$ = this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`);
-  }
+ this.setup_gridData();
+}
 
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -239,8 +248,8 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
-            onEdit: this.edit_contract.bind(this),
-            onRemove: this.remove_contract.bind(this)
+            onEdit: this.handle_editUser.bind(this),
+            onDelete: this.handle_deleteUser.bind(this),
           },
         },
       ],
@@ -255,15 +264,12 @@ export class ContractComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
 
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
     this.contractform.getRawValue();
-    console.log(data);
 
     this.contractform.patchValue(data);
 
