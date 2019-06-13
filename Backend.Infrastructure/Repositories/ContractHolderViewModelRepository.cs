@@ -19,27 +19,38 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
+        /// <summary>
+        /// Add de Contract Holder
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public bool Add(ContractHolderViewModel vm)
         {
-            if (vm != null)
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
-                // Individual
-                var individual = ViewModelCreator.IndividualFactory.Create(vm);
-
-                if (individual == null)
-                    return false;
-
-                _db.Add(individual);
-
-                // Telephone
-                var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.IndividualTelephones);
-                if (vm.IndividualTelephones.Count() != 0)
+                if (vm != null)
                 {
-                    if (telephones.Count != vm.IndividualTelephones.Count || !telephones.Any())
+                    // Individual
+                    var individual = ViewModelCreator.IndividualFactory.Create(vm);
+
+                    if (individual == null)
+                        return false;
+                    else if (_db.Individuals.Where(ind => (ind.IndividualCPF == individual.IndividualCPF) && (!ind.IsDeleted)).Any())
                         return false;
 
-                    if (telephones.Count > 0)
+                    _db.Add(individual);
+
+                    // Telephone
+                    if (vm.individualTelephones.Count() != 0)
                     {
+                        var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones);
+
+                        if (telephones == null)
+                            return false;
+                        else if (telephones.Count != vm.individualTelephones.Count)
+                            return false;
+
                         foreach (var telephone in telephones)
                         {
                             _db.Add(telephone);
@@ -50,21 +61,19 @@ namespace Backend.Infrastructure.Repositories
                                 BeneficiaryId = individual.BeneficiaryId,
                                 TelephoneId = telephone.TelephoneId
                             });
-
                         }
                     }
-                }
 
-                // Address
-                var addresses = ViewModelCreator.AddressFactory.CreateList(vm.IndividualAddresses);
-
-                if (vm.IndividualAddresses.Count() != 0)
-                {
-                    if (addresses.Count != vm.IndividualAddresses.Count || !addresses.Any())
-                        return false;
-
-                    if (addresses.Count > 0)
+                    // Address
+                    if (vm.individualAddresses.Count() != 0)
                     {
+                        var addresses = ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses);
+
+                        if (addresses == null)
+                            return false;
+                        else if (addresses.Count != vm.individualAddresses.Count)
+                            return false;
+
                         foreach (var address in addresses)
                         {
                             _db.Add(address);
@@ -75,18 +84,24 @@ namespace Backend.Infrastructure.Repositories
                                 BeneficiaryId = individual.BeneficiaryId,
                                 AddressId = address.AddressId
                             });
-
                         }
                     }
+
+                    _db.SaveChanges();
+                    scope.Complete();
+                    return true;
+
                 }
-
-                _db.SaveChanges();
-                return true;
-
+                scope.Complete();
+                return false;
             }
-            return false;
         }
 
+        /// <summary>
+        /// Find de Contract Holder
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ContractHolderViewModel Find(Guid id)
         {
             Individual individual = _db.Individuals.Where(ind => (!ind.IsDeleted) && (ind.BeneficiaryId == id)).FirstOrDefault();
@@ -100,12 +115,12 @@ namespace Backend.Infrastructure.Repositories
             ContractHolderViewModel ContractHolderViewModel = new ContractHolderViewModel();
 
             //Individual
-            ContractHolderViewModel.IndividualId = individual.BeneficiaryId;
-            ContractHolderViewModel.IndividualName = individual.IndividualName;
-            ContractHolderViewModel.IndividualCPF = individual.IndividualCPF;
-            ContractHolderViewModel.IndividualBirthdate = individual.IndividualBirthdate;
-            ContractHolderViewModel.IndividualEmail = individual.IndividualEmail;
-            ContractHolderViewModel.IndividualRG = individual.IndividualRG;
+            ContractHolderViewModel.individualId = individual.BeneficiaryId;
+            ContractHolderViewModel.individualName = individual.IndividualName;
+            ContractHolderViewModel.individualCPF = individual.IndividualCPF;
+            ContractHolderViewModel.individualBirthdate = individual.IndividualBirthdate;
+            ContractHolderViewModel.individualEmail = individual.IndividualEmail;
+            ContractHolderViewModel.individualRG = individual.IndividualRG;
 
             //Addresses
             foreach (var beneficiary_address in beneficiary_addresses)
@@ -127,7 +142,7 @@ namespace Backend.Infrastructure.Repositories
                     ad.AddressType = address.AddressType;
                     ad.AddressZipCode = address.AddressZipCode;
 
-                    ContractHolderViewModel.IndividualAddresses.Add(ad);                    
+                    ContractHolderViewModel.individualAddresses.Add(ad);                    
                 }            
             }
 
@@ -144,12 +159,16 @@ namespace Backend.Infrastructure.Repositories
                     tel.TelephoneNumber = telephone.TelephoneNumber;
                     tel.TelephoneType = telephone.TelephoneType;
 
-                    ContractHolderViewModel.IndividualTelephones.Add(tel);
+                    ContractHolderViewModel.individualTelephones.Add(tel);
                 }               
             }
             return ContractHolderViewModel;
         }
 
+        /// <summary>
+        /// Get de Contract Holder
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<ContractHolderViewModel> Get()
         {
             List<ContractHolderViewModel> ContractHolders = new List<ContractHolderViewModel>();
@@ -160,12 +179,12 @@ namespace Backend.Infrastructure.Repositories
             {
                 //Individuals
                 ContractHolderViewModel vm = new ContractHolderViewModel();
-                vm.IndividualId = individual.BeneficiaryId;
-                vm.IndividualName = individual.IndividualName;
-                vm.IndividualCPF = individual.IndividualCPF;
-                vm.IndividualBirthdate = individual.IndividualBirthdate;
-                vm.IndividualEmail = individual.IndividualEmail;
-                vm.IndividualRG = individual.IndividualRG;
+                vm.individualId = individual.BeneficiaryId;
+                vm.individualName = individual.IndividualName;
+                vm.individualCPF = individual.IndividualCPF;
+                vm.individualBirthdate = individual.IndividualBirthdate;
+                vm.individualEmail = individual.IndividualEmail;
+                vm.individualRG = individual.IndividualRG;
 
                 //Addresses
                 var beneficiary_addresses = _db.Beneficiary_Address.Where(benAdr => benAdr.BeneficiaryId == individual.BeneficiaryId).ToList();
@@ -190,7 +209,7 @@ namespace Backend.Infrastructure.Repositories
                         ad.AddressType = address.AddressType;
                         ad.AddressZipCode = address.AddressZipCode;
 
-                        vm.IndividualAddresses.Add(ad);
+                        vm.individualAddresses.Add(ad);
                         
                     }                  
                 }
@@ -211,10 +230,10 @@ namespace Backend.Infrastructure.Repositories
                         tel.TelephoneNumber = telephone.TelephoneNumber;
                         tel.TelephoneType = telephone.TelephoneType;
 
-                        vm.IndividualTelephones.Add(tel);
+                        vm.individualTelephones.Add(tel);
                         
                     }
-                    
+
                 }
 
                 ContractHolders.Add(vm);
@@ -223,6 +242,12 @@ namespace Backend.Infrastructure.Repositories
             return ContractHolders;
         }
 
+        /// <summary>
+        /// Update/Delete de Contract Holder
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public ContractHolderViewModel Update(Guid id, ContractHolderViewModel vm)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -237,12 +262,12 @@ namespace Backend.Infrastructure.Repositories
                 var individual_telephones = _db.Individual_Telephone.Where(indTel => indTel.BeneficiaryId == individual.BeneficiaryId).ToList();
 
                 //Soft Delete
-                if (vm.IsDeleted)
+                if (vm.isDeleted)
                 {
-                    if (_db.SignedContracts.Where(sigCon => (sigCon.ContractIndividualIsActive == true) && (sigCon.IndividualId == id)) != null)
+                    if (_db.SignedContracts.Where(sigCon => (sigCon.ContractIndividualIsActive == true) && (sigCon.IndividualId == id)).Any())
                         return null;
 
-                    individual.IsDeleted = vm.IsDeleted;
+                    individual.IsDeleted = vm.isDeleted;
                     _db.Update(individual);
                 }
 
@@ -250,15 +275,18 @@ namespace Backend.Infrastructure.Repositories
                 else
                 {
                     if (ViewModelCreator.IndividualFactory.Create(vm) == null ||
-                        ViewModelCreator.AddressFactory.CreateList(vm.IndividualAddresses).Count() != vm.IndividualAddresses.Count() ||
-                        ViewModelCreator.TelephoneFactory.CreateList(vm.IndividualTelephones).Count() != vm.IndividualTelephones.Count())
+                        ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses).Count() != vm.individualAddresses.Count() ||
+                        ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones).Count() != vm.individualTelephones.Count())
                         return null;
 
-                    individual.IndividualBirthdate = vm.IndividualBirthdate;
-                    individual.IndividualCPF = vm.IndividualCPF;
-                    individual.IndividualEmail = vm.IndividualEmail;
-                    individual.IndividualName = vm.IndividualName;
-                    individual.IndividualRG = vm.IndividualRG;
+                    else if (individual.IndividualCPF != vm.individualCPF)
+                        return null;
+
+                    individual.IndividualBirthdate = vm.individualBirthdate;
+                    individual.IndividualCPF = vm.individualCPF;
+                    individual.IndividualEmail = vm.individualEmail;
+                    individual.IndividualName = vm.individualName;
+                    individual.IndividualRG = vm.individualRG;
 
                     _db.Update(individual);
 
@@ -267,10 +295,10 @@ namespace Backend.Infrastructure.Repositories
                     if (individual_telephones.Count() > 0)
                         _db.RemoveRange(individual_telephones);
 
-                    _db.AddRange(vm.IndividualAddresses);
-                    _db.AddRange(vm.IndividualTelephones);
+                    _db.AddRange(vm.individualAddresses);
+                    _db.AddRange(vm.individualTelephones);
 
-                    foreach (var benAdd in vm.IndividualAddresses)
+                    foreach (var benAdd in vm.individualAddresses)
                     {
                         _db.Add(new BeneficiaryAddress
                         {
@@ -280,7 +308,7 @@ namespace Backend.Infrastructure.Repositories
                         });
                     }
 
-                    foreach (var indTel in vm.IndividualTelephones)
+                    foreach (var indTel in vm.individualTelephones)
                     {
                         _db.Add(new BeneficiaryTelephone
                         {
@@ -305,7 +333,7 @@ namespace Backend.Infrastructure.Repositories
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
         new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
-                
+
                 throw new NotImplementedException();
                 _db.SaveChanges();
 

@@ -21,5 +21,11 @@ namespace Backend.Application.ViewModels
         /// List of Beneficiaries. Shouldn't have different types of Beneficiary, but can accept any type.
         /// </summary>
         public List<Guid> Beneficiaries { get; set; }
+
+        public List<Individual> Individuals { get; set; }
+        public List<Realty> Realties { get; set; }
+        public List<MobileDevice> MobileDevices { get; set; }
+        public List<Pet> Pets { get; set; }
+        public List<Vehicle> Vehicles { get; set; }
     }
 }

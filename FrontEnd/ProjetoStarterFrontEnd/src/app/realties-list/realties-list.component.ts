@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
+import { Observable } from 'rxjs';
+import { ActionButtonComponent } from '../action-button/action-button.component';
 
 @Component({
   selector: 'app-realties-list',
@@ -13,7 +15,7 @@ export class RealtiesListComponent implements OnInit {
   detailCellRendererParams;
   gridApi;
   gridColumApi;
-  rowData$: any;
+  rowData$: Observable<Array<any>>;
   paginationPageSize;
   gridOptions: GridOptions;
   load_failure: boolean;
@@ -24,6 +26,15 @@ export class RealtiesListComponent implements OnInit {
     this.setup_gridData();
     this.setup_gridOptions();
     this.paginationPageSize = 50;
+  }
+
+  private edit_realties(data: any) {
+    //this.contractform.patchValue(data);
+  }
+
+  private remove_realties(data: any) {
+    //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realties/${beneficiaryId}`);
+    console.log(this.rowData$);
   }
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -98,7 +109,7 @@ export class RealtiesListComponent implements OnInit {
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
-        
+
         {
           headerName: 'Country',
           field: 'addressCountry',
@@ -119,7 +130,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Municipal Registration',
-          field: 'realtyMunicipalRegistration',
+          field: 'municipalRegistration',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -128,7 +139,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Construction Date',
-          field: 'realtyConstructionDate',
+          field: 'constructionDate',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -137,7 +148,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Sale Value',
-          field: 'realtySaleValue',
+          field: 'saleValue',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -146,13 +157,23 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Market Value',
-          field: 'realtyMarketValue',
+          field: 'marketValue',
           lockPosition: true,
           sortable: true,
           filter: true,
           onCellValueChanged:
             this.onCellEdit.bind(this)
-        },
+          },
+          {
+            headerName: 'Edit/Delete',
+            field: 'editDelete',
+            lockPosition: true,
+            cellRendererFramework: ActionButtonComponent,
+            cellRendererParams: {
+              onEdit: this.edit_realties.bind(this),
+              onRemove: this.remove_realties.bind(this)
+            }
+          },
       ],
       onGridReady: this.onGridReady.bind(this)
     }
@@ -163,6 +184,7 @@ export class RealtiesListComponent implements OnInit {
   }
   private setup_gridData() {
     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realties');
+
   }
   private onCellEdit(params: any) {
     console.log(params.newValue);
