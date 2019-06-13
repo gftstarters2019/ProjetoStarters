@@ -210,7 +210,15 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     individualAddressesControl.push($event);
   }
 
+  removeTelephone(index: number) {
+    let individualTelephonesControl = this.contractHolder.get('idTelephone') as FormArray;
+    individualTelephonesControl.removeAt(index);
+  }
 
+  removeAddress(index: number) {
+    let individualAddressesControl = this.contractHolder.get('idAddress') as FormArray;
+    individualAddressesControl.removeAt(index);
+  }
 
   private setup_gridOptions() {
 
