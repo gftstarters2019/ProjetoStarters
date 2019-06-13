@@ -140,12 +140,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private List<Guid> AddRealties(List<Realty> realties)
+        private List<Guid> AddRealties(List<RealtyViewModel> realties)
         {
             // Verifies if Municipal Registration is already in DB
             if (_db.Realties
                     .Select(real => real.RealtyMunicipalRegistration)
-                    .Where(reg => realties.Select(real => real.RealtyMunicipalRegistration).Contains(reg))
+                    .Where(reg => realties.Select(real => real.MunicipalRegistration).Contains(reg))
                     .ToList().Count > 0)
                 return null;
 
@@ -154,8 +154,44 @@ namespace Backend.Infrastructure.Repositories
             foreach (var realty in realties)
             {
                 realty.IsDeleted = false;
-                if (RealtyValidations.RealtyIsValid(realty))
-                    insertedRealties.Add(_db.Realties.Add(realty).Entity.BeneficiaryId);
+                Address realtyAddress = new Address()
+                {
+                    AddressCity = realty.AddressCity,
+                    AddressComplement = realty.AddressComplement,
+                    AddressCountry = realty.AddressCountry,
+                    AddressNeighborhood = realty.AddressNeighborhood,
+                    AddressNumber = realty.AddressNumber,
+                    AddressState = realty.AddressState,
+                    AddressStreet = realty.AddressStreet,
+                    AddressType = realty.AddressType,
+                    AddressZipCode = realty.AddressZipCode
+                };
+                //if (AddressValidations.AddressIsValid(realtyAddress))
+                    realtyAddress = _db.Addresses.Add(realtyAddress).Entity;
+                //else return null;
+
+                Realty realtyToAdd = new Realty()
+                {
+                    IsDeleted = realty.IsDeleted,
+                    RealtyConstructionDate = realty.ConstructionDate,
+                    RealtyMarketValue = realty.MarketValue,
+                    RealtyMunicipalRegistration = realty.MunicipalRegistration,
+                    RealtySaleValue = realty.SaleValue
+                };
+
+                if (RealtyValidations.RealtyIsValid(realtyToAdd))
+                {
+                    realtyToAdd = _db.Realties.Add(realtyToAdd).Entity;
+                    insertedRealties.Add(realtyToAdd.BeneficiaryId);
+                }
+                else return null;
+
+                _db.Beneficiary_Address.Add(new BeneficiaryAddress()
+                {
+                    AddressId = realtyAddress.AddressId,
+                    BeneficiaryId = realtyToAdd.BeneficiaryId,
+                    BeneficiaryAddressId = Guid.NewGuid()
+                });
             }
             if (insertedRealties.Count == realties.Count)
                 return insertedRealties;
@@ -296,6 +332,7 @@ namespace Backend.Infrastructure.Repositories
                             };
                             viewModelToReturn.Add(viewModelIndividualToAdd);
                             break;
+
                         case Core.Enums.ContractType.AnimalHealthPlan:
                             var viewModelPetToAdd = new ContractViewModel()
                             {
@@ -310,6 +347,7 @@ namespace Backend.Infrastructure.Repositories
                             };
                             viewModelToReturn.Add(viewModelPetToAdd);
                             break;
+
                         case Core.Enums.ContractType.MobileDeviceInsurance:
                             var viewModelMobileDeviceToAdd = new ContractViewModel()
                             {
@@ -324,7 +362,28 @@ namespace Backend.Infrastructure.Repositories
                             };
                             viewModelToReturn.Add(viewModelMobileDeviceToAdd);
                             break;
+
                         case Core.Enums.ContractType.RealStateInsurance:
+                            var contractRealties = _db.Realties.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList();
+                            List<RealtyViewModel> realtiesToReturn = new List<RealtyViewModel>();
+                            foreach(var real in contractRealties)
+                            {
+                                realtiesToReturn.Add(new RealtyViewModel()
+                                {
+                                    Id = real.BeneficiaryId,
+                                    ConstructionDate = real.RealtyConstructionDate,
+                                    MarketValue = real.RealtyMarketValue,
+                                    MunicipalRegistration = real.RealtyMunicipalRegistration,
+                                    SaleValue = real.RealtySaleValue,
+                                    Address = _db
+                                    .Addresses
+                                    .Where(a => a.AddressId == _db.Beneficiary_Address
+                                                                .Where(ba => ba.BeneficiaryId == real.BeneficiaryId)
+                                                                .Select(ba => ba.AddressId)
+                                                                .FirstOrDefault())
+                                    .FirstOrDefault()
+                                });
+                            }
                             var viewModelRealtyToAdd = new ContractViewModel()
                             {
                                 Category = contract.ContractCategory,
@@ -334,10 +393,11 @@ namespace Backend.Infrastructure.Repositories
                                 SignedContractId = signedContract.SignedContractId,
                                 ContractHolderId = signedContract.IndividualId,
                                 ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
-                                Realties = _db.Realties.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
+                                Realties = realtiesToReturn
                             };
                             viewModelToReturn.Add(viewModelRealtyToAdd);
                             break;
+
                         case Core.Enums.ContractType.VehicleInsurance:
                             var viewModelVehicleToAdd = new ContractViewModel()
                             {
@@ -352,6 +412,7 @@ namespace Backend.Infrastructure.Repositories
                             };
                             viewModelToReturn.Add(viewModelVehicleToAdd);
                             break;
+
                         default:
                             break;
                     }
