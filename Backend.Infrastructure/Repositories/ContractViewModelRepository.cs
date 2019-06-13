@@ -131,6 +131,7 @@ namespace Backend.Infrastructure.Repositories
 
             foreach (var vehicle in vehicles)
             {
+                vehicle.IsDeleted = false;
                 if (VehicleValidations.VehicleIsValid(vehicle))
                     insertedVehicles.Add(_db.Vehicles.Add(vehicle).Entity.BeneficiaryId);
             }
@@ -152,6 +153,7 @@ namespace Backend.Infrastructure.Repositories
 
             foreach (var realty in realties)
             {
+                realty.IsDeleted = false;
                 if (RealtyValidations.RealtyIsValid(realty))
                     insertedRealties.Add(_db.Realties.Add(realty).Entity.BeneficiaryId);
             }
@@ -173,6 +175,7 @@ namespace Backend.Infrastructure.Repositories
 
             foreach (var mobile in mobileDevices)
             {
+                mobile.IsDeleted = false;
                 if (MobileDeviceValidations.MobileDeviceIsValid(mobile))
                     insertedMobileDevices.Add(_db.MobileDevices.Add(mobile).Entity.BeneficiaryId);
             }
@@ -187,7 +190,8 @@ namespace Backend.Infrastructure.Repositories
 
             foreach (var pet in pets)
             {
-                if(PetValidations.PetIsValid(pet))
+                pet.IsDeleted = false;
+                if (PetValidations.PetIsValid(pet))
                     insertedPets.Add(_db.Pets.Add(pet).Entity.BeneficiaryId);
             }
             if (insertedPets.Count == pets.Count)
@@ -208,6 +212,7 @@ namespace Backend.Infrastructure.Repositories
 
             foreach (var ind in individuals)
             {
+                ind.IsDeleted = false;
                 if (IndividualValidations.IndividualIsValid(ind))
                     insertedIndividuals.Add(_db.Individuals.Add(ind).Entity.BeneficiaryId);
             }
@@ -271,17 +276,85 @@ namespace Backend.Infrastructure.Repositories
                         .Select(cb => cb.BeneficiaryId)
                         .ToList();
 
-                    var viewModelToAdd = new ContractViewModel()
+                    //
+                    //ContractViewModel viewModelToAdd;
+                    switch (contract.ContractType)
                     {
-                        Category = contract.ContractCategory,
-                        ExpiryDate = contract.ContractExpiryDate,
-                        IsActive = signedContract.ContractIndividualIsActive,
-                        Type = contract.ContractType,
-                        SignedContractId = signedContract.SignedContractId,
-                        ContractHolderId = signedContract.IndividualId,
-                        Beneficiaries = beneficiaries
-                    };
-                    viewModelToReturn.Add(viewModelToAdd);
+                        case Core.Enums.ContractType.DentalPlan:
+                        case Core.Enums.ContractType.HealthPlan:
+                        case Core.Enums.ContractType.LifeInsurance:
+                            var viewModelIndividualToAdd = new ContractViewModel()
+                            {
+                                Category = contract.ContractCategory,
+                                ExpiryDate = contract.ContractExpiryDate,
+                                IsActive = signedContract.ContractIndividualIsActive,
+                                Type = contract.ContractType,
+                                SignedContractId = signedContract.SignedContractId,
+                                ContractHolderId = signedContract.IndividualId,
+                                ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
+                                Individuals = _db.Individuals.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
+                            };
+                            viewModelToReturn.Add(viewModelIndividualToAdd);
+                            break;
+                        case Core.Enums.ContractType.AnimalHealthPlan:
+                            var viewModelPetToAdd = new ContractViewModel()
+                            {
+                                Category = contract.ContractCategory,
+                                ExpiryDate = contract.ContractExpiryDate,
+                                IsActive = signedContract.ContractIndividualIsActive,
+                                Type = contract.ContractType,
+                                SignedContractId = signedContract.SignedContractId,
+                                ContractHolderId = signedContract.IndividualId,
+                                ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
+                                Pets = _db.Pets.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
+                            };
+                            viewModelToReturn.Add(viewModelPetToAdd);
+                            break;
+                        case Core.Enums.ContractType.MobileDeviceInsurance:
+                            var viewModelMobileDeviceToAdd = new ContractViewModel()
+                            {
+                                Category = contract.ContractCategory,
+                                ExpiryDate = contract.ContractExpiryDate,
+                                IsActive = signedContract.ContractIndividualIsActive,
+                                Type = contract.ContractType,
+                                SignedContractId = signedContract.SignedContractId,
+                                ContractHolderId = signedContract.IndividualId,
+                                ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
+                                MobileDevices = _db.MobileDevices.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
+                            };
+                            viewModelToReturn.Add(viewModelMobileDeviceToAdd);
+                            break;
+                        case Core.Enums.ContractType.RealStateInsurance:
+                            var viewModelRealtyToAdd = new ContractViewModel()
+                            {
+                                Category = contract.ContractCategory,
+                                ExpiryDate = contract.ContractExpiryDate,
+                                IsActive = signedContract.ContractIndividualIsActive,
+                                Type = contract.ContractType,
+                                SignedContractId = signedContract.SignedContractId,
+                                ContractHolderId = signedContract.IndividualId,
+                                ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
+                                Realties = _db.Realties.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
+                            };
+                            viewModelToReturn.Add(viewModelRealtyToAdd);
+                            break;
+                        case Core.Enums.ContractType.VehicleInsurance:
+                            var viewModelVehicleToAdd = new ContractViewModel()
+                            {
+                                Category = contract.ContractCategory,
+                                ExpiryDate = contract.ContractExpiryDate,
+                                IsActive = signedContract.ContractIndividualIsActive,
+                                Type = contract.ContractType,
+                                SignedContractId = signedContract.SignedContractId,
+                                ContractHolderId = signedContract.IndividualId,
+                                ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
+                                Vehicles = _db.Vehicles.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
+                            };
+                            viewModelToReturn.Add(viewModelVehicleToAdd);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
             return viewModelToReturn;

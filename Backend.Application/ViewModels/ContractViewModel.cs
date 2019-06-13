@@ -13,6 +13,7 @@ namespace Backend.Application.ViewModels
         /// Contract Holder ID (BeneficiaryId)
         /// </summary>
         public Guid ContractHolderId { get; set; }
+        public Individual ContractHolder { get; set; }
         public ContractType Type { get; set; }
         public ContractCategory Category { get; set; }
         public DateTime ExpiryDate { get; set; }
