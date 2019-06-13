@@ -105,6 +105,7 @@ namespace Backend.Infrastructure.Repositories
 
                     break;
                 case Core.Enums.ContractType.VehicleInsurance:
+                    List<Vehicle> vehicles = new List<Vehicle>();
                     beneficiaries = _db.Vehicles
                         .Where(vec => viewModel.Beneficiaries.Contains(vec.BeneficiaryId))
                         .Select(vec => vec.BeneficiaryId)
@@ -114,14 +115,15 @@ namespace Backend.Infrastructure.Repositories
                     {
                         if (!VehicleIsValid(vehicle))
                             return false;
+                        vehicles.Add(vehicle);
                     }
-
+                    AddVehicles(vehicles);
                     break;
                 default:
                     return false;
             }
-            if (beneficiaries.Count == 0 || beneficiaries.Count != viewModel.Beneficiaries.Count)
-                return false;
+            //if (beneficiaries.Count == 0 || beneficiaries.Count != viewModel.Beneficiaries.Count)
+            //    return false;
 
             foreach (var ben in beneficiaries)
             {
@@ -149,6 +151,11 @@ namespace Backend.Infrastructure.Repositories
                 _db.Contract_Beneficiary.Add(contract_beneficiary);
             }
             return true;
+        }
+
+        private void AddVehicles(List<Vehicle> listToSave)
+        {
+            _db.Vehicles.AddRange(listToSave);
         }
 
         private SignedContract AddSignedContract(ContractViewModel viewModel, Contract contract)
