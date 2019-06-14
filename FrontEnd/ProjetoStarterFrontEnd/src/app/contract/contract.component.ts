@@ -296,15 +296,18 @@ export class ContractComponent implements OnInit {
     let i;
     if(data.type==0 || data.type==2 || data.type==3){
       this.cType = data.type;
-      this.beneficiaries =  this.contractform.get('auxBeneficiaries') as FormArray;
-            
-      
-      const hasMaxIndividuals = this.beneficiaries.length >= 5;
+      let individualControl = this.contractform.controls.auxBeneficiaries as FormArray;
+      this.contractform.removeControl('pets');
+      this.contractform.removeControl('realties');
+      this.contractform.removeControl('vehicles');
+      this.contractform.removeControl('mobileDevices');
+      individualControl.controls.pop();
+      const hasMaxIndividuals = individualControl.length >= 5;
       if (!hasMaxIndividuals) {
         if (data.individuals != ''){
           for(i =0; i <data.individuals.length; i++)
           {
-            this.beneficiaries.push(this.fb.group(data.individuals[i]));
+            individualControl.push(this.fb.group(data.individuals[i]));
           }
         }  
       }
@@ -312,7 +315,13 @@ export class ContractComponent implements OnInit {
     }
        
     if(data.type==1){
+      this.cType = data.type;
+
         let petControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+        this.contractform.removeControl('individuals');
+      this.contractform.removeControl('realties');
+      this.contractform.removeControl('vehicles');
+      this.contractform.removeControl('mobileDevices');
       petControl.controls.pop();
       const hasMaxPets = petControl.length >= 5;
       if (!hasMaxPets) {
