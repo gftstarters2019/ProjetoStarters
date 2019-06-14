@@ -109,15 +109,10 @@ export class PetListComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
   }
 }
 function SpeciesFormmatter(params){

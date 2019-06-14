@@ -163,15 +163,10 @@ export class VehicleListComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicles');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
   }
 }
 function colorFormatter(params) {
