@@ -539,38 +539,38 @@ namespace Backend.Infrastructure.Repositories
                 case Core.Enums.ContractType.HealthPlan:
                 case Core.Enums.ContractType.LifeInsurance:
                     beneficiaries = _db.Individuals
-                        .Where(ind => viewModel.Beneficiaries.Contains(ind.BeneficiaryId))
+                        .Where(ind => viewModel.BeneficiariesIds.Contains(ind.BeneficiaryId))
                         .Select(ind => ind.BeneficiaryId)
                         .ToList();
                     break;
                 case Core.Enums.ContractType.AnimalHealthPlan:
                     beneficiaries = _db.Pets
-                        .Where(pet => viewModel.Beneficiaries.Contains(pet.BeneficiaryId))
+                        .Where(pet => viewModel.BeneficiariesIds.Contains(pet.BeneficiaryId))
                         .Select(pet => pet.BeneficiaryId)
                         .ToList();
                     break;
                 case Core.Enums.ContractType.MobileDeviceInsurance:
                     beneficiaries = _db.MobileDevices
-                        .Where(mob => viewModel.Beneficiaries.Contains(mob.BeneficiaryId))
+                        .Where(mob => viewModel.BeneficiariesIds.Contains(mob.BeneficiaryId))
                         .Select(mob => mob.BeneficiaryId)
                         .ToList();
                     break;
                 case Core.Enums.ContractType.RealStateInsurance:
                     beneficiaries = _db.Realties
-                        .Where(rea => viewModel.Beneficiaries.Contains(rea.BeneficiaryId))
+                        .Where(rea => viewModel.BeneficiariesIds.Contains(rea.BeneficiaryId))
                         .Select(rea => rea.BeneficiaryId)
                         .ToList();
                     break;
                 case Core.Enums.ContractType.VehicleInsurance:
                     beneficiaries = _db.Vehicles
-                        .Where(vec => viewModel.Beneficiaries.Contains(vec.BeneficiaryId))
+                        .Where(vec => viewModel.BeneficiariesIds.Contains(vec.BeneficiaryId))
                         .Select(vec => vec.BeneficiaryId)
                         .ToList();
                     break;
                 default:
                     return false;
             }
-            if (beneficiaries.Count == 0 || beneficiaries.Count != viewModel.Beneficiaries.Count)
+            if (beneficiaries.Count == 0 || beneficiaries.Count != viewModel.BeneficiariesIds.Count)
                 return false;
 
             foreach (var ben in beneficiaries)
