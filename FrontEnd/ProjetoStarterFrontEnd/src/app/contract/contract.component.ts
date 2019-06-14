@@ -460,7 +460,7 @@ export class ContractComponent implements OnInit {
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
             onEdit: this.handle_editUser.bind(this),
-            onRemove: this.handle_deleteUser.bind(this)
+            onDelete: this.handle_deleteUser.bind(this)
           }
         },
       ]
