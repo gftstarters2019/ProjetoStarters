@@ -161,11 +161,11 @@ export class ContractComponent implements OnInit {
     if (this.beneficiaries.length < 5) {
       if(this.cType == 0 || this.cType==2 || this.cType==3){
         this.beneficiaries.push(this.fb.group({
-          individualName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
-          individualCPF: new FormControl('', GenericValidator.isValidCpf()),
-          individualRG: new FormControl('', GenericValidator.rgLengthValidation()),
-          individualBirthdate: new FormControl('', GenericValidator.dateValidation()),
-          individualEmail: new FormControl('', Validators.required)
+          individualName: ['', Validators.pattern(GenericValidator.regexName)],
+          individualCPF: ['', GenericValidator.isValidCpf()],
+          individualRG: ['', GenericValidator.rgLengthValidation()],
+          individualBirthdate: ['', GenericValidator.dateValidation()],
+          individualEmail: ['', Validators.required]
         }));
       }
         
@@ -288,26 +288,23 @@ export class ContractComponent implements OnInit {
   }
 
   private handle_editUser(data: any) {
-    // this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
-    //   this.holders = data;
-    // });
-     debugger;
-    //data.removeControl('beneficiaries');
-    console.log(this.contractform);
+    
     this.signedContractId = data.signedContractId;
-    this.contractform.patchValue(data);
+    
+    this.contractform.patchValue(data)
     
     let i;
     if(data.type==0 || data.type==2 || data.type==3){
-      let individualControl =  this.contractform.controls.auxBeneficiaries as FormArray;
-      individualControl.controls.pop();
-      const hasMaxIndividuals = individualControl.length >= 5;
+      this.cType = data.type;
+      this.beneficiaries =  this.contractform.get('auxBeneficiaries') as FormArray;
+            
+      
+      const hasMaxIndividuals = this.beneficiaries.length >= 5;
       if (!hasMaxIndividuals) {
         if (data.individuals != ''){
           for(i =0; i <data.individuals.length; i++)
           {
-            individualControl.push(this.fb.group(data.individuals[i]));
-            console.log(data.individuals[i]);
+            this.beneficiaries.push(this.fb.group(data.individuals[i]));
           }
         }  
       }
