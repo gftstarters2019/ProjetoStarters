@@ -126,15 +126,17 @@ namespace Backend.Infrastructure.Repositories
         #region Add Beneficiaries To DB
         private List<Guid> AddVehicles(List<Vehicle> vehicles)
         {
+            List<Guid> insertedVehicles = new List<Guid>();
+            insertedVehicles.AddRange(vehicles.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            vehicles.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
+            
             // Verifies if Chassis Number is already in DB
             if (_db.Vehicles
                     .Select(veh => veh.VehicleChassisNumber)
                     .Where(cha => vehicles.Select(veh => veh.VehicleChassisNumber).Contains(cha))
                     .ToList().Count > 0)
                 return null;
-
-            List<Guid> insertedVehicles = new List<Guid>();
-
+            
             foreach (var vehicle in vehicles)
             {
                 vehicle.IsDeleted = false;
@@ -148,15 +150,17 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> AddRealties(List<RealtyViewModel> realties)
         {
+            List<Guid> insertedRealties = new List<Guid>();
+            insertedRealties.AddRange(realties.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            realties.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
+
             // Verifies if Municipal Registration is already in DB
             if (_db.Realties
                     .Select(real => real.RealtyMunicipalRegistration)
                     .Where(reg => realties.Select(real => real.MunicipalRegistration).Contains(reg))
                     .ToList().Count > 0)
                 return null;
-
-            List<Guid> insertedRealties = new List<Guid>();
-
+            
             foreach (var realty in realties)
             {
                 realty.IsDeleted = false;
@@ -206,15 +210,17 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> AddMobileDevices(List<MobileDevice> mobileDevices)
         {
+            List<Guid> insertedMobileDevices = new List<Guid>();
+            insertedMobileDevices.AddRange(mobileDevices.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            mobileDevices.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
+
             // Verifies if Serial Number is already in DB
             if (_db.MobileDevices
                     .Select(mob => mob.MobileDeviceSerialNumber)
                     .Where(serial => mobileDevices.Select(mob => mob.MobileDeviceSerialNumber).Contains(serial))
                     .ToList().Count > 0)
                 return null;
-
-            List<Guid> insertedMobileDevices = new List<Guid>();
-
+            
             foreach (var mobile in mobileDevices)
             {
                 mobile.IsDeleted = false;
@@ -229,6 +235,8 @@ namespace Backend.Infrastructure.Repositories
         private List<Guid> AddPets(List<Pet> pets)
         {
             List<Guid> insertedPets = new List<Guid>();
+            insertedPets.AddRange(pets.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            pets.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
 
             foreach (var pet in pets)
             {
@@ -243,15 +251,17 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> AddIndividuals(List<Individual> individuals)
         {
+            List<Guid> insertedIndividuals = new List<Guid>();
+            insertedIndividuals.AddRange(individuals.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            individuals.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
+
             // Verifies if CPF is already in DB
             if (_db.Individuals
                     .Select(ind => ind.IndividualCPF)
                     .Where(cpf => individuals.Select(ind => ind.IndividualCPF).Contains(cpf))
                     .ToList().Count > 0)
                 return null;
-
-            List<Guid> insertedIndividuals = new List<Guid>();
-
+            
             foreach (var ind in individuals)
             {
                 ind.IsDeleted = false;
