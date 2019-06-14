@@ -32,7 +32,7 @@ namespace Backend.Infrastructure.Repositories
                 if (vm != null)
                 {
                     // Individual
-                    var individual = ViewModelCreator.IndividualFactory.Create(vm);
+                    var individual = Factories.IndividualFactory.Create(vm);
 
                     if (individual == null)
                         return false;
@@ -44,7 +44,7 @@ namespace Backend.Infrastructure.Repositories
                     // Telephone
                     if (vm.individualTelephones.Count() != 0)
                     {
-                        var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones);
+                        var telephones = Factories.TelephoneFactory.CreateList(vm.individualTelephones);
 
                         if (telephones == null)
                             return false;
@@ -67,7 +67,7 @@ namespace Backend.Infrastructure.Repositories
                     // Address
                     if (vm.individualAddresses.Count() != 0)
                     {
-                        var addresses = ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses);
+                        var addresses = Factories.AddressFactory.CreateList(vm.individualAddresses);
 
                         if (addresses == null)
                             return false;
@@ -274,9 +274,9 @@ namespace Backend.Infrastructure.Repositories
                 //Update
                 else
                 {
-                    if (ViewModelCreator.IndividualFactory.Create(vm) == null ||
-                        ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses).Count() != vm.individualAddresses.Count() ||
-                        ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones).Count() != vm.individualTelephones.Count())
+                    if (Factories.IndividualFactory.Create(vm) == null ||
+                        Factories.AddressFactory.CreateList(vm.individualAddresses).Count() != vm.individualAddresses.Count() ||
+                        Factories.TelephoneFactory.CreateList(vm.individualTelephones).Count() != vm.individualTelephones.Count())
                         return null;
 
                     else if (individual.IndividualCPF != vm.individualCPF)
