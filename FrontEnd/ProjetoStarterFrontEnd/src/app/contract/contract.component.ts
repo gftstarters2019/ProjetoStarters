@@ -1,12 +1,14 @@
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
-import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
+import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material';
+import { IndividualListComponent } from '../individual-list/individual-list.component';
+import { map } from 'rxjs/operators';
 import { GenericValidator } from '../Validations/GenericValidator';
-
 
 export interface Type {
   value: number;
@@ -36,7 +38,7 @@ export class ContractComponent implements OnInit {
   public showlist2: boolean = true;
   beneficiaries: FormArray;
 
-  rowData$: any;
+  rowData$: Observable<any>;
   paginationPageSize;
   detailCellRendererParams;
 
@@ -359,55 +361,46 @@ export class ContractComponent implements OnInit {
 
       onRowSelected: this.onRowSelected.bind(this),
       masterDetail: true,
-
       columnDefs: [
-
         {
           headerName: 'Contract Holder ',
-          field: 'contractHolderId',
+          field: 'contractHolder.individualName',
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: "agGroupCellRenderer",
           onCellValueChanged:
-            this.onCellEdit.bind(this)
+            this.onCellEdit.bind(this),
         },
-
         {
           headerName: 'Category',
           field: 'category',
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: currencyCategory,
           onCellValueChanged:
             this.onCellEdit.bind(this),
-
         },
-
         {
           headerName: 'Type',
           field: 'type',
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: currencyType,
           onCellValueChanged:
             this.onCellEdit.bind(this),
         },
-
         {
-          headerName: 'Beneficiaries ',
-          field: 'beneficiaries',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          onCellValueChanged:
-            this.onCellEdit.bind(this)
-        },
-        {
-          headerName: 'Expire Date',
+          headerName: 'Expiry Date',
           field: 'expiryDate',
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -417,6 +410,7 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: currencyStatus,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -427,19 +421,185 @@ export class ContractComponent implements OnInit {
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
             onEdit: this.handle_editUser.bind(this),
-            onDelete: this.handle_deleteUser.bind(this),
-          },
+            onRemove: this.handle_deleteUser.bind(this)
+          }
         },
-      ],
-
+      ]
     }
+    // this.detailCellRendererParams = {
+    //   detailGridOptions: {
+    //     columnDefs: [
+    //       {
+    //         headerName: "Individual Details",
+    //         // rowGroupIndex: 0,
+    //         // rowGroup: true,
+    //         // hide: false,
+    //         children: [
+    //           { headerName: 'Name ', field: "individualName" },
+    //           { headerName: 'CPF ', field: "individualCPF" },
+    //           { headerName: 'RG ', field: "individualRG" },
+    //           { headerName: 'Birthdate ', field: "individualBirthdate" },
+    //           { headerName: 'Email ', field: "individualEmail" }
+    //         ]
+    //       },
+    //       {
+    //         headerName: "Pet Details",
+    //         // rowGroupIndex: 1,
+    //         // rowGroup: true,
+    //         // hide: true,
+    //         children: [
+    //           { headerName: 'Name ', field: "petName" },
+    //           { headerName: 'Breed ', field: "petBreed" },
+    //           { headerName: 'Species ', field: "petSpecies" },
+    //           { headerName: 'Birthdate ', field: "petBirthdate" },
+    //         ]
+    //       },
+    //       {
+    //         headerName: "Realties Details",
+    //         // rowGroupIndex: 2,
+    //         // rowGroup: true,
+    //         // hide: true,
+    //         children: [
+    //           { headerName: 'Type', field: "addressType" },
+    //           { headerName: 'Street', field: "addressStreet" },
+    //           { headerName: 'No.', field: "addressNumber" },
+    //           { headerName: 'Complement', field: "addressComplement" },
+    //           { headerName: 'Neighborhood', field: "addressNeighborhood" },
+    //           { headerName: 'City', field: "addressCity" },
+    //           { headerName: 'State', field: "addressState" },
+    //           { headerName: 'Country', field: "addressCountry" },
+    //           { headerName: 'Zip-Code', field: "addressZipCode" },
+    //           { headerName: 'Construction Date', field: "constructionDate" },
+    //           { headerName: 'Municipal Registration', field: "municipalRegistration" },
+    //           { headerName: 'Market Value', field: "marketValue" },
+    //           { headerName: 'Sale Value', field: "saleValue" },
+    //         ]
+    //       },
+    //       {
+    //         headerName: "Vehicles Details",
+    //         // rowGroupIndex: 3,
+    //         // rowGroup: true,
+    //         // hide: true,
+    //         children: [
+    //           { headerName: 'Brand', field: "vehicleBrand" },
+    //           { headerName: 'Model', field: "vehicleModel" },
+    //           { headerName: 'Color', field: "vehicleColor" },
+    //           { headerName: 'Manufactoring Year', field: "vehicleManufactoringYear" },
+    //           { headerName: 'Model Year', field: "vehicleModelYear" },
+    //           { headerName: 'No. Chassis', field: "vehicleChassisNumber" },
+    //           { headerName: 'Current Mileage', field: "vehicleCurrentMileage" },
+    //           { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue" },
+    //           { headerName: 'Done Inspection', field: "vehicleDoneInspection" },
+    //         ]
+    //       },
+    //       {
+    //         headerName: "Mobile Device Details",
+    //         // rowGroup: true,
+    //         // rowGroupIndex: 4,
+    //         // hide: true,
+    //         children: [
+    //           { headerName: 'Brand', field: "mobileDeviceBrand" },
+    //           { headerName: 'Model', field: "mobileDeviceModel" },
+    //           { headerName: 'Device Type', field: "mobileDeviceType" },
+    //           { headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear" },
+    //           { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber" },
+    //           { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue" },
+    //         ]
+    //       }
+    //     ],
+
+    //     onFirstDataRendered(params) {
+    //       params.api.sizeColumnsToFit();
+    //     },
+
+
+    //   } as GridOptions,
+
+
+    //   getDetailRowData: function (params) {
+
+    //     // switch (params.data.type) {
+    //     //   case 0:
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 0;
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
+    //     //     break;
+    //     //   case 1:
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 1;
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
+    //     //     break;
+    //     //   case 2:
+    //     //     this.detailCellRendererParams.detailGidOptions.columnDefs.rowGroupIndex = 0;
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
+    //     //     break;
+    //     //   case 3:
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 0;
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
+    //     //     break;
+    //     //   case 4:
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 2;
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
+    //     //     break;
+    //     //   case 5:
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 3;
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
+    //     //     break;
+    //     //   case 6:
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 4;
+    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
+    //     //     break;
+
+    //     // }
+
+    //     switch (params.data.type) {
+    //       case 0:
+    //         params.successCallback(params.data.individuals);
+    //         break;
+    //       case 1:
+    //         params.successCallback(params.data.pets);
+    //         break;
+    //       case 2:
+    //         params.successCallback(params.data.individuals);
+    //         break;
+    //       case 3:
+    //         params.successCallback(params.data.individuals);
+    //         break;
+    //       case 4:
+    //         params.successCallback(params.data.realties);
+    //         break;
+    //       case 5:
+    //         params.successCallback(params.data.vehicles);
+    //         break;
+    //       case 6:
+    //         params.successCallback(params.data.mobileDevices);
+    //         break;
+    //     }
+    //   },
+
+    //   template:
+    //     '<div style="height: 100%; background-color: #edf6ff; padding: 25px; box-sizing: border-box;">' +
+    //     '  <div style="height: 20%;">Beneficiary Details</div>' +
+    //     '  <div ref="eDetailGrid" style="height: 90%;"></div>' +
+    //     "</div>"
+    // };
+
   }
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
+
+
+    setTimeout(function () {
+      var rowCount = 0;
+      params.api.forEachNode(function (node) {
+        node.setExpanded(rowCount++ === 1);
+      });
+    }, 500);
   }
+
   private setup_gridData() {
-    this.rowData$ = this.http.get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
+    this.rowData$ = this.http
+      .get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
+  
   }
   private onCellEdit(params: any) {
 
@@ -448,8 +608,64 @@ export class ContractComponent implements OnInit {
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
     this.contractform.getRawValue();
-
+    console.log(data);
     this.contractform.patchValue(data);
+  }
+}
+//Function Formatting Category
+function currencyCategory(params) {
+  return changeCategoryValue(params.value);
+}
+
+function changeCategoryValue(number) {
+  if (number == 0) {
+    return "Iron";
+  }
+  if (number == 1) {
+    return "Bronze";
+  }
+  if (number == 2) {
+    return "Silver";
+  }
+  if (number == 3) {
+    return "Gold"
+  }
+  if (number == 4) {
+    return "Platium"
+  }
+  if (number == 5) {
+    return "Diamond"
+  }
+}
+
+//function formatting Type
+function currencyType(params) {
+  return changeTypValue(params.value);
+}
+
+function changeTypValue(number) {
+  if (number == 0) {
+    return "Health Plan";
+  }
+  if (number == 1) {
+    return "Animal Health Plan";
+  }
+  if (number == 2) {
+    return "Dental Plan";
+  }
+  if (number == 3) {
+    return "Life Insurance Plan"
+  }
+  if (number == 4) {
+    return "Real Estate Insurance"
+  }
+  if (number == 5) {
+    return "Vehicle Insurance"
+  }
+  if (number == 6) {
+    return "Mobile Device Insurance"
+  }
+}
 
   }
 
@@ -462,5 +678,14 @@ export class ContractComponent implements OnInit {
       return {"zipCodeIsTooShort": true};
     
     return null;
+//function formatting Status
+function currencyStatus(params) {
+  return changeStatusValue(params.value);
+}
+function changeStatusValue(stats: boolean) {
+  if (stats == true) {
+    return "Active";
+  } else {
+    return "Inactive"
   }
 }
