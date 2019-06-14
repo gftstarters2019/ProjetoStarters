@@ -134,37 +134,38 @@
         <button class="btn-list" mat-raised-button color="primary" type="submit" (click)="changeMessageValue()">Submit</button>
         
 
-        <br><br>
-        <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList()">Listing
-          Contract</button>
-        <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList2()">Listing
-          Beneficiary</button>
-      
-   <div class="contractCard">
+    <br><br>
+    <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList()">Listing
+      Contract</button>
+    <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList2()">Listing
+      Beneficiary</button>
 
-        <mat-accordion *ngIf="!showlist;">
-          <mat-expansion-panel>
-            <mat-expansion-panel-header class="listpanel-header">
-              <mat-panel-title>
-                Contract's List
-              </mat-panel-title>
-            </mat-expansion-panel-header>
+    <div class="contractCard">
 
-            <mat-nav-list>
-              <ag-grid-angular 
-              style="width: 100%; height: 1000px;" 
-              [pagination]="true"
-              [paginationPageSize]="paginationPageSize" 
-              class="ag-theme-material" 
-              [masterDetail]="true"
-              [gridOptions]="gridOption" 
-              [rowData]="rowData$ | async">
-              </ag-grid-angular>
-            </mat-nav-list>
+      <mat-accordion *ngIf="!showlist;">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="listpanel-header">
+            <mat-panel-title>
+              Contract's List
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
+          <mat-nav-list>
+            <ag-grid-angular 
+            style="width: 100%; height: 1000px;" 
+            [pagination]="true"
+            [paginationPageSize]="paginationPageSize" 
+            class="ag-theme-material" 
+            [masterDetail]="true"
+            [detailCellRendererParams]="detailCellRendererParams"
+            [gridOptions]="gridOption"
+            [rowData]="rowData$ | async"
+            ></ag-grid-angular>
+          </mat-nav-list>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
 
 
     <mat-accordion *ngIf="!showlist2;">
@@ -175,13 +176,13 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
 
-          <mat-nav-list>
-            <app-beneficiary-list></app-beneficiary-list>
-          </mat-nav-list>
+        <mat-nav-list>
+          <app-beneficiary-list></app-beneficiary-list>
+        </mat-nav-list>
 
       </mat-expansion-panel>
     </mat-accordion>
 
 
-    </form>
+  </form>
 </div>
