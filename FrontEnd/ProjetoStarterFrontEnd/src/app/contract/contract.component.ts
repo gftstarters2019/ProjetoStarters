@@ -1,10 +1,11 @@
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, ModuleWithComponentFactories } from '@angular/core';
+import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { MatSnackBar } from '@angular/material';
 import { IndividualListComponent } from '../individual-list/individual-list.component';
 import { map } from 'rxjs/operators';
 
@@ -25,15 +26,13 @@ export interface Holder {
   individualRG: string;
 }
 
-
-
 @Component({
   selector: 'app-contract',
   templateUrl: './contract.component.html',
   styleUrls: ['./contract.component.scss']
 })
 export class ContractComponent implements OnInit {
-
+  color = 'primary';
   public showlist: boolean = true;
   public showlist2: boolean = true;
   beneficiaries: FormArray;
@@ -42,17 +41,13 @@ export class ContractComponent implements OnInit {
   paginationPageSize;
   detailCellRendererParams;
 
-
-
   gridApi;
   gridColumApi;
   gridOption: GridOptions;
   load_failure: boolean;
-
-
-  aux;
-
   holders: Holder[];
+
+  message: number = 0;
 
   cType: any;
 
@@ -61,9 +56,9 @@ export class ContractComponent implements OnInit {
     { value: 1, viewValue: 'Contract Animal Health Plan' },
     { value: 2, viewValue: 'Contract Dental Plan' },
     { value: 3, viewValue: 'Contract Life Insurance Plan' },
-    { value: 4, viewValue: 'Contract Real Estate Insurance' },
-    { value: 5, viewValue: 'Contract Vehicle insurance' },
-    { value: 6, viewValue: 'Contract Mobile device Insurance' },
+    { value: 4, viewValue: 'Contract Real State Insurance' },
+    { value: 5, viewValue: 'Contract Vehicle Insurance' },
+    { value: 6, viewValue: 'Contract Mobile Device Insurance' },
   ];
   contractCategories: Category[] = [
     { value: 0, viewValue: 'Contract Iron' },
@@ -81,16 +76,10 @@ export class ContractComponent implements OnInit {
     expiryDate: ['', Validators.required],
     isActive: ['true', Validators.required],
     beneficiaries: this.fb.array([]),
-    indiviudals: this.fb.array([]),
-    pets: this.fb.array([]),
-    vehicles: this.fb.array([]),
+    auxBeneficiaries: this.fb.array([])
   });
 
-  contractAux = this.fb.group({
-    beneficiaries: this.fb.array([])
-  });
-
-  constructor(private fb: FormBuilder, private http: HttpClient) { }
+  constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.setup_gridData();
@@ -98,8 +87,14 @@ export class ContractComponent implements OnInit {
     this.paginationPageSize = 50;
 
     this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
-      console.log(data);
       this.holders = data;
+    });
+  }
+
+  public openSnackBar(message: string): void {
+    this._snackBar.open(message, '', {
+      duration: 4000,
+      
     });
   }
 
@@ -111,77 +106,75 @@ export class ContractComponent implements OnInit {
   }
 
   public assignContractType(): void {
+    let i =0;
     this.cType = this.contractform.get(['type']).value;
+    if(this.cType != this.contractform.get('type')){
+      this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
+      for (i=0; i <= this.beneficiaries.length; i++){
+        this.beneficiaries.controls.pop();
+      }
+      this.beneficiaries = this.contractform.get('beneficiaries') as FormArray;
+      for (i=0; i <= this.beneficiaries.length; i++){
+        this.beneficiaries.controls.pop();
+      }
+    }
   }
 
   createBeneficiary(): FormGroup {
     return this.fb.group({
-      beneficiaryId: ''
     });
   }
 
   addBeneficiary(): void {
-    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
-    this.aux = this.contractform.get('beneficiaries') as FormArray;
+    
+    this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
     if (this.beneficiaries.length < 5) {
       this.beneficiaries.push(this.createBeneficiary());
-      this.aux.push(this.createBeneficiary());
     }
   }
 
   receiveMessage($event) {
-    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
-
-    this.beneficiaries.value[this.beneficiaries.length - 1].beneficiaryId = $event;
+    this.beneficiaries = this.contractform.get('beneficiaries') as FormArray;
+    this.beneficiaries.push($event);
   }
 
   clearBeneficiary(): void {
-    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
-    this.aux = this.contractform.get('beneficiaries') as FormArray;
+    this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
     this.beneficiaries.controls.pop();
-    this.aux.controls.pop();
     this.cType = '';
   }
 
   removeBeneficiary(i) {
-    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
-    this.aux = this.contractform.get('beneficiaries') as FormArray;
+    this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
     this.beneficiaries.removeAt(i);
-    this.aux.removeAt(i);
   }
 
-  postContract() {
-    this.beneficiaries = this.contractAux.get('beneficiaries') as FormArray;
-    this.aux = this.contractform.get('beneficiaries') as FormArray;
-    this.aux.controls.pop();
-    let signedContractId = this.contractform.value.signedContractId;
-    let i;
-    for (i = 0; i < this.beneficiaries.length; i++) {
-      this.aux.value[i] = this.beneficiaries.value[i].beneficiaryId;
-    }
+  changeMessageValue(): void {
+    this.message = 1;
+  } 
+
+  onSubmit() {
     let form = JSON.stringify(this.contractform.value);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
-    if (signedContractId == null) {
-      this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
-        .subscribe(data => console.log(data));
-    } else {
-      this.http.put(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`, form, httpOptions)
-        .subscribe(data => console.log(data));
-    }
+    this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions).subscribe(data => data, error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
   }
 
   private handle_editUser(data: any) {
     this.contractform.patchValue(data);
-  }
+ }
+ 
+ private handle_deleteUser(data: any) {
+ 
+ const id = data.signedContractId;
+ 
+ this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => response, error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
 
-  private handle_deleteUser(data: any) {
-    let signedContractId = this.contractform.value.signedContractId;
-    this.rowData$ = this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${signedContractId}`);
-  }
+ this.setup_gridData();
+}
 
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -431,8 +424,6 @@ export class ContractComponent implements OnInit {
   
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
 
   }
 

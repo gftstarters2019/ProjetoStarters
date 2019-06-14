@@ -32,12 +32,13 @@ export class IndividualListComponent implements OnInit {
     //this.contractform.patchValue(data);
     }
   
-    private handle_deleteUser(data: any) {
-      //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals/${beneficiaryId}`);
-      console.log(this.rowData$);
-    }
+  private handle_deleteUser(data: any) {
+    const id = data.beneficiaryId;
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
+
+    this.setup_gridData();
+  }
     
-  //AG-grid Table Contract
   private setup_gridOptions() {
 
     this.gridOptions = {
@@ -100,7 +101,7 @@ export class IndividualListComponent implements OnInit {
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
             onEdit: this.handle_editUser.bind(this),
-            onRemove: this.handle_deleteUser.bind(this)
+            onDelete: this.handle_deleteUser.bind(this)
           }
         },
       ],
@@ -115,14 +116,10 @@ export class IndividualListComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
+   
   }
 }

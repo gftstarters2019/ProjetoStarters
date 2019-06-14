@@ -1,6 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormControl, Validators, FormBuilder } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface MobileType {
@@ -15,7 +14,11 @@ export interface MobileType {
 })
 export class BeneficiaryMobileDeviceComponent implements OnInit {
 
-  @Output() messageMobilelEvent = new EventEmitter<any>();
+  @Input() mobileForm: FormGroup;
+
+  @Input() mobilePushPermission !: number;
+
+  @Output() messageMobileEvent = new EventEmitter<any>();
 
   mobileType: MobileType[] = [
     {value: '0', name: 'Smartphone'},
@@ -27,32 +30,20 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
     mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
     mobileDeviceModel: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
     mobileDeviceManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
-    mobileDeviceSerialNumber: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+    mobileDeviceSerialNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
     mobileDeviceType: new FormControl('', Validators.required),
     mobileDeviceInvoiceValue: new FormControl('', GenericValidator.negativeValidation())
   });
 
-  constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
   }
 
-  response:any;
-
-  public mobileDevicePost(): void{
-    
-    let form = JSON.stringify(this.mobileDeviceCreateForm.value);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevice', form, httpOptions)
-    .subscribe(data => {
-      this.response = data;
-      if(this.response != null){
-        this.messageMobilelEvent.emit(this.response.beneficiaryId);
-      }
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.mobilePushPermission.currentValue != 0 && changes.mobilePushPermission.currentValue != changes.mobilePushPermission.previousValue) {
+      
+      this.messageMobileEvent.emit(this.mobileDeviceCreateForm);
+    }
   }
 }

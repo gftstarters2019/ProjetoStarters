@@ -57,7 +57,7 @@ namespace Backend.Application.Factories
         /// <returns></returns>
         private bool Validate(Address address)
         {
-            Regex regexLetters = new Regex("^[a-zA-Z-ã]+\\s?[a-zA-Z-ã]+\\s?\\w+$");
+            Regex regexLetters = new Regex("^[a-zA-Z-ãâáõóô]+(([',. -][a-zA-Z-ãâáõóô])?[a-zA-Z-ãâáõóô]*)*$");
             Regex regexState = new Regex("^[[a-zA-Z]+$");
 
             if (!new Regex("^[0-9]+$").IsMatch(address.AddressNumber))
@@ -69,7 +69,10 @@ namespace Backend.Application.Factories
             if (!regexState.IsMatch(address.AddressState) || address.AddressState.Length != 2)
                 return false;
 
-            if (!regexLetters.IsMatch(address.AddressStreet) || !regexLetters.IsMatch(address.AddressComplement) || !regexLetters.IsMatch(address.AddressNeighborhood) ||
+            if (address.AddressComplement != "" && !regexLetters.IsMatch(address.AddressComplement))
+                return false;
+
+            if (!regexLetters.IsMatch(address.AddressStreet) || !regexLetters.IsMatch(address.AddressNeighborhood) ||
                     !regexLetters.IsMatch(address.AddressCity) || !regexLetters.IsMatch(address.AddressCountry))
                 return false;
 
