@@ -6,8 +6,7 @@ import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'a
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material';
-import { IndividualListComponent } from '../individual-list/individual-list.component';
-import { map } from 'rxjs/operators';
+import { Location } from '@angular/common';
 import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Type {
@@ -41,6 +40,7 @@ export class ContractComponent implements OnInit {
   rowData$: Observable<any>;
   paginationPageSize;
   detailCellRendererParams;
+  contractform: FormGroup;
 
   gridApi;
   gridColumApi;
@@ -72,29 +72,46 @@ export class ContractComponent implements OnInit {
     { value: 5, viewValue: 'Contract Diamond' },
   ];
 
-  contractform = this.fb.group({
-    contractHolderId: ['', Validators.required],
-    type: ['', Validators.required],
-    category: ['', Validators.required],
-    expiryDate: ['', Validators.required],
-    isActive: ['true', Validators.required],
-    individuals: this.fb.array([]),
-    pets: this.fb.array([]),
-    realties: this.fb.array([]),
-    mobileDevices: this.fb.array([]),
-    vehicles: this.fb.array([]),
-    auxBeneficiaries: this.fb.array([])
-  });
+  // contractform = this.fb.group({
+  //   contractHolderId: ['', Validators.required],
+  //   type: ['', Validators.required],
+  //   category: ['', Validators.required],
+  //   expiryDate: ['', Validators.required],
+  //   isActive: ['true', Validators.required],
+  //   individuals: this.fb.array([]),
+  //   // pets: this.fb.array([]),
+  //   // realties: this.fb.array([]),
+  //   // mobileDevices: this.fb.array([]),
+  //   // vehicles: this.fb.array([]),
+  //   // auxBeneficiaries: this.fb.array([])
+  // });
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
 
   ngOnInit() {
+    this.setup_form();
     this.setup_gridData();
     this.setup_gridOptions();
     this.paginationPageSize = 50;
 
     this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
       this.holders = data;
+    });
+  }
+
+  private setup_form() {
+    this.contractform = this.fb.group({
+      contractHolderId: ['', Validators.required],
+      type: ['', Validators.required],
+      category: ['', Validators.required],
+      expiryDate: ['', Validators.required],
+      isActive: ['true', Validators.required],
+      individuals: this.fb.array([]),
+      pets: this.fb.array([]),
+      realties: this.fb.array([]),
+      mobileDevices: this.fb.array([]),
+      vehicles: this.fb.array([]),
+      auxBeneficiaries: this.fb.array([])
     });
   }
 
@@ -216,6 +233,9 @@ export class ContractComponent implements OnInit {
   receiveMessage($event) {
     if(this.cType == 0 || this.cType==2 || this.cType==3){
       this.beneficiaries = this.contractform.get('individuals') as FormArray;
+      let cpf = $event.get('individualCPF').value;
+      cpf = cpf.replace(/\D+/g, '');
+      $event.get('individualCPF').setValue(cpf);
       this.beneficiaries.push($event);
     }
       
@@ -264,94 +284,125 @@ export class ContractComponent implements OnInit {
     console.log(form);
     if (this.signedContractId == null) {
       this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
-      .subscribe(data => data, error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
+      .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
     }
     else {
       this.http.put('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
-      .subscribe(data => data, error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
+      .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
     }
   }
 
+  load() {
+    location.reload()
+  }
+
   private handle_editUser(data: any) {
-    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
-      this.holders = data;
-    });
-    this.signedContractId = data.contractId;
+    // this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
+    //   this.holders = data;
+    // });
+     debugger;
+    //data.removeControl('beneficiaries');
+    console.log(this.contractform);
+    this.signedContractId = data.signedContractId;
     this.contractform.patchValue(data);
     
     let i;
-    let individualControl =  this.contractform.controls.auxBeneficiaries as FormArray;
-    individualControl.controls.pop();
-    const hasMaxIndividuals = individualControl.length >= 5;
-    if (!hasMaxIndividuals) {
-      if (data.individuals != ''){
-        for(i =0; i <individualControl.length; i++)
-        {
-          individualControl.push(this.fb.group(data.individuals[i]));
-        }
-      }  
+    if(data.type==0 || data.type==2 || data.type==3){
+      let individualControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+      individualControl.controls.pop();
+      const hasMaxIndividuals = individualControl.length >= 5;
+      if (!hasMaxIndividuals) {
+        if (data.individuals != ''){
+          for(i =0; i <data.individuals.length; i++)
+          {
+            individualControl.push(this.fb.group(data.individuals[i]));
+            console.log(data.individuals[i]);
+          }
+        }  
+      }
+
     }
        
-    let petControl =  this.contractform.controls.auxBeneficiaries as FormArray;
-    petControl.controls.pop();
-    const hasMaxPets = petControl.length >= 5;
-    if (!hasMaxPets) {
-      if (data.pets != ''){
-        for(i =0; i <petControl.length; i++)
-        {
-          petControl.push(this.fb.group(data.pets[i]));
-        }
-        
-      }  
+    if(data.type==1){
+        let petControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+      petControl.controls.pop();
+      const hasMaxPets = petControl.length >= 5;
+      if (!hasMaxPets) {
+        if (data.pets != ''){
+          for(i =0; i <data.pets.length; i++)
+          {
+            petControl.push(this.fb.group(data.pets[i]));
+          }
+          
+        }  
+      }
     }
-
-    let realtyControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+    
+    if(data.type==4){
+      let realtyControl =  this.contractform.controls.auxBeneficiaries as FormArray;
     realtyControl.controls.pop();
     const hasMaxRealties = realtyControl.length >= 5;
     if (!hasMaxRealties) {
       if (data.realties != ''){
-        for(i =0; i <realtyControl.length; i++)
+        for(i =0; i <data.realties.length; i++)
         {
           realtyControl.push(this.fb.group(data.realties[i]));
         }
         
       }  
     }
-
-    let vehicleControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+    }
+    
+    if(data.type==5){
+      let vehicleControl =  this.contractform.controls.auxBeneficiaries as FormArray;
     vehicleControl.controls.pop();
     const hasMaxVehicle = vehicleControl.length >= 5;
     if (!hasMaxVehicle) {
       if (data.vehicles != ''){
-        for(i =0; i <vehicleControl.length; i++)
+        for(i =0; i <data.vehicles.length; i++)
         {
           vehicleControl.push(this.fb.group(data.vehicles[i]));
         }
         
       }  
     }
-
-    let mobileDeviceControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+    }
+    
+    if(data.type==6){
+      let mobileDeviceControl =  this.contractform.controls.auxBeneficiaries as FormArray;
     mobileDeviceControl.controls.pop();
     const hasMaxmobileDevices = mobileDeviceControl.length >= 5;
     if (!hasMaxmobileDevices) {
       if (data.mobileDevices != ''){
-        for(i =0; i <mobileDeviceControl.length; i++)
+        for(i =0; i <data.mobileDevices.length; i++)
         {
           mobileDeviceControl.push(this.fb.group(data.mobileDevices[i]));
         }
         
       }  
     }
+    }
+    }
+    
+
+  zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
+    let zipCodeNumber = control.value;
+
+    zipCodeNumber = zipCodeNumber.replace(/\D+/g, '');
+
+    if(zipCodeNumber.length < 8)
+      return {"zipCodeIsTooShort": true};
+    
+    return null;
   }
  
  private handle_deleteUser(data: any) {
  
     const id = data.signedContractId;
  
-    this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => response, error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
+    this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
 
-    this.setup_gridData();
+    
 }
 
   //AG-grid Table Contract
@@ -359,7 +410,7 @@ export class ContractComponent implements OnInit {
     this.gridOption = {
       rowSelection: 'single',
 
-      onRowSelected: this.onRowSelected.bind(this),
+      // onRowSelected: this.onRowSelected.bind(this),
       masterDetail: true,
       columnDefs: [
         {
@@ -588,13 +639,13 @@ export class ContractComponent implements OnInit {
     this.gridColumApi = params.columnApi;
 
 
-    setTimeout(function () {
-      var rowCount = 0;
-      params.api.forEachNode(function (node) {
-        node.setExpanded(rowCount++ === 1);
-      });
-    }, 500);
-  }
+  //   setTimeout(function () {
+  //     var rowCount = 0;
+  //     params.api.forEachNode(function (node) {
+  //       node.setExpanded(rowCount++ === 1);
+  //     });
+  //   }, 500);
+   }
 
   private setup_gridData() {
     this.rowData$ = this.http
@@ -605,12 +656,13 @@ export class ContractComponent implements OnInit {
 
   }
 
-  private onRowSelected(event: RowSelectedEvent) {
-    const { data } = event;
-    this.contractform.getRawValue();
-    console.log(data);
-    this.contractform.patchValue(data);
-  }
+  // private onRowSelected(event: RowSelectedEvent) {
+    
+  //   const { data } = event;
+  //   this.contractform.getRawValue();
+  //   console.log(data);
+  //   this.contractform.patchValue(data);
+  // }
 }
 //Function Formatting Category
 function currencyCategory(params) {
@@ -667,17 +719,7 @@ function changeTypValue(number) {
   }
 }
 
-  }
-
-  zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
-    let zipCodeNumber = control.value;
-
-    zipCodeNumber = zipCodeNumber.replace(/\D+/g, '');
-
-    if(zipCodeNumber.length < 8)
-      return {"zipCodeIsTooShort": true};
-    
-    return null;
+  
 //function formatting Status
 function currencyStatus(params) {
   return changeStatusValue(params.value);

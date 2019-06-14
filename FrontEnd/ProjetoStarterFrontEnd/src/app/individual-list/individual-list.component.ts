@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-individual-list',
@@ -20,7 +21,7 @@ export class IndividualListComponent implements OnInit {
   gridOptions: GridOptions;
   load_failure: boolean;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.setup_gridData();
@@ -36,11 +37,16 @@ export class IndividualListComponent implements OnInit {
     console.log(data);
     const id = data.beneficiaryId;
     console.log(id);
-    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
-
-    this.setup_gridData();
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
   }
     
+  openSnackBar(message: string): void {
+    this._snackBar.open(message, '', {
+      duration: 5000,
+      
+    });
+  }
+
   private setup_gridOptions() {
 
     this.gridOptions = {
