@@ -9,9 +9,11 @@
   <form [formGroup]="contractform" (ngSubmit)="onSubmit()">
     <div class="contractCard">
 
+
         <div >
             <mat-card class="contractHolderName" >
               <mat-form-field style="width: 350px;">
+
                 <mat-label>Contract Holder's name:</mat-label>
                 <mat-select formControlName="contractHolderId" name="contractHolderId">
                     <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
@@ -21,38 +23,46 @@
                 </mat-select>
               </mat-form-field>  
              </mat-card>
-          </div>
+            </div>
+          
+             <mat-card >
+               <mat-form-field>
+                 <mat-label>Select Contract Type:</mat-label>
+                 <mat-select formControlName="type" name="types" (blur)="assignContractType()">
+                   <mat-option *ngFor="let type of contractTypes" [value]="type.value">
+                     {{type.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> 
+                
+                <mat-form-field class="distance">
+                  <mat-label>Select Contract Category:</mat-label>
+                  <mat-select formControlName="category" name="category">
+                    <mat-option *ngFor="let category of contractCategories" [value]="category.value">
+                      {{category.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> <br>
+              
+                <span>
 
-        <mat-card >
-          <mat-form-field>
-            <mat-label>Select Contract Type:</mat-label>
-            <mat-select formControlName="type" name="types" (blur)="assignContractType()">
-             <mat-option *ngFor="let type of contractTypes" [value]="type.value">
-               {{type.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> <br>
-          
-          <mat-form-field>
-            <mat-label>Select Contract Category:</mat-label>
-            <mat-select formControlName="category" name="category">
-              <mat-option *ngFor="let category of contractCategories" [value]="category.value">
-                {{category.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> <br>
-          
+                  <mat-form-field >
+                    <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" name ="expiryDate"
+                    formControlName="expiryDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="expiryDate"></mat-datepicker-toggle>
+                    <mat-datepicker #expiryDate></mat-datepicker>
+                  </mat-form-field> 
+                </span>
+
         
-          <mat-form-field>
-            <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" name ="expiryDate"
-            formControlName="expiryDate" required>
-            <mat-datepicker-toggle matSuffix [for]="expiryDate"></mat-datepicker-toggle>
-            <mat-datepicker #expiryDate></mat-datepicker>
-          </mat-form-field> <br>
           
-          <mat-label>Contract Status: </mat-label>
-          <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
+          <mat-label class="posicaoStatus">Contract Status: </mat-label>
+          <mat-slide-toggle
+           class="posicaoStatus"
+          [color]="color"
+          formControlName="isActive">Active</mat-slide-toggle>
           <br>
+        
         </mat-card> 
       </div>
           
@@ -124,37 +134,38 @@
         <button class="btn-list" mat-raised-button color="primary" type="submit" (click)="changeMessageValue()">Submit</button>
         
 
-        <br><br>
-        <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList()">Listing
-          Contract</button>
-        <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList2()">Listing
-          Beneficiary</button>
-      
-   <div class="contractCard">
+    <br><br>
+    <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList()">Listing
+      Contract</button>
+    <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList2()">Listing
+      Beneficiary</button>
 
-        <mat-accordion *ngIf="!showlist;">
-          <mat-expansion-panel>
-            <mat-expansion-panel-header class="listpanel-header">
-              <mat-panel-title>
-                Contract's List
-              </mat-panel-title>
-            </mat-expansion-panel-header>
+    <div class="contractCard">
 
-            <mat-nav-list>
-              <ag-grid-angular 
-              style="width: 100%; height: 1000px;" 
-              [pagination]="true"
-              [paginationPageSize]="paginationPageSize" 
-              class="ag-theme-material" 
-              [masterDetail]="true"
-              [gridOptions]="gridOption" 
-              [rowData]="rowData$ | async">
-              </ag-grid-angular>
-            </mat-nav-list>
+      <mat-accordion *ngIf="!showlist;">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="listpanel-header">
+            <mat-panel-title>
+              Contract's List
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
+          <mat-nav-list>
+            <ag-grid-angular 
+            style="width: 100%; height: 1000px;" 
+            [pagination]="true"
+            [paginationPageSize]="paginationPageSize" 
+            class="ag-theme-material" 
+            [masterDetail]="true"
+            [detailCellRendererParams]="detailCellRendererParams"
+            [gridOptions]="gridOption"
+            [rowData]="rowData$ | async"
+            ></ag-grid-angular>
+          </mat-nav-list>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
 
 
     <mat-accordion *ngIf="!showlist2;">
@@ -165,13 +176,13 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
 
-          <mat-nav-list>
-            <app-beneficiary-list></app-beneficiary-list>
-          </mat-nav-list>
+        <mat-nav-list>
+          <app-beneficiary-list></app-beneficiary-list>
+        </mat-nav-list>
 
       </mat-expansion-panel>
     </mat-accordion>
 
 
-    </form>
+  </form>
 </div>

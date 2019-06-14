@@ -24,32 +24,38 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Add(ContractViewModel viewModel)
         {
-            if (viewModel != null)
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
-                // Contract
-                var contract = AddContract(viewModel);
-                if (contract == null)
-                    return false;
-
-                // Signed Contract
-                var signedContract = AddSignedContract(viewModel, contract);
-                if (signedContract == null)
-                    return false;
-
-                // Contract Beneficiaries
-                if (AddContractBeneficiaries(viewModel, signedContract))
+                if (viewModel != null)
                 {
-                    _db.SaveChanges();
-                    return true;
+                    // Contract
+                    var contract = AddContract(viewModel);
+                    if (contract == null)
+                        return false;
+
+                    // Signed Contract
+                    var signedContract = AddSignedContract(viewModel, contract);
+                    if (signedContract == null)
+                        return false;
+
+                    // Contract Beneficiaries
+                    if (AddContractBeneficiaries(viewModel, signedContract))
+                    {
+                        _db.SaveChanges();
+                        scope.Complete();
+                        return true;
+                    }
                 }
+                scope.Complete();
+                return false;
             }
-            return false;
         }
 
         private bool AddContractBeneficiaries(ContractViewModel viewModel, SignedContract signedContract)
         {
             var beneficiaries = AddBeneficiaries(viewModel);
-            
+
             if (beneficiaries == null)
                 return false;
 
@@ -64,7 +70,7 @@ namespace Backend.Infrastructure.Repositories
                      && sc.ContractIndividualIsActive)
                      .ToList();
 
-                foreach(var beneficiarySignedContract in signedContracts)
+                foreach (var beneficiarySignedContract in signedContracts)
                 {
                     if (_db.Contracts.Where(con => con.ContractId == beneficiarySignedContract.ContractId && con.ContractType == viewModel.Type).Any())
                         return false;
@@ -167,7 +173,7 @@ namespace Backend.Infrastructure.Repositories
                     AddressZipCode = realty.AddressZipCode
                 };
                 //if (AddressValidations.AddressIsValid(realtyAddress))
-                    realtyAddress = _db.Addresses.Add(realtyAddress).Entity;
+                realtyAddress = _db.Addresses.Add(realtyAddress).Entity;
                 //else return null;
 
                 Realty realtyToAdd = new Realty()
@@ -279,7 +285,7 @@ namespace Backend.Infrastructure.Repositories
 
         private Contract AddContract(ContractViewModel contractViewModel)
         {
-            var contract = ViewModelCreator.ContractFactory.Create(contractViewModel);
+            var contract = Factories.ContractFactory.Create(contractViewModel);
             if (contract != null)
                 return _db.Contracts.Add(contract).Entity;
             return null;
@@ -366,7 +372,7 @@ namespace Backend.Infrastructure.Repositories
                         case Core.Enums.ContractType.RealStateInsurance:
                             var contractRealties = _db.Realties.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList();
                             List<RealtyViewModel> realtiesToReturn = new List<RealtyViewModel>();
-                            foreach(var real in contractRealties)
+                            foreach (var real in contractRealties)
                             {
                                 realtiesToReturn.Add(new RealtyViewModel()
                                 {
@@ -442,13 +448,49 @@ namespace Backend.Infrastructure.Repositories
 
         public ContractViewModel Update(Guid id, ContractViewModel contractViewModel)
         {
-            var contractToUpdate = _db.SignedContracts.Where(sc => sc.SignedContractId == id).FirstOrDefault();
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
+            {
+                var contractId = _db.SignedContracts.Where(sc => sc.SignedContractId == id).Select(sc => sc.ContractId).FirstOrDefault();
 
-            contractToUpdate.ContractIndividualIsActive = contractViewModel.IsActive;
+                if (contractViewModel != null)
+                {
+                    // Contract
+                    var contractToUpdate = _db.Contracts.Where(con => con.ContractId == contractId).FirstOrDefault();
+                    var updatedContract = Factories.ContractFactory.Create(contractViewModel);
+                    contractToUpdate.ContractCategory = updatedContract.ContractCategory;
+                    contractToUpdate.ContractExpiryDate = updatedContract.ContractExpiryDate;
+                    contractToUpdate.ContractType = updatedContract.ContractType;
+                    _db.Update(contractToUpdate);
 
+                    // Signed Contract
+                    var signedContractToUpdate = _db.SignedContracts.Where(sc => sc.SignedContractId == id).FirstOrDefault();
+                    signedContractToUpdate.ContractIndividualIsActive = contractViewModel.IsActive;
+                    
+                    if (_db.Individuals.Select(ind => ind.BeneficiaryId).Contains(contractViewModel.ContractHolderId))
+                        signedContractToUpdate.IndividualId = contractViewModel.ContractHolderId;
+                    else
+                    {
+                        scope.Complete();
+                        return null;
+                    }
 
-            _db.SaveChanges();
-            return contractViewModel;
+                    // Contract Beneficiaries
+                    _db.Contract_Beneficiary.RemoveRange(
+                        _db.Contract_Beneficiary.Where(cb => cb.SignedContractId == id));
+                    
+                    if(AddContractBeneficiaries(contractViewModel, signedContractToUpdate))
+                    {
+                        scope.Complete();
+                        _db.SaveChanges();
+                        return contractViewModel;
+                    }
+                    
+                }
+                
+                scope.Complete();
+                return null;
+            }
         }
 
         private ContractViewModel UpdateContract(Guid id, ContractViewModel contractViewModel)
