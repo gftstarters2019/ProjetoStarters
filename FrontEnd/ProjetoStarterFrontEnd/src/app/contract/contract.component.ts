@@ -1,13 +1,13 @@
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories } from '@angular/core';
-import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material';
-import { IndividualListComponent } from '../individual-list/individual-list.component';
-import { map } from 'rxjs/operators';
+import { Location } from '@angular/common';
+import { GenericValidator } from '../Validations/GenericValidator';
 
 export interface Type {
   value: number;
@@ -38,6 +38,7 @@ export class ContractComponent implements OnInit {
   rowData$: Observable<any>;
   paginationPageSize;
   detailCellRendererParams;
+  contractform: FormGroup;
 
   gridApi;
   gridColumApi;
@@ -48,6 +49,8 @@ export class ContractComponent implements OnInit {
   message: number = 0;
 
   cType: any;
+
+  signedContractId: any = null;
 
   contractTypes: Type[] = [
     { value: 0, viewValue: 'Contract Health Plan' },
@@ -67,25 +70,46 @@ export class ContractComponent implements OnInit {
     { value: 5, viewValue: 'Contract Diamond' },
   ];
 
-  contractform = this.fb.group({
-    contractHolderId: ['', Validators.required],
-    type: ['', Validators.required],
-    category: ['', Validators.required],
-    expiryDate: ['', Validators.required],
-    isActive: ['true', Validators.required],
-    beneficiaries: this.fb.array([]),
-    auxBeneficiaries: this.fb.array([])
-  });
+  // contractform = this.fb.group({
+  //   contractHolderId: ['', Validators.required],
+  //   type: ['', Validators.required],
+  //   category: ['', Validators.required],
+  //   expiryDate: ['', Validators.required],
+  //   isActive: ['true', Validators.required],
+  //   individuals: this.fb.array([]),
+  //   // pets: this.fb.array([]),
+  //   // realties: this.fb.array([]),
+  //   // mobileDevices: this.fb.array([]),
+  //   // vehicles: this.fb.array([]),
+  //   // auxBeneficiaries: this.fb.array([])
+  // });
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
 
   ngOnInit() {
+    this.setup_form();
     this.setup_gridData();
     this.setup_gridOptions();
     this.paginationPageSize = 50;
 
     this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
       this.holders = data;
+    });
+  }
+
+  private setup_form() {
+    this.contractform = this.fb.group({
+      contractHolderId: ['', Validators.required],
+      type: ['', Validators.required],
+      category: ['', Validators.required],
+      expiryDate: ['', Validators.required],
+      isActive: ['true', Validators.required],
+      individuals: this.fb.array([]),
+      pets: this.fb.array([]),
+      realties: this.fb.array([]),
+      mobileDevices: this.fb.array([]),
+      vehicles: this.fb.array([]),
+      auxBeneficiaries: this.fb.array([])
     });
   }
 
@@ -99,34 +123,130 @@ export class ContractComponent implements OnInit {
   public assignContractType(): void {
     let i =0;
     this.cType = this.contractform.get(['type']).value;
-    if(this.cType != this.contractform.get('type')){
+    
       this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
       for (i=0; i <= this.beneficiaries.length; i++){
         this.beneficiaries.controls.pop();
       }
-      this.beneficiaries = this.contractform.get('beneficiaries') as FormArray;
+
+      this.beneficiaries = this.contractform.get('individuals') as FormArray;
       for (i=0; i <= this.beneficiaries.length; i++){
         this.beneficiaries.controls.pop();
       }
-    }
-  }
 
-  createBeneficiary(): FormGroup {
-    return this.fb.group({
-    });
+      this.beneficiaries = this.contractform.get('pets') as FormArray;
+      for (i=0; i <= this.beneficiaries.length; i++){
+        this.beneficiaries.controls.pop();
+      }
+
+      this.beneficiaries = this.contractform.get('realties') as FormArray;
+      for (i=0; i <= this.beneficiaries.length; i++){
+        this.beneficiaries.controls.pop();
+      }
+
+      this.beneficiaries = this.contractform.get('vehicles') as FormArray;
+      for (i=0; i <= this.beneficiaries.length; i++){
+        this.beneficiaries.controls.pop();
+      }
+
+      this.beneficiaries = this.contractform.get('mobileDevices') as FormArray;
+      for (i=0; i <= this.beneficiaries.length; i++){
+        this.beneficiaries.controls.pop();
+      }
   }
 
   addBeneficiary(): void {
     
     this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
     if (this.beneficiaries.length < 5) {
-      this.beneficiaries.push(this.createBeneficiary());
+      if(this.cType == 0 || this.cType==2 || this.cType==3){
+        this.beneficiaries.push(this.fb.group({
+          individualName: ['', Validators.pattern(GenericValidator.regexName)],
+          individualCPF: ['', GenericValidator.isValidCpf()],
+          individualRG: ['', GenericValidator.rgLengthValidation()],
+          individualBirthdate: ['', GenericValidator.dateValidation()],
+          individualEmail: ['', Validators.required]
+        }));
+      }
+        
+      if(this.cType == 1)
+      {
+        this.beneficiaries.push(this.fb.group({
+          petName: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+          petBirthdate: new FormControl('', GenericValidator.dateValidation()),
+          petSpecies: new FormControl('', Validators.required),
+          petBreed: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName))
+        }));
+      }
+      if(this.cType == 4){
+        this.beneficiaries.push(this.fb.group({
+          municipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+          constructionDate: new FormControl('', GenericValidator.dateValidation()),
+          saleValue: new FormControl('', GenericValidator.negativeValidation()),
+          marketValue: new FormControl('', GenericValidator.negativeValidation()),
+          addressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+          addressType: ['', Validators.required],
+          addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
+          addressState: ['', [Validators.pattern(/^[[A-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
+          addressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
+          addressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+          addressZipCode: ['', this.zipCodeValidation],
+          addressCity: [''],
+          addressComplement: ['']
+        }));
+      }
+      if(this.cType == 5){
+        this.beneficiaries.push(this.fb.group({
+          vehicleBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+          vehicleModel: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+          vehicleManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
+          vehicleModelYear: new FormControl('', GenericValidator.dateValidation()),
+          vehicleColor: new FormControl('', Validators.required),
+          vehicleChassisNumber: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+          vehicleCurrentMileage: new FormControl('', GenericValidator.negativeValidation()),
+          vehicleCurrentFipeValue: new FormControl('', GenericValidator.negativeValidation()),
+          vehicleDoneInspection: new FormControl(false)
+        }));
+      }
+      if(this.cType == 6){
+        this.beneficiaries.push(this.fb.group({
+          mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+          mobileDeviceModel: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+          mobileDeviceManufactoringYear: new FormControl('', GenericValidator.dateValidation()),
+          mobileDeviceSerialNumber: new FormControl('', Validators.pattern(GenericValidator.regexAlphaNumeric)),
+          mobileDeviceType: new FormControl('', Validators.required),
+          mobileDeviceInvoiceValue: new FormControl('', GenericValidator.negativeValidation())
+        }));
+      }
     }
   }
 
   receiveMessage($event) {
-    this.beneficiaries = this.contractform.get('beneficiaries') as FormArray;
-    this.beneficiaries.push($event);
+    if(this.cType == 0 || this.cType==2 || this.cType==3){
+      this.beneficiaries = this.contractform.get('individuals') as FormArray;
+      let cpf = $event.get('individualCPF').value;
+      cpf = cpf.replace(/\D+/g, '');
+      $event.get('individualCPF').setValue(cpf);
+      this.beneficiaries.push($event);
+    }
+      
+    if(this.cType == 1)
+    {
+      this.beneficiaries = this.contractform.get('pets') as FormArray;
+      this.beneficiaries.push($event);
+    }
+    if(this.cType == 4){
+      this.beneficiaries = this.contractform.get('realties') as FormArray;
+      this.beneficiaries.push($event);
+    }
+    if(this.cType == 5){
+      this.beneficiaries = this.contractform.get('vehicles') as FormArray;
+      this.beneficiaries.push($event);
+    }
+    if(this.cType == 6){
+      this.beneficiaries = this.contractform.get('mobileDevices') as FormArray;
+      this.beneficiaries.push($event);
+    }
   }
 
   clearBeneficiary(): void {
@@ -145,26 +265,132 @@ export class ContractComponent implements OnInit {
   } 
 
   onSubmit() {
+
     let form = JSON.stringify(this.contractform.value);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
-    this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions).subscribe(data => data, error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
+    console.log(form);
+    if (this.signedContractId == null) {
+      this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+      .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
+    }
+    else {
+      this.http.put('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+      .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
+    }
+  }
+
+  load() {
+    location.reload()
   }
 
   private handle_editUser(data: any) {
-    this.contractform.patchValue(data);
- }
+    
+    this.signedContractId = data.signedContractId;
+    
+    this.contractform.patchValue(data)
+    
+    let i;
+    if(data.type==0 || data.type==2 || data.type==3){
+      this.cType = data.type;
+      this.beneficiaries =  this.contractform.get('auxBeneficiaries') as FormArray;
+            
+      
+      const hasMaxIndividuals = this.beneficiaries.length >= 5;
+      if (!hasMaxIndividuals) {
+        if (data.individuals != ''){
+          for(i =0; i <data.individuals.length; i++)
+          {
+            this.beneficiaries.push(this.fb.group(data.individuals[i]));
+          }
+        }  
+      }
+
+    }
+       
+    if(data.type==1){
+        let petControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+      petControl.controls.pop();
+      const hasMaxPets = petControl.length >= 5;
+      if (!hasMaxPets) {
+        if (data.pets != ''){
+          for(i =0; i <data.pets.length; i++)
+          {
+            petControl.push(this.fb.group(data.pets[i]));
+          }
+          
+        }  
+      }
+    }
+    
+    if(data.type==4){
+      let realtyControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+    realtyControl.controls.pop();
+    const hasMaxRealties = realtyControl.length >= 5;
+    if (!hasMaxRealties) {
+      if (data.realties != ''){
+        for(i =0; i <data.realties.length; i++)
+        {
+          realtyControl.push(this.fb.group(data.realties[i]));
+        }
+        
+      }  
+    }
+    }
+    
+    if(data.type==5){
+      let vehicleControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+    vehicleControl.controls.pop();
+    const hasMaxVehicle = vehicleControl.length >= 5;
+    if (!hasMaxVehicle) {
+      if (data.vehicles != ''){
+        for(i =0; i <data.vehicles.length; i++)
+        {
+          vehicleControl.push(this.fb.group(data.vehicles[i]));
+        }
+        
+      }  
+    }
+    }
+    
+    if(data.type==6){
+      let mobileDeviceControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+    mobileDeviceControl.controls.pop();
+    const hasMaxmobileDevices = mobileDeviceControl.length >= 5;
+    if (!hasMaxmobileDevices) {
+      if (data.mobileDevices != ''){
+        for(i =0; i <data.mobileDevices.length; i++)
+        {
+          mobileDeviceControl.push(this.fb.group(data.mobileDevices[i]));
+        }
+        
+      }  
+    }
+    }
+    }
+    
+
+  zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
+    let zipCodeNumber = control.value;
+
+    zipCodeNumber = zipCodeNumber.replace(/\D+/g, '');
+
+    if(zipCodeNumber.length < 8)
+      return {"zipCodeIsTooShort": true};
+    
+    return null;
+  }
  
  private handle_deleteUser(data: any) {
  
- const id = data.signedContractId;
+    const id = data.signedContractId;
  
- this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => response, error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
+    this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
 
- this.setup_gridData();
+    
 }
 
   //AG-grid Table Contract
@@ -172,7 +398,7 @@ export class ContractComponent implements OnInit {
     this.gridOption = {
       rowSelection: 'single',
 
-      onRowSelected: this.onRowSelected.bind(this),
+      // onRowSelected: this.onRowSelected.bind(this),
       masterDetail: true,
       columnDefs: [
         {
@@ -401,13 +627,13 @@ export class ContractComponent implements OnInit {
     this.gridColumApi = params.columnApi;
 
 
-    setTimeout(function () {
-      var rowCount = 0;
-      params.api.forEachNode(function (node) {
-        node.setExpanded(rowCount++ === 1);
-      });
-    }, 500);
-  }
+  //   setTimeout(function () {
+  //     var rowCount = 0;
+  //     params.api.forEachNode(function (node) {
+  //       node.setExpanded(rowCount++ === 1);
+  //     });
+  //   }, 500);
+   }
 
   private setup_gridData() {
     this.rowData$ = this.http
@@ -418,12 +644,13 @@ export class ContractComponent implements OnInit {
 
   }
 
-  private onRowSelected(event: RowSelectedEvent) {
-    const { data } = event;
-    this.contractform.getRawValue();
-    console.log(data);
-    this.contractform.patchValue(data);
-  }
+  // private onRowSelected(event: RowSelectedEvent) {
+    
+  //   const { data } = event;
+  //   this.contractform.getRawValue();
+  //   console.log(data);
+  //   this.contractform.patchValue(data);
+  // }
 }
 //Function Formatting Category
 function currencyCategory(params) {
@@ -480,6 +707,7 @@ function changeTypValue(number) {
   }
 }
 
+  
 //function formatting Status
 function currencyStatus(params) {
   return changeStatusValue(params.value);
