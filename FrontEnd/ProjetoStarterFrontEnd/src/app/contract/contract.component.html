@@ -10,138 +10,146 @@
     <div class="contractCard">
 
 
-        <div >
-            <mat-card class="contractHolderName" >
-              <mat-form-field style="width: 350px;">
+      <div>
+        <mat-card class="contractHolderName">
+          <mat-form-field style="width: 350px;">
 
-                <mat-label>Contract Holder's name:</mat-label>
-                <mat-select formControlName="contractHolderId" name="contractHolderId">
-                    <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
-                        {{holder.individualName}}
-                        <mat-error></mat-error>
-                    </mat-option>
-                </mat-select>
-              </mat-form-field>  
-             </mat-card>
-            </div>
-          
-             <mat-card >
-               <mat-form-field>
-                 <mat-label>Select Contract Type:</mat-label>
-                 <mat-select formControlName="type" name="types" (blur)="assignContractType()">
-                   <mat-option *ngFor="let type of contractTypes" [value]="type.value">
-                     {{type.viewValue}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field> 
-                
-                <mat-form-field class="distance">
-                  <mat-label>Select Contract Category:</mat-label>
-                  <mat-select formControlName="category" name="category">
-                    <mat-option *ngFor="let category of contractCategories" [value]="category.value">
-                      {{category.viewValue}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field> <br>
-              
-                <span>
-
-                  <mat-form-field >
-                    <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" name ="expiryDate"
-                    formControlName="expiryDate" required>
-                    <mat-datepicker-toggle matSuffix [for]="expiryDate"></mat-datepicker-toggle>
-                    <mat-datepicker #expiryDate></mat-datepicker>
-                  </mat-form-field> 
-                </span>
-
-        
-          
-          <mat-label class="distance">Contract Status: </mat-label>
-          <mat-slide-toggle
-           class="example-margin"
-          [color]="color"
-          formControlName="isActive">Active</mat-slide-toggle>
-          <br>
-        </mat-card> 
+            <mat-label>Contract Holder's name:</mat-label>
+            <mat-select formControlName="contractHolderId" name="contractHolderId">
+              <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
+                {{holder.individualName}}
+                <mat-error></mat-error>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card>
       </div>
-          
-          
 
-          <div *ngIf="cType == 0 || cType==2 || cType==3">
-            <div formArrayName="auxBeneficiaries" *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
-              <div [formGroupName]="i" class="contractCard">
-  
-  
-                    <mat-card>
-                      <app-beneficiary-individual [individualPushPermission]="message" (messageIndividualEvent)="receiveMessage($event)"></app-beneficiary-individual>
-                      <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
-                    </mat-card>
-  
-  
-              </div>
-            </div>
-          </div>
-        <div *ngIf="cType == 1">
-          <div formArrayName="auxBeneficiaries" *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
-            <div [formGroupName]="i"  class="contractCard">
+      <mat-card>
+        <mat-form-field>
+          <mat-label>Select Contract Type:</mat-label>
+          <mat-select formControlName="type" name="types" (blur)="assignContractType()">
+            <mat-option *ngFor="let type of contractTypes" [value]="type.value">
+              {{type.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-                <mat-card>
-                  <app-beneficiary-pet [petPushPermission]="message" (messagePetEvent)="receiveMessage($event)"></app-beneficiary-pet>
-                  <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
-                </mat-card>
+        <mat-form-field class="distance">
+          <mat-label>Select Contract Category:</mat-label>
+          <mat-select formControlName="category" name="category">
+            <mat-option *ngFor="let category of contractCategories" [value]="category.value">
+              {{category.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> <br>
 
-            </div>
-          </div>
+        <span>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" name="expiryDate"
+              formControlName="expiryDate" required>
+            <mat-datepicker-toggle matSuffix [for]="expiryDate"></mat-datepicker-toggle>
+            <mat-datepicker #expiryDate></mat-datepicker>
+          </mat-form-field>
+        </span>
+
+
+
+        <mat-label class="distance">Contract Status: </mat-label>
+        <mat-slide-toggle class="example-margin" [color]="color" formControlName="isActive">Active</mat-slide-toggle>
+        <br>
+      </mat-card>
+    </div>
+
+
+
+    <div *ngIf="cType == 0 || cType==2 || cType==3">
+      <div formArrayName="auxBeneficiaries"
+        *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
+        <div [formGroupName]="i" class="contractCard">
+
+
+          <mat-card>
+            <app-beneficiary-individual [individualPushPermission]="message"
+              (messageIndividualEvent)="receiveMessage($event)"></app-beneficiary-individual>
+            <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove
+              Beneficiary</button>
+          </mat-card>
+
+
         </div>
-        <div *ngIf="cType == 4">
-          <div formArrayName="auxBeneficiaries" *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
-            <div [formGroupName]="i"  class="contractCard">
-               
-              <mat-card>
-                  <app-beneficiary-realty [realtyPushPermission]="message" (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
-                  <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
-                </mat-card>
+      </div>
+    </div>
+    <div *ngIf="cType == 1">
+      <div formArrayName="auxBeneficiaries"
+        *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
+        <div [formGroupName]="i" class="contractCard">
 
-            </div>
-          </div>
+          <mat-card>
+            <app-beneficiary-pet [petPushPermission]="message" (messagePetEvent)="receiveMessage($event)">
+            </app-beneficiary-pet>
+            <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove
+              Beneficiary</button>
+          </mat-card>
+
         </div>
-        <div *ngIf="cType == 5">
-          <div formArrayName="auxBeneficiaries" *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
-            <div [formGroupName]="i"  class="contractCard">
-                <mat-card>
-                  <app-beneficiary-vehicle [vehiclePushPermission]="message" (messageVehicleEvent)="receiveMessage($event)"></app-beneficiary-vehicle>
-                  <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
-                </mat-card>
-            </div>
-          </div>
+      </div>
+    </div>
+    <div *ngIf="cType == 4">
+      <div formArrayName="auxBeneficiaries"
+        *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
+        <div [formGroupName]="i" class="contractCard">
+
+          <mat-card>
+            <app-beneficiary-realty [realtyPushPermission]="message" (messageRealtyEvent)="receiveMessage($event)">
+            </app-beneficiary-realty>
+            <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove
+              Beneficiary</button>
+          </mat-card>
+
         </div>
-        <div *ngIf="cType == 6">
-            <div formArrayName="auxBeneficiaries" *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
-              <div [formGroupName]="i"  class="contractCard">
-                  <mat-card>
-                    <app-beneficiary-mobile-device [mobilePushPermission]="message" (messageMobileEvent)="receiveMessage($event)"></app-beneficiary-mobile-device>
-                    <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove Beneficiary</button>
-                  </mat-card>
-              </div>
-            </div>
-          </div>
+      </div>
+    </div>
+    <div *ngIf="cType == 5">
+      <div formArrayName="auxBeneficiaries"
+        *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
+        <div [formGroupName]="i" class="contractCard">
+          <mat-card>
+            <app-beneficiary-vehicle [vehiclePushPermission]="message" (messageVehicleEvent)="receiveMessage($event)">
+            </app-beneficiary-vehicle>
+            <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove
+              Beneficiary</button>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="cType == 6">
+      <div formArrayName="auxBeneficiaries"
+        *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
+        <div [formGroupName]="i" class="contractCard">
+          <mat-card>
+            <app-beneficiary-mobile-device [mobilePushPermission]="message"
+              (messageMobileEvent)="receiveMessage($event)"></app-beneficiary-mobile-device>
+            <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove
+              Beneficiary</button>
+          </mat-card>
+        </div>
+      </div>
+    </div>
 
-          <button mat-raised-button color="primary" type="button" (click)="addBeneficiary();">Add Beneficiary</button>
+    <button mat-raised-button color="primary" type="button" (click)="addBeneficiary();">Add Beneficiary</button>
 
-     
-        <br><br>
-        <button class="btn-list" mat-raised-button color="primary" type="submit" (click)="changeMessageValue()">Submit</button>
-        
 
     <br><br>
-    <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList()">Listing
-      Contract</button>
-    <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList2()">Listing
-      Beneficiary</button>
+    <button class="btn-list" mat-raised-button color="primary" type="submit"
+      (click)="changeMessageValue()">Submit</button>
 
+
+    <br><br>
     <div class="contractCard">
 
-      <mat-accordion *ngIf="!showlist;">
+      <mat-accordion >
         <mat-expansion-panel>
           <mat-expansion-panel-header class="listpanel-header">
             <mat-panel-title>
@@ -150,38 +158,32 @@
           </mat-expansion-panel-header>
 
           <mat-nav-list>
-            <ag-grid-angular 
-            style="width: 100%; height: 1000px;" 
-            [pagination]="true"
-            [paginationPageSize]="paginationPageSize" 
-            class="ag-theme-material" 
-            [masterDetail]="true"
-            [detailCellRendererParams]="detailCellRendererParams"
-            [gridOptions]="gridOption"
-            [rowData]="rowData$ | async"
-            ></ag-grid-angular>
+            <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true"
+              [paginationPageSize]="paginationPageSize" class="ag-theme-material" [masterDetail]="true"
+              [detailCellRendererParams]="detailCellRendererParams" [gridOptions]="gridOption"
+              [rowData]="rowData$ | async"></ag-grid-angular>
           </mat-nav-list>
 
         </mat-expansion-panel>
       </mat-accordion>
     </div>
 
+    <div class="contractCard">
+      <mat-accordion >
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="listpanel-header">
+            <mat-panel-title>
+              Beneficiary's List
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-    <mat-accordion *ngIf="!showlist2;">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header class="listpanel-header">
-          <mat-panel-title>
-            Beneficiary's List
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+          <mat-nav-list>
+            <app-beneficiary-list></app-beneficiary-list>
+          </mat-nav-list>
 
-        <mat-nav-list>
-          <app-beneficiary-list></app-beneficiary-list>
-        </mat-nav-list>
-
-      </mat-expansion-panel>
-    </mat-accordion>
-
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
 
   </form>
 </div>
