@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -90,6 +91,9 @@ export class IndividualListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          }, 
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -103,12 +107,11 @@ export class IndividualListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Edit/Delete',
-          field: 'editDelete',
+          headerName: 'Delete',
+          field: 'Delete',
           lockPosition: true,
-          cellRendererFramework: ActionButtonComponent,
+          cellRendererFramework: ActionButtonBeneficiariesComponent,
           cellRendererParams: {
-            onEdit: this.handle_editUser.bind(this),
             onDelete: this.handle_deleteUser.bind(this)
           }
         },

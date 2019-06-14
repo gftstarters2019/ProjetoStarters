@@ -135,14 +135,8 @@
         
 
     <br><br>
-    <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList()">Listing
-      Contract</button>
-    <button class="btn-list" mat-raised-button color="primary" type="button" (click)="showList2()">Listing
-      Beneficiary</button>
-
     <div class="contractCard">
-
-      <mat-accordion *ngIf="!showlist;">
+      <mat-accordion >
         <mat-expansion-panel>
           <mat-expansion-panel-header class="listpanel-header">
             <mat-panel-title>
@@ -151,38 +145,32 @@
           </mat-expansion-panel-header>
 
           <mat-nav-list>
-            <ag-grid-angular 
-            style="width: 100%; height: 1000px;" 
-            [pagination]="true"
-            [paginationPageSize]="paginationPageSize" 
-            class="ag-theme-material" 
-            [masterDetail]="true"
-            [detailCellRendererParams]="detailCellRendererParams"
-            [gridOptions]="gridOption"
-            [rowData]="rowData$ | async"
-            ></ag-grid-angular>
+            <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true"
+              [paginationPageSize]="paginationPageSize" class="ag-theme-material" [masterDetail]="true"
+              [detailCellRendererParams]="detailCellRendererParams" [gridOptions]="gridOption"
+              [rowData]="rowData$ | async"></ag-grid-angular>
           </mat-nav-list>
 
         </mat-expansion-panel>
       </mat-accordion>
     </div>
 
+    <div class="contractCard">
+      <mat-accordion >
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="listpanel-header">
+            <mat-panel-title>
+              Beneficiary's List
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-    <mat-accordion *ngIf="!showlist2;">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header class="listpanel-header">
-          <mat-panel-title>
-            Beneficiary's List
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+          <mat-nav-list>
+            <app-beneficiary-list></app-beneficiary-list>
+          </mat-nav-list>
 
-        <mat-nav-list>
-          <app-beneficiary-list></app-beneficiary-list>
-        </mat-nav-list>
-
-      </mat-expansion-panel>
-    </mat-accordion>
-
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
 
   </form>
 </div>

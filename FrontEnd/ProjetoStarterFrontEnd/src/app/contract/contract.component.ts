@@ -33,8 +33,6 @@ export interface Holder {
 })
 export class ContractComponent implements OnInit {
   color = 'primary';
-  public showlist: boolean = true;
-  public showlist2: boolean = true;
   beneficiaries: FormArray;
 
   rowData$: Observable<any>;
@@ -120,13 +118,6 @@ export class ContractComponent implements OnInit {
       duration: 4000,
       
     });
-  }
-
-  public showList(): void {
-    this.showlist = !this.showlist;
-  }
-  public showList2(): void {
-    this.showlist2 = !this.showlist2;
   }
 
   public assignContractType(): void {
@@ -419,7 +410,7 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
-          cellRenderer: "agGroupCellRenderer",
+          // cellRenderer: "agGroupCellRenderer",
           onCellValueChanged:
             this.onCellEdit.bind(this),
         },

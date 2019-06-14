@@ -24,32 +24,38 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Add(ContractViewModel viewModel)
         {
-            if (viewModel != null)
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
-                // Contract
-                var contract = AddContract(viewModel);
-                if (contract == null)
-                    return false;
-
-                // Signed Contract
-                var signedContract = AddSignedContract(viewModel, contract);
-                if (signedContract == null)
-                    return false;
-
-                // Contract Beneficiaries
-                if (AddContractBeneficiaries(viewModel, signedContract))
+                if (viewModel != null)
                 {
-                    _db.SaveChanges();
-                    return true;
+                    // Contract
+                    var contract = AddContract(viewModel);
+                    if (contract == null)
+                        return false;
+
+                    // Signed Contract
+                    var signedContract = AddSignedContract(viewModel, contract);
+                    if (signedContract == null)
+                        return false;
+
+                    // Contract Beneficiaries
+                    if (AddContractBeneficiaries(viewModel, signedContract))
+                    {
+                        _db.SaveChanges();
+                        scope.Complete();
+                        return true;
+                    }
                 }
+                scope.Complete();
+                return false;
             }
-            return false;
         }
 
         private bool AddContractBeneficiaries(ContractViewModel viewModel, SignedContract signedContract)
         {
             var beneficiaries = AddBeneficiaries(viewModel);
-            
+
             if (beneficiaries == null)
                 return false;
 
@@ -64,7 +70,7 @@ namespace Backend.Infrastructure.Repositories
                      && sc.ContractIndividualIsActive)
                      .ToList();
 
-                foreach(var beneficiarySignedContract in signedContracts)
+                foreach (var beneficiarySignedContract in signedContracts)
                 {
                     if (_db.Contracts.Where(con => con.ContractId == beneficiarySignedContract.ContractId && con.ContractType == viewModel.Type).Any())
                         return false;
@@ -120,15 +126,17 @@ namespace Backend.Infrastructure.Repositories
         #region Add Beneficiaries To DB
         private List<Guid> AddVehicles(List<Vehicle> vehicles)
         {
+            List<Guid> insertedVehicles = new List<Guid>();
+            insertedVehicles.AddRange(vehicles.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            vehicles.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
+            
             // Verifies if Chassis Number is already in DB
             if (_db.Vehicles
                     .Select(veh => veh.VehicleChassisNumber)
                     .Where(cha => vehicles.Select(veh => veh.VehicleChassisNumber).Contains(cha))
                     .ToList().Count > 0)
                 return null;
-
-            List<Guid> insertedVehicles = new List<Guid>();
-
+            
             foreach (var vehicle in vehicles)
             {
                 vehicle.IsDeleted = false;
@@ -142,15 +150,17 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> AddRealties(List<RealtyViewModel> realties)
         {
+            List<Guid> insertedRealties = new List<Guid>();
+            insertedRealties.AddRange(realties.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            realties.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
+
             // Verifies if Municipal Registration is already in DB
             if (_db.Realties
                     .Select(real => real.RealtyMunicipalRegistration)
                     .Where(reg => realties.Select(real => real.MunicipalRegistration).Contains(reg))
                     .ToList().Count > 0)
                 return null;
-
-            List<Guid> insertedRealties = new List<Guid>();
-
+            
             foreach (var realty in realties)
             {
                 realty.IsDeleted = false;
@@ -167,7 +177,7 @@ namespace Backend.Infrastructure.Repositories
                     AddressZipCode = realty.AddressZipCode
                 };
                 //if (AddressValidations.AddressIsValid(realtyAddress))
-                    realtyAddress = _db.Addresses.Add(realtyAddress).Entity;
+                realtyAddress = _db.Addresses.Add(realtyAddress).Entity;
                 //else return null;
 
                 Realty realtyToAdd = new Realty()
@@ -200,15 +210,17 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> AddMobileDevices(List<MobileDevice> mobileDevices)
         {
+            List<Guid> insertedMobileDevices = new List<Guid>();
+            insertedMobileDevices.AddRange(mobileDevices.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            mobileDevices.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
+
             // Verifies if Serial Number is already in DB
             if (_db.MobileDevices
                     .Select(mob => mob.MobileDeviceSerialNumber)
                     .Where(serial => mobileDevices.Select(mob => mob.MobileDeviceSerialNumber).Contains(serial))
                     .ToList().Count > 0)
                 return null;
-
-            List<Guid> insertedMobileDevices = new List<Guid>();
-
+            
             foreach (var mobile in mobileDevices)
             {
                 mobile.IsDeleted = false;
@@ -223,6 +235,8 @@ namespace Backend.Infrastructure.Repositories
         private List<Guid> AddPets(List<Pet> pets)
         {
             List<Guid> insertedPets = new List<Guid>();
+            insertedPets.AddRange(pets.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            pets.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
 
             foreach (var pet in pets)
             {
@@ -237,15 +251,17 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> AddIndividuals(List<Individual> individuals)
         {
+            List<Guid> insertedIndividuals = new List<Guid>();
+            insertedIndividuals.AddRange(individuals.Where(ben => ben.BeneficiaryId != Guid.Empty).Select(ben => ben.BeneficiaryId));
+            individuals.RemoveAll(ben => ben.BeneficiaryId != Guid.Empty);
+
             // Verifies if CPF is already in DB
             if (_db.Individuals
                     .Select(ind => ind.IndividualCPF)
                     .Where(cpf => individuals.Select(ind => ind.IndividualCPF).Contains(cpf))
                     .ToList().Count > 0)
                 return null;
-
-            List<Guid> insertedIndividuals = new List<Guid>();
-
+            
             foreach (var ind in individuals)
             {
                 ind.IsDeleted = false;
@@ -279,7 +295,7 @@ namespace Backend.Infrastructure.Repositories
 
         private Contract AddContract(ContractViewModel contractViewModel)
         {
-            var contract = ViewModelCreator.ContractFactory.Create(contractViewModel);
+            var contract = Factories.ContractFactory.Create(contractViewModel);
             if (contract != null)
                 return _db.Contracts.Add(contract).Entity;
             return null;
@@ -366,7 +382,7 @@ namespace Backend.Infrastructure.Repositories
                         case Core.Enums.ContractType.RealStateInsurance:
                             var contractRealties = _db.Realties.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList();
                             List<RealtyViewModel> realtiesToReturn = new List<RealtyViewModel>();
-                            foreach(var real in contractRealties)
+                            foreach (var real in contractRealties)
                             {
                                 realtiesToReturn.Add(new RealtyViewModel()
                                 {
@@ -442,13 +458,49 @@ namespace Backend.Infrastructure.Repositories
 
         public ContractViewModel Update(Guid id, ContractViewModel contractViewModel)
         {
-            var contractToUpdate = _db.SignedContracts.Where(sc => sc.SignedContractId == id).FirstOrDefault();
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
+            {
+                var contractId = _db.SignedContracts.Where(sc => sc.SignedContractId == id).Select(sc => sc.ContractId).FirstOrDefault();
 
-            contractToUpdate.ContractIndividualIsActive = contractViewModel.IsActive;
+                if (contractViewModel != null)
+                {
+                    // Contract
+                    var contractToUpdate = _db.Contracts.Where(con => con.ContractId == contractId).FirstOrDefault();
+                    var updatedContract = Factories.ContractFactory.Create(contractViewModel);
+                    contractToUpdate.ContractCategory = updatedContract.ContractCategory;
+                    contractToUpdate.ContractExpiryDate = updatedContract.ContractExpiryDate;
+                    contractToUpdate.ContractType = updatedContract.ContractType;
+                    _db.Update(contractToUpdate);
 
+                    // Signed Contract
+                    var signedContractToUpdate = _db.SignedContracts.Where(sc => sc.SignedContractId == id).FirstOrDefault();
+                    signedContractToUpdate.ContractIndividualIsActive = contractViewModel.IsActive;
+                    
+                    if (_db.Individuals.Select(ind => ind.BeneficiaryId).Contains(contractViewModel.ContractHolderId))
+                        signedContractToUpdate.IndividualId = contractViewModel.ContractHolderId;
+                    else
+                    {
+                        scope.Complete();
+                        return null;
+                    }
 
-            _db.SaveChanges();
-            return contractViewModel;
+                    // Contract Beneficiaries
+                    _db.Contract_Beneficiary.RemoveRange(
+                        _db.Contract_Beneficiary.Where(cb => cb.SignedContractId == id));
+                    
+                    if(AddContractBeneficiaries(contractViewModel, signedContractToUpdate))
+                    {
+                        scope.Complete();
+                        _db.SaveChanges();
+                        return contractViewModel;
+                    }
+                    
+                }
+                
+                scope.Complete();
+                return null;
+            }
         }
 
         private ContractViewModel UpdateContract(Guid id, ContractViewModel contractViewModel)
@@ -487,38 +539,38 @@ namespace Backend.Infrastructure.Repositories
                 case Core.Enums.ContractType.HealthPlan:
                 case Core.Enums.ContractType.LifeInsurance:
                     beneficiaries = _db.Individuals
-                        .Where(ind => viewModel.Beneficiaries.Contains(ind.BeneficiaryId))
+                        .Where(ind => viewModel.BeneficiariesIds.Contains(ind.BeneficiaryId))
                         .Select(ind => ind.BeneficiaryId)
                         .ToList();
                     break;
                 case Core.Enums.ContractType.AnimalHealthPlan:
                     beneficiaries = _db.Pets
-                        .Where(pet => viewModel.Beneficiaries.Contains(pet.BeneficiaryId))
+                        .Where(pet => viewModel.BeneficiariesIds.Contains(pet.BeneficiaryId))
                         .Select(pet => pet.BeneficiaryId)
                         .ToList();
                     break;
                 case Core.Enums.ContractType.MobileDeviceInsurance:
                     beneficiaries = _db.MobileDevices
-                        .Where(mob => viewModel.Beneficiaries.Contains(mob.BeneficiaryId))
+                        .Where(mob => viewModel.BeneficiariesIds.Contains(mob.BeneficiaryId))
                         .Select(mob => mob.BeneficiaryId)
                         .ToList();
                     break;
                 case Core.Enums.ContractType.RealStateInsurance:
                     beneficiaries = _db.Realties
-                        .Where(rea => viewModel.Beneficiaries.Contains(rea.BeneficiaryId))
+                        .Where(rea => viewModel.BeneficiariesIds.Contains(rea.BeneficiaryId))
                         .Select(rea => rea.BeneficiaryId)
                         .ToList();
                     break;
                 case Core.Enums.ContractType.VehicleInsurance:
                     beneficiaries = _db.Vehicles
-                        .Where(vec => viewModel.Beneficiaries.Contains(vec.BeneficiaryId))
+                        .Where(vec => viewModel.BeneficiariesIds.Contains(vec.BeneficiaryId))
                         .Select(vec => vec.BeneficiaryId)
                         .ToList();
                     break;
                 default:
                     return false;
             }
-            if (beneficiaries.Count == 0 || beneficiaries.Count != viewModel.Beneficiaries.Count)
+            if (beneficiaries.Count == 0 || beneficiaries.Count != viewModel.BeneficiariesIds.Count)
                 return false;
 
             foreach (var ben in beneficiaries)

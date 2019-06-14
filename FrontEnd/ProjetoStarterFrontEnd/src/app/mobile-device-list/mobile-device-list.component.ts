@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -80,6 +81,9 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -98,6 +102,7 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: DeviceFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -107,14 +112,15 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: invoiceFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
           },
           {
-            headerName: 'Edit/Delete',
-            field: 'editDelete',
+            headerName: 'Delete',
+            field: 'Delete',
             lockPosition: true,
-            cellRendererFramework: ActionButtonComponent,
+            cellRendererFramework: ActionButtonBeneficiariesComponent,
             cellRendererParams: {
               onEdit: this.handle_editUser.bind(this),
               onDelete: this.handle_deleteUser.bind(this)
@@ -137,4 +143,22 @@ export class MobileDeviceListComponent implements OnInit {
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
   }
+}
+function DeviceFormatter(params){
+  return deviceValue(params.value);
+}
+function deviceValue(number){
+  if(number == 0)
+  return "Smartphone";
+  if(number == 1)
+  return "Tablet";
+  if(number == 2)
+  return "Laptop";
+}
+
+function invoiceFormatter(params){
+  return "R$ " + invoiceValue(params.value);
+}
+function invoiceValue(number){
+  return number.toFixed(2);
 }
