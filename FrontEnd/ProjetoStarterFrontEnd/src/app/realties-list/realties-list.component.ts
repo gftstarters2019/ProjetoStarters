@@ -4,6 +4,7 @@ import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 
 @Component({
   selector: 'app-realties-list',
@@ -28,14 +29,17 @@ export class RealtiesListComponent implements OnInit {
     this.paginationPageSize = 50;
   }
 
-  private edit_realties(data: any) {
+  private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
+    }
+  
+  private handle_deleteUser(data: any) {
+    const id = data.id;
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
+
+    this.setup_gridData();
   }
 
-  private remove_realties(data: any) {
-    //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Realties/${beneficiaryId}`);
-    console.log(this.rowData$);
-  }
   //AG-grid Table Contract
   private setup_gridOptions() {
 
@@ -48,16 +52,17 @@ export class RealtiesListComponent implements OnInit {
       columnDefs: [
         {
           headerName: 'Type',
-          field: 'addressType',
+          field: 'address.addressType',
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: realtiestypeFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
         {
           headerName: 'Street',
-          field: 'addressStreet',
+          field: 'address.addressStreet',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -66,7 +71,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'No.',
-          field: 'addressNumber',
+          field: 'address.addressNumber',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -75,7 +80,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Complement',
-          field: 'addressComplement',
+          field: 'address.addressComplement',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -84,7 +89,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Neighborhood',
-          field: 'addressNeighborhood',
+          field: 'address.addressNeighborhood',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -93,7 +98,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'City',
-          field: 'addressCity',
+          field: 'address.addressCity',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -102,7 +107,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'State',
-          field: 'addressState',
+          field: 'address.addressState',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -112,7 +117,7 @@ export class RealtiesListComponent implements OnInit {
 
         {
           headerName: 'Country',
-          field: 'addressCountry',
+          field: 'address.addressCountry',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -121,7 +126,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Zip-Code',
-          field: 'addressZipCode',
+          field: 'address.addressZipCode',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -143,6 +148,9 @@ export class RealtiesListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -152,6 +160,7 @@ export class RealtiesListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: SaleFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -161,17 +170,17 @@ export class RealtiesListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: MarketFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
           },
           {
-            headerName: 'Edit/Delete',
-            field: 'editDelete',
+            headerName: 'Delete',
+            field: 'Delete',
             lockPosition: true,
-            cellRendererFramework: ActionButtonComponent,
+            cellRendererFramework: ActionButtonBeneficiariesComponent,
             cellRendererParams: {
-              onEdit: this.edit_realties.bind(this),
-              onRemove: this.remove_realties.bind(this)
+              onDelete: this.handle_deleteUser.bind(this)
             }
           },
       ],
@@ -187,14 +196,32 @@ export class RealtiesListComponent implements OnInit {
 
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
+  }
+}
+function SaleFormatter(params){
+  return "R$ " + saleValue(params.value);
+}
+function saleValue(number){
+  return number.toFixed(2);
+}
+function MarketFormatter(params){
+  return "R$ " + marketvalue(params.value);
+}
+function marketvalue(number){
+  return number.toFixed(2);
+}
+function realtiestypeFormatter(params){
+  return typeValue(params.value);
+}
+function typeValue(number){
+  if(number == 0){
+    return "Home";
+  }
+  if(number == 1){
+    return "Commercial";
   }
 }

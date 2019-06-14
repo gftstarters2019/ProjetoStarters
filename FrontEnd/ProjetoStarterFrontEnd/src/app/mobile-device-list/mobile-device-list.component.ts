@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 
 @Component({
   selector: 'app-mobile-device-list',
@@ -27,16 +28,17 @@ export class MobileDeviceListComponent implements OnInit {
     this.paginationPageSize = 50;
   }
 
-  private edit_devices(data: any) {
+  private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
     }
   
-    private remove_devices(data: any) {
-      //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevices/${beneficiaryId}`);
-      console.log(this.rowData$);
-    }
+  private handle_deleteUser(data: any) {
+    const id = data.beneficiaryId;
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
 
-  //AG-grid Table Contract
+    this.setup_gridData();
+  }
+
   private setup_gridOptions() {
 
     this.gridOptions = {
@@ -71,6 +73,9 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -89,6 +94,7 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: DeviceFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -98,17 +104,18 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: invoiceFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
           },
           {
-            headerName: 'Edit/Delete',
-            field: 'editDelete',
+            headerName: 'Delete',
+            field: 'Delete',
             lockPosition: true,
-            cellRendererFramework: ActionButtonComponent,
+            cellRendererFramework: ActionButtonBeneficiariesComponent,
             cellRendererParams: {
-              onEdit: this.edit_devices.bind(this),
-              onRemove: this.remove_devices.bind(this)
+              onEdit: this.handle_editUser.bind(this),
+              onDelete: this.handle_deleteUser.bind(this)
             }
           },
       ],
@@ -123,14 +130,27 @@ export class MobileDeviceListComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/MobileDevices');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
   }
+}
+function DeviceFormatter(params){
+  return deviceValue(params.value);
+}
+function deviceValue(number){
+  if(number == 0)
+  return "Smartphone";
+  if(number == 1)
+  return "Tablet";
+  if(number == 2)
+  return "Laptop";
+}
+
+function invoiceFormatter(params){
+  return "R$ " + invoiceValue(params.value);
+}
+function invoiceValue(number){
+  return number.toFixed(2);
 }

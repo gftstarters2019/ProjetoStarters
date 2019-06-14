@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 
 @Component({
   selector: 'app-pet-list',
@@ -26,14 +27,17 @@ export class PetListComponent implements OnInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
   }
-  private edit_pets(data: any) {
+  
+  private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
     }
   
-    private remove_pets(data: any) {
-      //this.rowData$ = this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets/${beneficiaryId}`);
-      console.log(this.rowData$);
-    }
+  private handle_deleteUser(data: any) {
+    const id = data.beneficiaryId;
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
+
+    this.setup_gridData();
+  }
 
   private setup_gridOptions() {
 
@@ -59,6 +63,9 @@ export class PetListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          }, 
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -68,6 +75,7 @@ export class PetListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: SpeciesFormmatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -81,13 +89,12 @@ export class PetListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Edit/Delete',
-          field: 'editDelete',
+          headerName: 'Delete',
+          field: 'Delete',
           lockPosition: true,
-          cellRendererFramework: ActionButtonComponent,
+          cellRendererFramework: ActionButtonBeneficiariesComponent,
           cellRendererParams: {
-            onEdit: this.edit_pets.bind(this),
-            onRemove: this.remove_pets.bind(this)
+            onDelete: this.handle_deleteUser.bind(this)
           }
         },
       ],
@@ -102,14 +109,29 @@ export class PetListComponent implements OnInit {
     this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Pets');
   }
   private onCellEdit(params: any) {
-    console.log(params.newValue);
-    console.log(params.data);
   }
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-    // this.individual.getRawValue();
-    console.log(data);
-    // this.individual.patchValue(data);
+  }
+}
+function SpeciesFormmatter(params){
+  return speciesValue(params.value);
+}
+function speciesValue(number){
+  if(number == 0){
+    return "Canis Lupus Familiaris";
+  }
+  if(number == 1){
+    return "Felis Catus"
+  }
+  if(number == 2){
+return "Mesocricetus Auratus"
+  }
+  if(number == 3){
+    return "Nymphicus Hollandicus"
+  }
+  if(number == 4){
+    return "Ara Chloropterus"
   }
 }
