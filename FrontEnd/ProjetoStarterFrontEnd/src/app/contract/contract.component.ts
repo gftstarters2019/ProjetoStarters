@@ -181,7 +181,7 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
-          cellRenderer: "agGroupCellRenderer",
+          // cellRenderer: "agGroupCellRenderer",
           onCellValueChanged:
             this.onCellEdit.bind(this),
         },
