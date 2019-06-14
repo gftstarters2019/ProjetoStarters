@@ -35,7 +35,7 @@ namespace Reports.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("ReportPermission",
-                builder => builder.AllowAnyHeader().AllowAnyOrigin());
+                builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));

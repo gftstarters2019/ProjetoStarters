@@ -1,6 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GenericValidator } from '../Validations/GenericValidator';
 
 @Component({
@@ -10,48 +9,39 @@ import { GenericValidator } from '../Validations/GenericValidator';
 })
 export class BeneficiaryIndividualComponent implements OnInit {
 
+  @Input() individualForm: FormGroup;
+
+  @Input() individualPushPermission !: number;
+
   @Output() messageIndividualEvent = new EventEmitter<any>();
 
   public cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
   public rgMask= [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/]
 
   individualCreateForm= this.formBuilder.group({
-    individualName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
-    individualCPF: new FormControl('', GenericValidator.isValidCpf()),
-    individualRG: new FormControl('', GenericValidator.rgLengthValidation()),
-    individualBirthdate: new FormControl('', GenericValidator.dateValidation()),
-    individualEmail: new FormControl('', Validators.required)
+    individualName: ['', Validators.pattern(GenericValidator.regexName)],
+    individualCPF: ['', GenericValidator.isValidCpf()],
+    individualRG: ['', GenericValidator.rgLengthValidation()],
+    individualBirthdate: ['', GenericValidator.dateValidation()],
+    individualEmail: ['', Validators.required]
   });
 
-  constructor(private _httpClient: HttpClient, private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     
   }
 
-  response:any;
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.individualPushPermission.currentValue != 0 && changes.individualPushPermission.currentValue != changes.individualPushPermission.previousValue) {
+      let cpf = this.individualCreateForm.get('individualCPF').value;
+      cpf = cpf.replace(/\D+/g, '');
+      this.individualCreateForm.get('individualCPF').setValue(cpf);
 
-  public individualPost(): void{
-    let cpf = this.individualCreateForm.get('individualCPF').value;
-    cpf = cpf.replace(/\D+/g, '');
-    this.individualCreateForm.get('individualCPF').setValue(cpf);
-
-    let rg = this.individualCreateForm.get('individualRG').value;
-    rg = rg.replace(/\D+/g, '');
-    this.individualCreateForm.get('individualRG').setValue(rg);
-
-    let form = JSON.stringify(this.individualCreateForm.value);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    this._httpClient.post('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individual', form, httpOptions)
-    .subscribe(data => {
-      this.response = data;
-      if(this.response != null){
-        this.messageIndividualEvent.emit(this.response.beneficiaryId);
-      }
-    });
+      let rg = this.individualCreateForm.get('individualRG').value;
+      rg = rg.replace(/\D+/g, '');
+      this.individualCreateForm.get('individualRG').setValue(rg);
+      this.messageIndividualEvent.emit(this.individualCreateForm);
+    }
   }
 }
