@@ -1,0 +1,30 @@
+.first-container {
+    display: flex;
+    //justify-content: space-around;
+}
+.second-container {
+    display: flex;
+    //justify-content: space-around;
+
+}
+
+.btn-address {
+    display: flex;
+    padding-top: 10px;
+    // justify-content: center
+}
+
+.select-type {
+    width: 23%;
+}
+.mat-form-field{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+

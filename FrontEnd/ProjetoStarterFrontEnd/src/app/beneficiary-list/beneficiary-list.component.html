@@ -1,0 +1,35 @@
+<mat-card>
+  <form [formGroup]="selectType">
+    <mat-form-field>
+      <mat-label>Select Type:</mat-label>
+      <mat-select formControlName="Type" name="btypes">
+        <mat-option *ngFor="let btype of btypes" [value]="btype.value">
+          {{btype.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="button" (click)="TypeTable()">Filter</button>
+  </form>
+</mat-card>
+<mat-card>
+  <div *ngIf="sType == 0">
+    <app-individual-list></app-individual-list>
+  </div>
+  <div *ngIf="sType == 1">
+    <app-pet-list></app-pet-list>
+  </div>
+  <div *ngIf="sType == 2">
+    <app-vehicle-list></app-vehicle-list>
+  </div>
+  <div *ngIf="sType == 3">
+    <app-realties-list></app-realties-list>
+  </div>
+  <div *ngIf="sType == 4">
+    <app-mobile-device-list></app-mobile-device-list>
+  </div>
+
+
+
+
+
+</mat-card>

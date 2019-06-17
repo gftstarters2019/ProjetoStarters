@@ -1,0 +1,28 @@
+<form [formGroup]="telephone2" (ngSubmit)="onSubmit()">
+  <div class="container">
+    <mat-form-field class="telephone-type">
+        <mat-select formControlName="telephoneType" placeholder="Select Type" required>
+          <mat-option [value]="0">Home</mat-option>
+          <mat-option [value]="1">Commercial</mat-option>
+          <mat-option [value]="2">Cellphone</mat-option>
+        </mat-select>
+      </mat-form-field>
+    <div *ngIf="chooseTelephone(); then cellphoneBlock else telephoneBlock"></div>
+    <ng-template #cellphoneBlock>
+      <mat-form-field class ="phoneNumber">
+          <input matInput placeholder="Cellphone Number" [textMask]="{mask:cellphoneMask}" name="telephoneNumber" formControlName="telephoneNumber" required>
+          <mat-error>Number is invalid</mat-error>
+      </mat-form-field>
+    </ng-template>
+    <ng-template #telephoneBlock>
+        <mat-form-field class ="phoneNumber">
+            <input matInput placeholder="Telephone Number" [textMask] = "{mask:telephoneMask}" name="telephoneNumber" formControlName="telephoneNumber" required>
+            <mat-error>Number is invalid</mat-error>
+        </mat-form-field>
+    </ng-template>
+    
+    
+  </div>
+  <div class="btn-telephone">
+  </div>
+</form>
