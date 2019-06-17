@@ -19,6 +19,11 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
+        /// <summary>
+        /// Add de Contract Holder
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public bool Add(ContractHolderViewModel vm)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -27,9 +32,11 @@ namespace Backend.Infrastructure.Repositories
                 if (vm != null)
                 {
                     // Individual
-                    var individual = ViewModelCreator.IndividualFactory.Create(vm);
+                    var individual = Factories.IndividualFactory.Create(vm);
 
                     if (individual == null)
+                        return false;
+                    else if (_db.Individuals.Where(ind => (ind.IndividualCPF == individual.IndividualCPF) && (!ind.IsDeleted)).Any())
                         return false;
 
                     _db.Add(individual);
@@ -37,8 +44,11 @@ namespace Backend.Infrastructure.Repositories
                     // Telephone
                     if (vm.individualTelephones.Count() != 0)
                     {
-                        var telephones = ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones);
-                        if (telephones.Count != vm.individualTelephones.Count)
+                        var telephones = Factories.TelephoneFactory.CreateList(vm.individualTelephones);
+
+                        if (telephones == null)
+                            return false;
+                        else if (telephones.Count != vm.individualTelephones.Count)
                             return false;
 
                         foreach (var telephone in telephones)
@@ -57,8 +67,11 @@ namespace Backend.Infrastructure.Repositories
                     // Address
                     if (vm.individualAddresses.Count() != 0)
                     {
-                        var addresses = ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses);
-                        if (addresses.Count != vm.individualAddresses.Count)
+                        var addresses = Factories.AddressFactory.CreateList(vm.individualAddresses);
+
+                        if (addresses == null)
+                            return false;
+                        else if (addresses.Count != vm.individualAddresses.Count)
                             return false;
 
                         foreach (var address in addresses)
@@ -84,6 +97,11 @@ namespace Backend.Infrastructure.Repositories
             }
         }
 
+        /// <summary>
+        /// Find de Contract Holder
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ContractHolderViewModel Find(Guid id)
         {
             Individual individual = _db.Individuals.Where(ind => (!ind.IsDeleted) && (ind.BeneficiaryId == id)).FirstOrDefault();
@@ -147,6 +165,10 @@ namespace Backend.Infrastructure.Repositories
             return ContractHolderViewModel;
         }
 
+        /// <summary>
+        /// Get de Contract Holder
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<ContractHolderViewModel> Get()
         {
             List<ContractHolderViewModel> ContractHolders = new List<ContractHolderViewModel>();
@@ -220,6 +242,12 @@ namespace Backend.Infrastructure.Repositories
             return ContractHolders;
         }
 
+        /// <summary>
+        /// Update/Delete de Contract Holder
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public ContractHolderViewModel Update(Guid id, ContractHolderViewModel vm)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -246,9 +274,12 @@ namespace Backend.Infrastructure.Repositories
                 //Update
                 else
                 {
-                    if (ViewModelCreator.IndividualFactory.Create(vm) == null ||
-                        ViewModelCreator.AddressFactory.CreateList(vm.individualAddresses).Count() != vm.individualAddresses.Count() ||
-                        ViewModelCreator.TelephoneFactory.CreateList(vm.individualTelephones).Count() != vm.individualTelephones.Count())
+                    if (Factories.IndividualFactory.Create(vm) == null ||
+                        Factories.AddressFactory.CreateList(vm.individualAddresses).Count() != vm.individualAddresses.Count() ||
+                        Factories.TelephoneFactory.CreateList(vm.individualTelephones).Count() != vm.individualTelephones.Count())
+                        return null;
+
+                    else if (individual.IndividualCPF != vm.individualCPF)
                         return null;
 
                     individual.IndividualBirthdate = vm.individualBirthdate;

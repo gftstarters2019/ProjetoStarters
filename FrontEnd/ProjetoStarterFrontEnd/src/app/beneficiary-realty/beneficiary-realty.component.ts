@@ -18,11 +18,10 @@ export class BeneficiaryRealtyComponent implements OnInit {
   @Output() messageRealtyEvent = new EventEmitter<any>();
 
   realtyCreateForm= this.formBuilder.group({
-    addressId: new FormControl(''),
-    realtyMunicipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
-    realtyConstructionDate: new FormControl('', GenericValidator.dateValidation()),
-    realtySaleValue: new FormControl('', GenericValidator.negativeValidation()),
-    realtyMarketValue: new FormControl('', GenericValidator.negativeValidation()),
+    municipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
+    constructionDate: new FormControl('', GenericValidator.dateValidation()),
+    saleValue: new FormControl('', GenericValidator.negativeValidation()),
+    marketValue: new FormControl('', GenericValidator.negativeValidation()),
     addressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
     addressType: ['', Validators.required],
     addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],

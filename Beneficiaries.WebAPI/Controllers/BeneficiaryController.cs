@@ -1,4 +1,5 @@
-﻿using Backend.Application.ViewModels;
+﻿using Backend.Application.ModelValidations;
+using Backend.Application.ViewModels;
 using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
@@ -126,7 +127,7 @@ namespace Beneficiaries.WebAPI.Controllers
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
 
-            if (!IndividualIsValid(individual))
+            if (!IndividualValidations.IndividualIsValid(individual))
                 return StatusCode(403);
 
             _individualWriteRepository.Add(individual);
@@ -143,7 +144,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Individual/{id}")]
         public IActionResult UpdateIndividual(Guid id, [FromBody] Individual individual)
         {
-            if (!IndividualIsValid(individual))
+            if (!IndividualValidations.IndividualIsValid(individual))
                 return Forbid();
 
             var obj = (Individual)_beneficiaryReadOnlyRepository.Find(id);
@@ -180,7 +181,7 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             mobileDevice.BeneficiaryId = Guid.NewGuid();
 
-            if (!MobileDeviceIsValid(mobileDevice))
+            if (!MobileDeviceValidations.MobileDeviceIsValid(mobileDevice))
                 return Forbid();
 
             _mobileWriteRepository.Add(mobileDevice);
@@ -197,7 +198,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("MobileDevice/{id}")]
         public IActionResult UpdateMobileDevice(Guid id, [FromBody] MobileDevice mobileDevice)
         {
-            if (!MobileDeviceIsValid(mobileDevice))
+            if (!MobileDeviceValidations.MobileDeviceIsValid(mobileDevice))
                 return Forbid();
 
             var obj = (MobileDevice)_beneficiaryReadOnlyRepository.Find(id);
@@ -288,7 +289,7 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             realty.BeneficiaryId = Guid.NewGuid();
 
-            if (!RealtyIsValid(realty))
+            if (!RealtyValidations.RealtyIsValid(realty))
                 return Forbid();
 
             _realtyWriteRepository.Add(realty);
@@ -305,7 +306,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Realty/{id}")]
         public IActionResult UpdateRealty(Guid id, [FromBody] Realty realty)
         {
-            if (!RealtyIsValid(realty))
+            if (!RealtyValidations.RealtyIsValid(realty))
                 return Forbid();
 
             var obj = (Realty)_beneficiaryReadOnlyRepository.Find(id);
@@ -341,7 +342,7 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             vehicle.BeneficiaryId = Guid.NewGuid();
 
-            if (!VehicleIsValid(vehicle))
+            if (!VehicleValidations.VehicleIsValid(vehicle))
                 return Forbid();
 
             _vehicleWriteRepository.Add(vehicle);
@@ -358,7 +359,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Vehicle/{id}")]
         public IActionResult UpdateVehicle(Guid id, [FromBody] Vehicle vehicle)
         {
-            if (!VehicleIsValid(vehicle))
+            if (!VehicleValidations.VehicleIsValid(vehicle))
                 return Forbid();
 
             var obj = (Vehicle)_beneficiaryReadOnlyRepository.Find(id);
@@ -402,164 +403,5 @@ namespace Beneficiaries.WebAPI.Controllers
 
             return NotFound(obj);
         }
-
-        #region Validations
-        /// <summary>
-        /// Does all validations to see if Individual is valid.
-        /// </summary>
-        /// <param name="individual">Individual to be verified</param>
-        /// <returns>If Individual is valid</returns>
-        public static bool IndividualIsValid(Individual individual)
-        {
-            if (!CPFIsValid(individual.IndividualCPF))
-                return false;
-
-            if (!EmailIsValid(individual.IndividualEmail))
-                return false;
-
-            if (!DateIsValid(individual.IndividualBirthdate))
-                return false;
-            return true;
-        }
-
-        
-
-        /// <summary>
-        /// Verifies if Realty is valid
-        /// </summary>
-        /// <param name="realty">Realty to be verified</param>
-        /// <returns>If Realty is valid</returns>
-        public static bool RealtyIsValid(Realty realty)
-        {
-            if (realty.RealtyMarketValue < 0 && realty.RealtySaleValue < 0)
-                return false;
-
-            //if (!CEPIsValid(realty.RealtyAddress.AddressZipCode))
-            //    return false;
-
-            if (!DateIsValid(realty.RealtyConstructionDate))
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Verifies if Vehicle is valid
-        /// </summary>
-        /// <param name="vehicle">Vehicle to be verified</param>
-        /// <returns>If Vehicle is valid</returns>
-        public static bool VehicleIsValid(Vehicle vehicle)
-        {
-            if (!DateIsValid(vehicle.VehicleManufactoringYear))
-                return false;
-
-            if (!DateIsValid(vehicle.VehicleModelYear))
-                return false;
-
-            if (vehicle.VehicleCurrentFipeValue < 0 && vehicle.VehicleCurrentMileage <= 0)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Verifies if Mobile Device is valid
-        /// </summary>
-        /// <param name="mobileDevice">Mobile Device to be verified</param>
-        /// <returns>If Mobile Device is valid</returns>
-        public static bool MobileDeviceIsValid(MobileDevice mobileDevice)
-        {
-            if (!DateIsValid(mobileDevice.MobileDeviceManufactoringYear))
-                return false;
-
-            if (mobileDevice.MobileDeviceInvoiceValue <= 0)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Algorithm to verify if a string is a CPF
-        /// </summary>
-        /// <param name="cpf">String to be verified</param>
-        /// <returns>If the string is a CPF</returns>
-        public static bool CPFIsValid(string cpf)
-        {
-            int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            string tempCpf;
-            string digito;
-            int soma;
-            int resto;
-            cpf = cpf.Trim();
-            cpf = cpf.Replace(".", "").Replace("-", "");
-            if (cpf.Length != 11)
-                return false;
-            tempCpf = cpf.Substring(0, 9);
-            soma = 0;
-
-            for (int i = 0; i < 9; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
-            resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
-            digito = resto.ToString();
-            tempCpf = tempCpf + digito;
-            soma = 0;
-            for (int i = 0; i < 10; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
-            resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
-            digito = digito + resto.ToString();
-            return cpf.EndsWith(digito);
-        }
-
-        /// <summary>
-        /// Verifies if an email is valid.
-        /// </summary>
-        /// <param name="emailaddress">Email to be verified</param>
-        /// <returns>If email is valid</returns>
-        public static bool EmailIsValid(string emailaddress)
-        {
-            try
-            {
-                MailAddress m = new MailAddress(emailaddress);
-
-                return true;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Verifies if date is not future date
-        /// </summary>
-        /// <returns>If date is valid</returns>
-        public static bool DateIsValid(DateTime date)
-        {
-            return date != null ? date < DateTime.Today : false;
-        }
-
-        /// <summary>
-        /// Verifies if CEP is valid
-        /// </summary>
-        /// <param name="cep">CEP to be verified</param>
-        /// <returns>If CEP is valid</returns>
-        public static bool CEPIsValid(string cep)
-        {
-            if (cep.Length == 8)
-            {
-                cep = cep.Substring(0, 5) + "-" + cep.Substring(5, 3);
-            }
-            return System.Text.RegularExpressions.Regex.IsMatch(cep, "[0-9]{5}-[0-9]{3}");
-        }
-        #endregion Validations
     }
 }
