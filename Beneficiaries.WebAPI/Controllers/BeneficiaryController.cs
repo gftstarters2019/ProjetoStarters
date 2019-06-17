@@ -11,7 +11,7 @@ using System.Net.Mail;
 namespace Beneficiaries.WebAPI.Controllers
 {
     /// <summary>
-    /// Beneficiaries API
+    /// Beneficiaries API2
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
