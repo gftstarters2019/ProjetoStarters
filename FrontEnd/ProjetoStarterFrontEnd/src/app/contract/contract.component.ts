@@ -70,20 +70,6 @@ export class ContractComponent implements OnInit {
     { value: 5, viewValue: 'Contract Diamond' },
   ];
 
-  // contractform = this.fb.group({
-  //   contractHolderId: ['', Validators.required],
-  //   type: ['', Validators.required],
-  //   category: ['', Validators.required],
-  //   expiryDate: ['', Validators.required],
-  //   isActive: ['true', Validators.required],
-  //   individuals: this.fb.array([]),
-  //   // pets: this.fb.array([]),
-  //   // realties: this.fb.array([]),
-  //   // mobileDevices: this.fb.array([]),
-  //   // vehicles: this.fb.array([]),
-  //   // auxBeneficiaries: this.fb.array([])
-  // });
-
   constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
 
   ngOnInit() {
@@ -291,17 +277,23 @@ export class ContractComponent implements OnInit {
     
     this.signedContractId = data.signedContractId;
     
-    this.contractform.patchValue(data)
+    
     
     let i;
     if(data.type==0 || data.type==2 || data.type==3){
       this.cType = data.type;
       let individualControl = this.contractform.controls.auxBeneficiaries as FormArray;
+      for(i = 0; i < individualControl.length; i++){
+        individualControl.removeAt(i);
+      }
+      individualControl.controls.pop();
+      this.contractform.addControl('individuals', this.fb.array([]));
       this.contractform.removeControl('pets');
       this.contractform.removeControl('realties');
       this.contractform.removeControl('vehicles');
       this.contractform.removeControl('mobileDevices');
-      individualControl.controls.pop();
+      this.contractform.patchValue(data)
+      
       const hasMaxIndividuals = individualControl.length >= 5;
       if (!hasMaxIndividuals) {
         if (data.individuals != ''){
@@ -317,18 +309,24 @@ export class ContractComponent implements OnInit {
     if(data.type==1){
       this.cType = data.type;
 
-        let petControl =  this.contractform.controls.auxBeneficiaries as FormArray;
-        this.contractform.removeControl('individuals');
+      let petControl =  this.contractform.controls.auxBeneficiaries as FormArray;
+      for(i = 0; i < petControl.length; i++){
+        petControl.removeAt(i);
+      }
+      petControl.controls.pop();
+      this.contractform.addControl('pets', this.fb.array([]));
+      this.contractform.removeControl('individuals');
       this.contractform.removeControl('realties');
       this.contractform.removeControl('vehicles');
       this.contractform.removeControl('mobileDevices');
-      petControl.controls.pop();
+      this.contractform.patchValue(data)
       const hasMaxPets = petControl.length >= 5;
       if (!hasMaxPets) {
         if (data.pets != ''){
           for(i =0; i <data.pets.length; i++)
           {
             petControl.push(this.fb.group(data.pets[i]));
+            console.log(data.pets[i]);
           }
           
         }  
@@ -336,50 +334,79 @@ export class ContractComponent implements OnInit {
     }
     
     if(data.type==4){
+      this.cType = data.type;
       let realtyControl =  this.contractform.controls.auxBeneficiaries as FormArray;
-    realtyControl.controls.pop();
-    const hasMaxRealties = realtyControl.length >= 5;
-    if (!hasMaxRealties) {
-      if (data.realties != ''){
-        for(i =0; i <data.realties.length; i++)
-        {
-          realtyControl.push(this.fb.group(data.realties[i]));
-        }
-        
-      }  
-    }
+      for(i = 0; i < realtyControl.length; i++){
+        realtyControl.removeAt(i);
+      }
+      realtyControl.controls.pop();
+      this.contractform.addControl('realties', this.fb.array([]));
+      this.contractform.removeControl('pets');
+      this.contractform.removeControl('individuals');
+      this.contractform.removeControl('vehicles');
+      this.contractform.removeControl('mobileDevices');
+      this.contractform.patchValue(data)
+      const hasMaxRealties = realtyControl.length >= 5;
+      if (!hasMaxRealties) {
+        if (data.realties != ''){
+          for(i =0; i <data.realties.length; i++)
+          {
+            realtyControl.push(this.fb.group(data.realties[i]));
+          }
+          
+        }  
+      }
     }
     
     if(data.type==5){
+      this.cType = data.type;
       let vehicleControl =  this.contractform.controls.auxBeneficiaries as FormArray;
-    vehicleControl.controls.pop();
-    const hasMaxVehicle = vehicleControl.length >= 5;
-    if (!hasMaxVehicle) {
-      if (data.vehicles != ''){
-        for(i =0; i <data.vehicles.length; i++)
-        {
-          vehicleControl.push(this.fb.group(data.vehicles[i]));
-        }
-        
-      }  
-    }
+      for(i = 0; i < vehicleControl.length; i++){
+        vehicleControl.removeAt(i);
+      }
+      vehicleControl.controls.pop();
+      this.contractform.addControl('vehicles', this.fb.array([]));
+      this.contractform.removeControl('pets');
+      this.contractform.removeControl('individuals');
+      this.contractform.removeControl('realties');
+      this.contractform.removeControl('mobileDevices');
+      this.contractform.patchValue(data)
+      const hasMaxVehicle = vehicleControl.length >= 5;
+      if (!hasMaxVehicle) {
+        if (data.vehicles != ''){
+          for(i =0; i <data.vehicles.length; i++)
+          {
+            vehicleControl.push(this.fb.group(data.vehicles[i]));
+          }
+          
+        }  
+      }
     }
     
     if(data.type==6){
+      this.cType = data.type;
       let mobileDeviceControl =  this.contractform.controls.auxBeneficiaries as FormArray;
-    mobileDeviceControl.controls.pop();
-    const hasMaxmobileDevices = mobileDeviceControl.length >= 5;
-    if (!hasMaxmobileDevices) {
-      if (data.mobileDevices != ''){
-        for(i =0; i <data.mobileDevices.length; i++)
-        {
-          mobileDeviceControl.push(this.fb.group(data.mobileDevices[i]));
-        }
-        
-      }  
+      for(i = 0; i < mobileDeviceControl.length; i++){
+        mobileDeviceControl.removeAt(i);
+      }
+      mobileDeviceControl.controls.pop();
+      this.contractform.addControl('mobileDevices', this.fb.array([]));
+      this.contractform.removeControl('pets');
+      this.contractform.removeControl('individuals');
+      this.contractform.removeControl('realties');
+      this.contractform.removeControl('vehicles');
+      const hasMaxmobileDevices = mobileDeviceControl.length >= 5;
+      if (!hasMaxmobileDevices) {
+        if (data.mobileDevices != ''){
+          for(i =0; i <data.mobileDevices.length; i++)
+          {
+            mobileDeviceControl.push(this.fb.group(data.mobileDevices[i]));
+          }
+          
+        }  
+      }
     }
-    }
-    }
+  }
     
 
   zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
@@ -393,14 +420,12 @@ export class ContractComponent implements OnInit {
     return null;
   }
  
- private handle_deleteUser(data: any) {
+  private handle_deleteUser(data: any) {
  
     const id = data.signedContractId;
  
     this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
-
-    
-}
+  }
 
   //AG-grid Table Contract
   private setup_gridOptions() {
