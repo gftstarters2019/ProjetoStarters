@@ -15,18 +15,15 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class TelephoneController : Controller
     {
-        private readonly IReadOnlyRepository<Telephone> _telephoneReadOnlyRepository;
-        private readonly IWriteRepository<Telephone> _telephoneWriteRepository;
+        private readonly IRepository<Telephone> _telephoneRepository;
 
         /// <summary>
         /// TelephoneController constructor
         /// </summary>
-        /// <param name="telephoneReadoOnlyRepository"></param>
-        /// <param name="telephoneWriteRepository"></param>
-        public TelephoneController(IReadOnlyRepository<Telephone> telephoneReadoOnlyRepository, IWriteRepository<Telephone> telephoneWriteRepository)
+        /// <param name="telephoneRepository"></param>
+        public TelephoneController(IRepository<Telephone> telephoneRepository)
         {
-            _telephoneReadOnlyRepository = telephoneReadoOnlyRepository;
-            _telephoneWriteRepository = telephoneWriteRepository;
+            _telephoneRepository = telephoneRepository;
         }
         
         /// <summary>
@@ -36,7 +33,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet]
         public IActionResult Telephones()
         {
-            return Ok(_telephoneReadOnlyRepository.Get());
+            return Ok(_telephoneRepository.Get());
         }
 
         /// <summary>
@@ -47,7 +44,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Telephone(Guid id)
         {
-            var obj = _telephoneReadOnlyRepository.Find(id);
+            var obj = _telephoneRepository.Find(id);
             return Ok(obj);
         }
 
@@ -63,7 +60,7 @@ namespace ContractHolder.WebAPI.Controllers
 
             if (Validate(telephone))
             {
-                _telephoneWriteRepository.Add(telephone);
+                _telephoneRepository.Add(telephone);
 
                 return Ok(telephone);
             }
@@ -102,14 +99,14 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateTelephone(Guid id, [FromBody] Telephone telephone)
         {
-            var obj = _telephoneReadOnlyRepository.Find(id);
+            var obj = _telephoneRepository.Find(id);
 
             obj.TelephoneNumber = telephone.TelephoneNumber;
             obj.TelephoneType = telephone.TelephoneType;
 
             if (Validate(telephone))
             {
-                return Ok(_telephoneWriteRepository.Update(id, obj));
+                return Ok(_telephoneRepository.Update(id, obj));
             }
             else
                 return Conflict();
