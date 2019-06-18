@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class AddressRepository : IReadOnlyRepository<Address>, IWriteRepository<Address>
+    public class AddressRepository : IRepository<Address>
     {
         private readonly ConfigurationContext _db;
 
@@ -60,6 +60,11 @@ namespace Backend.Infrastructure.Repositories
             }
 
             return address;
+        }
+
+        public bool Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -42,12 +42,11 @@ namespace Contract.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.Contract>, ContractRepository>();
-            services.AddScoped<IWriteRepository<Backend.Core.Models.Contract>, ContractRepository>();
-            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
+            services.AddScoped<IRepository<Backend.Core.Models.Contract>, ContractRepository>();
 
-            services.AddScoped<IReadOnlyRepository<ContractViewModel>, ContractViewModelRepository>();
-            services.AddScoped<IWriteRepository<ContractViewModel>, ContractViewModelRepository>();
+            services.AddScoped<IRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
+
+            services.AddScoped<IRepository<ContractViewModel>, ContractViewModelRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 

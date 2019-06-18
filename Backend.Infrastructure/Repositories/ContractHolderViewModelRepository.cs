@@ -10,7 +10,7 @@ using System.Transactions;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractHolderViewModelRepository : IReadOnlyRepository<ContractHolderViewModel>, IWriteRepository<ContractHolderViewModel>
+    public class ContractHolderViewModelRepository : IRepository<ContractHolderViewModel>
     {
         private readonly ConfigurationContext _db;
 
@@ -339,6 +339,11 @@ namespace Backend.Infrastructure.Repositories
 
                 scope.Complete();
             }
+        }
+
+        public bool Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }
