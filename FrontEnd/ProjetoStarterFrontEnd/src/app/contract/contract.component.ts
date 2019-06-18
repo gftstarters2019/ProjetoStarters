@@ -230,9 +230,6 @@ export class ContractComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
-          cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
-          }, 
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -252,92 +249,10 @@ export class ContractComponent implements OnInit {
           cellRendererFramework: ActionButtonComponent,
           cellRendererParams: {
             onEdit: this.handle_editUser.bind(this),
-            onRemove: this.handle_deleteUser.bind(this)
-          }
+            onDelete: this.handle_deleteUser.bind(this),
+          },
         },
-      ]
-    }
-    // this.detailCellRendererParams = {
-    //   detailGridOptions: {
-    //     columnDefs: [
-    //       {
-    //         headerName: "Individual Details",
-    //         // rowGroupIndex: 0,
-    //         // rowGroup: true,
-    //         // hide: false,
-    //         children: [
-    //           { headerName: 'Name ', field: "individualName" },
-    //           { headerName: 'CPF ', field: "individualCPF" },
-    //           { headerName: 'RG ', field: "individualRG" },
-    //           { headerName: 'Birthdate ', field: "individualBirthdate" },
-    //           { headerName: 'Email ', field: "individualEmail" }
-    //         ]
-    //       },
-    //       {
-    //         headerName: "Pet Details",
-    //         // rowGroupIndex: 1,
-    //         // rowGroup: true,
-    //         // hide: true,
-    //         children: [
-    //           { headerName: 'Name ', field: "petName" },
-    //           { headerName: 'Breed ', field: "petBreed" },
-    //           { headerName: 'Species ', field: "petSpecies" },
-    //           { headerName: 'Birthdate ', field: "petBirthdate" },
-    //         ]
-    //       },
-    //       {
-    //         headerName: "Realties Details",
-    //         // rowGroupIndex: 2,
-    //         // rowGroup: true,
-    //         // hide: true,
-    //         children: [
-    //           { headerName: 'Type', field: "addressType" },
-    //           { headerName: 'Street', field: "addressStreet" },
-    //           { headerName: 'No.', field: "addressNumber" },
-    //           { headerName: 'Complement', field: "addressComplement" },
-    //           { headerName: 'Neighborhood', field: "addressNeighborhood" },
-    //           { headerName: 'City', field: "addressCity" },
-    //           { headerName: 'State', field: "addressState" },
-    //           { headerName: 'Country', field: "addressCountry" },
-    //           { headerName: 'Zip-Code', field: "addressZipCode" },
-    //           { headerName: 'Construction Date', field: "constructionDate" },
-    //           { headerName: 'Municipal Registration', field: "municipalRegistration" },
-    //           { headerName: 'Market Value', field: "marketValue" },
-    //           { headerName: 'Sale Value', field: "saleValue" },
-    //         ]
-    //       },
-    //       {
-    //         headerName: "Vehicles Details",
-    //         // rowGroupIndex: 3,
-    //         // rowGroup: true,
-    //         // hide: true,
-    //         children: [
-    //           { headerName: 'Brand', field: "vehicleBrand" },
-    //           { headerName: 'Model', field: "vehicleModel" },
-    //           { headerName: 'Color', field: "vehicleColor" },
-    //           { headerName: 'Manufactoring Year', field: "vehicleManufactoringYear" },
-    //           { headerName: 'Model Year', field: "vehicleModelYear" },
-    //           { headerName: 'No. Chassis', field: "vehicleChassisNumber" },
-    //           { headerName: 'Current Mileage', field: "vehicleCurrentMileage" },
-    //           { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue" },
-    //           { headerName: 'Done Inspection', field: "vehicleDoneInspection" },
-    //         ]
-    //       },
-    //       {
-    //         headerName: "Mobile Device Details",
-    //         // rowGroup: true,
-    //         // rowGroupIndex: 4,
-    //         // hide: true,
-    //         children: [
-    //           { headerName: 'Brand', field: "mobileDeviceBrand" },
-    //           { headerName: 'Model', field: "mobileDeviceModel" },
-    //           { headerName: 'Device Type', field: "mobileDeviceType" },
-    //           { headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear" },
-    //           { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber" },
-    //           { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue" },
-    //         ]
-    //       }
-    //     ],
+      ],
 
     }
   }

@@ -17,9 +17,9 @@ import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.co
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
 
-import {HashLocationStrategy, Location, LocationStrategy} from '@angular/common';
+import { HashLocationStrategy, Location, LocationStrategy } from '@angular/common';
 import { TableListComponent } from './table-list/table-list.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { BeneficiaryIndividualComponent } from './beneficiary-individual/beneficiary-individual.component';
 import { BeneficiaryPetComponent } from './beneficiary-pet/beneficiary-pet.component';
 import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-vehicle.component';
@@ -27,8 +27,8 @@ import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-rea
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
 import { TelephoneComponent } from './telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
-import { MatCardModule} from '@angular/material/card';
-import {ObserversModule} from '@angular/cdk/observers';
+import { MatCardModule } from '@angular/material/card';
+import { ObserversModule } from '@angular/cdk/observers';
 import { IndividualListComponent } from './individual-list/individual-list.component';
 import { PetListComponent } from './pet-list/pet-list.component';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
@@ -77,21 +77,28 @@ import { ActionButtonBeneficiariesComponent } from './action-button-beneficiarie
     ReactiveFormsModule,
     HttpClientModule,
     TextMaskModule,
-   
+
   ],
   exports: [
     MaterialModule,
     AgGridModule,
-    
-    
-    
+
+
+
   ],
-  
-  providers: [ ],
+
+  providers: [
+    /** URL navigation strategy */
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy,
+    }
+  ],
   bootstrap: [AppComponent],
-  
-  
+
+
 })
+
 
 export class AppModule {
 }
