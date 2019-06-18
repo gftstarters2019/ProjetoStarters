@@ -10,13 +10,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AddressComponent } from './address/address.component';
 import { MaterialModule } from './material/material.module';
-
+import { RouterModule, Routes } from '@angular/router';
 import { ContractComponent } from './contract/contract.component';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
 
+import {HashLocationStrategy, Location, LocationStrategy} from '@angular/common';
 import { TableListComponent } from './table-list/table-list.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { BeneficiaryIndividualComponent } from './beneficiary-individual/beneficiary-individual.component';
@@ -35,7 +36,6 @@ import { RealtiesListComponent } from './realties-list/realties-list.component';
 import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-list.component';
 import { ActionButtonComponent } from './action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from './action-button-beneficiaries/action-button-beneficiaries.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,15 +76,22 @@ import { ActionButtonBeneficiariesComponent } from './action-button-beneficiarie
     MatCardModule,
     ReactiveFormsModule,
     HttpClientModule,
-
-    TextMaskModule
+    TextMaskModule,
+   
   ],
   exports: [
     MaterialModule,
-   AgGridModule,
+    AgGridModule,
+    
+    
+    
   ],
   
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ ],
+  bootstrap: [AppComponent],
+  
+  
 })
-export class AppModule { }
+
+export class AppModule {
+}
