@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class RealtyRepository : IReadOnlyRepository<RealtyViewModel>, IWriteRepository<Realty>
+    public class RealtyRepository : IRepository<RealtyViewModel>
     {
         private readonly ConfigurationContext _db;
 
@@ -67,6 +67,21 @@ namespace Backend.Infrastructure.Repositories
                 });
             }
             return realtiesToReturn;
+        }
+
+        public bool Add(RealtyViewModel t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RealtyViewModel Update(Guid id, RealtyViewModel t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }

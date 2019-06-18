@@ -16,18 +16,15 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class AddressController : Controller
     {
-        private readonly IReadOnlyRepository<Address> _addressReadOnlyRepository;
-        private readonly IWriteRepository<Address> _addressWriteRepository;
+        private readonly IRepository<Address> _addressRepository;
 
         /// <summary>
         /// AddressController constructor
         /// </summary>
-        /// <param name="addressReadoOnlyRepository"></param>
-        /// <param name="addressWriteRepository"></param>
-        public AddressController(IReadOnlyRepository<Address> addressReadoOnlyRepository, IWriteRepository<Address> addressWriteRepository)
+        /// <param name="addressRepository"></param>
+        public AddressController(IRepository<Address> addressRepository)
         {
-            _addressReadOnlyRepository = addressReadoOnlyRepository;
-            _addressWriteRepository = addressWriteRepository;
+            _addressRepository = addressRepository;
         }
 
         /// <summary>
@@ -37,7 +34,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet]
         public IActionResult Addresses()
         {
-            return Ok(_addressReadOnlyRepository.Get());
+            return Ok(_addressRepository.Get());
         }
 
         /// <summary>
@@ -48,7 +45,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Address(Guid id)
         {
-            var obj = _addressReadOnlyRepository.Find(id);
+            var obj = _addressRepository.Find(id);
             return Ok(obj);
         }
 
@@ -64,7 +61,7 @@ namespace ContractHolder.WebAPI.Controllers
 
             if (Validate(address))
             {
-                _addressWriteRepository.Add(address);
+                _addressRepository.Add(address);
 
                 return Ok(address);
             }
@@ -82,7 +79,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateAddress(Guid id, [FromBody] Address address)
         {
-            var obj = _addressReadOnlyRepository.Find(id);
+            var obj = _addressRepository.Find(id);
 
             obj.AddressStreet = address.AddressStreet;
             obj.AddressNumber = address.AddressNumber;
@@ -95,7 +92,7 @@ namespace ContractHolder.WebAPI.Controllers
 
             if (Validate(address))
             {
-                return Ok(_addressWriteRepository.Update(id, obj));
+                return Ok(_addressRepository.Update(id, obj));
             }
             else
                 return Conflict();

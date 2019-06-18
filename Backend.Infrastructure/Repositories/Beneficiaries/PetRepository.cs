@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class PetRepository : IReadOnlyRepository<Pet>, IWriteRepository<Pet>
+    public class PetRepository : IRepository<Pet>
     {
         private readonly ConfigurationContext _db;
 
@@ -39,6 +39,11 @@ namespace Backend.Infrastructure.Repositories
             .ToList();
 
         public bool Remove(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
         {
             throw new NotImplementedException();
         }

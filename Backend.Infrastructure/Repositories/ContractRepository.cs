@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractRepository : IReadOnlyRepository<Contract>, IWriteRepository<Contract>
+    public class ContractRepository : IRepository<Contract>
     {
         private readonly ConfigurationContext _db;
 
@@ -70,6 +70,11 @@ namespace Backend.Infrastructure.Repositories
             }
 
             return contract;
+        }
+
+        public bool Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }
