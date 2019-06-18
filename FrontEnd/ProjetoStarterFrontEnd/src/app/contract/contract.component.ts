@@ -210,9 +210,6 @@ export class ContractComponent implements OnInit {
   receiveMessage($event) {
     if(this.cType == 0 || this.cType==2 || this.cType==3){
       this.beneficiaries = this.contractform.get('individuals') as FormArray;
-      let cpf = $event.get('individualCPF').value;
-      cpf = cpf.replace(/\D+/g, '');
-      $event.get('individualCPF').setValue(cpf);
       this.beneficiaries.push($event);
     }
       
@@ -262,10 +259,12 @@ export class ContractComponent implements OnInit {
     if (this.signedContractId == null) {
       this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
       .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
+    debugger;
     }
     else {
       this.http.put('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
       .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
+      debugger;
     }
   }
 

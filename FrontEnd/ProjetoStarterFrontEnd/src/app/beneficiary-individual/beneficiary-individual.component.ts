@@ -34,14 +34,14 @@ export class BeneficiaryIndividualComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.individualPushPermission.currentValue != 0 && changes.individualPushPermission.currentValue != changes.individualPushPermission.previousValue) {
-      let cpf = this.individualCreateForm.get('individualCPF').value;
+      let cpf = this.individualForm.get('individualCPF').value;
       cpf = cpf.replace(/\D+/g, '');
-      this.individualCreateForm.get('individualCPF').setValue(cpf);
+      this.individualForm.get('individualCPF').setValue(cpf);
 
-      let rg = this.individualCreateForm.get('individualRG').value;
+      let rg = this.individualForm.get('individualRG').value;
       rg = rg.replace(/\D+/g, '');
-      this.individualCreateForm.get('individualRG').setValue(rg);
-      this.messageIndividualEvent.emit(this.individualCreateForm);
+      this.individualForm.get('individualRG').setValue(rg);
+      this.messageIndividualEvent.emit(this.individualForm);
     }
   }
 }
