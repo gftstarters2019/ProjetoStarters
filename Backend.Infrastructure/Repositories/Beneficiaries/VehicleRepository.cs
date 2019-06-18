@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class VehicleRepository : IReadOnlyRepository<Vehicle>, IWriteRepository<Vehicle>
+    public class VehicleRepository : IRepository<Vehicle>
     {
         private readonly ConfigurationContext _db;
 
@@ -39,6 +39,11 @@ namespace Backend.Infrastructure.Repositories
             .ToList();
 
         public bool Remove(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
         {
             throw new NotImplementedException();
         }
