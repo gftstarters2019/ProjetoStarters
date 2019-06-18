@@ -2,7 +2,7 @@
 using Backend.Core;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -42,11 +42,13 @@ namespace Contract.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IRepository<Backend.Core.Models.Contract>, ContractRepository>();
+            services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<Backend.Core.Models.Contract>, ContractRepository>();
 
-            services.AddScoped<IRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
+            services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
 
-            services.AddScoped<IRepository<ContractViewModel>, ContractViewModelRepository>();
+            services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<ContractViewModel>, ContractViewModelRepository>();
+
+            services.AddScoped<Backend.Services.Services.Contracts.IService<Backend.Core.Models.CompleteContract>, CompleteContractService>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
