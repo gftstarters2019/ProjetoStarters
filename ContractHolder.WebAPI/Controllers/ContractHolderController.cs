@@ -2,7 +2,6 @@
 using Backend.Application.ViewModels;
 using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
-using Backend.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;

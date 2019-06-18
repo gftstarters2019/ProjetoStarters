@@ -24,4 +24,9 @@
     <ProjectReference Include="..\Backend.Infrastructure\Backend.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Factories\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>

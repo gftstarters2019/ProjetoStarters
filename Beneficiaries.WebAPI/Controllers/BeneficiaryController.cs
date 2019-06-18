@@ -274,7 +274,7 @@ namespace Beneficiaries.WebAPI.Controllers
             if (!RealtyValidations.RealtyIsValid(realty))
                 return Forbid();
 
-            _realtyRepository.Add(realty);
+            //_realtyRepository.Add(realty);
 
             return Ok(realty);
         }

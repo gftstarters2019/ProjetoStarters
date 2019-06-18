@@ -47,7 +47,7 @@ namespace Backend.Infrastructure.Repositories
                         return true;
                     }
                 }
-                scope.Complete();
+                scope.Dispose();
                 return false;
             }
         }
