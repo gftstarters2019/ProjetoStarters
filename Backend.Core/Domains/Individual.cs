@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Backend.Core.Domains
 {
-    public class Individual
+    public class Individual : Beneficiary
     {
         public string IndividualName { get; set; }
         public string IndividualCPF { get; set; }
