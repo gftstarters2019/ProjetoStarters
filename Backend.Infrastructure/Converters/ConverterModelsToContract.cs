@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Backend.Infrastructure.Converters
 {
-    class ConverterModelsToContract
+    public class ConverterModelsToContract
     {
-        public Individual ConvertToIndividual(Core.Models.Individual model)
+        public IndividualDomain ConvertToIndividual(Core.Models.IndividualEntity model)
         {
-            return new Individual
+            return new IndividualDomain
             {
                 BeneficiaryId = model.BeneficiaryId,
                 IsDeleted = model.IsDeleted,
@@ -21,9 +21,9 @@ namespace Backend.Infrastructure.Converters
             };
         }
 
-        public Address ConvertToAddress(Core.Models.Address model)
+        public AddressDomain ConvertToAddress(Core.Models.AddressEntity model)
         {
-            return new Address
+            return new AddressDomain
             {
                 AddressId = model.AddressId,
                 AddressCity = model.AddressCity,
@@ -38,9 +38,9 @@ namespace Backend.Infrastructure.Converters
             };
         }
 
-        public Contract ConvertToContract(Core.Models.Contract model)
+        public ContractDomain ConvertToContract(Core.Models.ContractEntity model)
         {
-            return new Contract
+            return new ContractDomain
             {
                 ContractCategory = model.ContractCategory,
                 ContractDeleted = model.ContractDeleted,
@@ -50,9 +50,9 @@ namespace Backend.Infrastructure.Converters
             };
         }
 
-        public SignedContract ConvertToSignedContract(Core.Models.SignedContract model)
+        public SignedContractDomain ConvertToSignedContract(Core.Models.SignedContractEntity model)
         {
-            return new SignedContract
+            return new SignedContractDomain
             {
                 ContractId = model.ContractId,
                 ContractIndividualIsActive = model.ContractIndividualIsActive,
@@ -63,11 +63,11 @@ namespace Backend.Infrastructure.Converters
             };
         }
 
-        public IEnumerable<Individual> ConvertToListOfIndividuals(List<Core.Models.Individual> modelIndividuals)
+        public IEnumerable<IndividualDomain> ConvertToListOfIndividuals(List<Core.Models.IndividualEntity> modelIndividuals)
         {
             foreach (var ind in modelIndividuals)
             {
-                yield return new Individual
+                yield return new IndividualDomain
                 {
 
                     BeneficiaryId = ind.BeneficiaryId,
@@ -81,11 +81,11 @@ namespace Backend.Infrastructure.Converters
             }
         }
 
-        public IEnumerable<Pet> ConvertToListOfPets(List<Core.Models.Pet> modelPets)
+        public IEnumerable<PetDomain> ConvertToListOfPets(List<Core.Models.PetEntity> modelPets)
         {
             foreach (var pet in modelPets)
             {
-                yield return new Pet
+                yield return new PetDomain
                 {
                     BeneficiaryId = pet.BeneficiaryId,
                     IsDeleted = pet.IsDeleted,
@@ -97,11 +97,11 @@ namespace Backend.Infrastructure.Converters
             }
         }
 
-        public IEnumerable<MobileDevice> ConvertToListOfMobileDevices(List<Core.Models.MobileDevice> modelMobileDevices)
+        public IEnumerable<MobileDeviceDomain> ConvertToListOfMobileDevices(List<Core.Models.MobileDeviceEntity> modelMobileDevices)
         {
             foreach (var mb in modelMobileDevices)
             {
-                yield return new MobileDevice
+                yield return new MobileDeviceDomain
                 {
                     BeneficiaryId = mb.BeneficiaryId,
                     IsDeleted = mb.IsDeleted,
@@ -115,11 +115,11 @@ namespace Backend.Infrastructure.Converters
             }
         }
 
-        public IEnumerable<Realty> ConvertToListOfRealties(List<Core.Models.Realty> modelRealties)
+        public IEnumerable<RealtyDomain> ConvertToListOfRealties(List<Core.Models.RealtyEntity> modelRealties)
         {
             foreach (var real in modelRealties)
             {
-                yield return new Realty
+                yield return new RealtyDomain
                 {
                     BeneficiaryId = real.BeneficiaryId,
                     IsDeleted = real.IsDeleted,
@@ -132,11 +132,11 @@ namespace Backend.Infrastructure.Converters
             }
         }
 
-        public IEnumerable<Vehicle> ConvertToListOfVehicles(List<Core.Models.Vehicle> modelVehicles)
+        public IEnumerable<VehicleDomain> ConvertToListOfVehicles(List<Core.Models.VehicleEntity> modelVehicles)
         {
             foreach (var ve in modelVehicles)
             {
-                yield return new Vehicle
+                yield return new VehicleDomain
                 {
                     BeneficiaryId = ve.BeneficiaryId,
                     IsDeleted = ve.IsDeleted,
