@@ -55,7 +55,9 @@ namespace ContractHolder.WebAPI
             
             services.AddScoped<IRepository<SignedContract>, SignedContractRepository>();
 
-            services.AddScoped<IContractHolderValidation, ContractHolderValidator>();
+            services.AddScoped<IContractHolderValidator, ContractHolderValidator>();
+
+            services.AddScoped<IDateValidator, DateValidator>();
 
             services.AddScoped<IIndividualValidator, IndividualValidator>();
 
