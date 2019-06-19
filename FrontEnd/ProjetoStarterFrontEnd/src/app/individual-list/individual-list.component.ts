@@ -21,6 +21,7 @@ export class IndividualListComponent implements OnInit {
   paginationPageSize;
   gridOptions: GridOptions;
   load_failure: boolean;
+  contractdata: any[];
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
 
@@ -28,23 +29,33 @@ export class IndividualListComponent implements OnInit {
     this.setup_gridData();
     this.setup_gridOptions();
     this.paginationPageSize = 50;
+
+    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
+      this.contractdata = data
+    });
   }
 
   private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
-    }
-  
+  }
+
   private handle_deleteUser(data: any) {
     console.log(data);
     const id = data.beneficiaryId;
     console.log(id);
-    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
+    let show: boolean = data.isActive;
+    if(show == false){
+      this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
+    }
+    else{
+      this.openSnackBar("Contract is active, cannot delete");
+    }
   }
-    
+
   openSnackBar(message: string): void {
     this._snackBar.open(message, '', {
       duration: 5000,
-      
+
     });
   }
 
@@ -93,7 +104,7 @@ export class IndividualListComponent implements OnInit {
           filter: true,
           cellRenderer: (data) => {
             return data.value ? (new Date(data.value)).toLocaleDateString() : '';
-          }, 
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -131,6 +142,6 @@ export class IndividualListComponent implements OnInit {
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-   
+
   }
 }
