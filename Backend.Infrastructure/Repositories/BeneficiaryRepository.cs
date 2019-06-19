@@ -105,5 +105,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        Beneficiary IRepository<Beneficiary>.Add(Beneficiary t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

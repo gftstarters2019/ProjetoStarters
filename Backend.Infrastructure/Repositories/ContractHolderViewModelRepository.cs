@@ -345,5 +345,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        ContractHolderViewModel IRepository<ContractHolderViewModel>.Add(ContractHolderViewModel t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

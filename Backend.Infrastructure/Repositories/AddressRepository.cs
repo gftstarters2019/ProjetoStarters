@@ -66,5 +66,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        Address IRepository<Address>.Add(Address t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

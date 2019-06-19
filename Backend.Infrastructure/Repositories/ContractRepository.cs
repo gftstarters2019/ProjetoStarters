@@ -70,5 +70,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        Contract IRepository<Contract>.Add(Contract t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
