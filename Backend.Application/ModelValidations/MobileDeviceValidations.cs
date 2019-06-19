@@ -12,7 +12,7 @@ namespace Backend.Application.ModelValidations
         /// </summary>
         /// <param name="mobileDevice">Mobile Device to be verified</param>
         /// <returns>If Mobile Device is valid</returns>
-        public static bool MobileDeviceIsValid(MobileDevice mobileDevice)
+        public static bool MobileDeviceIsValid(MobileDeviceEntity mobileDevice)
         {
             if (!ValidationsHelper.DateIsValid(mobileDevice.MobileDeviceManufactoringYear))
                 return false;

@@ -1,10 +1,9 @@
 ﻿using Backend.Application.ViewModels;
-using Backend.Core.Enums;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Core.Domains;
+using Backend.Services.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Contract.WebAPI.Controllers
 {
@@ -15,21 +14,14 @@ namespace Contract.WebAPI.Controllers
     [ApiController]
     public class ContractController : ControllerBase
     {
-        private readonly IRepository<Backend.Core.Models.Contract> _contractRepository;
-        private readonly IRepository<Backend.Core.Models.SignedContract> _signedContractRepository;
-
-        private readonly IRepository<ContractViewModel> _contractViewModelRepository;
+        private readonly IService<CompleteContractDomain> _contractService;
 
         /// <summary>
         /// ContractController constructor
         /// </summary>
-        public ContractController(IRepository<Backend.Core.Models.Contract> contractRepository,
-                                  IRepository<Backend.Core.Models.SignedContract> signedContractRepository,
-                                  IRepository<ContractViewModel> contractViewModelRepository)
+        public ContractController(IService<CompleteContractDomain> contractService)
         {
-            _contractRepository = contractRepository;
-            _signedContractRepository = signedContractRepository;
-            _contractViewModelRepository = contractViewModelRepository;
+            _contractService = contractService;
         }
 
         /// <summary>
@@ -39,7 +31,7 @@ namespace Contract.WebAPI.Controllers
         [HttpGet]
         public IActionResult Contracts()
         {
-            return Ok(_contractViewModelRepository.Get());
+            return Ok(_contractService.GetAll());
         }
 
         /// <summary>
@@ -89,7 +81,7 @@ namespace Contract.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Contract(Guid id)
         {
-            var obj = _contractRepository.Find(id);
+            var obj = _contractService.Get(id);
             return Ok(obj);
         }
 
@@ -116,7 +108,7 @@ namespace Contract.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContract(Guid id, [FromBody] ContractViewModel contractViewModel)
         {
-            var updatedContract = _contractViewModelRepository.Update(id, contractViewModel);
+            var updatedContract = _contractService.Update(id, new CompleteContractDomain());
             if (updatedContract == null)
                 return StatusCode(403);
             return Ok(updatedContract);
@@ -130,36 +122,9 @@ namespace Contract.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteContract(Guid id)
         {
-            if (_signedContractRepository.Get()
-                .Where(sc => sc.ContractIndividualIsActive && sc.ContractId == id).ToList().Count > 0)
-                return Forbid();
-
-            var contract = _contractRepository.Find(id);
-
-            if (contract != null)
-            {
-                contract.ContractDeleted = !contract.ContractDeleted;
-                return Ok(_contractRepository.Update(id, contract));
-            }
-
-            return NotFound(contract);
+            if (_contractService.Delete(id) != null)
+                Ok();
+            return StatusCode(403);
         }
-
-        #region Validations
-        /// <summary>
-        /// Verifies if Contract is valid
-        /// </summary>
-        /// <param name="contract">Contract to be verified</param>
-        /// <returns>If Contract is valid</returns>
-        public static bool ContractIsValid(Backend.Core.Models.Contract contract)
-        {
-            if (!Enum.IsDefined(typeof(ContractType), contract.ContractType) || !Enum.IsDefined(typeof(ContractCategory), contract.ContractCategory))
-                return false;
-            if (contract.ContractExpiryDate < DateTime.Now.Date)
-                return false;
-
-            return true;
-        }
-        #endregion Validations
     }
 }

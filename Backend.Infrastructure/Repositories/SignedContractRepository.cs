@@ -8,16 +8,19 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class SignedContractRepository : IRepository<SignedContract>
+    public class SignedContractRepository : IRepository<SignedContractEntity>
     {
         private readonly ConfigurationContext _db;
+        private readonly IRepository<ContractEntity> _contractRepository;
 
-        public SignedContractRepository(ConfigurationContext db)
+        public SignedContractRepository(ConfigurationContext db,
+                                        IRepository<ContractEntity> contractRepository)
         {
             _db = db;
+            _contractRepository = contractRepository;
         }
 
-        public SignedContract Add(SignedContract signedContract)
+        public SignedContractEntity Add(SignedContractEntity signedContract)
         {
             var signedContractContractHolder = _db
                                                .Individuals
@@ -31,12 +34,14 @@ namespace Backend.Infrastructure.Repositories
             return _db.SignedContracts.Add(signedContract).Entity;
         }
 
-        public SignedContract Find(Guid id)
+        public SignedContractEntity Find(Guid id)
         {
-            throw new NotImplementedException();
+            var signedContract = _db.SignedContracts.FirstOrDefault(sc => sc.ContractId == id);
+            signedContract.SignedContractContract = _contractRepository.Find(signedContract.ContractId);
+            return signedContract;
         }
 
-        public IEnumerable<SignedContract> Get() => _db
+        public IEnumerable<SignedContractEntity> Get() => _db
             .SignedContracts
             .Where(sc => sc.ContractIndividualIsActive)
             .ToList();
@@ -48,12 +53,22 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
-        public SignedContract Update(Guid id, SignedContract t)
+        public SignedContractEntity Update(Guid id, SignedContractEntity signedContract)
         {
-            throw new NotImplementedException();
+            if (signedContract != null)
+            {
+                var signedContractToUpdate = Find(id);
+                if (signedContractToUpdate != null)
+                {
+                    signedContractToUpdate.ContractIndividualIsActive = signedContract.ContractIndividualIsActive;
+                    signedContractToUpdate.IndividualId = signedContract.IndividualId;
+                    return _db.SignedContracts.Update(signedContractToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

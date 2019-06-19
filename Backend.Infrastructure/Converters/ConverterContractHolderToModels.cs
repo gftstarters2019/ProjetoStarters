@@ -7,9 +7,9 @@ namespace Backend.Infrastructure.Converters
 {
     public class ConverterContractHolderToModels
     {
-        public Core.Models.Individual ConvertToIndividual(Individual domain)
+        public Core.Models.IndividualEntity ConvertToIndividual(IndividualDomain domain)
         {
-            return new Core.Models.Individual
+            return new Core.Models.IndividualEntity
             {
                 BeneficiaryId = domain.BeneficiaryId,
                 IsDeleted = domain.IsDeleted,
@@ -21,11 +21,11 @@ namespace Backend.Infrastructure.Converters
             };
         }
 
-        public IEnumerable<Core.Models.Address> ConvertToListOfAddresses(List<Address> domainAdresses)
+        public IEnumerable<Core.Models.AddressEntity> ConvertToListOfAddresses(List<AddressDomain> domainAdresses)
         {
             foreach (var ad in domainAdresses)
             {
-                yield return new Core.Models.Address
+                yield return new Core.Models.AddressEntity
                 {
 
                     AddressId = ad.AddressId,
@@ -42,7 +42,7 @@ namespace Backend.Infrastructure.Converters
             }
         }
 
-        public IEnumerable<Core.Models.Telephone> ConvertToListOfTelephones(List<Telephone> domainTelephones)
+        public IEnumerable<Core.Models.Telephone> ConvertToListOfTelephones(List<TelephoneDomain> domainTelephones)
         {
             foreach (var tel in domainTelephones)
             {

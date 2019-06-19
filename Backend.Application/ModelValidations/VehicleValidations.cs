@@ -7,7 +7,7 @@ namespace Backend.Application.ModelValidations
 {
     public static class VehicleValidations
     {
-        public static bool VehicleIsValid(Vehicle vehicle)
+        public static bool VehicleIsValid(VehicleEntity vehicle)
         {
             if (!ValidationsHelper.DateIsValid(vehicle.VehicleManufactoringYear))
                 return false;

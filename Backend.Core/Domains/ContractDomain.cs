@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Backend.Core.Domains
 {
-    public class Contract
+    public class ContractDomain
     {
         public Guid ContractId { get; set; }
         public ContractType ContractType { get; set; }

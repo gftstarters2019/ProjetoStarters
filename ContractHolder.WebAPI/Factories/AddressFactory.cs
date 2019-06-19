@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace ContractHolder.WebAPI.Factories
 {
-    public class AddressFactory : IFactoryList<Address>
+    public class AddressFactory : IFactoryList<AddressEntity>
     {
-        private List<Address> addresses = null;
-        private Address address = null;
+        private List<AddressEntity> addresses = null;
+        private AddressEntity address = null;
 
         public AddressFactory()
         {
-            addresses = new List<Address>();
+            addresses = new List<AddressEntity>();
         }
 
-        public List<Address> CreateList(List<Address> vm_addresses)
+        public List<AddressEntity> CreateList(List<AddressEntity> vm_addresses)
         {
-            addresses = new List<Address>();
+            addresses = new List<AddressEntity>();
             foreach (var ad in vm_addresses)
             {
-                address = new Address();
+                address = new AddressEntity();
 
                 address.AddressId = Guid.NewGuid();
                 address.AddressCity = ad.AddressCity;

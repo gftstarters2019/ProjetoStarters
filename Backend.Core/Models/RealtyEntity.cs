@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Core.Models
 {
-    public class Realty : Beneficiary
+    public class RealtyEntity : Beneficiary
     {
         [MaxLength(50)]
         public string RealtyMunicipalRegistration { get; set; }
@@ -12,6 +12,6 @@ namespace Backend.Core.Models
         public double RealtySaleValue { get; set; }
         public double RealtyMarketValue { get; set; }
         [NotMapped]
-        public Address Address { get; set; }
+        public AddressEntity Address { get; set; }
     }
 }

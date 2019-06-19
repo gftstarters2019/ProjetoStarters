@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class IndividualRepository : IRepository<Individual>
+    public class IndividualRepository : IRepository<IndividualEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -17,13 +17,14 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Individual Add(Individual individual)
+        public IndividualEntity Add(IndividualEntity individual)
         {
-            if (individual != null) {
+            if (individual != null)
+            {
                 // Verifies if CPF is already in DB of Individual not deleted
                 if (_db.Individuals
                         .Where(ind => ind.IndividualCPF == individual.IndividualCPF && !ind.IsDeleted)
-                        .Count() > 0)
+                        .Any())
                     return null;
 
                 individual.IsDeleted = false;
@@ -33,12 +34,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public Individual Find(Guid id)
+        public IndividualEntity Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Individual> Get() => _db
+        public IEnumerable<IndividualEntity> Get() => _db
             .Individuals
             .Where(i => !i.IsDeleted)
             .ToList();
@@ -50,12 +51,33 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
-        public Individual Update(Guid id, Individual t)
+        public IndividualEntity Update(Guid id, IndividualEntity individual)
         {
-            throw new NotImplementedException();
+            if (individual != null)
+            {
+                var individualToUpdate = Find(id);
+                if (individualToUpdate != null)
+                {
+                    // Verifies if CPF is already in DB of Individual not deleted
+                    if (_db.Individuals
+                            .Where(ind => ind.IndividualCPF == individual.IndividualCPF && !ind.IsDeleted)
+                            .Any())
+                        return null;
+
+                    individualToUpdate.IndividualBirthdate = individual.IndividualBirthdate;
+                    individualToUpdate.IndividualCPF = individual.IndividualCPF;
+                    individualToUpdate.IndividualEmail = individual.IndividualEmail;
+                    individualToUpdate.IndividualName = individual.IndividualName;
+                    individualToUpdate.IndividualRG = individual.IndividualRG;
+                    individualToUpdate.IsDeleted = individual.IsDeleted;
+
+                    return _db.Individuals.Update(individualToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using Backend.Core.Enums;
 using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Backend.Core.Models
+namespace Backend.Core.Domains
 {
-    public class Pet : Beneficiary
+    public class PetDomain : BeneficiaryDomain
     {
-        [MaxLength(40)]
         public string PetName { get; set; }
         public PetSpecies PetSpecies { get; set; }
-        [MaxLength(30)]
         public string PetBreed { get; set; }
         public DateTime PetBirthdate { get; set; }
     }

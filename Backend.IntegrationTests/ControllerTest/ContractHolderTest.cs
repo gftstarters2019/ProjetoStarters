@@ -22,7 +22,7 @@ namespace IntegrationTests
 
             // Act
             var response = await client.GetAsync($"{url}");
-            var apiResponse = JsonConvert.DeserializeObject<List<Individual>>(await response.Content.ReadAsStringAsync());
+            var apiResponse = JsonConvert.DeserializeObject<List<IndividualEntity>>(await response.Content.ReadAsStringAsync());
 
             // Assert
             Assert.IsNotNull(apiResponse);
@@ -33,7 +33,7 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            Individual individual = new Individual();
+            IndividualEntity individual = new IndividualEntity();
             individual.IndividualName = "Elwing";
             individual.IndividualEmail = "elwing@email.com";
             individual.IndividualCPF = "36449769025";
@@ -46,14 +46,14 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var postResponse = await client.PostAsync($"{url}", contentString);
-            var postApiResponse = JsonConvert.DeserializeObject<Individual>(await postResponse.Content.ReadAsStringAsync());
+            var postApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await postResponse.Content.ReadAsStringAsync());
 
             var getResponse = await client.GetAsync($"{url}/{postApiResponse.BeneficiaryId}");
-            var getApiResponse = JsonConvert.DeserializeObject<Individual>(await getResponse.Content.ReadAsStringAsync());
+            var getApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await getResponse.Content.ReadAsStringAsync());
 
             //assert
             Assert.IsNotNull(postApiResponse);
-            Assert.IsInstanceOf<Individual>(postApiResponse);
+            Assert.IsInstanceOf<IndividualEntity>(postApiResponse);
             //Assert.AreEqual(postApiResponse.BeneficiaryId, getApiResponse.BeneficiaryId);
             Assert.AreEqual(individual.IndividualName, getApiResponse.IndividualName);
             Assert.AreEqual(individual.IndividualEmail, getApiResponse.IndividualEmail);
@@ -67,7 +67,7 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            Individual individual = new Individual();
+            IndividualEntity individual = new IndividualEntity();
             individual.IndividualName = "Feanor";
             individual.IndividualEmail = "feanor@email.com";
             individual.IndividualCPF = "58302207098";
@@ -80,13 +80,13 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var postResponse = await client.PostAsync($"{url}", contentString);
-            var postApiResponse = JsonConvert.DeserializeObject<Individual>(await postResponse.Content.ReadAsStringAsync());
+            var postApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await postResponse.Content.ReadAsStringAsync());
 
             var response = await client.GetAsync($"{url}/{postApiResponse.BeneficiaryId}");
-            var apiResponse = JsonConvert.DeserializeObject<Individual>(await response.Content.ReadAsStringAsync());
+            var apiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await response.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<Individual>(apiResponse);
+            Assert.IsInstanceOf<IndividualEntity>(apiResponse);
             
             Assert.AreEqual(individual.IndividualName, apiResponse.IndividualName);
             Assert.AreEqual(individual.IndividualEmail, apiResponse.IndividualEmail);
@@ -100,7 +100,7 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            Individual individual = new Individual();
+            IndividualEntity individual = new IndividualEntity();
             individual.IndividualName = "Earendil";
             individual.IndividualEmail = "earendil@email.com";
             individual.IndividualCPF = "35895879039";
@@ -115,7 +115,7 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var postResponse = await client.PostAsync($"{url}", contentString);
-            var postApiResponse = JsonConvert.DeserializeObject<Individual>(await postResponse.Content.ReadAsStringAsync());
+            var postApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await postResponse.Content.ReadAsStringAsync());
 
             postApiResponse.IndividualName = "Thorondor";
             postApiResponse.IndividualEmail = "thorondor@gmail.com";
@@ -127,13 +127,13 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var putResponse = await client.PutAsync($"{url}/{postApiResponse.BeneficiaryId}", contentString);
-            var putApiResponse = JsonConvert.DeserializeObject<Individual>(await putResponse.Content.ReadAsStringAsync());
+            var putApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await putResponse.Content.ReadAsStringAsync());
 
             var getResponse = await client.GetAsync($"{url}/{postApiResponse.BeneficiaryId}");
-            var getApiResponse = JsonConvert.DeserializeObject<Individual>(await getResponse.Content.ReadAsStringAsync());
+            var getApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await getResponse.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<Individual>(getApiResponse);
+            Assert.IsInstanceOf<IndividualEntity>(getApiResponse);
             Assert.AreEqual(putApiResponse.IndividualName, getApiResponse.IndividualName);
             Assert.AreEqual(putApiResponse.IndividualEmail, getApiResponse.IndividualEmail);
             Assert.AreEqual(putApiResponse.IndividualCPF, getApiResponse.IndividualCPF);
@@ -146,7 +146,7 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            Individual individual = new Individual();
+            IndividualEntity individual = new IndividualEntity();
             individual.IndividualName = "Manwe";
             individual.IndividualEmail = "manwe@email.com";
             individual.IndividualCPF = "83094604064";
@@ -159,16 +159,16 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var postResponse = await client.PostAsync($"{url}", contentString);
-            var postApiResponse = JsonConvert.DeserializeObject<Individual>(await postResponse.Content.ReadAsStringAsync());
+            var postApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await postResponse.Content.ReadAsStringAsync());
 
             var getResponse = await client.GetAsync($"{url}/{postApiResponse.BeneficiaryId}");
-            var getApiResponse = JsonConvert.DeserializeObject<Individual>(await getResponse.Content.ReadAsStringAsync());
+            var getApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await getResponse.Content.ReadAsStringAsync());
 
             var deleteResponse = await client.DeleteAsync($"{url}/{getApiResponse.BeneficiaryId}");
-            var deleteApiResponse = JsonConvert.DeserializeObject<Individual>(await deleteResponse.Content.ReadAsStringAsync());
+            var deleteApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await deleteResponse.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<Individual>(deleteApiResponse);
+            Assert.IsInstanceOf<IndividualEntity>(deleteApiResponse);
             Assert.AreEqual(individual.IndividualName,  deleteApiResponse.IndividualName);
             Assert.AreEqual(individual.IndividualEmail, deleteApiResponse.IndividualEmail);
             Assert.AreEqual(individual.IndividualCPF, deleteApiResponse.IndividualCPF);

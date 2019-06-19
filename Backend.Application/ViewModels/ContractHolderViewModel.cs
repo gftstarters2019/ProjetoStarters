@@ -8,7 +8,7 @@ namespace Backend.Application.ViewModels
     public class ContractHolderViewModel
     {
         public ContractHolderViewModel(){
-            individualAddresses = new List<Address>();
+            individualAddresses = new List<AddressEntity>();
             individualTelephones = new List<Telephone>();
         }
 
@@ -25,6 +25,6 @@ namespace Backend.Application.ViewModels
         public bool isDeleted { get; set; }
 
         public List<Telephone> individualTelephones { get; set; }
-        public List<Address> individualAddresses { get; set; }
+        public List<AddressEntity> individualAddresses { get; set; }
     }
 }

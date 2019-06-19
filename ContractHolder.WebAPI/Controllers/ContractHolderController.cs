@@ -18,16 +18,16 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class ContractHolderController : ControllerBase
     {
-        private readonly IRepository<Individual> _contractHolderRepository;
+        private readonly IRepository<IndividualEntity> _contractHolderRepository;
         private readonly IRepository<ContractHolderViewModel> _contractHolderViewModelRepository;
-        private readonly IRepository<SignedContract> _contractsRepository;
+        private readonly IRepository<SignedContractEntity> _contractsRepository;
 
         /// <summary>
         /// ContractHolderController constructor
         /// </summary>
-        public ContractHolderController(IRepository<Individual> contractHolderRepository,
+        public ContractHolderController(IRepository<IndividualEntity> contractHolderRepository,
                                         IRepository<ContractHolderViewModel> contractHolderViewModelRepository,
-                                        IRepository<SignedContract> contractsRepository)
+                                        IRepository<SignedContractEntity> contractsRepository)
         {
             _contractHolderRepository = contractHolderRepository;
             
@@ -71,7 +71,7 @@ namespace ContractHolder.WebAPI.Controllers
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel vm)
         {
             //if (!_contractHolderViewModelRepository.Add(vm))
-                return StatusCode(403);
+            //    return StatusCode(403);
 
             //SendWelcomeEmail(vm);
             return Ok(vm);
@@ -123,7 +123,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// </summary>
         /// <param name="individual"></param>
         /// <returns></returns>
-        public static bool ContractHolderIsValid(Individual individual)
+        public static bool ContractHolderIsValid(IndividualEntity individual)
         {
             if (!CPFIsValid(individual.IndividualCPF))
                 return false;

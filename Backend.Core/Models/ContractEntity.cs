@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Backend.Core.Models
 {
-    public class Contract
+    public class ContractEntity
     {
         public Guid ContractId { get; set; }
         public ContractType ContractType { get; set; }

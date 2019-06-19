@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class VehicleRepository : IRepository<Vehicle>
+    public class VehicleRepository : IRepository<VehicleEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -17,7 +17,7 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Vehicle Add(Vehicle vehicle)
+        public VehicleEntity Add(VehicleEntity vehicle)
         {
             if (vehicle != null)
             {
@@ -36,12 +36,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public Vehicle Find(Guid id)
+        public VehicleEntity Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Vehicle> Get() => _db
+        public IEnumerable<VehicleEntity> Get() => _db
             .Vehicles
             .Where(i => !i.IsDeleted)
             .ToList();
@@ -53,12 +53,38 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
-        public Vehicle Update(Guid id, Vehicle t)
+        public VehicleEntity Update(Guid id, VehicleEntity vehicle)
         {
-            throw new NotImplementedException();
+            if (vehicle != null)
+            {
+                // Verifies if Chassis Number is already in DB
+                if (_db.Vehicles
+                        .Where(vec => vec.VehicleChassisNumber == vehicle.VehicleChassisNumber
+                                      && !vec.IsDeleted)
+                        .Any())
+                    return null;
+
+                var vehicleToUpdate = Find(id);
+                if(vehicleToUpdate != null)
+                {
+                    vehicleToUpdate.IsDeleted = vehicle.IsDeleted;
+                    vehicleToUpdate.VehicleBrand = vehicle.VehicleBrand;
+                    vehicleToUpdate.VehicleChassisNumber = vehicle.VehicleChassisNumber;
+                    vehicleToUpdate.VehicleColor = vehicle.VehicleColor;
+                    vehicleToUpdate.VehicleCurrentFipeValue = vehicle.VehicleCurrentFipeValue;
+                    vehicleToUpdate.VehicleCurrentMileage = vehicle.VehicleCurrentMileage;
+                    vehicleToUpdate.VehicleDoneInspection = vehicle.VehicleDoneInspection;
+                    vehicleToUpdate.VehicleManufactoringYear = vehicle.VehicleManufactoringYear;
+                    vehicleToUpdate.VehicleModel = vehicle.VehicleModel;
+                    vehicleToUpdate.VehicleModelYear = vehicle.VehicleModelYear;
+
+                    return _db.Vehicles.Update(vehicleToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

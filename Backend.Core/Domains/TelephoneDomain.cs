@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Backend.Core.Domains
 {
-    public class Telephone
+    public class TelephoneDomain
     {
         public Guid TelephoneId { get; set; }
         public string TelephoneNumber { get; set; }

@@ -9,22 +9,22 @@ using System.Text.RegularExpressions;
 
 namespace Backend.Application.Factories
 {
-    public class IndividualFactory : IFactory<Individual, ContractHolderViewModel>
+    public class IndividualFactory : IFactory<IndividualEntity, ContractHolderViewModel>
     {
-        private Individual individual;
+        private IndividualEntity individual;
 
         /// <summary>
         /// Método para crear um individuo
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public Individual Create(ContractHolderViewModel vm)
+        public IndividualEntity Create(ContractHolderViewModel vm)
         {
             individual = null;
 
             if (IndividualIsValid(vm))
             {
-                individual = new Individual
+                individual = new IndividualEntity
                 {
                     BeneficiaryId = Guid.NewGuid(),
                     IsDeleted = false,
