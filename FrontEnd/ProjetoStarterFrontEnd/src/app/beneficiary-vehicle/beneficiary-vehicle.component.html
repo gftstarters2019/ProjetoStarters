@@ -15,9 +15,17 @@
           <mat-form-field style="width: 30%;">
               <mat-label>Color</mat-label>
               <mat-select name="animalSpecies" formControlName="vehicleColor" required>
-                  <mat-option *ngFor="let color of colors" [value]="color.value" >
-                      {{color.name}}
-                  </mat-option>
+                  
+                  <mat-option [value]="0">White</mat-option>
+                  <mat-option [value]="1">Silver</mat-option>
+                  <mat-option [value]="2">Black</mat-option>
+                  <mat-option [value]="3">Gray</mat-option>
+                  <mat-option [value]="4">Red</mat-option>
+                  <mat-option [value]="5">Blue</mat-option>
+                  <mat-option [value]="6">Brown</mat-option>
+                  <mat-option [value]="7">Yellow</mat-option>
+                  <mat-option [value]="8">Green</mat-option>
+                  <mat-option [value]="9">Other</mat-option>
               </mat-select>
           </mat-form-field>
       </div>

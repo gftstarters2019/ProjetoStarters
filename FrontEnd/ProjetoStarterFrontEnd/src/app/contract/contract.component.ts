@@ -7,7 +7,9 @@ import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material';
 import { Location } from '@angular/common';
+import {map, startWith} from 'rxjs/operators';
 import { GenericValidator } from '../Validations/GenericValidator';
+import { Data } from '@angular/router';
 
 export interface Type {
   value: number;
@@ -40,11 +42,16 @@ export class ContractComponent implements OnInit {
   detailCellRendererParams;
   contractform: FormGroup;
 
+  contractHolderId = new FormControl();
+  filteredOptions: Observable<any[]>;
+  myControl = new FormControl();
+ 
+
   gridApi;
   gridColumApi;
   gridOption: GridOptions;
   load_failure: boolean;
-  holders: Holder[];
+  holders: Holder [] ;   
 
   message: number = 0;
 
@@ -53,21 +60,21 @@ export class ContractComponent implements OnInit {
   signedContractId: any = null;
 
   contractTypes: Type[] = [
-    { value: 0, viewValue: 'Contract Health Plan' },
-    { value: 1, viewValue: 'Contract Animal Health Plan' },
-    { value: 2, viewValue: 'Contract Dental Plan' },
-    { value: 3, viewValue: 'Contract Life Insurance Plan' },
-    { value: 4, viewValue: 'Contract Real State Insurance' },
-    { value: 5, viewValue: 'Contract Vehicle Insurance' },
-    { value: 6, viewValue: 'Contract Mobile Device Insurance' },
+    { value: 0, viewValue: ' Health Plan' },
+    { value: 1, viewValue: ' Animal Health Plan' },
+    { value: 2, viewValue: ' Dental Plan' },
+    { value: 3, viewValue: ' Life Insurance Plan' },
+    { value: 4, viewValue: ' Real State Insurance' },
+    { value: 5, viewValue: ' Vehicle Insurance' },
+    { value: 6, viewValue: ' Mobile Device Insurance' },
   ];
   contractCategories: Category[] = [
-    { value: 0, viewValue: 'Contract Iron' },
-    { value: 1, viewValue: 'Contract Bronze' },
-    { value: 2, viewValue: 'Contract Silver' },
-    { value: 3, viewValue: 'Contract Gold' },
-    { value: 4, viewValue: 'Contract Platinum' },
-    { value: 5, viewValue: 'Contract Diamond' },
+    { value: 0, viewValue: ' Iron' },
+    { value: 1, viewValue: ' Bronze' },
+    { value: 2, viewValue: ' Silver' },
+    { value: 3, viewValue: ' Gold' },
+    { value: 4, viewValue: ' Platinum' },
+    { value: 5, viewValue: ' Diamond' },
   ];
 
   constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
@@ -78,10 +85,24 @@ export class ContractComponent implements OnInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
 
-    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
+    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe
+    ((data: any[]) => {
       this.holders = data;
+      debugger;
+      console.log(data);
     });
+    // debugger;
+    this.filteredOptions = this.contractform.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+      );
   }
+  private _filter(value: Holder ): Holder[] {
+    const filterValue = value.individualName;
+    return this.holders.filter(holder => holder.individualName.includes(filterValue));
+  }
+
 
   private setup_form() {
     this.contractform = this.fb.group({
@@ -262,7 +283,7 @@ export class ContractComponent implements OnInit {
     debugger;
     }
     else {
-      this.http.put('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+      this.http.put(`https://contractwebapi.azurewebsites.net/api/Contract/${this.signedContractId}`, form, httpOptions)
       .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
       debugger;
     }
@@ -275,11 +296,13 @@ export class ContractComponent implements OnInit {
   private handle_editUser(data: any) {
     
     this.signedContractId = data.signedContractId;
+    // this.contractform.patchValue(data)
     
     
     
     let i;
     if(data.type==0 || data.type==2 || data.type==3){
+      debugger;
       this.cType = data.type;
       let individualControl = this.contractform.controls.auxBeneficiaries as FormArray;
       for(i = 0; i < individualControl.length; i++){
@@ -299,6 +322,9 @@ export class ContractComponent implements OnInit {
           for(i =0; i <data.individuals.length; i++)
           {
             individualControl.push(this.fb.group(data.individuals[i]));
+            debugger;
+            
+            console.log(data.individuals[i]);
           }
         }  
       }
@@ -307,10 +333,10 @@ export class ContractComponent implements OnInit {
        
     if(data.type==1){
       this.cType = data.type;
-
+      let j;
       let petControl =  this.contractform.controls.auxBeneficiaries as FormArray;
-      for(i = 0; i < petControl.length; i++){
-        petControl.removeAt(i);
+      for(j = 0; j < petControl.length; j++){
+        petControl.removeAt(j);
       }
       petControl.controls.pop();
       this.contractform.addControl('pets', this.fb.array([]));
@@ -318,14 +344,16 @@ export class ContractComponent implements OnInit {
       this.contractform.removeControl('realties');
       this.contractform.removeControl('vehicles');
       this.contractform.removeControl('mobileDevices');
-      this.contractform.patchValue(data)
+       this.contractform.patchValue(data)
       const hasMaxPets = petControl.length >= 5;
       if (!hasMaxPets) {
         if (data.pets != ''){
-          for(i =0; i <data.pets.length; i++)
+          for(j =0; j <data.pets.length; j++)
           {
-            petControl.push(this.fb.group(data.pets[i]));
-            console.log(data.pets[i]);
+            petControl.push(this.fb.group(data.pets[j]));
+            debugger;
+            
+            console.log(data.pets[j]);
           }
           
         }  
@@ -333,6 +361,7 @@ export class ContractComponent implements OnInit {
     }
     
     if(data.type==4){
+      debugger;
       this.cType = data.type;
       let realtyControl =  this.contractform.controls.auxBeneficiaries as FormArray;
       for(i = 0; i < realtyControl.length; i++){
@@ -358,6 +387,7 @@ export class ContractComponent implements OnInit {
     }
     
     if(data.type==5){
+      debugger;
       this.cType = data.type;
       let vehicleControl =  this.contractform.controls.auxBeneficiaries as FormArray;
       for(i = 0; i < vehicleControl.length; i++){
@@ -383,6 +413,7 @@ export class ContractComponent implements OnInit {
     }
     
     if(data.type==6){
+      debugger;
       this.cType = data.type;
       let mobileDeviceControl =  this.contractform.controls.auxBeneficiaries as FormArray;
       for(i = 0; i < mobileDeviceControl.length; i++){

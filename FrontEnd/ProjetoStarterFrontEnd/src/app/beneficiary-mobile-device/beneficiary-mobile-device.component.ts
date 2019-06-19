@@ -20,11 +20,7 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
 
   @Output() messageMobileEvent = new EventEmitter<any>();
 
-  mobileType: MobileType[] = [
-    {value: '0', name: 'Smartphone'},
-    {value: '1', name: 'Tablet'},
-    {value: '2', name: 'Laptop'}
-  ];
+
   
   mobileDeviceCreateForm= this.formBuilder.group({
     mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),

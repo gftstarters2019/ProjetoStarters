@@ -29,9 +29,9 @@
         <mat-form-field style="width: 30%;">
           <mat-label>Type</mat-label>
           <mat-select name="mobileDeviceType" formControlName="mobileDeviceType" required >
-              <mat-option *ngFor="let type of mobileType" [value]="type.value" >
-                  {{type.name}}
-              </mat-option>
+                  <mat-option [value]="0">Smartphone</mat-option>
+                  <mat-option [value]="1">Tablet</mat-option>
+                  <mat-option [value]="2">Laptop</mat-option>
           </mat-select>
       </mat-form-field>
 
