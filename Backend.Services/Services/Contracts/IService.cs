@@ -1,7 +1,11 @@
-﻿namespace Backend.Services.Services.Contracts
+﻿using System;
+
+namespace Backend.Services.Services.Contracts
 {
     public interface IService<T>
     {
-        bool Save(T modelToAddToDB);
+        T Save(T modelToAddToDB);
+
+        T Update(Guid id, T modelToUpdate);
     }
 }
