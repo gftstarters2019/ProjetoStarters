@@ -17,9 +17,18 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(SignedContract t)
+        public SignedContract Add(SignedContract signedContract)
         {
-            throw new NotImplementedException();
+            var signedContractContractHolder = _db
+                                               .Individuals
+                                               .Where(ind => ind.BeneficiaryId == signedContract.IndividualId)
+                                               .FirstOrDefault();
+            if (signedContractContractHolder == null)
+                return null;
+
+            signedContract.SignedContractId = Guid.NewGuid();
+
+            return _db.SignedContracts.Add(signedContract).Entity;
         }
 
         public SignedContract Find(Guid id)

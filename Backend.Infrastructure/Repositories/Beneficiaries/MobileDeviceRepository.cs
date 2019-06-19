@@ -17,15 +17,23 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(MobileDevice mobile)
+        public MobileDevice Add(MobileDevice mobile)
         {
             if (mobile != null)
             {
-                _db.MobileDevices.Add(mobile);
-                if (_db.SaveChanges() == 1)
-                    return true;
+                // Verifies if Serial Number is already in DB of active MobileDevice
+                if (_db.MobileDevices
+                        .Where(mob => mob.MobileDeviceSerialNumber == mobile.MobileDeviceSerialNumber
+                                      && !mob.IsDeleted)
+                        .Any())
+                    return null;
+
+                mobile.IsDeleted = false;
+                mobile.BeneficiaryId = Guid.NewGuid();
+
+                return _db.MobileDevices.Add(mobile).Entity;
             }
-            return false;
+            return null;
         }
 
         public MobileDevice Find(Guid id)

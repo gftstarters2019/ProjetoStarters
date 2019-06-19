@@ -17,15 +17,23 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(Vehicle vehicle)
+        public Vehicle Add(Vehicle vehicle)
         {
             if (vehicle != null)
             {
-                _db.Vehicles.Add(vehicle);
-                if (_db.SaveChanges() == 1)
-                    return true;
+                // Verifies if Chassis Number is already in DB
+                if (_db.Vehicles
+                        .Where(vec => vec.VehicleChassisNumber == vehicle.VehicleChassisNumber
+                                      && !vec.IsDeleted)
+                        .Any())
+                    return null;
+
+                vehicle.IsDeleted = false;
+                vehicle.BeneficiaryId = Guid.NewGuid();
+
+                return _db.Vehicles.Add(vehicle).Entity;
             }
-            return false;
+            return null;
         }
 
         public Vehicle Find(Guid id)

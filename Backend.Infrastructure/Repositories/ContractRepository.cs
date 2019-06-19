@@ -26,17 +26,11 @@ namespace Backend.Infrastructure.Repositories
             .Contracts
             .ToList();
 
-        public bool Add(Contract contract)
+        Contract Add(Contract contract)
         {
-            if (contract != null)
-            {
-                _db.Add(contract);
-                if (_db.SaveChanges() == 1)
-                    return true;
+            contract.ContractId = Guid.NewGuid();
 
-                return false;
-            }
-            return false;
+            return _db.Contracts.Add(contract).Entity;
         }
 
         public bool Remove(Guid id)

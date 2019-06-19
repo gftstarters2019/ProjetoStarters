@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Core.Models
 {
@@ -10,5 +11,7 @@ namespace Backend.Core.Models
         public DateTime RealtyConstructionDate { get; set; }
         public double RealtySaleValue { get; set; }
         public double RealtyMarketValue { get; set; }
+        [NotMapped]
+        public Address Address { get; set; }
     }
 }
