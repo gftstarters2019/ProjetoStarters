@@ -89,7 +89,7 @@ export class ContractComponent implements OnInit {
   constructor(public dialog: MatDialog, private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
 
   confirmDialog(): void {
-    const message = `Do you really want to delete this agreement?`;
+    const message = `Do you really want to delete this contract?`;
  
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
  
