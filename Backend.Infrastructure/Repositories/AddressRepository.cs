@@ -25,17 +25,15 @@ namespace Backend.Infrastructure.Repositories
             .Addresses
             .ToList();
 
-        public bool Add(Address address)
+        public Address Add(Address address)
         {
             if (address != null)
             {
-                _db.Add(address);
-                if (_db.SaveChanges() == 1)
-                    return true;
-
-                return false;
+                address.AddressId = Guid.NewGuid();
+                return _db.Add(address).Entity;
+                
             }
-            return false;
+            return null;
         }
 
         public bool Remove(Guid id)
@@ -64,7 +62,7 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
     }
 }

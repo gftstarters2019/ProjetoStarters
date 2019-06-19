@@ -48,7 +48,7 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
         public SignedContract Update(Guid id, SignedContract t)

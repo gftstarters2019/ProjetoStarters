@@ -26,7 +26,7 @@ namespace Backend.Infrastructure.Repositories
             .Contracts
             .ToList();
 
-        Contract Add(Contract contract)
+        public Contract Add(Contract contract)
         {
             contract.ContractId = Guid.NewGuid();
 
@@ -68,7 +68,7 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
     }
 }

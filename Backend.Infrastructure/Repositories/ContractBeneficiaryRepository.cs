@@ -64,7 +64,7 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
         public ContractBeneficiary Update(Guid id, ContractBeneficiary t)
