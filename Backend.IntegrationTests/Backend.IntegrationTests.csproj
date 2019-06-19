@@ -43,6 +43,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\Contract.WebAPI\Contract.WebAPI.csproj" />
     <ProjectReference Include="..\ContractHolder.WebAPI\ContractHolder.WebAPI.csproj" />
   </ItemGroup>
 

@@ -48,12 +48,23 @@ namespace Backend.IntegrationTests
 
             services.AddScoped<IRepository<SignedContract>, SignedContractRepository>();
 
+            services.AddScoped<IRepository<Backend.Core.Models.Contract>, ContractRepository>();
+
+            services.AddScoped<IRepository<ContractViewModel>, ContractViewModelRepository>();
+
             services.AddMvc().AddJsonOptions(opt =>
             {
                 opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 opt.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             }).AddApplicationPart(Assembly.Load("ContractHolder.WebAPI"));
+
+            services.AddMvc().AddJsonOptions(opt =>
+            {
+                opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                opt.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+            }).AddApplicationPart(Assembly.Load("Contract.WebAPI"));
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
         }

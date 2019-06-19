@@ -22,25 +22,25 @@ namespace IntegrationTests
         public async Task WhenRequestGetUsingController_ThenIShouldReceiveContractHolders()
         {
 
-            // Act
+            // act
             var response = await client.GetAsync($"{url}");
             var apiResponse = JsonConvert.DeserializeObject<List<ContractHolderViewModel>>(await response.Content.ReadAsStringAsync());
 
-            // Assert
+            // assert
             Assert.IsNotNull(apiResponse);
         }
 
         [Test]
-        public async Task WhenRequestOwnerControllerUsingPost_ThenICanRequestOwnerObject()
+        public async Task WhenRequestContractHolderControllerUsingPost_ThenICanGetContractHolderObjectById()
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractHolderViewModel individual = new ContractHolderViewModel();
-            individual.individualName = "Elwing Tolkien";
-            individual.individualEmail = "elwing@email.com";
+            individual.individualName = "Emilly Rodrigues Cardoso";
+            individual.individualEmail = "EmillyRodrigues@rhyta.com";
             individual.individualCPF = CpfGenerator.GenerateCpf();
             individual.individualRG = "405589219";
-            individual.individualBirthdate = new DateTime(1980, 1, 18);
+            individual.individualBirthdate = new DateTime(1948, 10, 6);
 
             //act
             var jsonContent = JsonConvert.SerializeObject(individual);
@@ -65,13 +65,13 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task WhenRequestOwnerControllerUsingPost_ThenICanGetAnOwnerObjectById()
+        public async Task WhenRequestContractHolderControllerUsingPost_ThenICanRequestAContractHolderObjectById()
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractHolderViewModel individual = new ContractHolderViewModel();
-            individual.individualName = "Feanor Elrond";
-            individual.individualEmail = "feanor@email.com";
+            individual.individualName = "Otávio Ribeiro Lima";
+            individual.individualEmail = "OtavioRibeiroLima@rhyta.com";
             individual.individualCPF = CpfGenerator.GenerateCpf();
             individual.individualRG = "244025769";
             individual.individualBirthdate = new DateTime(1990, 10, 12);
@@ -97,13 +97,13 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task WhenRequestOwnerControllerUsingPost_ThenICanUpdateAnOwnerObjectAndReceiveThatObject()
+        public async Task WhenRequestContractHolderControllerUsingPost_ThenICanUpdateAContractHolderRegistryAndReceiveThatObject()
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractHolderViewModel individual = new ContractHolderViewModel();
-            individual.individualName = "Earendil Tolkien";
-            individual.individualEmail = "earendil@email.com";
+            individual.individualName = "Samuel Cavalcanti Martins";
+            individual.individualEmail = "SamuelCavalcantiMartins@rhyta.com";
             individual.individualCPF = CpfGenerator.GenerateCpf();
             individual.individualRG = "310291136";
             individual.individualBirthdate = new DateTime(1993, 2, 20);
@@ -117,11 +117,10 @@ namespace IntegrationTests
             var postResponse = await client.PostAsync($"{url}", contentString);
             var postApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await postResponse.Content.ReadAsStringAsync());
 
-            postApiResponse.individualName = "Thorondor Tolkien";
-            postApiResponse.individualEmail = "thorondor@gmail.com";
-            individual.individualCPF = CpfGenerator.GenerateCpf();
-            individual.individualRG = "288715524";
-            individual.individualBirthdate = new DateTime(2000, 3, 4);
+            postApiResponse.individualName = "Samuel Cavalcanti Martin";
+            postApiResponse.individualEmail = "SamuelCavalcantiMartin@rhyta.com";
+            postApiResponse.individualRG = "310291137";
+            postApiResponse.individualBirthdate = new DateTime(1993, 2, 21);
 
             jsonContent = JsonConvert.SerializeObject(postApiResponse);
             contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -143,16 +142,16 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task WhenRequestOwnerControllerUsingPostAndGet_ThenICanDeleteAnOwnerObjectById()
+        public async Task WhenRequestContractHolderControllerUsingPostAndGet_ThenICanDeleteAContractHolderObjectById()
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractHolderViewModel individual = new ContractHolderViewModel();
-            individual.individualName = "Manwe Tolkien";
-            individual.individualEmail = "manwe@email.com"; 
+            individual.individualName = "Vinicius Araujo";
+            individual.individualEmail = "ViniciusAraujo@dayrep.com"; 
             individual.individualCPF = CpfGenerator.GenerateCpf();
             individual.individualRG = "485936781";
-            individual.individualBirthdate = new DateTime(1978, 6, 1);
+            individual.individualBirthdate = new DateTime(1980, 6, 1);
 
             //act
             var jsonContent = JsonConvert.SerializeObject(individual);
