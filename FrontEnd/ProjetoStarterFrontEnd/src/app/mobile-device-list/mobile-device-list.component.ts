@@ -5,6 +5,8 @@ import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-mobile-device-list',
@@ -12,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./mobile-device-list.component.scss']
 })
 export class MobileDeviceListComponent implements OnInit {
+  public result: any;
 
   detailCellRendererParams;
   gridApi;
@@ -21,7 +24,22 @@ export class MobileDeviceListComponent implements OnInit {
   gridOptions: GridOptions;
   load_failure: boolean;
 
-  constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(public dialog: MatDialog, private http: HttpClient, private _snackBar: MatSnackBar) { }
+
+  confirmDialog(): void {
+    const message = `Are you sure you want to do this?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+    });
+  }
 
   ngOnInit() {
     this.setup_gridData();
@@ -37,7 +55,11 @@ export class MobileDeviceListComponent implements OnInit {
     console.log(data);
     const id = data.beneficiaryId;
     console.log(id);
+    this.confirmDialog();
+
+    if (this.result == true) {
     this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
+    }
   }
     
   openSnackBar(message: string): void {
