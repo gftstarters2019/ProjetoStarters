@@ -15,16 +15,28 @@ namespace Backend.Services.Services
             _completeContractRepository = completeContractRespository;
         }
 
-        public bool Save(CompleteContract modelToAddToDB)
+        public CompleteContract Save(CompleteContract completeContract)
         {
-            if (modelToAddToDB == null)
-                return false;
+            if (completeContract == null)
+                return null;
 
             /*
              * Validations
             */
 
-            return _completeContractRepository.Add(modelToAddToDB);
+            return _completeContractRepository.Add(completeContract);
+        }
+
+        public CompleteContract Update(Guid id, CompleteContract completeContract)
+        {
+            if (completeContract == null)
+                return null;
+
+            /*
+             * Validations
+            */
+
+            return _completeContractRepository.Update(id, completeContract);
         }
     }
 }
