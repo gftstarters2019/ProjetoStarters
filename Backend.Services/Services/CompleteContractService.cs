@@ -2,6 +2,7 @@
 using Backend.Infrastructure.Repositories.Contracts;
 using Backend.Services.Services.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Transactions;
 
 namespace Backend.Services.Services
@@ -13,6 +14,21 @@ namespace Backend.Services.Services
         public CompleteContractService(IRepository<CompleteContract> completeContractRespository)
         {
             _completeContractRepository = completeContractRespository;
+        }
+
+        public CompleteContract Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CompleteContract Get(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CompleteContract> GetAll()
+        {
+            throw new NotImplementedException();
         }
 
         public CompleteContract Save(CompleteContract completeContract)

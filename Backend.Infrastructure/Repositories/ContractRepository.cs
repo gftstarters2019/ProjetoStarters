@@ -24,6 +24,7 @@ namespace Backend.Infrastructure.Repositories
 
         public IEnumerable<Contract> Get() => _db
             .Contracts
+            .Where(con => !con.ContractDeleted)
             .ToList();
 
         public Contract Add(Contract contract)

@@ -53,7 +53,7 @@ namespace Beneficiaries.WebAPI
 
             services.AddScoped<IRepository<MobileDevice>, MobileDeviceRepository>();
 
-            services.AddScoped<IRepository<RealtyViewModel>, RealtyRepository>();
+            services.AddScoped<IRepository<Realty>, RealtyRepository>();
 
             services.AddScoped<IRepository<Pet>, PetRepository>();
 

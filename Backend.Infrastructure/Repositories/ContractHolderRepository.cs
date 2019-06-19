@@ -67,5 +67,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        Individual IRepository<Individual>.Add(Individual t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

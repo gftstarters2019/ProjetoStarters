@@ -70,8 +70,8 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel vm)
         {
-            if (!_contractHolderViewModelRepository.Add(vm))
-                return StatusCode(403);
+            //if (!_contractHolderViewModelRepository.Add(vm))
+            //    return StatusCode(403);
 
             //SendWelcomeEmail(vm);
             return Ok(vm);

@@ -1,6 +1,4 @@
-﻿using Backend.Application.ViewModels;
-using Backend.Core;
-using Backend.Infrastructure.Configuration;
+﻿using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Services.Services;
 using Microsoft.AspNetCore.Builder;
@@ -45,9 +43,7 @@ namespace Contract.WebAPI
             services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<Backend.Core.Models.Contract>, ContractRepository>();
 
             services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
-
-            services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<ContractViewModel>, ContractViewModelRepository>();
-
+            
             services.AddScoped<Backend.Services.Services.Contracts.IService<Backend.Core.Models.CompleteContract>, CompleteContractService>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));

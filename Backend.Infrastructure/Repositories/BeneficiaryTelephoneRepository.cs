@@ -66,5 +66,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        BeneficiaryTelephone IRepository<BeneficiaryTelephone>.Add(BeneficiaryTelephone t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
