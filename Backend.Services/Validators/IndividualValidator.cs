@@ -1,4 +1,5 @@
-﻿using Backend.Services.Validators.Contracts;
+﻿using Backend.Core.Models;
+using Backend.Services.Validators.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -9,12 +10,24 @@ namespace Backend.Services.Validators
 {
     public class IndividualValidator: IIndividualValidator
     {
+        public bool IsValid(Individual individual)
+        {
+            if (!CPFIsValid(individual.IndividualCPF))
+                return false;
+            if (!EmailIsValid(individual.IndividualEmail))
+                return false;
+            if (!NameIsValid(individual.IndividualName))
+                return false;
+            if (!RGIsValid(individual.IndividualRG))
+                return false;
+            return true;
+        }
         /// <summary>
         /// Validação de CPF
         /// </summary>
         /// <param name="cpf"></param>
         /// <returns></returns>
-        public bool CPFIsValid(string cpf)
+        private bool CPFIsValid(string cpf)
         {
             int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
             int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
@@ -55,7 +68,7 @@ namespace Backend.Services.Validators
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool NameIsValid(string name)
+        private bool NameIsValid(string name)
         {
             // Validando se só tem letras no Nome
             if (!new Regex("^[A-ZÀ-Ÿ][A-zÀ-ÿ']+\\s([A-zÀ-ÿ']\\s?)*[A-ZÀ-Ÿ][A-zÀ-ÿ']+$").IsMatch(name))
@@ -69,7 +82,7 @@ namespace Backend.Services.Validators
         /// </summary>
         /// <param name="emailaddress"></param>
         /// <returns></returns>
-        public bool EmailIsValid(string emailaddress)
+        private bool EmailIsValid(string emailaddress)
         {
             try
             {
@@ -88,7 +101,7 @@ namespace Backend.Services.Validators
         /// </summary>
         /// <param name="rg"></param>
         /// <returns></returns>
-        public bool RGIsValid(string rg)
+        private bool RGIsValid(string rg)
         {
             //Validando se só tem numeros no RG
             if (!new Regex("^[0-9]+$").IsMatch(rg))

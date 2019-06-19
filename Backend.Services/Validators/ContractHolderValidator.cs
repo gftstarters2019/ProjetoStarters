@@ -21,13 +21,7 @@ namespace Backend.Services.Validators
 
         public bool IsValid(Individual individual, Address address, Telephone telephone)
         {
-            if (!_individualValidator.CPFIsValid(individual.IndividualCPF))
-                return false;
-            if (!_individualValidator.EmailIsValid(individual.IndividualEmail))
-                return false;
-            if (!_individualValidator.NameIsValid(individual.IndividualName))
-                return false;
-            if (!_individualValidator.RGIsValid(individual.IndividualRG))
+            if (!_individualValidator.IsValid(individual))
                 return false;
             if (!_addressValidator.IsValid(address))
                 return false;
