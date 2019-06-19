@@ -17,15 +17,15 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(Pet pet)
+        public Pet Add(Pet pet)
         {
             if (pet != null)
             {
-                _db.Pets.Add(pet);
-                if (_db.SaveChanges() == 1)
-                    return true;
+                pet.IsDeleted = false;
+                pet.BeneficiaryId = Guid.NewGuid();
+                return _db.Pets.Add(pet).Entity;
             }
-            return false;
+            return null;
         }
 
         public Pet Find(Guid id)

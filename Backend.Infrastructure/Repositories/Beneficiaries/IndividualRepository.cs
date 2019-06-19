@@ -17,15 +17,20 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(Individual individual)
+        public Individual Add(Individual individual)
         {
-            if (individual != null)
-            {
-                _db.Individuals.Add(individual);
-                if (_db.SaveChanges() == 1)
-                    return true;
+            if (individual != null) {
+                // Verifies if CPF is already in DB of Individual not deleted
+                if (_db.Individuals
+                        .Where(ind => ind.IndividualCPF == individual.IndividualCPF && !ind.IsDeleted)
+                        .Count() > 0)
+                    return null;
+
+                individual.IsDeleted = false;
+                individual.BeneficiaryId = Guid.NewGuid();
+                return _db.Individuals.Add(individual).Entity;
             }
-            return false;
+            return null;
         }
 
         public Individual Find(Guid id)
