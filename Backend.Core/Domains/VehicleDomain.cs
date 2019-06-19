@@ -1,11 +1,9 @@
 ﻿using Backend.Core.Enums;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Core.Domains
 {
-    public class Vehicle : Beneficiary
+    public class VehicleDomain : BeneficiaryDomain
     {
         public string VehicleBrand { get; set; }
         public string VehicleModel { get; set; }

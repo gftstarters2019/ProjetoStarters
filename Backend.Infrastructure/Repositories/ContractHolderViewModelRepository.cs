@@ -104,7 +104,7 @@ namespace Backend.Infrastructure.Repositories
         /// <returns></returns>
         public ContractHolderViewModel Find(Guid id)
         {
-            Individual individual = _db.Individuals.Where(ind => (!ind.IsDeleted) && (ind.BeneficiaryId == id)).FirstOrDefault();
+            IndividualEntity individual = _db.Individuals.Where(ind => (!ind.IsDeleted) && (ind.BeneficiaryId == id)).FirstOrDefault();
 
             if (individual == null)
                 return null;
@@ -129,7 +129,7 @@ namespace Backend.Infrastructure.Repositories
 
                 foreach (var address in addresses)
                 {
-                    Address ad = new Address();
+                    AddressEntity ad = new AddressEntity();
 
                     ad.AddressId = address.AddressId;
                     ad.AddressCity = address.AddressCity;
@@ -196,7 +196,7 @@ namespace Backend.Infrastructure.Repositories
                     foreach (var address in addresses)
                     {
 
-                        Address ad = new Address();
+                        AddressEntity ad = new AddressEntity();
 
                         ad.AddressId = address.AddressId;
                         ad.AddressCity = address.AddressCity;

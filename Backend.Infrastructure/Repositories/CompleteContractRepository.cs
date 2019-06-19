@@ -10,26 +10,26 @@ using System.Transactions;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class CompleteContractRepository : IRepository<CompleteContract>
+    public class CompleteContractRepository : IRepository<CompleteContractDomain>
     {
         private readonly ConfigurationContext _db;
-        private readonly IRepository<Contract> _contractRepository;
-        private readonly IRepository<SignedContract> _signedContractRepository;
-        private readonly IRepository<Individual> _individualsRepository;
-        private readonly IRepository<Pet> _petsRepository;
-        private readonly IRepository<MobileDevice> _mobileDevicesRepository;
-        private readonly IRepository<Realty> _realtiesRepository;
-        private readonly IRepository<Vehicle> _vehiclesRepository;
+        private readonly IRepository<ContractEntity> _contractRepository;
+        private readonly IRepository<SignedContractEntity> _signedContractRepository;
+        private readonly IRepository<IndividualEntity> _individualsRepository;
+        private readonly IRepository<PetEntity> _petsRepository;
+        private readonly IRepository<MobileDeviceEntity> _mobileDevicesRepository;
+        private readonly IRepository<RealtyEntity> _realtiesRepository;
+        private readonly IRepository<VehicleEntity> _vehiclesRepository;
         private readonly IRepository<ContractBeneficiary> _contractBeneficiaryRepository;
 
         public CompleteContractRepository(ConfigurationContext db,
-                                          IRepository<Contract> contractRepository,
-                                          IRepository<SignedContract> signedContractRepository,
-                                          IRepository<Individual> individualsRepository,
-                                          IRepository<Pet> petsRepository,
-                                          IRepository<MobileDevice> mobileDevicesRepository,
-                                          IRepository<Realty> realtiesRepository,
-                                          IRepository<Vehicle> vehiclesRepository,
+                                          IRepository<ContractEntity> contractRepository,
+                                          IRepository<SignedContractEntity> signedContractRepository,
+                                          IRepository<IndividualEntity> individualsRepository,
+                                          IRepository<PetEntity> petsRepository,
+                                          IRepository<MobileDeviceEntity> mobileDevicesRepository,
+                                          IRepository<RealtyEntity> realtiesRepository,
+                                          IRepository<VehicleEntity> vehiclesRepository,
                                           IRepository<ContractBeneficiary> contractBeneficiaryRepository)
         {
             _db = db;
@@ -44,7 +44,7 @@ namespace Backend.Infrastructure.Repositories
         }
 
         #region Add
-        public CompleteContract Add(CompleteContract completeContract)
+        public CompleteContractDomain Add(CompleteContractDomain completeContract)
         {
             if (completeContract == null)
                 return null;
@@ -79,7 +79,7 @@ namespace Backend.Infrastructure.Repositories
             }
         }
         
-        public List<Guid> AddBeneficiaries(CompleteContract completeContract)
+        public List<Guid> AddBeneficiaries(CompleteContractDomain completeContract)
         {
             switch (completeContract.Contract.ContractType)
             {
@@ -130,7 +130,7 @@ namespace Backend.Infrastructure.Repositories
             }
         }
 
-        private List<Guid> AddIndividuals(List<Individual> individuals)
+        private List<Guid> AddIndividuals(List<IndividualDomain> individuals)
         {
             List<Guid> insertedIndividuals = new List<Guid>();
             
@@ -154,7 +154,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private List<Guid> AddPets(List<Pet> pets)
+        private List<Guid> AddPets(List<PetDomain> pets)
         {
             List<Guid> insertedPets = new List<Guid>();
 
@@ -177,7 +177,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private List<Guid> AddMobileDevices(List<MobileDevice> mobileDevices)
+        private List<Guid> AddMobileDevices(List<MobileDeviceDomain> mobileDevices)
         {
             List<Guid> insertedMobileDevices = new List<Guid>();
 
@@ -200,7 +200,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private List<Guid> AddRealties(List<Realty> realties)
+        private List<Guid> AddRealties(List<RealtyDomain> realties)
         {
             List<Guid> insertedRealties = new List<Guid>();
 
@@ -223,7 +223,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private List<Guid> AddVehicles(List<Vehicle> vehicles)
+        private List<Guid> AddVehicles(List<VehicleDomain> vehicles)
         {
             List<Guid> insertedVehicles = new List<Guid>();
 
@@ -246,7 +246,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private bool AddContractBeneficiaries(List<Guid> beneficiariesGuidList, SignedContract signedContract, ContractType contractType)
+        private bool AddContractBeneficiaries(List<Guid> beneficiariesGuidList, SignedContractDomain signedContract, ContractType contractType)
         {
             if (beneficiariesGuidList == null)
                 return false;
@@ -273,7 +273,7 @@ namespace Backend.Infrastructure.Repositories
         #endregion Add
 
         #region Update
-        public CompleteContract Update(Guid id, CompleteContract completeContract)
+        public CompleteContractDomain Update(Guid id, CompleteContractDomain completeContract)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
                    new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -295,7 +295,7 @@ namespace Backend.Infrastructure.Repositories
             }
         }
 
-        private List<Guid> UpdatedBeneficiaries(Guid id, CompleteContract completeContract)
+        private List<Guid> UpdatedBeneficiaries(Guid id, CompleteContractDomain completeContract)
         {
             switch (completeContract.Contract.ContractType)
             {
@@ -346,7 +346,7 @@ namespace Backend.Infrastructure.Repositories
             }
         }
 
-        private List<Guid> UpdateIndividuals(List<Individual> individuals)
+        private List<Guid> UpdateIndividuals(List<IndividualDomain> individuals)
         {
             List<Guid> updatedIndividuals = new List<Guid>();
 
@@ -375,7 +375,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private List<Guid> UpdatePets(List<Pet> pets)
+        private List<Guid> UpdatePets(List<PetDomain> pets)
         {
             List<Guid> updatedPets = new List<Guid>();
 
@@ -404,7 +404,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private List<Guid> UpdateMobileDevices(List<MobileDevice> mobileDevices)
+        private List<Guid> UpdateMobileDevices(List<MobileDeviceDomain> mobileDevices)
         {
             List<Guid> updatedMobileDevices = new List<Guid>();
 
@@ -433,7 +433,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private List<Guid> UpdateRealties(List<Realty> realties)
+        private List<Guid> UpdateRealties(List<RealtyDomain> realties)
         {
             List<Guid> updatedRealties = new List<Guid>();
 
@@ -462,7 +462,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private List<Guid> UpdateVehicles(List<Vehicle> vehicles)
+        private List<Guid> UpdateVehicles(List<VehicleDomain> vehicles)
         {
             List<Guid> updatedVehicles = new List<Guid>();
 
@@ -492,14 +492,14 @@ namespace Backend.Infrastructure.Repositories
         }
         #endregion Update
 
-        public CompleteContract Find(Guid id)
+        public CompleteContractDomain Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CompleteContract> Get()
+        public IEnumerable<CompleteContractDomain> Get()
         {
-            List<CompleteContract> completeContracts = new List<CompleteContract>();
+            List<CompleteContractDomain> completeContracts = new List<CompleteContractDomain>();
 
             var contracts = _contractRepository.Get();
 

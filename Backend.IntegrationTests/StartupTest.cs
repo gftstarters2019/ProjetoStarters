@@ -36,10 +36,10 @@ namespace Backend.IntegrationTests
         {
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddScoped<IRepository<Individual>, ContractHolderRepository>();
+            services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
             services.AddScoped<IRepository<Telephone>, TelephoneRepository>();
-            services.AddScoped<IRepository<Address>, AddressRepository>();
-            services.AddScoped<IRepository<SignedContract>, SignedContractRepository>();
+            services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
+            services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
             
             services.AddMvc().AddJsonOptions(opt =>
             {

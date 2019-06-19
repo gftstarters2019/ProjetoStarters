@@ -7,16 +7,16 @@ using System.Text;
 
 namespace Backend.Application.Factories
 {
-    public class PetFactory : IFactoryList<Pet>
+    public class PetFactory : IFactoryList<PetEntity>
     {
-        private List<Address> addresses = null;
+        private List<AddressEntity> addresses = null;
 
-        public List<Pet> CreateList(List<Pet> pets)
+        public List<PetEntity> CreateList(List<PetEntity> pets)
         {
             throw new NotImplementedException();
         }
 
-        public Pet Create(ContractViewModel vm)
+        public PetEntity Create(ContractViewModel vm)
         {
             throw new NotImplementedException();
         }

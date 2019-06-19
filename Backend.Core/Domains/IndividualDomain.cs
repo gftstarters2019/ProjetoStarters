@@ -1,17 +1,14 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Backend.Core.Models
+namespace Backend.Core.Domains
 {
-    public class Individual : Beneficiary
+    public class IndividualDomain : BeneficiaryDomain
     {
-        [MaxLength(50)]
         public string IndividualName { get; set; }
-        [MaxLength(11)]
         public string IndividualCPF { get; set; }
-        [MaxLength(9)]
         public string IndividualRG { get; set; }
-        [MaxLength(30)]
         public string IndividualEmail { get; set; }
         public DateTime IndividualBirthdate { get; set; }
     }

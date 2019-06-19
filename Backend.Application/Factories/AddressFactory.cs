@@ -6,24 +6,24 @@ using System.Text.RegularExpressions;
 
 namespace Backend.Application.Factories
 {
-    public class AddressFactory : IFactoryList<Address>
+    public class AddressFactory : IFactoryList<AddressEntity>
     {
-        private List<Address> addresses = null;
-        private Address address = null;
+        private List<AddressEntity> addresses = null;
+        private AddressEntity address = null;
 
         public AddressFactory()
         {
-            addresses = new List<Address>();
+            addresses = new List<AddressEntity>();
         }
 
-        public List<Address> CreateList(List<Address> vm_addresses)
+        public List<AddressEntity> CreateList(List<AddressEntity> vm_addresses)
         {
-            addresses = new List<Address>();
+            addresses = new List<AddressEntity>();
             foreach (var ad in vm_addresses)
             {
                 if (Validate(ad))
                 {
-                    address = new Address();
+                    address = new AddressEntity();
 
                     address.AddressId = Guid.NewGuid();
                     address.AddressCity = ad.AddressCity;
@@ -55,7 +55,7 @@ namespace Backend.Application.Factories
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        private bool Validate(Address address)
+        private bool Validate(AddressEntity address)
         {
             Regex regexLetters = new Regex("^[a-zA-Z-ãâáõóô]+(([',. -][a-zA-Z-ãâáõóô])?[a-zA-Z-ãâáõóô]*)*$");
             Regex regexState = new Regex("^[[a-zA-Z]+$");

@@ -1,10 +1,11 @@
 ﻿using Backend.Core.Enums;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Backend.Core.Models
+namespace Backend.Core.Domains
 {
-    public class Address
+    public class AddressDomain
     {
         public Guid AddressId { get; set; }
         public string AddressStreet { get; set; }

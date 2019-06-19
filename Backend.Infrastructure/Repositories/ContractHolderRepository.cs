@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractHolderRepository : IRepository<Individual>
+    public class ContractHolderRepository : IRepository<IndividualEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -18,15 +18,15 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Individual Find(Guid id) => _db
+        public IndividualEntity Find(Guid id) => _db
             .Individuals
             .FirstOrDefault(ind => ind.BeneficiaryId == id);
 
-        public IEnumerable<Individual> Get() => _db
+        public IEnumerable<IndividualEntity> Get() => _db
               .Individuals
               .ToList();
 
-        public bool Add(Individual individual)
+        public bool Add(IndividualEntity individual)
         {
             if(individual != null)
             {
@@ -52,7 +52,7 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Individual Update(Guid id, Individual individual)
+        public IndividualEntity Update(Guid id, IndividualEntity individual)
         {
             if(individual != null)
             {
@@ -68,7 +68,7 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        Individual IRepository<Individual>.Add(Individual t)
+        IndividualEntity IRepository<IndividualEntity>.Add(IndividualEntity t)
         {
             throw new NotImplementedException();
         }

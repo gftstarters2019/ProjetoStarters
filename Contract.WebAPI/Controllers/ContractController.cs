@@ -1,5 +1,5 @@
 ﻿using Backend.Application.ViewModels;
-using Backend.Core.Models;
+using Backend.Core.Domains;
 using Backend.Services.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,12 +14,12 @@ namespace Contract.WebAPI.Controllers
     [ApiController]
     public class ContractController : ControllerBase
     {
-        private readonly IService<CompleteContract> _contractService;
+        private readonly IService<CompleteContractDomain> _contractService;
 
         /// <summary>
         /// ContractController constructor
         /// </summary>
-        public ContractController(IService<CompleteContract> contractService)
+        public ContractController(IService<CompleteContractDomain> contractService)
         {
             _contractService = contractService;
         }
@@ -108,7 +108,7 @@ namespace Contract.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContract(Guid id, [FromBody] ContractViewModel contractViewModel)
         {
-            var updatedContract = _contractService.Update(id, new CompleteContract());
+            var updatedContract = _contractService.Update(id, new CompleteContractDomain());
             if (updatedContract == null)
                 return StatusCode(403);
             return Ok(updatedContract);

@@ -16,7 +16,7 @@ namespace UnitTests
         public void WhenCreateAnIndividual_ThenVerifyIfHeIsABeneficiary()
         {
             //arrange
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -24,7 +24,7 @@ namespace UnitTests
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
-            var beneficiary = new Individual();
+            var beneficiary = new IndividualEntity();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
             //beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -33,14 +33,14 @@ namespace UnitTests
             beneficiary.IndividualEmail = "gftstarters@outlook.com";
             
             //act
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
@@ -66,7 +66,7 @@ namespace UnitTests
         public void WhenCreateAnIndividual_AndCreateAContractHolder_ThenVerifyIfHeIsAlsoABeneficiary()
         {
             //arange
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -75,14 +75,14 @@ namespace UnitTests
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
             //act
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
@@ -114,7 +114,7 @@ namespace UnitTests
             var individualEmail = "gftstarters2019@outlook.com";
             var individualDeleted = false;
 
-            var newAddress = new Address();
+            var newAddress = new AddressEntity();
             newAddress.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
             newAddress.AddressStreet = "Rua Sales Fonseca";
             newAddress.AddressNumber = "50";
@@ -163,7 +163,7 @@ namespace UnitTests
             var vehicleDoneInspection = true;
 
             //act
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime();
@@ -171,7 +171,7 @@ namespace UnitTests
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
-            var beneficiary = new Individual();
+            var beneficiary = new IndividualEntity();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
             //beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -179,7 +179,7 @@ namespace UnitTests
             beneficiary.IndividualRG = "458559462";
             beneficiary.IndividualEmail = "gftstarters2019@outlook.com";
             
-            var address = new Address();
+            var address = new AddressEntity();
             address.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
             address.AddressStreet = "Rua Sales Fonseca";
             address.AddressNumber = "50";
@@ -191,7 +191,7 @@ namespace UnitTests
             address.AddressZipCode = "18011236";
             address.AddressType = AddressType.Commercial;
 
-            var realty = new Realty();
+            var realty = new RealtyEntity();
             //realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("080eef5c-6d09-441b-af39-5802d9201701");
             //realty.RealtyAddress = address;
@@ -200,7 +200,7 @@ namespace UnitTests
             realty.RealtySaleValue = 800000.00;
             realty.RealtyMarketValue = 1000000.00;
 
-            var mobileDevice = new MobileDevice();
+            var mobileDevice = new MobileDeviceEntity();
             //mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
             mobileDevice.BeneficiaryId = new Guid("98d052e2-10bf-4d26-8aa2-39c1e72800ea");
             mobileDevice.MobileDeviceBrand = "Motorola";
@@ -210,7 +210,7 @@ namespace UnitTests
             mobileDevice.MobileDeviceType = MobileDeviceType.Smartphone;
             mobileDevice.MobileDeviceInvoiceValue = 800.00;
 
-            var pet = new Pet();
+            var pet = new PetEntity();
             //pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
             pet.BeneficiaryId = new Guid("0ed6cf6e-c95a-4635-8d47-a751d2b8953d");
             pet.PetName = "Robson";
@@ -218,7 +218,7 @@ namespace UnitTests
             pet.PetBreed = "Pitbull";
             pet.PetBirthdate = new DateTime(2016, 02, 28);
 
-            var vehicle = new Vehicle();
+            var vehicle = new VehicleEntity();
             //vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
             vehicle.BeneficiaryId = new Guid("694d2c31-78e0-4d9e-b952-4042ebf7f59d");
             vehicle.VehicleBrand = "Chevrolet";
@@ -231,14 +231,14 @@ namespace UnitTests
             vehicle.VehicleCurrentFipeValue = 25000;
             vehicle.VehicleDoneInspection = true;
 
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
@@ -303,7 +303,7 @@ namespace UnitTests
         public void WhenCreateABeneficiary_ThenVerifyIfICanFindById()
         {
             //arrange
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -311,7 +311,7 @@ namespace UnitTests
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
-            var beneficiary = new Individual();
+            var beneficiary = new IndividualEntity();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
             //beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -319,7 +319,7 @@ namespace UnitTests
             beneficiary.IndividualRG = "458559463";
             beneficiary.IndividualEmail = "gftstarters@outlook.com";
             
-            var address = new Address();
+            var address = new AddressEntity();
             address.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
             address.AddressStreet = "Rua Sales Fonseca";
             address.AddressNumber = "50";
@@ -331,7 +331,7 @@ namespace UnitTests
             address.AddressZipCode = "18011236";
             address.AddressType = AddressType.Commercial;
 
-            var realty = new Realty();
+            var realty = new RealtyEntity();
             //realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("fe0216e8-e70a-4c7c-a5ae-f0b8e1319885");
             //realty.RealtyAddress = address;
@@ -340,7 +340,7 @@ namespace UnitTests
             realty.RealtySaleValue = 800000.00;
             realty.RealtyMarketValue = 1000000.00;
 
-            var mobileDevice = new MobileDevice();
+            var mobileDevice = new MobileDeviceEntity();
             //mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
             mobileDevice.BeneficiaryId = new Guid("98d052e2-10bf-4d26-8aa2-39c1e72800ea");
             mobileDevice.MobileDeviceBrand = "Motorola";
@@ -350,7 +350,7 @@ namespace UnitTests
             mobileDevice.MobileDeviceType = MobileDeviceType.Smartphone;
             mobileDevice.MobileDeviceInvoiceValue = 800.00;
 
-            var pet = new Pet();
+            var pet = new PetEntity();
             //pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
             pet.BeneficiaryId = new Guid("0ed6cf6e-c95a-4635-8d47-a751d2b8953d");
             pet.PetName = "Robson";
@@ -358,7 +358,7 @@ namespace UnitTests
             pet.PetBreed = "Pitbull";
             pet.PetBirthdate = new DateTime(2016, 02, 28);
 
-            var vehicle = new Vehicle();
+            var vehicle = new VehicleEntity();
             //vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
             vehicle.BeneficiaryId = new Guid("694d2c31-78e0-4d9e-b952-4042ebf7f59d");
             vehicle.VehicleBrand = "Chevrolet";
@@ -371,14 +371,14 @@ namespace UnitTests
             vehicle.VehicleCurrentFipeValue = 25000;
             vehicle.VehicleDoneInspection = true;
 
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
@@ -407,7 +407,7 @@ namespace UnitTests
         public void WhenCreateBeneficiary_AndUpdateIt_ThenVerifyIfItWasUpdated()
         {
             //arrange
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -415,7 +415,7 @@ namespace UnitTests
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
-            var beneficiary = new Individual();
+            var beneficiary = new IndividualEntity();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
            // beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -423,7 +423,7 @@ namespace UnitTests
             beneficiary.IndividualRG = "458559463";
             beneficiary.IndividualEmail = "gftstarters@outlook.com";
             
-            var address = new Address();
+            var address = new AddressEntity();
             address.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
             address.AddressStreet = "Rua Sales Fonseca";
             address.AddressNumber = "50";
@@ -435,7 +435,7 @@ namespace UnitTests
             address.AddressZipCode = "18011236";
             address.AddressType = AddressType.Commercial;
 
-            var realty = new Realty();
+            var realty = new RealtyEntity();
             //realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("080eef5c-6d09-441b-af39-5802d9201701");
             //realty.RealtyAddress = address;
@@ -444,7 +444,7 @@ namespace UnitTests
             realty.RealtySaleValue = 800000.00;
             realty.RealtyMarketValue = 1000000.00;
 
-            var mobileDevice = new MobileDevice();
+            var mobileDevice = new MobileDeviceEntity();
             //mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
             mobileDevice.BeneficiaryId = new Guid("98d052e2-10bf-4d26-8aa2-39c1e72800ea");
             mobileDevice.MobileDeviceBrand = "Motorola";
@@ -454,7 +454,7 @@ namespace UnitTests
             mobileDevice.MobileDeviceType = MobileDeviceType.Smartphone;
             mobileDevice.MobileDeviceInvoiceValue = 800.00;
 
-            var pet = new Pet();
+            var pet = new PetEntity();
             //pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
             pet.BeneficiaryId = new Guid("0ed6cf6e-c95a-4635-8d47-a751d2b8953d");
             pet.PetName = "Robson";
@@ -462,7 +462,7 @@ namespace UnitTests
             pet.PetBreed = "Pitbull";
             pet.PetBirthdate = new DateTime(2016, 02, 28);
 
-            var vehicle = new Vehicle();
+            var vehicle = new VehicleEntity();
             //vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
             vehicle.BeneficiaryId = new Guid("694d2c31-78e0-4d9e-b952-4042ebf7f59d");
             vehicle.VehicleBrand = "Chevrolet";
@@ -475,14 +475,14 @@ namespace UnitTests
             vehicle.VehicleCurrentFipeValue = 25000;
             vehicle.VehicleDoneInspection = true;
 
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
@@ -491,7 +491,7 @@ namespace UnitTests
             signedContract.ContractIndividualIsActive = true;
 
             //act
-            var updatedBeneficiary = new Individual();
+            var updatedBeneficiary = new IndividualEntity();
             updatedBeneficiary.BeneficiaryId = Guid.NewGuid();
             //updatedBeneficiary.IndividualId = Guid.NewGuid();
             updatedBeneficiary.IndividualBirthdate = new DateTime(2018, 05, 28, 7, 0, 0);
@@ -499,7 +499,7 @@ namespace UnitTests
             updatedBeneficiary.IndividualRG = "458559464";
             updatedBeneficiary.IndividualEmail = "gftstarters15@outlook.com";
             
-            var newAddress = new Address();
+            var newAddress = new AddressEntity();
             newAddress.AddressId = Guid.NewGuid();
             newAddress.AddressStreet = "Rua João Picarpo";
             newAddress.AddressNumber = "45";
@@ -511,7 +511,7 @@ namespace UnitTests
             newAddress.AddressZipCode = "18011777";
             newAddress.AddressType = AddressType.Home;
 
-            var updatedRealty = new Realty();
+            var updatedRealty = new RealtyEntity();
             //updatedRealty.RealtyId = Guid.NewGuid();
             updatedRealty.BeneficiaryId = Guid.NewGuid();
             //updatedRealty.RealtyAddress = newAddress;
@@ -520,7 +520,7 @@ namespace UnitTests
             updatedRealty.RealtySaleValue = 850000.00;
             updatedRealty.RealtyMarketValue = 2000000.00;
 
-            var updatedMobileDevice = new MobileDevice();
+            var updatedMobileDevice = new MobileDeviceEntity();
             //updatedMobileDevice.MobileDeviceId = Guid.NewGuid();
             updatedMobileDevice.BeneficiaryId = Guid.NewGuid();
             updatedMobileDevice.MobileDeviceBrand = "Lenovo";
@@ -530,7 +530,7 @@ namespace UnitTests
             updatedMobileDevice.MobileDeviceType = MobileDeviceType.Laptop;
             updatedMobileDevice.MobileDeviceInvoiceValue = 2800.00;
 
-            var updatedPet = new Pet();
+            var updatedPet = new PetEntity();
             //updatedPet.PetId = Guid.NewGuid();
             updatedPet.BeneficiaryId = Guid.NewGuid();
             updatedPet.PetName = "Tyson";
@@ -538,7 +538,7 @@ namespace UnitTests
             updatedPet.PetBreed = "Persa";
             updatedPet.PetBirthdate = new DateTime(2015, 05, 12);
 
-            var updatedVehicle = new Vehicle();
+            var updatedVehicle = new VehicleEntity();
             //updatedVehicle.VehicleId = Guid.NewGuid();
             updatedVehicle.BeneficiaryId = Guid.NewGuid();
             updatedVehicle.VehicleBrand = "Ford";
@@ -601,7 +601,7 @@ namespace UnitTests
         public void WhenCreateABeneficiary_AndDeleteIt_ThenVerifyIfItWasDeleted()
         {
             //arrange
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -609,7 +609,7 @@ namespace UnitTests
             individual.IndividualRG = "458559462";
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
-            var beneficiary = new Individual();
+            var beneficiary = new IndividualEntity();
             beneficiary.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
             //beneficiary.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             beneficiary.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -617,7 +617,7 @@ namespace UnitTests
             beneficiary.IndividualRG = "458559463";
             beneficiary.IndividualEmail = "gftstarters@outlook.com";
             
-            var address = new Address();
+            var address = new AddressEntity();
             address.AddressId = new Guid("029ec5eb-a126-45e4-981c-2db4e380c9eb");
             address.AddressStreet = "Rua Sales Fonseca";
             address.AddressNumber = "50";
@@ -629,7 +629,7 @@ namespace UnitTests
             address.AddressZipCode = "18011236";
             address.AddressType = AddressType.Commercial;
 
-            var realty = new Realty();
+            var realty = new RealtyEntity();
             //realty.RealtyId = new Guid("8e52b1c0-7eec-492d-b16a-dc35dca134c2");
             realty.BeneficiaryId = new Guid("080eef5c-6d09-441b-af39-5802d9201701");
             //realty.RealtyAddress = address;
@@ -638,7 +638,7 @@ namespace UnitTests
             realty.RealtySaleValue = 800000.00;
             realty.RealtyMarketValue = 1000000.00;
 
-            var mobileDevice = new MobileDevice();
+            var mobileDevice = new MobileDeviceEntity();
             //mobileDevice.MobileDeviceId = new Guid("7922815c-de08-4423-b973-a62f97e97586");
             mobileDevice.BeneficiaryId = new Guid("98d052e2-10bf-4d26-8aa2-39c1e72800ea");
             mobileDevice.MobileDeviceBrand = "Motorola";
@@ -648,7 +648,7 @@ namespace UnitTests
             mobileDevice.MobileDeviceType = MobileDeviceType.Smartphone;
             mobileDevice.MobileDeviceInvoiceValue = 800.00;
 
-            var pet = new Pet();
+            var pet = new PetEntity();
             //pet.PetId = new Guid("b54b58d4-1199-4b85-aeb2-3165b561e418");
             pet.BeneficiaryId = new Guid("0ed6cf6e-c95a-4635-8d47-a751d2b8953d");
             pet.PetName = "Robson";
@@ -656,7 +656,7 @@ namespace UnitTests
             pet.PetBreed = "Pitbull";
             pet.PetBirthdate = new DateTime(2016, 02, 28);
 
-            var vehicle = new Vehicle();
+            var vehicle = new VehicleEntity();
             //vehicle.VehicleId = new Guid("7b0f59cb-310b-43ef-a73a-e4ce09e9ca4d");
             vehicle.BeneficiaryId = new Guid("694d2c31-78e0-4d9e-b952-4042ebf7f59d");
             vehicle.VehicleBrand = "Chevrolet";
@@ -669,14 +669,14 @@ namespace UnitTests
             vehicle.VehicleCurrentFipeValue = 25000;
             vehicle.VehicleDoneInspection = true;
 
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;

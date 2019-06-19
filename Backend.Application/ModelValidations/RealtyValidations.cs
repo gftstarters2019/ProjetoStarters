@@ -7,7 +7,7 @@ namespace Backend.Application.ModelValidations
 {
     public static class RealtyValidations
     {
-        public static bool RealtyIsValid(Realty realty)
+        public static bool RealtyIsValid(RealtyEntity realty)
         {
             if (realty.RealtyMarketValue < 0 && realty.RealtySaleValue < 0)
                 return false;

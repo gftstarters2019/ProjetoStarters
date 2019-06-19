@@ -7,12 +7,12 @@ using System.Text;
 
 namespace Backend.Application.Factories
 {
-    public class ContractFactory : IFactory<Contract, ContractViewModel>
+    public class ContractFactory : IFactory<ContractEntity, ContractViewModel>
     {
 
-        public Contract Create(ContractViewModel contractViewModel)
+        public ContractEntity Create(ContractViewModel contractViewModel)
         {
-            Contract contract = new Contract()
+            ContractEntity contract = new ContractEntity()
             {
                 ContractCategory = contractViewModel.Category,
                 ContractDeleted = false,

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractRepository : IRepository<Contract>
+    public class ContractRepository : IRepository<ContractEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -18,16 +18,16 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Contract Find(Guid id) => _db
+        public ContractEntity Find(Guid id) => _db
             .Contracts
             .FirstOrDefault(con => con.ContractId == id);
 
-        public IEnumerable<Contract> Get() => _db
+        public IEnumerable<ContractEntity> Get() => _db
             .Contracts
             .Where(con => !con.ContractDeleted)
             .ToList();
 
-        public Contract Add(Contract contract)
+        public ContractEntity Add(ContractEntity contract)
         {
             contract.ContractId = Guid.NewGuid();
 
@@ -47,7 +47,7 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Contract Update(Guid id, Contract contract)
+        public ContractEntity Update(Guid id, ContractEntity contract)
         {
             if (contract != null)
             {
@@ -70,7 +70,7 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        Contract IRepository<Contract>.Add(Contract t)
+        ContractEntity IRepository<ContractEntity>.Add(ContractEntity t)
         {
             throw new NotImplementedException();
         }

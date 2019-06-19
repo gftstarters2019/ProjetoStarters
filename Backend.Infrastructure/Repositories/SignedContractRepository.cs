@@ -8,19 +8,19 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class SignedContractRepository : IRepository<SignedContract>
+    public class SignedContractRepository : IRepository<SignedContractEntity>
     {
         private readonly ConfigurationContext _db;
-        private readonly IRepository<Contract> _contractRepository;
+        private readonly IRepository<ContractEntity> _contractRepository;
 
         public SignedContractRepository(ConfigurationContext db,
-                                        IRepository<Contract> contractRepository)
+                                        IRepository<ContractEntity> contractRepository)
         {
             _db = db;
             _contractRepository = contractRepository;
         }
 
-        public SignedContract Add(SignedContract signedContract)
+        public SignedContractEntity Add(SignedContractEntity signedContract)
         {
             var signedContractContractHolder = _db
                                                .Individuals
@@ -34,14 +34,14 @@ namespace Backend.Infrastructure.Repositories
             return _db.SignedContracts.Add(signedContract).Entity;
         }
 
-        public SignedContract Find(Guid id)
+        public SignedContractEntity Find(Guid id)
         {
             var signedContract = _db.SignedContracts.FirstOrDefault(sc => sc.ContractId == id);
             signedContract.SignedContractContract = _contractRepository.Find(signedContract.ContractId);
             return signedContract;
         }
 
-        public IEnumerable<SignedContract> Get() => _db
+        public IEnumerable<SignedContractEntity> Get() => _db
             .SignedContracts
             .Where(sc => sc.ContractIndividualIsActive)
             .ToList();
@@ -56,7 +56,7 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public SignedContract Update(Guid id, SignedContract signedContract)
+        public SignedContractEntity Update(Guid id, SignedContractEntity signedContract)
         {
             if (signedContract != null)
             {

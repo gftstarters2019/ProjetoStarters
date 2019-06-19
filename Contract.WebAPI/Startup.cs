@@ -43,9 +43,9 @@ namespace Contract.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<Backend.Core.Models.Contract>, ContractRepository>();
+            services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<Backend.Core.Models.ContractEntity>, ContractRepository>();
 
-            services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
+            services.AddScoped<Backend.Infrastructure.Repositories.Contracts.IRepository<Backend.Core.Models.SignedContractEntity>, SignedContractRepository>();
             
             services.AddScoped<Backend.Services.Services.Contracts.IService<Backend.Core.Models.CompleteContract>, CompleteContractService>();
 

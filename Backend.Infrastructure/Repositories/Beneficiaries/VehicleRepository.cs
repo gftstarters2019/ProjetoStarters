@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class VehicleRepository : IRepository<Vehicle>
+    public class VehicleRepository : IRepository<VehicleEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -17,7 +17,7 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Vehicle Add(Vehicle vehicle)
+        public VehicleEntity Add(VehicleEntity vehicle)
         {
             if (vehicle != null)
             {
@@ -36,12 +36,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public Vehicle Find(Guid id)
+        public VehicleEntity Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Vehicle> Get() => _db
+        public IEnumerable<VehicleEntity> Get() => _db
             .Vehicles
             .Where(i => !i.IsDeleted)
             .ToList();
@@ -56,7 +56,7 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public Vehicle Update(Guid id, Vehicle vehicle)
+        public VehicleEntity Update(Guid id, VehicleEntity vehicle)
         {
             if (vehicle != null)
             {

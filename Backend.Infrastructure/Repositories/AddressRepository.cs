@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class AddressRepository : IRepository<Address>
+    public class AddressRepository : IRepository<AddressEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -17,15 +17,15 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Address Find(Guid id) => _db
+        public AddressEntity Find(Guid id) => _db
             .Addresses
             .FirstOrDefault(ad => ad.AddressId == id);
 
-        public IEnumerable<Address> Get() => _db
+        public IEnumerable<AddressEntity> Get() => _db
             .Addresses
             .ToList();
 
-        public Address Add(Address address)
+        public AddressEntity Add(AddressEntity address)
         {
             if (address != null)
             {
@@ -48,7 +48,7 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Address Update(Guid id, Address address)
+        public AddressEntity Update(Guid id, AddressEntity address)
         {
             if (address != null)
             {
@@ -76,7 +76,7 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        Address IRepository<Address>.Add(Address t)
+        AddressEntity IRepository<AddressEntity>.Add(AddressEntity t)
         {
             throw new NotImplementedException();
         }

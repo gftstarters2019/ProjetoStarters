@@ -9,7 +9,7 @@ namespace Backend.Application.ModelValidations
 {
     public static class IndividualValidations
     {
-        public static bool IndividualIsValid(Individual individual)
+        public static bool IndividualIsValid(IndividualEntity individual)
         {
             if (!NameIsValid(individual.IndividualName))
                 return false;

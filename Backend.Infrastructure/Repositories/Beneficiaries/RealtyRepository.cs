@@ -9,19 +9,19 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class RealtyRepository : IRepository<Realty>
+    public class RealtyRepository : IRepository<RealtyEntity>
     {
         private readonly ConfigurationContext _db;
-        private readonly IRepository<Address> _addressRepository;
+        private readonly IRepository<AddressEntity> _addressRepository;
 
         public RealtyRepository(ConfigurationContext db,
-                                IRepository<Address> addressRepository)
+                                IRepository<AddressEntity> addressRepository)
         {
             _db = db;
             _addressRepository = addressRepository;
         }
 
-        public Realty Add(Realty realty)
+        public RealtyEntity Add(RealtyEntity realty)
         {
             if (realty != null)
             {
@@ -52,7 +52,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public Realty Find(Guid id)
+        public RealtyEntity Find(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -92,7 +92,7 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public Realty Update(Guid id, Realty realty)
+        public RealtyEntity Update(Guid id, RealtyEntity realty)
         {
             if (realty != null)
             {
@@ -142,7 +142,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        IEnumerable<Realty> IRepository<Realty>.Get()
+        IEnumerable<RealtyEntity> IRepository<RealtyEntity>.Get()
         {
             throw new NotImplementedException();
         }

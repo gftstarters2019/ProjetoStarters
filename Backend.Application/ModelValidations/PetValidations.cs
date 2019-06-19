@@ -12,7 +12,7 @@ namespace Backend.Application.ModelValidations
         /// </summary>
         /// <param name="pet">Pet to be verified</param>
         /// <returns>If Pet is valid</returns>
-        public static bool PetIsValid(Pet pet)
+        public static bool PetIsValid(PetEntity pet)
         {
             if (!ValidationsHelper.DateIsValid(pet.PetBirthdate))
                 return false;

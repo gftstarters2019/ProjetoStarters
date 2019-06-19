@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class PetRepository : IRepository<Pet>
+    public class PetRepository : IRepository<PetEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -17,7 +17,7 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Pet Add(Pet pet)
+        public PetEntity Add(PetEntity pet)
         {
             if (pet != null)
             {
@@ -28,12 +28,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public Pet Find(Guid id)
+        public PetEntity Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Pet> Get() => _db
+        public IEnumerable<PetEntity> Get() => _db
             .Pets
             .Where(i => !i.IsDeleted)
             .ToList();
@@ -48,7 +48,7 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public Pet Update(Guid id, Pet pet)
+        public PetEntity Update(Guid id, PetEntity pet)
         {
             if(pet != null)
             {

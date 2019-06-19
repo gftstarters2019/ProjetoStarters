@@ -8,7 +8,7 @@ namespace Backend.Application.ModelValidations
 {
     public static class AddressValidations
     {
-        public static bool AddressIsValid(Address address)
+        public static bool AddressIsValid(AddressEntity address)
         {
             Regex regexLetters = new Regex("^[a-zA-Z]+$");
 

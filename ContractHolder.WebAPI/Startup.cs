@@ -44,15 +44,15 @@ namespace ContractHolder.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IRepository<Individual>, ContractHolderRepository>();
+            services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
 
             services.AddScoped<IRepository<Telephone>, TelephoneRepository>();
             
-            services.AddScoped<IRepository<Address>, AddressRepository>();
+            services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
             
             services.AddScoped<IRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
             
-            services.AddScoped<IRepository<SignedContract>, SignedContractRepository>();
+            services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 

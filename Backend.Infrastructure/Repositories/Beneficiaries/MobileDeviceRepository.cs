@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class MobileDeviceRepository : IRepository<MobileDevice>
+    public class MobileDeviceRepository : IRepository<MobileDeviceEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -17,7 +17,7 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public MobileDevice Add(MobileDevice mobile)
+        public MobileDeviceEntity Add(MobileDeviceEntity mobile)
         {
             if (mobile != null)
             {
@@ -36,12 +36,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public MobileDevice Find(Guid id)
+        public MobileDeviceEntity Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<MobileDevice> Get() => _db
+        public IEnumerable<MobileDeviceEntity> Get() => _db
             .MobileDevices
             .Where(i => !i.IsDeleted)
             .ToList();
@@ -56,7 +56,7 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public MobileDevice Update(Guid id, MobileDevice mobileDevice)
+        public MobileDeviceEntity Update(Guid id, MobileDeviceEntity mobileDevice)
         {
             if (mobileDevice != null)
             {

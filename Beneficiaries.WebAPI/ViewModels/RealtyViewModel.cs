@@ -16,7 +16,7 @@ namespace Beneficiaries.WebAPI.ViewModels
         public double MarketValue { get; set; }
 
         // Address
-        public Address Address { get; set; }
+        public AddressEntity Address { get; set; }
         public Guid AddressId { get; set; }
         public string AddressStreet { get; set; }
         public string AddressNumber { get; set; }

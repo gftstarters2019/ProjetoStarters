@@ -8,7 +8,7 @@ namespace Backend.Core.Models
     {
         public Guid ContractBeneficiaryId { get; set; }
         public Guid SignedContractId { get; set; }
-        public SignedContract SignedContract { get; set; }
+        public SignedContractEntity SignedContract { get; set; }
         public Guid BeneficiaryId { get; set; }
         public Beneficiary Beneficiary { get; set; }
     }

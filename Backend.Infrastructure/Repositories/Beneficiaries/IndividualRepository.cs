@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class IndividualRepository : IRepository<Individual>
+    public class IndividualRepository : IRepository<IndividualEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -17,7 +17,7 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Individual Add(Individual individual)
+        public IndividualEntity Add(IndividualEntity individual)
         {
             if (individual != null)
             {
@@ -34,12 +34,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public Individual Find(Guid id)
+        public IndividualEntity Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Individual> Get() => _db
+        public IEnumerable<IndividualEntity> Get() => _db
             .Individuals
             .Where(i => !i.IsDeleted)
             .ToList();
@@ -54,7 +54,7 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public Individual Update(Guid id, Individual individual)
+        public IndividualEntity Update(Guid id, IndividualEntity individual)
         {
             if (individual != null)
             {

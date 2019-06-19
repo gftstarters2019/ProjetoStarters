@@ -13,7 +13,7 @@ namespace Backend.Application.ViewModels
         /// Contract Holder ID (BeneficiaryId)
         /// </summary>
         public Guid ContractHolderId { get; set; }
-        public Individual ContractHolder { get; set; }
+        public IndividualEntity ContractHolder { get; set; }
         public ContractType Type { get; set; }
         public ContractCategory Category { get; set; }
         public DateTime ExpiryDate { get; set; }
@@ -23,10 +23,10 @@ namespace Backend.Application.ViewModels
         /// </summary>
         public List<Guid> BeneficiariesIds { get; set; }
 
-        public List<Individual> Individuals { get; set; }
+        public List<IndividualEntity> Individuals { get; set; }
         public List<RealtyViewModel> Realties { get; set; }
-        public List<MobileDevice> MobileDevices { get; set; }
-        public List<Pet> Pets { get; set; }
-        public List<Vehicle> Vehicles { get; set; }
+        public List<MobileDeviceEntity> MobileDevices { get; set; }
+        public List<PetEntity> Pets { get; set; }
+        public List<VehicleEntity> Vehicles { get; set; }
     }
 }

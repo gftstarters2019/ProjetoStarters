@@ -6,29 +6,29 @@ using System.Text;
 
 namespace Backend.Services.Services
 {
-    public class ContractHolderService : IService<Individual>
+    public class ContractHolderService : IService<IndividualEntity>
     {
-        public Individual Delete(Guid id)
+        public IndividualEntity Delete(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Individual Get(Guid id)
+        public IndividualEntity Get(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public List<Individual> GetAll()
+        public List<IndividualEntity> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Individual Save(Individual modelToAddToDB)
+        public IndividualEntity Save(IndividualEntity modelToAddToDB)
         {
             throw new NotImplementedException();
         }
 
-        public Individual Update(Guid id, Individual modelToUpdate)
+        public IndividualEntity Update(Guid id, IndividualEntity modelToUpdate)
         {
             throw new NotImplementedException();
         }

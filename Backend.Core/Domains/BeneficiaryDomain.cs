@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Backend.Core.Domains
 {
-    public abstract class Beneficiary
+    public abstract class BeneficiaryDomain
     {
         public Guid BeneficiaryId { get; set; }
         public bool IsDeleted { get; set; }
