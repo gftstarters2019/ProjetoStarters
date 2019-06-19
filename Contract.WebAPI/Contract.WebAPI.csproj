@@ -25,9 +25,4 @@
     <ProjectReference Include="..\Backend.Services\Backend.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Factories\" />
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
 </Project>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Backend.Core.Models
+namespace Backend.Core.Domains
 {
     public class CompleteContract
     {

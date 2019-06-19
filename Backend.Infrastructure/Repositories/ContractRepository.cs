@@ -69,5 +69,10 @@ namespace Backend.Infrastructure.Repositories
         {
             return _db.SaveChanges() > 0;
         }
+
+        Contract IRepository<Contract>.Add(Contract t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

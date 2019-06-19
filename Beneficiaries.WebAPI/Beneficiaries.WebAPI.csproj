@@ -24,11 +24,6 @@
     <ProjectReference Include="..\Backend.Services\Backend.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Factories\" />
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

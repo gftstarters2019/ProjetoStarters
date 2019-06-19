@@ -86,7 +86,7 @@ export class IndividualListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Birth Date',
+          headerName: 'BirthDate',
           field: 'individualBirthdate',
           lockPosition: true,
           sortable: true,

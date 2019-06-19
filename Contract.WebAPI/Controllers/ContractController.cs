@@ -93,7 +93,7 @@ namespace Contract.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContract([FromBody] ContractViewModel contract)
         {
-            if(_contractService.Save(new CompleteContract()) == null)
+            //if (!_contractViewModelRepository.Add(contract))
                 return StatusCode(403);
 
             return Ok();

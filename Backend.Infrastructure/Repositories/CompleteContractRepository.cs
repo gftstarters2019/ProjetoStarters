@@ -1,4 +1,5 @@
-﻿using Backend.Core.Enums;
+﻿using Backend.Core.Domains;
+using Backend.Core.Enums;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Contracts;
