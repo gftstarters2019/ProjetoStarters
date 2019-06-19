@@ -6,7 +6,7 @@ import { ActionButtonComponent } from '../action-button/action-button.component'
 import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-mobile-device-list',
@@ -26,22 +26,6 @@ export class MobileDeviceListComponent implements OnInit {
 
   constructor(public dialog: MatDialog, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
-  confirmDialog(): void {
-    const message = `Do you really want to delete this Mobile Device?`;
-
-    const dialogData = new ConfirmDialogModel("Confirm Action", message);
-
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '375px',
-      panelClass:'content-container',
-      data: dialogData
-    });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      this.result = dialogResult;
-    });
-  }
-
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
@@ -50,23 +34,42 @@ export class MobileDeviceListComponent implements OnInit {
 
   private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
-    }
+  }
 
   private handle_deleteUser(data: any) {
     console.log(data);
     const id = data.beneficiaryId;
     console.log(id);
-    this.confirmDialog();
 
-    if (this.result == true) {
-    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
-    }
+    const message = `Do you really want to delete this Mobile Device?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
+
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '375px',
+      panelClass: 'content-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if (this.result == true) {
+        this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
+      }
+    });
   }
-    
+
+
   openSnackBar(message: string): void {
     this._snackBar.open(message, '', {
       duration: 5000,
-      
+
     });
   }
 
@@ -138,17 +141,17 @@ export class MobileDeviceListComponent implements OnInit {
           valueFormatter: invoiceFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'Delete',
-            field: 'Delete',
-            lockPosition: true,
-            cellRendererFramework: ActionButtonBeneficiariesComponent,
-            cellRendererParams: {
-              onEdit: this.handle_editUser.bind(this),
-              onDelete: this.handle_deleteUser.bind(this)
-            }
-          },
+        },
+        {
+          headerName: 'Delete',
+          field: 'Delete',
+          lockPosition: true,
+          cellRendererFramework: ActionButtonBeneficiariesComponent,
+          cellRendererParams: {
+            onEdit: this.handle_editUser.bind(this),
+            onDelete: this.handle_deleteUser.bind(this)
+          }
+        },
       ],
       onGridReady: this.onGridReady.bind(this)
     }
@@ -167,21 +170,21 @@ export class MobileDeviceListComponent implements OnInit {
     const { data } = event;
   }
 }
-function DeviceFormatter(params){
+function DeviceFormatter(params) {
   return deviceValue(params.value);
 }
-function deviceValue(number){
-  if(number == 0)
-  return "Smartphone";
-  if(number == 1)
-  return "Tablet";
-  if(number == 2)
-  return "Laptop";
+function deviceValue(number) {
+  if (number == 0)
+    return "Smartphone";
+  if (number == 1)
+    return "Tablet";
+  if (number == 2)
+    return "Laptop";
 }
 
-function invoiceFormatter(params){
+function invoiceFormatter(params) {
   return "R$ " + invoiceValue(params.value);
 }
-function invoiceValue(number){
+function invoiceValue(number) {
   return number.toFixed(2);
 }

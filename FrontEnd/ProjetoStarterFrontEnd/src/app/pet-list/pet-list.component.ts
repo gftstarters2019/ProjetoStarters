@@ -6,7 +6,7 @@ import { ActionButtonComponent } from '../action-button/action-button.component'
 import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-pet-list',
@@ -55,11 +55,28 @@ export class PetListComponent implements OnInit {
     console.log(data);
     const id = data.beneficiaryId;
     console.log(id);
-    this.confirmDialog();
 
-    if (this.result == true) {
-      this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
-    }
+    const message = `Do you really want to delete this Pet ?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
+
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '375px',
+      panelClass:'content-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if (this.result == true) {
+        this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
+      }
+    });
   }
 
   openSnackBar(message: string): void {

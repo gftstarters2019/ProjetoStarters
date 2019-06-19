@@ -5,7 +5,7 @@ import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractCon
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { Location } from '@angular/common';
 import { GenericValidator } from '../Validations/GenericValidator';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
@@ -88,23 +88,6 @@ export class ContractComponent implements OnInit {
   // });
 
   constructor(public dialog: MatDialog, private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
-
-  confirmDialog(): void {
-    const message = `Do you really want to delete this contract?`;
-
-    const dialogData = new ConfirmDialogModel("Confirm Action", message);
-
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '375px',
-      panelClass: 'content-container',
-      data: dialogData
-    });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      this.result = dialogResult;
-      
-    });
-  }
 
   ngOnInit() {
     this.setup_form();
@@ -397,14 +380,33 @@ export class ContractComponent implements OnInit {
     return null;
   }
 
-  private handle_deleteUser(data: any) {
+  private async handle_deleteUser(data: any) {
+    const id = data.signedContractId;   
+    const message = `Do you really want to delete this contract?`;
 
-    const id = data.signedContractId;
-    this.confirmDialog();
-    if(this.result == true){
-      this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
+    const dialogConfig = new MatDialogConfig();
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '375px',
+      panelClass: 'content-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if(this.result == true){
+        this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
     }
+    });
   }
+
+
 
   //AG-grid Table Contract
   private setup_gridOptions() {

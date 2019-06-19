@@ -22,6 +22,7 @@ export class ConfirmationDialogComponent {
     // Close the dialog, return true
     this.dialogRef.close(true);
 
+
   }
 
   onDismiss(): void {
