@@ -20,7 +20,6 @@ export class ConfirmationDialogComponent {
 
   onConfirm(): void {
     // Close the dialog, return true
-    debugger
     this.dialogRef.close(true);
 
   }

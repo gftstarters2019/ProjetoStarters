@@ -27,12 +27,13 @@ export class MobileDeviceListComponent implements OnInit {
   constructor(public dialog: MatDialog, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
   confirmDialog(): void {
-    const message = `Are you sure you want to do this?`;
+    const message = `Do you really want to delete this Mobile Device?`;
 
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      maxWidth: "400px",
+      width: '375px',
+      panelClass:'content-container',
       data: dialogData
     });
 

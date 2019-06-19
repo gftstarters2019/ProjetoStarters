@@ -8,6 +8,9 @@ import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material';
+
 
 @Component({
   selector: 'app-contract-holder',
@@ -18,6 +21,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   rgMask = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/];
   cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+
+  public result: any;
 
 
 
@@ -36,12 +41,29 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   showList: boolean = false;
   showAddresslist: boolean = false;
   showTelephonelist: boolean = false;
-    constructor(private chfb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) {
+    constructor(public dialog: MatDialog, private chfb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) {
 
   }
 
   message: number = 0;
   IndividualId: any = null;
+
+  confirmDialog(): void {
+    const message = `Do you really want to delete this Holder?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '375px',
+      panelClass:'content-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+    });
+  }
+
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
@@ -97,10 +119,11 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
         'Content-Type': 'application/json'
       })
     };
+this.confirmDialog();
 
+    if (this.result == true) {
     this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      
-    
-    
+    } 
 
   }
 
