@@ -28,7 +28,7 @@ namespace Backend.Infrastructure.Converters
                 yield return new Core.Models.Address
                 {
 
-                    AddressId = Guid.NewGuid(),
+                    AddressId = ad.AddressId,
                     AddressCity = ad.AddressCity,
                     AddressComplement = ad.AddressComplement,
                     AddressCountry = ad.AddressCountry,
@@ -48,7 +48,7 @@ namespace Backend.Infrastructure.Converters
             {
                 yield return new Core.Models.Telephone
                 {
-                    TelephoneId = Guid.NewGuid(),
+                    TelephoneId = tel.TelephoneId,
                     TelephoneNumber = tel.TelephoneNumber,
                     TelephoneType = tel.TelephoneType
                 };
