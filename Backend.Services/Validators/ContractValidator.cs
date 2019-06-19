@@ -23,53 +23,53 @@ namespace Backend.Services.Validators
             _vehicleValidator = vehicleValidator;
         }
 
-        public bool IsValid(Contract contract, List<Individual> individuals)
+        public bool IsValid(Contract contract, List<Individual> individuals, List<MobileDevice> mobileDevices, List<Pet> pets, List<Realty> realties, List<Vehicle> vehicles)
         {
-            foreach(var item in individuals)
+            if (individuals != null)
             {
-                if (!_individualValidator.IsValid(item))
-                    return false;
+                foreach (var item in individuals)
+                {
+                    if (!_individualValidator.IsValid(item))
+                        return false;
+                }
             }
-            return true;
-        }
 
-        public bool IsValid(Contract contract, List<MobileDevice> mobileDevices)
-        {
-            foreach (var item in mobileDevices)
+            if (mobileDevices != null)
             {
-                if (!_mobileDeviceValidator.IsValid(item))
-                    return false;
+                foreach (var item in mobileDevices)
+                {
+                    if (!_mobileDeviceValidator.IsValid(item))
+                        return false;
+                }
             }
-            return true;
-        }
 
-        public bool IsValid(Contract contract, List<Pet> pets)
-        {
-            foreach (var item in pets)
+            if (pets != null)
             {
-                if (!_petValidator.IsValid(item))
-                    return false;
+                foreach (var item in pets)
+                {
+                    if (!_petValidator.IsValid(item))
+                        return false;
+                }
             }
-            return true;
-        }
 
-        public bool IsValid(Contract contract, List<Realty> realties)
-        {
-            foreach (var item in realties)
+            if (realties != null)
             {
-                if (!_realtyValidator.IsValid(item))
-                    return false;
+                foreach (var item in realties)
+                {
+                    if (!_realtyValidator.IsValid(item))
+                        return false;
+                }
             }
-            return true;
-        }
 
-        public bool IsValid(Contract contract, List<Vehicle> vehicles)
-        {
-            foreach (var item in vehicles)
+            if (vehicles != null)
             {
-                if (!_vehicleValidator.IsValid(item))
-                    return false;
+                foreach (var item in vehicles)
+                {
+                    if (!_vehicleValidator.IsValid(item))
+                        return false;
+                }
             }
+
             return true;
         }
     }
