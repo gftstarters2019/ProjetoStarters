@@ -1,19 +1,21 @@
 .content-container{
-    margin: 2px 5px 15px;
-    color: lightgray;
+    margin: 2px 5px 5px;
     display: flex;
 }
 .btn-yes{
-    height: 50px;
+
+    height: 30px;
     width: 50%;
-    background-color:green;
-    color: white;
+    color: green;
+    background-color: whitesmoke;
+    border-color: lightgray;
     border-radius: 0px;
 }
 .btn-no{
-    height: 50px;
+    height: 30px;
     width: 50%;
-    background-color:red;
-    color: white;
+    color: red;    
+    background-color: whitesmoke;
+    border-color: lightgray;
     border-radius: 0px;
 }

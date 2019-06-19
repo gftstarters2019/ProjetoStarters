@@ -2,13 +2,11 @@
   <div class="pop-up-title" mat-dialog-title>
   DELETE RECORD
   </div>
-  <br />
   <div class="pop-up-message" mat-dialog-content>
-    {{message}}
+   {{message}}
   </div>
-  <br />
   <div class="btn-actions" mat-dialog-actions>
     <button class="btn-no" mat-flat-button (click)="onDismiss()">No</button>
-    <button class="btn-yes" mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Yes</button>
+    <button class="btn-yes" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial>Yes</button>
   </div>
 </div>

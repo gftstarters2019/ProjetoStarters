@@ -49,7 +49,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   IndividualId: any = null;
 
   confirmDialog(): void {
-    const message = `Do you really want to delete this Holder?`;
+    const message = `Do you really want to delete this Contract Holder?`;
 
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
