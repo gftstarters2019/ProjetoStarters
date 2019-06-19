@@ -37,13 +37,13 @@ export class MobileDeviceListComponent implements OnInit {
     console.log(data);
     const id = data.beneficiaryId;
     console.log(id);
-    let show: boolean = data.isActive;
-    if(show == false){
+    // let show: boolean = data.isActive;
+    // if(show == false){
     this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
-    }
-    else{
-      this.openSnackBar("Contract is active, cannot delete");
-    }
+    // }
+    // else{
+    //   this.openSnackBar("Contract is active, cannot delete");
+    // }
   }
     
   openSnackBar(message: string): void {
