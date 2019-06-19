@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Backend.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Backend.Core.Models
+namespace Backend.Core.Domains
 {
     public class CompleteContract
     {

@@ -101,7 +101,7 @@ namespace Contract.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContract([FromBody] ContractViewModel contract)
         {
-            if (!_contractViewModelRepository.Add(contract))
+            //if (!_contractViewModelRepository.Add(contract))
                 return StatusCode(403);
 
             return Ok();
