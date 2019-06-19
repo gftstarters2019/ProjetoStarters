@@ -7,6 +7,6 @@ namespace Backend.Services.Validators.Contracts
 {
     public interface IContractHolderValidator
     {
-        bool IsValid(Individual individual, Address address, Telephone telephone);
+        bool IsValid(Individual individual, List<Address> addresses, List<Telephone> telephones);
     }
 }
