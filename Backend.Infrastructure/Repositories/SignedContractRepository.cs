@@ -11,10 +11,13 @@ namespace Backend.Infrastructure.Repositories
     public class SignedContractRepository : IRepository<SignedContract>
     {
         private readonly ConfigurationContext _db;
+        private readonly IRepository<Contract> _contractRepository;
 
-        public SignedContractRepository(ConfigurationContext db)
+        public SignedContractRepository(ConfigurationContext db,
+                                        IRepository<Contract> contractRepository)
         {
             _db = db;
+            _contractRepository = contractRepository;
         }
 
         public SignedContract Add(SignedContract signedContract)
@@ -33,7 +36,9 @@ namespace Backend.Infrastructure.Repositories
 
         public SignedContract Find(Guid id)
         {
-            throw new NotImplementedException();
+            var signedContract = _db.SignedContracts.FirstOrDefault(sc => sc.ContractId == id);
+            signedContract.SignedContractContract = _contractRepository.Find(signedContract.ContractId);
+            return signedContract;
         }
 
         public IEnumerable<SignedContract> Get() => _db
@@ -51,9 +56,19 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public SignedContract Update(Guid id, SignedContract t)
+        public SignedContract Update(Guid id, SignedContract signedContract)
         {
-            throw new NotImplementedException();
+            if (signedContract != null)
+            {
+                var signedContractToUpdate = Find(id);
+                if (signedContractToUpdate != null)
+                {
+                    signedContractToUpdate.ContractIndividualIsActive = signedContract.ContractIndividualIsActive;
+                    signedContractToUpdate.IndividualId = signedContract.IndividualId;
+                    return _db.SignedContracts.Update(signedContractToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

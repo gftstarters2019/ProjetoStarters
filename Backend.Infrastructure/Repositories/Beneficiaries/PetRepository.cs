@@ -48,9 +48,23 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public Pet Update(Guid id, Pet t)
+        public Pet Update(Guid id, Pet pet)
         {
-            throw new NotImplementedException();
+            if(pet != null)
+            {
+                var petToUpdate = Find(id);
+                if(petToUpdate != null)
+                {
+                    petToUpdate.IsDeleted = pet.IsDeleted;
+                    petToUpdate.PetBirthdate = pet.PetBirthdate;
+                    petToUpdate.PetBreed = pet.PetBreed;
+                    petToUpdate.PetName = pet.PetName;
+                    petToUpdate.PetSpecies = pet.PetSpecies;
+
+                    return _db.Pets.Update(petToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

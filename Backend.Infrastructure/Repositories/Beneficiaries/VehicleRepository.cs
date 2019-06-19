@@ -56,9 +56,35 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public Vehicle Update(Guid id, Vehicle t)
+        public Vehicle Update(Guid id, Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            if (vehicle != null)
+            {
+                // Verifies if Chassis Number is already in DB
+                if (_db.Vehicles
+                        .Where(vec => vec.VehicleChassisNumber == vehicle.VehicleChassisNumber
+                                      && !vec.IsDeleted)
+                        .Any())
+                    return null;
+
+                var vehicleToUpdate = Find(id);
+                if(vehicleToUpdate != null)
+                {
+                    vehicleToUpdate.IsDeleted = vehicle.IsDeleted;
+                    vehicleToUpdate.VehicleBrand = vehicle.VehicleBrand;
+                    vehicleToUpdate.VehicleChassisNumber = vehicle.VehicleChassisNumber;
+                    vehicleToUpdate.VehicleColor = vehicle.VehicleColor;
+                    vehicleToUpdate.VehicleCurrentFipeValue = vehicle.VehicleCurrentFipeValue;
+                    vehicleToUpdate.VehicleCurrentMileage = vehicle.VehicleCurrentMileage;
+                    vehicleToUpdate.VehicleDoneInspection = vehicle.VehicleDoneInspection;
+                    vehicleToUpdate.VehicleManufactoringYear = vehicle.VehicleManufactoringYear;
+                    vehicleToUpdate.VehicleModel = vehicle.VehicleModel;
+                    vehicleToUpdate.VehicleModelYear = vehicle.VehicleModelYear;
+
+                    return _db.Vehicles.Update(vehicleToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

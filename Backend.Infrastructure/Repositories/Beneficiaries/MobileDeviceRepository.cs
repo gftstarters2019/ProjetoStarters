@@ -56,9 +56,32 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public MobileDevice Update(Guid id, MobileDevice t)
+        public MobileDevice Update(Guid id, MobileDevice mobileDevice)
         {
-            throw new NotImplementedException();
+            if (mobileDevice != null)
+            {
+                var mobileDeviceToUpdate = Find(id);
+                if (mobileDeviceToUpdate != null)
+                {
+                    // Verifies if Serial Number is already in DB of active MobileDevice
+                    if (_db.MobileDevices
+                    .Where(mob => mob.MobileDeviceSerialNumber == mobileDevice.MobileDeviceSerialNumber
+                                  && !mob.IsDeleted)
+                    .Any())
+                        return null;
+
+                    mobileDeviceToUpdate.IsDeleted = mobileDevice.IsDeleted;
+                    mobileDeviceToUpdate.MobileDeviceBrand = mobileDevice.MobileDeviceBrand;
+                    mobileDeviceToUpdate.MobileDeviceInvoiceValue = mobileDevice.MobileDeviceInvoiceValue;
+                    mobileDeviceToUpdate.MobileDeviceManufactoringYear = mobileDevice.MobileDeviceManufactoringYear;
+                    mobileDeviceToUpdate.MobileDeviceModel = mobileDevice.MobileDeviceModel;
+                    mobileDeviceToUpdate.MobileDeviceSerialNumber = mobileDevice.MobileDeviceSerialNumber;
+                    mobileDeviceToUpdate.MobileDeviceType = mobileDevice.MobileDeviceType;
+
+                    return _db.MobileDevices.Update(mobileDeviceToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

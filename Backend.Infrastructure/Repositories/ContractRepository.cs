@@ -50,20 +50,18 @@ namespace Backend.Infrastructure.Repositories
         {
             if (contract != null)
             {
-                var contractToUpdate = contract;
-                if (contract.ContractId != id)
+                var contractToUpdate = Find(id);
+                if (contractToUpdate != null)
                 {
-                    contractToUpdate = Find(id);
                     contractToUpdate.ContractCategory = contract.ContractCategory;
                     contractToUpdate.ContractDeleted = contract.ContractDeleted;
                     contractToUpdate.ContractExpiryDate = contract.ContractExpiryDate;
                     contractToUpdate.ContractType = contract.ContractType;
-                }
-                _db.Update(contractToUpdate);
-                _db.SaveChanges();
-            }
 
-            return contract;
+                    return _db.Contracts.Update(contractToUpdate).Entity;
+                }
+            }
+            return null;
         }
 
         public bool Save()

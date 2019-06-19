@@ -34,7 +34,6 @@ namespace Backend.Infrastructure.Repositories
 
                 if (realty.Address.AddressId == Guid.Empty)
                 {
-                    realty.Address.AddressId = Guid.NewGuid();
                     realty.Address.AddressId = _addressRepository.Add(realty.Address).AddressId;
                 }
 
@@ -93,9 +92,54 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public Realty Update(Guid id, Realty t)
+        public Realty Update(Guid id, Realty realty)
         {
-            throw new NotImplementedException();
+            if (realty != null)
+            {
+                // Verifies if Municipal Registration is already in DB
+                if (_db.Realties
+                        .Where(real => real.RealtyMunicipalRegistration == realty.RealtyMunicipalRegistration
+                                       && !real.IsDeleted)
+                        .Any())
+                    return null;
+
+                var realtyToUpdate = Find(id);
+                if (realtyToUpdate != null)
+                {
+                    // If Address has no ID, add it
+                    if (realty.Address.AddressId == Guid.Empty)
+                        realty.Address = _addressRepository.Add(realty.Address);
+                    // If Address has ID, update it
+                    else
+                        realty.Address = _addressRepository.Update(realty.Address.AddressId, realty.Address);
+                    if (!_addressRepository.Save())
+                        return null;
+
+                    realtyToUpdate.IsDeleted = realty.IsDeleted;
+                    realtyToUpdate.RealtyConstructionDate = realty.RealtyConstructionDate;
+                    realtyToUpdate.RealtyMarketValue = realty.RealtyMarketValue;
+                    realtyToUpdate.RealtyMunicipalRegistration = realty.RealtyMunicipalRegistration;
+                    realtyToUpdate.RealtySaleValue = realty.RealtySaleValue;
+
+                    var updatedRealty = _db.Realties.Update(realtyToUpdate).Entity;
+                    if(updatedRealty != null)
+                    {
+                        // Delete old relationships
+                        _db.Beneficiary_Address.RemoveRange(_db.Beneficiary_Address.Where(ba => ba.BeneficiaryId == id));
+
+                        if (_db.Beneficiary_Address.Add(new BeneficiaryAddress()
+                        {
+                            AddressId = realtyToUpdate.Address.AddressId,
+                            BeneficiaryId = realty.BeneficiaryId,
+                            BeneficiaryAddressId = Guid.NewGuid()
+                        }) != null)
+                        {
+                            return updatedRealty;
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
         IEnumerable<Realty> IRepository<Realty>.Get()

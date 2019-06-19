@@ -31,7 +31,6 @@ namespace Backend.Infrastructure.Repositories
             {
                 address.AddressId = Guid.NewGuid();
                 return _db.Add(address).Entity;
-                
             }
             return null;
         }
@@ -53,11 +52,23 @@ namespace Backend.Infrastructure.Repositories
         {
             if (address != null)
             {
-                _db.Update(address);
-                _db.SaveChanges();
-            }
+                var addressToUpdate = Find(id);
+                if(addressToUpdate != null)
+                {
+                    addressToUpdate.AddressCity = address.AddressCity;
+                    addressToUpdate.AddressComplement = address.AddressComplement;
+                    addressToUpdate.AddressCountry = address.AddressCountry;
+                    addressToUpdate.AddressNeighborhood = address.AddressNeighborhood;
+                    addressToUpdate.AddressNumber = address.AddressNumber;
+                    addressToUpdate.AddressState = address.AddressState;
+                    addressToUpdate.AddressStreet = address.AddressStreet;
+                    addressToUpdate.AddressType = address.AddressType;
+                    addressToUpdate.AddressZipCode = address.AddressZipCode;
 
-            return address;
+                    return _db.Addresses.Update(addressToUpdate).Entity;
+                }
+            }
+            return null;
         }
 
         public bool Save()
