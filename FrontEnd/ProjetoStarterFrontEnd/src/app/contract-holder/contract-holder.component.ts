@@ -119,7 +119,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
         'Content-Type': 'application/json'
       })
     };
-this.confirmDialog();
+    this.confirmDialog();
 
     if (this.result == true) {
     this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      

@@ -33,9 +33,10 @@ export interface Holder {
   styleUrls: ['./contract.component.scss']
 })
 export class ContractComponent implements OnInit {
-  public result: any;  
+  public result: any = null;
   color = 'primary';
   beneficiaries: FormArray;
+  dialogRef;
 
   rowData$: Observable<any>;
   paginationPageSize;
@@ -90,17 +91,18 @@ export class ContractComponent implements OnInit {
 
   confirmDialog(): void {
     const message = `Do you really want to delete this contract?`;
- 
+
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
- 
+
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '375px',
-      panelClass:'content-container',
+      panelClass: 'content-container',
       data: dialogData
     });
- 
+
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
+      
     });
   }
 
@@ -399,11 +401,9 @@ export class ContractComponent implements OnInit {
 
     const id = data.signedContractId;
     this.confirmDialog();
-
     if(this.result == true){
       this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
     }
-
   }
 
   //AG-grid Table Contract
