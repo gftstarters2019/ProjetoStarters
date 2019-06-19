@@ -21,7 +21,7 @@ namespace Backend.Services.Validators
         public bool LengthValidator(string number, int length)
         {
             number = NumberUnmask(number);
-            if (number.Length != length)
+            if (number.Length < length)
                 return false;
             return true;
         }

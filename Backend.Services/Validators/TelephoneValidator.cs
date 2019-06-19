@@ -9,10 +9,16 @@ namespace Backend.Services.Validators
 {
     public class TelephoneValidator : ITelephoneValidator
     {
+        private readonly INumberValidator _numberValidator;
+
+        public TelephoneValidator(INumberValidator numberValidator)
+        {
+            _numberValidator = numberValidator;
+        }
+
         public bool IsValid(Telephone telephone)
         {
-            telephone.TelephoneNumber = Regex.Replace(telephone.TelephoneNumber, "\\D+", "");
-            if (telephone.TelephoneNumber.Length < 10)
+            if (!_numberValidator.LengthValidator(telephone.TelephoneNumber, 10))
                 return false;
             return true;
         }
