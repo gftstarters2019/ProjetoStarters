@@ -66,7 +66,7 @@ export class PetListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Birth Date',
+          headerName: 'BirthDate',
           field: 'petBirthdate',
           lockPosition: true,
           sortable: true,
