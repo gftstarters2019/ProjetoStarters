@@ -76,5 +76,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Contract FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
