@@ -67,5 +67,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Individual FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

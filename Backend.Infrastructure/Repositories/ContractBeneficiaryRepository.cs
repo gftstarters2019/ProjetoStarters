@@ -27,6 +27,11 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public ContractBeneficiary FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ContractBeneficiary> Get() => _db
             .Contract_Beneficiary
             .Where(cb => cb.SignedContract.ContractIndividualIsActive)

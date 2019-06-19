@@ -83,5 +83,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public RealtyViewModel FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

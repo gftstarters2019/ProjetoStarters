@@ -66,5 +66,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public BeneficiaryTelephone FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
