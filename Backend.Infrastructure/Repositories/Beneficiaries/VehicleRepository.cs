@@ -33,6 +33,11 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public Vehicle FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Vehicle> Get() => _db
             .Vehicles
             .Where(i => !i.IsDeleted)
