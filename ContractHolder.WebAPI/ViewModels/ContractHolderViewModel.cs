@@ -1,9 +1,7 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ContractHolder.WebAPI.ViewModels
 {
@@ -11,8 +9,8 @@ namespace ContractHolder.WebAPI.ViewModels
     {
         public ContractHolderViewModel()
         {
-            individualAddresses = new List<AddressEntity>();
-            individualTelephones = new List<Telephone>();
+            individualAddresses = new List<AddressDomain>();
+            individualTelephones = new List<TelephoneDomain>();
         }
 
         public Guid individualId { get; set; }
@@ -27,7 +25,7 @@ namespace ContractHolder.WebAPI.ViewModels
         public DateTime individualBirthdate { get; set; }
         public bool isDeleted { get; set; }
 
-        public List<Telephone> individualTelephones { get; set; }
-        public List<AddressEntity> individualAddresses { get; set; }
+        public List<TelephoneDomain> individualTelephones { get; set; }
+        public List<AddressDomain> individualAddresses { get; set; }
     }
 }

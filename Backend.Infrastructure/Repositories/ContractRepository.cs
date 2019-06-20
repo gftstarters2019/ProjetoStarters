@@ -29,6 +29,9 @@ namespace Backend.Infrastructure.Repositories
 
         public ContractEntity Add(ContractEntity contract)
         {
+            if (contract == null)
+                return null;
+
             contract.ContractId = Guid.NewGuid();
 
             return _db.Contracts.Add(contract).Entity;
@@ -68,11 +71,6 @@ namespace Backend.Infrastructure.Repositories
         public bool Save()
         {
             return _db.SaveChanges() > 0;
-        }
-
-        ContractEntity IRepository<ContractEntity>.Add(ContractEntity t)
-        {
-            throw new NotImplementedException();
         }
     }
 }

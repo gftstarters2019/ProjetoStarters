@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class TelephoneRepository : IRepository<Telephone>
+    public class TelephoneRepository : IRepository<TelephoneEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -17,25 +17,22 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Telephone Find(Guid id) => _db
+        public TelephoneEntity Find(Guid id) => _db
             .Telephones
             .FirstOrDefault(tel => tel.TelephoneId == id);
 
-        public IEnumerable<Telephone> Get() => _db
+        public IEnumerable<TelephoneEntity> Get() => _db
             .Telephones
             .ToList();
 
-        public bool Add(Telephone telephone)
+        public TelephoneEntity Add(TelephoneEntity telephone)
         {
-            if(telephone != null)
+            if (telephone != null)
             {
-                _db.Add(telephone);
-                if (_db.SaveChanges() == 1)
-                    return true;
-
-                return false;
+                telephone.TelephoneId = Guid.NewGuid();
+                return _db.Telephones.Add(telephone).Entity;
             }
-            return false;
+            return null;
         }
 
         public bool Remove(Guid id)
@@ -44,19 +41,17 @@ namespace Backend.Infrastructure.Repositories
             if(telephone != null)
             {
                 _db.Remove(telephone);
-                _db.SaveChanges();
                 return true;
             }
 
             return false;
         }
 
-        public Telephone Update(Guid id, Telephone telephone)
+        public TelephoneEntity Update(Guid id, TelephoneEntity telephone)
         {
             if(telephone != null)
             {
                 _db.Update(telephone);
-                _db.SaveChanges();
             }
 
             return telephone;
@@ -64,12 +59,7 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
-        }
-
-        Telephone IRepository<Telephone>.Add(Telephone t)
-        {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
     }
 }

@@ -46,11 +46,9 @@ namespace ContractHolder.WebAPI
 
             services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
 
-            services.AddScoped<IRepository<Telephone>, TelephoneRepository>();
+            services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
             
             services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
-            
-            services.AddScoped<IRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
             
             services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
 

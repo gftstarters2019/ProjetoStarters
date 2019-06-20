@@ -37,7 +37,7 @@ namespace Backend.IntegrationTests
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
-            services.AddScoped<IRepository<Telephone>, TelephoneRepository>();
+            services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
             services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
             services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
             

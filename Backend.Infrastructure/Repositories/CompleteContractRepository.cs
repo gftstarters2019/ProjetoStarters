@@ -34,6 +34,7 @@ namespace Backend.Infrastructure.Repositories
                                           IRepository<ContractBeneficiary> contractBeneficiaryRepository)
         {
             _db = db;
+
             _contractRepository = contractRepository;
             _signedContractRepository = signedContractRepository;
             _individualsRepository = individualsRepository;
