@@ -44,12 +44,28 @@ namespace Contract.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
+            services.AddScoped<Backend.Services.Services.Contracts.IService<Backend.Core.Domains.CompleteContractDomain>, CompleteContractService>();
+
+            services.AddScoped<IRepository<Backend.Core.Domains.CompleteContractDomain>, CompleteContractRepository>();
+
             services.AddScoped<IRepository<Backend.Core.Models.ContractEntity>, ContractRepository>();
 
             services.AddScoped<IRepository<Backend.Core.Models.SignedContractEntity>, SignedContractRepository>();
-            
-            services.AddScoped<Backend.Services.Services.Contracts.IService<Backend.Core.Domains.CompleteContractDomain>, CompleteContractService>();
 
+            services.AddScoped<IRepository<Backend.Core.Models.IndividualEntity>, IndividualRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.PetEntity>, PetRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.MobileDeviceEntity>, MobileDeviceRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.RealtyEntity>, RealtyRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.VehicleEntity>, VehicleRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.ContractBeneficiary>, ContractBeneficiaryRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.AddressEntity>, AddressRepository>();
+            
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
             ConfigureSwagger(services);
