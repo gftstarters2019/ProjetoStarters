@@ -30,7 +30,7 @@ namespace Backend.Infrastructure.Repositories
             if (address != null)
             {
                 address.AddressId = Guid.NewGuid();
-                return _db.Add(address).Entity;
+                return _db.Addresses.Add(address).Entity;
             }
             return null;
         }

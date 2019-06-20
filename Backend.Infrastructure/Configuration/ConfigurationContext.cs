@@ -23,7 +23,7 @@ namespace Backend.Infrastructure.Configuration
         public DbSet<SignedContractEntity> SignedContracts { get; set; }
         //public DbSet<Beneficiary> Beneficiaries { get; set; }
         public DbSet<BeneficiaryAddress> Beneficiary_Address { get; set; }
-        public DbSet<BeneficiaryTelephone> Individual_Telephone { get; set; }
+        public DbSet<IndividualTelephone> Individual_Telephone { get; set; }
         public DbSet<ContractBeneficiary> Contract_Beneficiary { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
@@ -44,7 +44,7 @@ namespace Backend.Infrastructure.Configuration
             builder.Entity<SignedContractEntity>().ToTable("SignedContracts");
             //builder.Entity<Beneficiary>();
             builder.Entity<BeneficiaryAddress>().ToTable("Beneficiary_Address");
-            builder.Entity<BeneficiaryTelephone>().ToTable("Individual_Telephone");
+            builder.Entity<IndividualTelephone>().ToTable("Individual_Telephone");
             builder.Entity<ContractBeneficiary>().ToTable("Contract_Beneficiary");
 
         }

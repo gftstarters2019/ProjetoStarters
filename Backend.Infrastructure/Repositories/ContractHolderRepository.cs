@@ -14,18 +14,24 @@ namespace Backend.Infrastructure.Repositories
         private readonly ConfigurationContext _db;
         private readonly IRepository<IndividualEntity> _individualsRepository;
         private readonly IRepository<TelephoneEntity> _telephonesRepository;
-        private readonly IRepository<BeneficiaryTelephone> _beneficiaryTelephonesRepository;
+        private readonly IRepository<IndividualTelephone> _individualTelephonesRepository;
+        private readonly IRepository<AddressEntity> _addressRepository;
+        private readonly IRepository<BeneficiaryAddress> _beneficiaryAddressRepository;
 
         public ContractHolderRepository(ConfigurationContext db,
                                         IRepository<IndividualEntity> individualsRepository,
                                         IRepository<TelephoneEntity> telephonesRepository,
-                                        IRepository<BeneficiaryTelephone> beneficiaryTelephonesRepository)
+                                        IRepository<IndividualTelephone> individualTelephonesRepository,
+                                        IRepository<AddressEntity> addressRepository,
+                                        IRepository<BeneficiaryAddress> beneficiaryAddressRepository)
         {
             _db = db;
 
             _individualsRepository = individualsRepository;
             _telephonesRepository = telephonesRepository;
-            _beneficiaryTelephonesRepository = beneficiaryTelephonesRepository;
+            _individualTelephonesRepository = individualTelephonesRepository;
+            _addressRepository = addressRepository;
+            _beneficiaryAddressRepository = beneficiaryAddressRepository;
         }
 
         public ContractHolderDomain Add(ContractHolderDomain contractHolder)
@@ -51,7 +57,7 @@ namespace Backend.Infrastructure.Repositories
                             _telephonesRepository.Add(ConvertersManager.TelephoneConverter.Convert(
                                 telephone)));
 
-                        var addedIndividualTelephone = _beneficiaryTelephonesRepository.Add(new BeneficiaryTelephone()
+                        var addedIndividualTelephone = _individualTelephonesRepository.Add(new IndividualTelephone()
                         {
                             BeneficiaryId = contractHolder.Individual.BeneficiaryId,
                             TelephoneId = telephone.TelephoneId
@@ -64,18 +70,40 @@ namespace Backend.Infrastructure.Repositories
                     }
                     if (addedTelephones.Count != contractHolder.IndividualTelephones.Count
                         || _telephonesRepository.Save()
-                        || _beneficiaryTelephonesRepository.Save())
+                        || _individualTelephonesRepository.Save())
                         return null;
 
                     contractHolder.IndividualTelephones = addedTelephones;
-                    
+
                     // Add Addresses
-                    //TODO
-                    // Add Beneficiary Addresses
+                    var addedAddresses = new List<AddressDomain>();
+                    foreach (var address in contractHolder.IndividualAddresses)
+                    {
+                        var addedAddress = ConvertersManager.AddressConverter.Convert(
+                            _addressRepository.Add(ConvertersManager.AddressConverter.Convert(
+                                address)));
+
+                        var addedBeneficiaryAddress = _beneficiaryAddressRepository.Add(new BeneficiaryAddress()
+                        {
+                            AddressId = address.AddressId,
+                            BeneficiaryId = contractHolder.Individual.BeneficiaryId
+                        });
+
+                        if (addedAddress == null || addedBeneficiaryAddress == null)
+                            return null;
+
+                        addedAddresses.Add(addedAddress);
+                    }
+                    if (addedAddresses.Count != contractHolder.IndividualAddresses.Count
+                        || _addressRepository.Save()
+                        || _beneficiaryAddressRepository.Save())
+                        return null;
+
+                    scope.Complete();
+                    return contractHolder;
                 }
-                scope.Complete();
+                return null;
             }
-                throw new NotImplementedException();
         }
 
         public ContractHolderDomain Find(Guid id)
@@ -95,7 +123,7 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
         public ContractHolderDomain Update(Guid id, ContractHolderDomain t)

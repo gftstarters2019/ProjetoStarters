@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Backend.Core.Models
 {
-    public class BeneficiaryTelephone
+    public class IndividualTelephone
     {
         public Guid BeneficiaryTelephoneId { get; set; }
         public Guid TelephoneId { get; set; }
