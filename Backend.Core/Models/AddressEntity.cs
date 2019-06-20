@@ -1,11 +1,12 @@
 ﻿using Backend.Core.Enums;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
     public class AddressEntity
     {
+        [Key]
         public Guid AddressId { get; set; }
         public string AddressStreet { get; set; }
         public string AddressNumber { get; set; }
