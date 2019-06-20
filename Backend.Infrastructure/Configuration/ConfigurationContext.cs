@@ -19,7 +19,7 @@ namespace Backend.Infrastructure.Configuration
         public DbSet<MobileDeviceEntity> MobileDevices { get; set; }
         public DbSet<ContractEntity> Contracts { get; set; }
         public DbSet<AddressEntity> Addresses { get; set; }
-        public DbSet<Telephone> Telephones { get; set; }
+        public DbSet<TelephoneEntity> Telephones { get; set; }
         public DbSet<SignedContractEntity> SignedContracts { get; set; }
         //public DbSet<Beneficiary> Beneficiaries { get; set; }
         public DbSet<BeneficiaryAddress> Beneficiary_Address { get; set; }
@@ -40,7 +40,7 @@ namespace Backend.Infrastructure.Configuration
             builder.Entity<MobileDeviceEntity>().HasBaseType<Beneficiary>().ToTable("Beneficiaries");
             builder.Entity<ContractEntity>().ToTable("Contracts");
             builder.Entity<AddressEntity>().ToTable("Addresses");
-            builder.Entity<Telephone>().ToTable("Telephones");
+            builder.Entity<TelephoneEntity>().ToTable("Telephones");
             builder.Entity<SignedContractEntity>().ToTable("SignedContracts");
             //builder.Entity<Beneficiary>();
             builder.Entity<BeneficiaryAddress>().ToTable("Beneficiary_Address");

@@ -10,6 +10,7 @@
         private static RealtyConverter realtyConverter = null;
         private static VehicleConverter vehicleConverter = null;
         private static AddressConverter addressConverter = null;
+        private static TelephoneConverter telephoneConverter = null;
         private static readonly object padlock = new object();
 
         public ConvertersManager()
@@ -157,6 +158,24 @@
                     }
                 }
                 return addressConverter;
+            }
+        }
+
+        public static TelephoneConverter TelephoneConverter
+        {
+            get
+            {
+                if (telephoneConverter == null)
+                {
+                    lock (padlock)
+                    {
+                        if (telephoneConverter == null)
+                        {
+                            telephoneConverter = new TelephoneConverter();
+                        }
+                    }
+                }
+                return telephoneConverter;
             }
         }
     }

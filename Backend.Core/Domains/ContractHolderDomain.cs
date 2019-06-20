@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Backend.Core.Domains
 {
@@ -10,5 +8,4 @@ namespace Backend.Core.Domains
         public List<TelephoneDomain> IndividualTelephones { get; set; }
         public List<AddressDomain> IndividualAddresses { get; set; }
     }
-
 }

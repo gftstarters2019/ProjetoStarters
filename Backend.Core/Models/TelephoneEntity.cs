@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Backend.Core.Models
 {
-    public class Telephone
+    public class TelephoneEntity
     {
         public Guid TelephoneId { get; set; }
         public string TelephoneNumber { get; set; }
