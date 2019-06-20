@@ -1,7 +1,9 @@
 ﻿using Backend.Application.Singleton;
 using Backend.Application.ViewModels;
+using Backend.Core.Domains;
 using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Services.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -18,22 +20,14 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class ContractHolderController : ControllerBase
     {
-        private readonly IRepository<IndividualEntity> _contractHolderRepository;
-        private readonly IRepository<ContractHolderViewModel> _contractHolderViewModelRepository;
-        private readonly IRepository<SignedContractEntity> _contractsRepository;
+        private readonly IService<ContractHolderDomain> _contractHolderService;
 
         /// <summary>
         /// ContractHolderController constructor
         /// </summary>
-        public ContractHolderController(IRepository<IndividualEntity> contractHolderRepository,
-                                        IRepository<ContractHolderViewModel> contractHolderViewModelRepository,
-                                        IRepository<SignedContractEntity> contractsRepository)
+        public ContractHolderController(IService<ContractHolderDomain> contractHolderService)
         {
-            _contractHolderRepository = contractHolderRepository;
-            
-            _contractHolderViewModelRepository = contractHolderViewModelRepository;
-            
-            _contractsRepository = contractsRepository;
+            _contractHolderService = contractHolderService;
         }
 
         /// <summary>
@@ -43,7 +37,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet]
         public IActionResult ContractHolders()
         {
-            return Ok(_contractHolderViewModelRepository.Get());
+            return Ok(_contractHolderService.GetAll());
         }
 
         /// <summary>
@@ -54,7 +48,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult ContractHolder(Guid id)
         {
-            var obj = _contractHolderViewModelRepository.Find(id);
+            var obj = _contractHolderService.Get(id);
 
             if (obj == null)
                 return NotFound();
@@ -70,9 +64,12 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel vm)
         {
-            //if (!_contractHolderViewModelRepository.Add(vm))
-            //    return StatusCode(403);
+            // TODO: Usar Factory ContractHolderViewModel => ContractHolderDomain para passar para a Service
+            var contractHolderToAdd = _contractHolderService.Save(new ContractHolderDomain());
+            if (contractHolderToAdd == null)
+                return StatusCode(403);
 
+            // TODO: Usar Factory ContractHolderDomain => ContractHolderViewModel para passar para devolver para o Frontend
             //SendWelcomeEmail(vm);
             return Ok(vm);
         }
@@ -86,9 +83,12 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContractHolder(Guid id, [FromBody] ContractHolderViewModel vm)
         {
-            if(_contractHolderViewModelRepository.Update(id, vm) == null)
+            // TODO: Usar Factory ContractHolderViewModel => ContractHolderDomain para passar para a Service
+            var contractHolderToUpdate = _contractHolderService.Update(id, new ContractHolderDomain());
+            if (contractHolderToUpdate == null)
                 return StatusCode(403);
 
+            // TODO: Usar Factory ContractHolderDomain => ContractHolderViewModel para passar para devolver para o Frontend
             return Ok(vm);
         }
 
@@ -100,112 +100,13 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteContractHolder(Guid id)
         {
-            //if (_contractsReadOnlyRepository.Get().Where(sc => sc.IndividualId == id).ToList().Count > 0)
-            //    return Forbid();
-
-            var contractHolder = _contractHolderViewModelRepository.Find(id);
+            var contractHolder = _contractHolderService.Delete(id);
 
             if (contractHolder != null)
-            {
-                contractHolder.isDeleted = !contractHolder.isDeleted;
+                return Ok(id);
 
-                if (_contractHolderViewModelRepository.Update(id, contractHolder) == null)
-                    return StatusCode(403);
-
-                return Ok(_contractHolderViewModelRepository.Update(id, contractHolder));
-            }
-            else return NotFound(contractHolder);
+            return StatusCode(403);
         }
-
-        #region Validations
-        /// <summary>
-        /// Does all validations to see if Contract Holder is valid.
-        /// </summary>
-        /// <param name="individual"></param>
-        /// <returns></returns>
-        public static bool ContractHolderIsValid(IndividualEntity individual)
-        {
-            if (!CPFIsValid(individual.IndividualCPF))
-                return false;
-
-            if (!EmailIsValid(individual.IndividualEmail))
-                return false;
-
-            //if (!RGIsValid(individual.IndividualRG))
-            //    return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Algorithm to verify if a string is a CPF
-        /// </summary>
-        /// <param name="cpf">String to be verified</param>
-        /// <returns>If the string is a CPF</returns>
-        public static bool CPFIsValid(string cpf)
-        {
-            int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            string tempCpf;
-            string digito;
-            int soma;
-            int resto;
-            cpf = cpf.Trim();
-            cpf = cpf.Replace(".", "").Replace("-", "");
-            if (cpf.Length != 11)
-                return false;
-            tempCpf = cpf.Substring(0, 9);
-            soma = 0;
-
-            for (int i = 0; i < 9; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
-            resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
-            digito = resto.ToString();
-            tempCpf = tempCpf + digito;
-            soma = 0;
-            for (int i = 0; i < 10; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
-            resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
-            digito = digito + resto.ToString();
-            return cpf.EndsWith(digito);
-        }
-
-        /// <summary>
-        /// Verifies if an email is valid.
-        /// </summary>
-        /// <param name="emailaddress">Email to be verified</param>
-        /// <returns>If email is valid</returns>
-        public static bool EmailIsValid(string emailaddress)
-        {
-            try
-            {
-                MailAddress m = new MailAddress(emailaddress);
-
-                return true;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-        }
-
-
-        //public static bool RGIsValid(string rg)
-        //{
-        //    if (!new Regex("^\\d{2}.\\d{3}.\\d{3}-\\d$").IsMatch(rg))
-        //        return false;
-
-        //    return true;
-        //}
-        #endregion Validations
 
         #region SendEmail
         /// <summary>
