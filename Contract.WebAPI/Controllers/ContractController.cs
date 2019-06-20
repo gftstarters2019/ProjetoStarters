@@ -1,6 +1,7 @@
-﻿using Backend.Application.ViewModels;
-using Backend.Core.Domains;
+﻿using Backend.Core.Domains;
 using Backend.Services.Services.Contracts;
+using Contract.WebAPI.Factories;
+using Contract.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -93,10 +94,12 @@ namespace Contract.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContract([FromBody] ContractViewModel contract)
         {
-            //if (!_contractViewModelRepository.Add(contract))
+            var contractToAdd = FactoriesManager.CompleteContractDomain.Create(contract);
+            var addedContract = _contractService.Save(contractToAdd);
+            if (addedContract == null)
                 return StatusCode(403);
-
-            return Ok();
+            
+            return Ok(FactoriesManager.ContractViewModel.Create(addedContract));
         }
 
         /// <summary>
@@ -108,10 +111,12 @@ namespace Contract.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContract(Guid id, [FromBody] ContractViewModel contractViewModel)
         {
-            var updatedContract = _contractService.Update(id, new CompleteContractDomain());
+            var contractToUpdate = FactoriesManager.CompleteContractDomain.Create(contractViewModel);
+            var updatedContract = _contractService.Update(id, contractToUpdate);
             if (updatedContract == null)
                 return StatusCode(403);
-            return Ok(updatedContract);
+            
+            return Ok(FactoriesManager.ContractViewModel.Create(updatedContract));
         }
 
         /// <summary>
@@ -123,7 +128,8 @@ namespace Contract.WebAPI.Controllers
         public IActionResult DeleteContract(Guid id)
         {
             if (_contractService.Delete(id) != null)
-                Ok();
+                Ok(id);
+
             return StatusCode(403);
         }
     }
