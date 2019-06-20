@@ -2,9 +2,6 @@
 using Contract.WebAPI.Factories.Interfaces;
 using Contract.WebAPI.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Contract.WebAPI.Factories
 {
