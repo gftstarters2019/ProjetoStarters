@@ -1,5 +1,5 @@
-﻿using Backend.Core.Enums;
-using Backend.Core.Models;
+﻿using Backend.Core.Domains;
+using Backend.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,20 +14,16 @@ namespace Contract.WebAPI.ViewModels
         /// Contract Holder ID (BeneficiaryId)
         /// </summary>
         public Guid ContractHolderId { get; set; }
-        public IndividualEntity ContractHolder { get; set; }
+        public IndividualDomain ContractHolder { get; set; }
         public ContractType Type { get; set; }
         public ContractCategory Category { get; set; }
         public DateTime ExpiryDate { get; set; }
         public bool IsActive { get; set; }
-        /// <summary>
-        /// List of Beneficiaries. Shouldn't have different types of Beneficiary, but can accept any type.
-        /// </summary>
-        public List<Guid> BeneficiariesIds { get; set; }
 
-        public List<IndividualEntity> Individuals { get; set; }
-        public List<RealtyViewModel> Realties { get; set; }
-        public List<MobileDeviceEntity> MobileDevices { get; set; }
-        public List<PetEntity> Pets { get; set; }
-        public List<VehicleEntity> Vehicles { get; set; }
+        public List<IndividualDomain> Individuals { get; set; }
+        public List<RealtyDomain> Realties { get; set; }
+        public List<MobileDeviceDomain> MobileDevices { get; set; }
+        public List<PetDomain> Pets { get; set; }
+        public List<VehicleDomain> Vehicles { get; set; }
     }
 }
