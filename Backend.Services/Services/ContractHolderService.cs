@@ -1,34 +1,48 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
+using Backend.Infrastructure.Repositories.Contracts;
 using Backend.Services.Services.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Services
 {
-    public class ContractHolderService : IService<IndividualEntity>
+    public class ContractHolderService : IService<ContractHolderDomain>
     {
-        public IndividualEntity Delete(Guid id)
+        private IRepository<ContractHolderDomain> _contractHolderRepository;
+
+        public ContractHolderService(IRepository<ContractHolderDomain> contractHolderRepository)
+        {
+            _contractHolderRepository = contractHolderRepository;
+        }
+
+        public ContractHolderDomain Delete(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IndividualEntity Get(Guid id)
+        public ContractHolderDomain Get(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public List<IndividualEntity> GetAll()
+        public List<ContractHolderDomain> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IndividualEntity Save(IndividualEntity modelToAddToDB)
+        public ContractHolderDomain Save(ContractHolderDomain contractHolderDomain)
         {
-            throw new NotImplementedException();
+            if (contractHolderDomain == null)
+                return null;
+
+            /*
+             * Validations
+            */
+
+            return _contractHolderRepository.Add(contractHolderDomain);
         }
 
-        public IndividualEntity Update(Guid id, IndividualEntity modelToUpdate)
+        public ContractHolderDomain Update(Guid id, ContractHolderDomain modelToUpdate)
         {
             throw new NotImplementedException();
         }

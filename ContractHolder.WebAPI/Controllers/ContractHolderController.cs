@@ -1,15 +1,9 @@
-﻿using Backend.Application.Singleton;
-using Backend.Application.ViewModels;
-using Backend.Core.Domains;
-using Backend.Core.Models;
-using Backend.Infrastructure.Repositories.Contracts;
+﻿using Backend.Core.Domains;
 using Backend.Services.Services.Contracts;
+using ContractHolder.WebAPI.Factories;
+using ContractHolder.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
 
 namespace ContractHolder.WebAPI.Controllers
 {
@@ -59,19 +53,20 @@ namespace ContractHolder.WebAPI.Controllers
         /// <summary>
         /// Creates a new Contract Holder
         /// </summary>
-        /// <param name="vm">Contract Holder to be created</param>
+        /// <param name="contractHolderViewModel">Contract Holder to be created</param>
         /// <returns>Created Contract Holder</returns>
         [HttpPost]
-        public IActionResult PostContractHolder([FromBody] ContractHolderViewModel vm)
+        public IActionResult PostContractHolder([FromBody] ContractHolderViewModel contractHolderViewModel)
         {
-            // TODO: Usar Factory ContractHolderViewModel => ContractHolderDomain para passar para a Service
-            var contractHolderToAdd = _contractHolderService.Save(new ContractHolderDomain());
-            if (contractHolderToAdd == null)
+            var contractHolderToAdd = FactoriesManager.ContractHolder.Create(contractHolderViewModel);
+
+            var addedContractHolder = _contractHolderService.Save(contractHolderToAdd);
+            if (addedContractHolder == null)
                 return StatusCode(403);
 
             // TODO: Usar Factory ContractHolderDomain => ContractHolderViewModel para passar para devolver para o Frontend
             //SendWelcomeEmail(vm);
-            return Ok(vm);
+            return Ok(contractHolderViewModel);
         }
 
         /// <summary>
