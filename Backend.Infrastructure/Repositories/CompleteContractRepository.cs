@@ -2,6 +2,7 @@
 using Backend.Core.Enums;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
+using Backend.Infrastructure.Converters;
 using Backend.Infrastructure.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
@@ -53,13 +54,19 @@ namespace Backend.Infrastructure.Repositories
                    new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
                 // Add Contract to DB
-                completeContract.Contract = _contractRepository.Add(completeContract.Contract);
+                completeContract.Contract = ConvertersManager.ContractConverter.Convert(
+                    _contractRepository.Add(ConvertersManager.ContractConverter.Convert(
+                        completeContract.Contract)));
+
                 if (completeContract.Contract == null || !_contractRepository.Save())
                     return null;
 
                 // Add Signed Contract to DB
                 completeContract.SignedContract.SignedContractContract = completeContract.Contract;
-                completeContract.SignedContract = _signedContractRepository.Add(completeContract.SignedContract);
+                completeContract.SignedContract = ConvertersManager.SignedContractConverter.Convert(
+                    _signedContractRepository.Add(ConvertersManager.SignedContractConverter.Convert(
+                        completeContract.SignedContract)));
+
                 if (completeContract.SignedContract == null || !_signedContractRepository.Save())
                     return null;
 
@@ -142,7 +149,9 @@ namespace Backend.Infrastructure.Repositories
             
             foreach (var ind in individuals)
             {
-                var addedIndividual = _individualsRepository.Add(ind);
+                var addedIndividual = ConvertersManager.IndividualConverter.Convert(
+                    _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
+                        ind)));
 
                 if(addedIndividual != null)
                     insertedIndividuals.Add(addedIndividual.BeneficiaryId);
@@ -166,7 +175,10 @@ namespace Backend.Infrastructure.Repositories
 
             foreach (var pet in pets)
             {
-                var addedPet = _petsRepository.Add(pet);
+                var addedPet = ConvertersManager.PetConverter.Convert(
+                    _petsRepository.Add(ConvertersManager.PetConverter.Convert(
+                        pet)));
+
                 if(addedPet != null)
                     insertedPets.Add(pet.BeneficiaryId);
             }
@@ -189,7 +201,10 @@ namespace Backend.Infrastructure.Repositories
             
             foreach (var mobile in mobileDevices)
             {
-                var addedMobile = _mobileDevicesRepository.Add(mobile);
+                var addedMobile = ConvertersManager.MobileDeviceConverter.Convert(
+                    _mobileDevicesRepository.Add(ConvertersManager.MobileDeviceConverter.Convert(
+                        mobile)));
+
                 if(addedMobile != null)
                     insertedMobileDevices.Add(addedMobile.BeneficiaryId);
             }
@@ -212,7 +227,10 @@ namespace Backend.Infrastructure.Repositories
             
             foreach (var realty in realties)
             {
-                var addedRealty = _realtiesRepository.Add(realty);
+                var addedRealty = ConvertersManager.RealtyConverter.Convert(
+                    _realtiesRepository.Add(ConvertersManager.RealtyConverter.Convert(
+                        realty)));
+
                 if (addedRealty != null)
                     insertedRealties.Add(addedRealty.BeneficiaryId);
             }
@@ -235,7 +253,10 @@ namespace Backend.Infrastructure.Repositories
             
             foreach (var vehicle in vehicles)
             {
-                var addedVehicle = _vehiclesRepository.Add(vehicle);
+                var addedVehicle = ConvertersManager.VehicleConverter.Convert(
+                    _vehiclesRepository.Add(ConvertersManager.VehicleConverter.Convert(
+                        vehicle)));
+
                 if (addedVehicle != null)
                     insertedVehicles.Add(addedVehicle.BeneficiaryId);
             }
@@ -257,7 +278,7 @@ namespace Backend.Infrastructure.Repositories
                 {
                     BeneficiaryId = ben,
                     SignedContractId = signedContract.SignedContractId,
-                    SignedContract = signedContract
+                    SignedContract = ConvertersManager.SignedContractConverter.Convert(signedContract)
                 };
                 _contractBeneficiaryRepository.Add(contract_beneficiary);
             }
@@ -278,11 +299,13 @@ namespace Backend.Infrastructure.Repositories
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
                    new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
-                var updatedSignedContract = _signedContractRepository.Update(id, completeContract.SignedContract);
+                var updatedSignedContract = _signedContractRepository.Update(id, ConvertersManager.SignedContractConverter.Convert(
+                    completeContract.SignedContract));
                 if (!_signedContractRepository.Save())
                     return null;
 
-                var updatedContract = _contractRepository.Update(updatedSignedContract.ContractId, completeContract.Contract);
+                var updatedContract = _contractRepository.Update(updatedSignedContract.ContractId, ConvertersManager.ContractConverter.Convert(
+                    completeContract.Contract));
                 if (!_contractRepository.Save())
                     return null;
 
@@ -355,7 +378,8 @@ namespace Backend.Infrastructure.Repositories
                 // If Individual doesn't have an ID, add it do the DB
                 if (ind.BeneficiaryId == Guid.Empty)
                 {
-                    var addedIndividual = _individualsRepository.Add(ind);
+                    var addedIndividual = _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
+                        ind));
 
                     if (addedIndividual != null)
                         updatedIndividuals.Add(addedIndividual.BeneficiaryId);
@@ -363,7 +387,9 @@ namespace Backend.Infrastructure.Repositories
                 // If Individual already has an ID, update it
                 else
                 {
-                    var updatedIndividual = _individualsRepository.Update(ind.BeneficiaryId, ind);
+                    var updatedIndividual = _individualsRepository.Update(ind.BeneficiaryId, ConvertersManager.IndividualConverter.Convert(
+                        ind));
+
                     if(updatedIndividual != null)
                         updatedIndividuals.Add(updatedIndividual.BeneficiaryId);
                 }
@@ -384,7 +410,8 @@ namespace Backend.Infrastructure.Repositories
                 // If Pet doesn't have an ID, add it do the DB
                 if (pet.BeneficiaryId == Guid.Empty)
                 {
-                    var addedPet = _petsRepository.Add(pet);
+                    var addedPet = _petsRepository.Add(ConvertersManager.PetConverter.Convert(
+                        pet));
 
                     if (addedPet != null)
                         updatedPets.Add(addedPet.BeneficiaryId);
@@ -392,7 +419,9 @@ namespace Backend.Infrastructure.Repositories
                 // If Pet already has an ID, update it
                 else
                 {
-                    var updatedPet = _petsRepository.Update(pet.BeneficiaryId, pet);
+                    var updatedPet = _petsRepository.Update(pet.BeneficiaryId, ConvertersManager.PetConverter.Convert(
+                        pet));
+
                     if (updatedPet != null)
                         updatedPets.Add(updatedPet.BeneficiaryId);
                 }
@@ -413,7 +442,8 @@ namespace Backend.Infrastructure.Repositories
                 // If MobileDevice doesn't have an ID, add it do the DB
                 if (mobileDevice.BeneficiaryId == Guid.Empty)
                 {
-                    var addedMobileDevice = _mobileDevicesRepository.Add(mobileDevice);
+                    var addedMobileDevice = _mobileDevicesRepository.Add(ConvertersManager.MobileDeviceConverter.Convert(
+                        mobileDevice));
 
                     if (addedMobileDevice != null)
                         updatedMobileDevices.Add(addedMobileDevice.BeneficiaryId);
@@ -421,7 +451,9 @@ namespace Backend.Infrastructure.Repositories
                 // If MobileDevice already has an ID, update it
                 else
                 {
-                    var updatedMobileDevice = _mobileDevicesRepository.Update(mobileDevice.BeneficiaryId, mobileDevice);
+                    var updatedMobileDevice = _mobileDevicesRepository.Update(mobileDevice.BeneficiaryId, ConvertersManager.MobileDeviceConverter.Convert(
+                        mobileDevice));
+
                     if (updatedMobileDevice != null)
                         updatedMobileDevices.Add(updatedMobileDevice.BeneficiaryId);
                 }
@@ -442,7 +474,8 @@ namespace Backend.Infrastructure.Repositories
                 // If Realty doesn't have an ID, add it do the DB
                 if (realty.BeneficiaryId == Guid.Empty)
                 {
-                    var addedRealty = _realtiesRepository.Add(realty);
+                    var addedRealty = _realtiesRepository.Add(ConvertersManager.RealtyConverter.Convert(
+                        realty));
 
                     if (addedRealty != null)
                         updatedRealties.Add(addedRealty.BeneficiaryId);
@@ -450,7 +483,9 @@ namespace Backend.Infrastructure.Repositories
                 // If Realty already has an ID, update it
                 else
                 {
-                    var updatedRealty = _realtiesRepository.Update(realty.BeneficiaryId, realty);
+                    var updatedRealty = _realtiesRepository.Update(realty.BeneficiaryId, ConvertersManager.RealtyConverter.Convert(
+                        realty));
+
                     if (updatedRealty != null)
                         updatedRealties.Add(updatedRealty.BeneficiaryId);
                 }
@@ -471,7 +506,8 @@ namespace Backend.Infrastructure.Repositories
                 // If Vehicle doesn't have an ID, add it do the DB
                 if (vehicle.BeneficiaryId == Guid.Empty)
                 {
-                    var addedVehicle = _vehiclesRepository.Add(vehicle);
+                    var addedVehicle = _vehiclesRepository.Add(ConvertersManager.VehicleConverter.Convert(
+                        vehicle));
 
                     if (addedVehicle != null)
                         updatedVehicles.Add(addedVehicle.BeneficiaryId);
@@ -479,7 +515,9 @@ namespace Backend.Infrastructure.Repositories
                 // If Vehicle already has an ID, update it
                 else
                 {
-                    var updatedVehicle = _vehiclesRepository.Update(vehicle.BeneficiaryId, vehicle);
+                    var updatedVehicle = _vehiclesRepository.Update(vehicle.BeneficiaryId, ConvertersManager.VehicleConverter.Convert(
+                        vehicle));
+
                     if (updatedVehicle != null)
                         updatedVehicles.Add(updatedVehicle.BeneficiaryId);
                 }
