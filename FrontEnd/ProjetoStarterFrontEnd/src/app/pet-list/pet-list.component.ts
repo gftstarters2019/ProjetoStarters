@@ -25,22 +25,6 @@ export class PetListComponent implements OnInit {
 
   constructor(public dialog: MatDialog, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
-  confirmDialog(): void {
-    const message = `Do you really want to delete this Pet ?`;
-
-    const dialogData = new ConfirmDialogModel("Confirm Action", message);
-
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '375px',
-      panelClass:'content-container',
-      data: dialogData
-    });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      this.result = dialogResult;
-    });
-  }
-
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
@@ -57,13 +41,7 @@ export class PetListComponent implements OnInit {
     console.log(id);
 
     const message = `Do you really want to delete this Pet ?`;
-
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.hasBackdrop = true;
-
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '375px',
@@ -73,9 +51,9 @@ export class PetListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
-      if (this.result == true) {
-        this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
-      }
+      if (this.result == true) {  
+        this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar("Error 403 - Invalid Action"), () => this.openSnackBar("Beneficiary removed"));
+        } 
     });
   }
 
