@@ -33,6 +33,11 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public Pet FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Pet> Get() => _db
             .Pets
             .Where(i => !i.IsDeleted)
