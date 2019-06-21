@@ -56,21 +56,21 @@ export class ContractComponent implements OnInit {
   signedContractId: any = null;
 
   contractTypes: Type[] = [
-    { value: 0, viewValue: 'Contract Health Plan' },
-    { value: 1, viewValue: 'Contract Animal Health Plan' },
-    { value: 2, viewValue: 'Contract Dental Plan' },
-    { value: 3, viewValue: 'Contract Life Insurance Plan' },
-    { value: 4, viewValue: 'Contract Real State Insurance' },
-    { value: 5, viewValue: 'Contract Vehicle Insurance' },
-    { value: 6, viewValue: 'Contract Mobile Device Insurance' },
+    { value: 0, viewValue: 'Health Plan' },
+    { value: 1, viewValue: 'Animal Health Plan' },
+    { value: 2, viewValue: 'Dental Plan' },
+    { value: 3, viewValue: 'Insurance Plan' },
+    { value: 4, viewValue: 'Real State Insurance' },
+    { value: 5, viewValue: 'Vehicle Insurance' },
+    { value: 6, viewValue: 'Mobile Device Insurance' },
   ];
   contractCategories: Category[] = [
-    { value: 0, viewValue: 'Contract Iron' },
-    { value: 1, viewValue: 'Contract Bronze' },
-    { value: 2, viewValue: 'Contract Silver' },
-    { value: 3, viewValue: 'Contract Gold' },
-    { value: 4, viewValue: 'Contract Platinum' },
-    { value: 5, viewValue: 'Contract Diamond' },
+    { value: 0, viewValue: 'Iron' },
+    { value: 1, viewValue: 'Bronze' },
+    { value: 2, viewValue: 'Silver' },
+    { value: 3, viewValue: 'Gold' },
+    { value: 4, viewValue: 'Platinum' },
+    { value: 5, viewValue: 'Diamond' },
   ];
 
   // contractform = this.fb.group({

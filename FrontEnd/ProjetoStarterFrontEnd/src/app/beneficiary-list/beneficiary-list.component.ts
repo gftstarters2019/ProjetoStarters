@@ -22,11 +22,11 @@ export class BeneficiaryListComponent implements OnInit {
   });
 
   btypes: BType[] = [
-    { value: 0, viewValue: 'Beneficiary Individual' },
-    { value: 1, viewValue: 'Beneficiary Pet' },
-    { value: 2, viewValue: 'Beneficiary Vehicle' },
-    { value: 3, viewValue: 'Beneficiary Realty' },
-    { value: 4, viewValue: 'Beneficary Mobile Device' },
+    { value: 0, viewValue: 'Individual' },
+    { value: 1, viewValue: 'Pet' },
+    { value: 2, viewValue: 'Vehicle' },
+    { value: 3, viewValue: 'Realty' },
+    { value: 4, viewValue: 'Mobile Device' },
 
   ];
   constructor(private fb: FormBuilder, private http: HttpClient) {
