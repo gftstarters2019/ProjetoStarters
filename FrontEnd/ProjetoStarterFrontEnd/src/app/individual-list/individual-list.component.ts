@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
+import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-individual-list',
@@ -20,7 +22,7 @@ export class IndividualListComponent implements OnInit {
   gridOptions: GridOptions;
   load_failure: boolean;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.setup_gridData();
@@ -33,12 +35,19 @@ export class IndividualListComponent implements OnInit {
     }
   
   private handle_deleteUser(data: any) {
+    console.log(data);
     const id = data.beneficiaryId;
-    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
-
-    this.setup_gridData();
+    console.log(id);
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
   }
     
+  openSnackBar(message: string): void {
+    this._snackBar.open(message, '', {
+      duration: 5000,
+      
+    });
+  }
+
   private setup_gridOptions() {
 
     this.gridOptions = {
@@ -77,11 +86,14 @@ export class IndividualListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Birth Date',
+          headerName: 'BirthDate',
           field: 'individualBirthdate',
           lockPosition: true,
           sortable: true,
           filter: true,
+          cellRenderer: (data) => {
+            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+          }, 
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -95,12 +107,11 @@ export class IndividualListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Edit/Delete',
-          field: 'editDelete',
+          headerName: 'Delete',
+          field: 'Delete',
           lockPosition: true,
-          cellRendererFramework: ActionButtonComponent,
+          cellRendererFramework: ActionButtonBeneficiariesComponent,
           cellRendererParams: {
-            onEdit: this.handle_editUser.bind(this),
             onDelete: this.handle_deleteUser.bind(this)
           }
         },

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Backend.Application.Singleton
 {
-    public sealed class ViewModelCreator
+    public sealed class Factories
     {
         private static IndividualFactory individualFactory = null;
         private static ContractFactory contractFactory = null;
@@ -15,7 +15,7 @@ namespace Backend.Application.Singleton
         private static AddressFactory addressFactory = null;
         private static readonly object padlock = new object();
 
-        public ViewModelCreator()
+        public Factories()
         {
         }
 

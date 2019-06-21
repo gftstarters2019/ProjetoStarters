@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class PetRepository : IReadOnlyRepository<Pet>, IWriteRepository<Pet>
+    public class PetRepository : IRepository<Pet>
     {
         private readonly ConfigurationContext _db;
 
@@ -33,12 +33,22 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public Pet FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Pet> Get() => _db
             .Pets
             .Where(i => !i.IsDeleted)
             .ToList();
 
         public bool Remove(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
         {
             throw new NotImplementedException();
         }

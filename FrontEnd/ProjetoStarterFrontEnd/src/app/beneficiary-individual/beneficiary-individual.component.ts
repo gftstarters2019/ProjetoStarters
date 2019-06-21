@@ -19,11 +19,11 @@ export class BeneficiaryIndividualComponent implements OnInit {
   public rgMask= [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/]
 
   individualCreateForm= this.formBuilder.group({
-    individualName: new FormControl('', Validators.pattern(GenericValidator.regexName)),
-    individualCPF: new FormControl('', GenericValidator.isValidCpf()),
-    individualRG: new FormControl('', GenericValidator.rgLengthValidation()),
-    individualBirthdate: new FormControl('', GenericValidator.dateValidation()),
-    individualEmail: new FormControl('', Validators.required)
+    individualName: ['', Validators.pattern(GenericValidator.regexName)],
+    individualCPF: ['', GenericValidator.isValidCpf()],
+    individualRG: ['', GenericValidator.rgLengthValidation()],
+    individualBirthdate: ['', GenericValidator.dateValidation()],
+    individualEmail: ['', Validators.required]
   });
 
   constructor(private formBuilder: FormBuilder) { }

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class MobileDeviceRepository : IReadOnlyRepository<MobileDevice>, IWriteRepository<MobileDevice>
+    public class MobileDeviceRepository : IRepository<MobileDevice>
     {
         private readonly ConfigurationContext _db;
 
@@ -33,12 +33,22 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public MobileDevice FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<MobileDevice> Get() => _db
             .MobileDevices
             .Where(i => !i.IsDeleted)
             .ToList();
 
         public bool Remove(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
         {
             throw new NotImplementedException();
         }

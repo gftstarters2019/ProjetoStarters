@@ -2,14 +2,14 @@
   <div class="container">
       <div class="flex-wrapper">
           <mat-form-field style="width: 60%;">
-              <input matInput placeholder="Municipal Registration" name="realtyMunicipalRegistration" formControlName="realtyMunicipalRegistration" required>
+              <input matInput placeholder="Municipal Registration" name="municipalRegistration" formControlName="municipalRegistration" required>
               <mat-error>Registration is invalid!</mat-error>
           </mat-form-field>
       </div>
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 30%;">
-          <input matInput [matDatepicker]="picker" placeholder="Construction Date" name="realtyConstructionDate" formControlName="realtyConstructionDate" required>
+          <input matInput [matDatepicker]="picker" placeholder="Construction Date" name="constructionDate" formControlName="constructionDate" required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-error>Date is invalid!</mat-error>
@@ -18,12 +18,12 @@
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 45%;">
-            <input matInput type="number" placeholder="Sale Value" name="realtySaleValue" formControlName="realtySaleValue" required>
+            <input matInput type="number" placeholder="Sale Value" name="saleValue" formControlName="saleValue" required>
             <mat-error>Sale value is invalid!</mat-error>
           </mat-form-field>
 
         <mat-form-field style="width: 45%;">
-            <input matInput type="number" placeholder="Market Value" name="realtyMarketValue" formControlName="realtyMarketValue" required>
+            <input matInput type="number" placeholder="Market Value" name="marketValue" formControlName="marketValue" required>
             <mat-error>Market value is invalid!</mat-error>
           </mat-form-field>
     </div>
