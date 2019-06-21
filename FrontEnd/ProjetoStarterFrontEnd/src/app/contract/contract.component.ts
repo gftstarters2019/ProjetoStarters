@@ -5,7 +5,6 @@ import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories } from '
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
-import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { Location } from '@angular/common';
 import { GenericValidator } from '../Validations/GenericValidator';
@@ -407,7 +406,7 @@ export class ContractComponent implements OnInit {
               this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`)
                   .subscribe(response => this.setup_gridData(),
                       error => this.openSnackBar(error.message),
-                      () => this.openSnackBar("Titular removido com sucesso"));
+                      () => this.openSnackBar("Contract removido com sucesso"));
           }
           else {
               this.openSnackBar("Contract is active, cannot delete");
