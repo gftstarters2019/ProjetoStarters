@@ -101,6 +101,7 @@ export class IndividualListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: maskCpf,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -110,6 +111,7 @@ export class IndividualListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: maskRG,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -162,3 +164,19 @@ export class IndividualListComponent implements OnInit {
 
   }
 }
+
+//function mask Cpf  Beneficiaries
+function maskCpf(params){
+  return maskValue(params.value);
+}
+function maskValue(cpf){
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4")
+}
+//function mask RG Beneficiaries
+function maskRG(params){
+  return maskRGValue(params.value);
+}
+function maskRGValue(rg){
+  return rg.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/g,"\$1.\$2.\$3\-\$4")
+}
+

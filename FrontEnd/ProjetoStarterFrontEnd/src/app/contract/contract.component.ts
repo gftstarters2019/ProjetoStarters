@@ -381,7 +381,7 @@ export class ContractComponent implements OnInit {
   }
 
   private async handle_deleteUser(data: any) {
-    const id = data.signedContractId;   
+    const id = data.signedContractId;
     const message = `Do you really want to delete this contract?`;
 
     const dialogConfig = new MatDialogConfig();
@@ -400,13 +400,10 @@ export class ContractComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
-      if(this.result == true){
+      if (this.result == true) {
         this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
-    }
+      }
     });
-  }
-
-
   }
 
   //AG-grid Table Contract
@@ -439,6 +436,7 @@ export class ContractComponent implements OnInit {
               lockPosition: true,
               sortable: true,
               filter: true,
+              valueFormatter: maskCpf,
               onCellValueChanged:
                 this.onCellEdit.bind(this),
             }
@@ -451,57 +449,57 @@ export class ContractComponent implements OnInit {
           // hide: false,
           children: [
             {
-            headerName: 'Category',
-            field: 'category',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            valueFormatter: currencyCategory,
-            onCellValueChanged:
-              this.onCellEdit.bind(this),
-          },
-          {
-            headerName: 'Type',
-            field: 'type',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            valueFormatter: currencyType,
-            onCellValueChanged:
-              this.onCellEdit.bind(this),
-          },
-          {
-            headerName: 'Expiry Date',
-            field: 'expiryDate',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            cellRenderer: (data) => {
-              return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+              headerName: 'Category',
+              field: 'category',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: currencyCategory,
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
             },
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'Status',
-            field: 'isActive',
-            lockPosition: true,
-            sortable: true,
-            filter: true,
-            valueFormatter: currencyStatus,
-            onCellValueChanged:
-              this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'Edit/Delete',
-            field: 'editDelete',
-            lockPosition: true,
-            cellRendererFramework: ActionButtonComponent,
-            cellRendererParams: {
-              onEdit: this.handle_editUser.bind(this),
-              onDelete: this.handle_deleteUser.bind(this)
-            }
-          },
+            {
+              headerName: 'Type',
+              field: 'type',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: currencyType,
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
+            },
+            {
+              headerName: 'Expiry Date',
+              field: 'expiryDate',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              cellRenderer: (data) => {
+                return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+              },
+              onCellValueChanged:
+                this.onCellEdit.bind(this)
+            },
+            {
+              headerName: 'Status',
+              field: 'isActive',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: currencyStatus,
+              onCellValueChanged:
+                this.onCellEdit.bind(this)
+            },
+            {
+              headerName: 'Edit/Delete',
+              field: 'editDelete',
+              lockPosition: true,
+              cellRendererFramework: ActionButtonComponent,
+              cellRendererParams: {
+                onEdit: this.handle_editUser.bind(this),
+                onDelete: this.handle_deleteUser.bind(this)
+              }
+            },
           ]
         },
       ]
@@ -668,13 +666,13 @@ export class ContractComponent implements OnInit {
     this.gridColumApi = params.columnApi;
 
 
-  //   setTimeout(function () {
-  //     var rowCount = 0;
-  //     params.api.forEachNode(function (node) {
-  //       node.setExpanded(rowCount++ === 1);
-  //     });
-  //   }, 500);
-   }
+    //   setTimeout(function () {
+    //     var rowCount = 0;
+    //     params.api.forEachNode(function (node) {
+    //       node.setExpanded(rowCount++ === 1);
+    //     });
+    //   }, 500);
+  }
 
   private setup_gridData() {
     this.rowData$ = this.http
@@ -747,15 +745,24 @@ function changeTypValue(number) {
   }
 }
 
-  
-//function formatting Status
-function currencyStatus(params) {
+// function formatting Status
+function currencyStatus(params) 
+{
   return changeStatusValue(params.value);
-}
+} 
+
 function changeStatusValue(stats: boolean) {
   if (stats == true) {
     return "Active";
-  } else {
+} else {
     return "Inactive"
   }
+}
+
+//function mask Cpf Contract Holder
+function maskCpf(params){
+  return maskValue(params.value);
+}
+function maskValue(cpf){
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4")
 }
