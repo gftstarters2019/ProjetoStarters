@@ -4,6 +4,8 @@ using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Services.Validators;
+using Backend.Services.Validators.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +54,16 @@ namespace ContractHolder.WebAPI
             services.AddScoped<IRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
             
             services.AddScoped<IRepository<SignedContract>, SignedContractRepository>();
+
+            services.AddScoped<IContractHolderValidator, ContractHolderValidator>();
+
+            services.AddScoped<IDateValidator, DateValidator>();
+
+            services.AddScoped<IIndividualValidator, IndividualValidator>();
+
+            services.AddScoped<ITelephoneValidator, TelephoneValidator>();
+
+            services.AddScoped<IAddressValidator, AddressValidator>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
