@@ -74,7 +74,7 @@ namespace ContractHolder.WebAPI.Controllers
                 return StatusCode(403);
 
             //SendWelcomeEmail(vm);
-            return Ok(vm);
+            return Ok(_contractHolderViewModelRepository.FindCPF(vm.individualCPF));
         }
 
         /// <summary>
