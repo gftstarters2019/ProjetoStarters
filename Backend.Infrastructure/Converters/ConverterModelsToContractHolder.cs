@@ -28,7 +28,7 @@ namespace Backend.Infrastructure.Converters
                 yield return new AddressDomain
                 {
 
-                    AddressId = Guid.NewGuid(),
+                    AddressId = ad.AddressId,
                     AddressCity = ad.AddressCity,
                     AddressComplement = ad.AddressComplement,
                     AddressCountry = ad.AddressCountry,
@@ -48,7 +48,7 @@ namespace Backend.Infrastructure.Converters
             {
                 yield return new TelephoneDomain
                 {
-                    TelephoneId = Guid.NewGuid(),
+                    TelephoneId = tel.TelephoneId,
                     TelephoneNumber = tel.TelephoneNumber,
                     TelephoneType = tel.TelephoneType
                 };
