@@ -9,8 +9,8 @@
   <form [formGroup]="contractform" (ngSubmit)="onSubmit()">
     <div class="contractCard">
 
-
-        <!-- <div >
+<!-- 
+        <div >
             <mat-card class="contractHolderName" >
               <mat-form-field style="width: 350px;">
 
@@ -22,22 +22,24 @@
                     </mat-option>
                 </mat-select>
               </mat-form-field>  
-              </mat-card> -->
-             
-             <div>
-           <mat-card class="contractHolderName" >
-             <mat-form-field style="width: 350px;">
-               <input type="text" placeholder="Contract Holder's name:" name="contractHolderId" aria-label="Number" matInput formControlName="contractHolderId" [matAutocomplete]="auto">
-               <mat-autocomplete #auto="matAutocomplete">
-                 <mat-option *ngFor="let holder of holders  " [value]="holder.individualName">
-                   {{holder.individualName}}
-                  </mat-option>
-                </mat-autocomplete> 
-              </mat-form-field>
               </mat-card>
-              </div>
+        </div> -->
+        
 
-
+              <div >
+                  <mat-card class="contractHolderName" >
+              <mat-form-field style="width: 350px;">
+                  <mat-select formControlName="contractHolderId" placeholder="Contract Holder's name:" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Search" formControlName="contractHolderId" ></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let holder of holders " [value]="holder.individualId">
+                      {{holder.individualName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                </mat-card>
+                </div>              
 
 
 

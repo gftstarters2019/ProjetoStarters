@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
@@ -7,8 +7,9 @@ import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material';
 import { Location } from '@angular/common';
-import {map, startWith} from 'rxjs/operators';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GenericValidator } from '../Validations/GenericValidator';
+import { take, takeUntil } from 'rxjs/operators';
 import { Data } from '@angular/router';
 
 export interface Type {
@@ -42,10 +43,9 @@ export class ContractComponent implements OnInit {
   detailCellRendererParams;
   contractform: FormGroup;
 
-  contractHolderId = new FormControl();
-  filteredOptions: Observable<any[]>;
-  myControl = new FormControl();
- 
+  contractHolderId : FormControl = new FormControl();
+  private _onDestroy = new Subject<void>();
+
 
   gridApi;
   gridColumApi;
@@ -54,6 +54,7 @@ export class ContractComponent implements OnInit {
   holders: Holder [] ;   
 
   message: number = 0;
+  public filteredHolder: ReplaySubject<Holder[]> = new ReplaySubject<Holder[]>(1);
 
   cType: any;
 
@@ -88,21 +89,47 @@ export class ContractComponent implements OnInit {
     this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe
     ((data: any[]) => {
       this.holders = data;
-      debugger;
+      
+      // this.filteredHolder = <any>data;
+      this.filteredHolder.next(this.holders.slice());
+      
       console.log(data);
     });
-    // debugger;
-    this.filteredOptions = this.contractform.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filter(value))
-      );
-  }
-  private _filter(value: Holder ): Holder[] {
-    const filterValue = value.individualName;
-    return this.holders.filter(holder => holder.individualName.includes(filterValue));
+    this.contractHolderId.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterHolders();
+    });
+
+
   }
 
+    ngOnDestroy() {
+           this._onDestroy.next();
+           this._onDestroy.complete();
+        }
+        
+      
+
+         private filterHolders() {
+           if (!this.holders) {
+             return;
+           }
+    let search = this.contractHolderId.value;
+    if (!search) {
+      this.filteredHolder.next(this.holders.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    
+    this.filteredHolder.next(
+      this.holders.filter(holder => holder.individualName.toLowerCase().indexOf(search) > -1)
+      );
+      debugger;
+  }
+ 
+       
 
   private setup_form() {
     this.contractform = this.fb.group({
@@ -280,12 +307,12 @@ export class ContractComponent implements OnInit {
     if (this.signedContractId == null) {
       this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
       .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
-    debugger;
+  
     }
     else {
       this.http.put(`https://contractwebapi.azurewebsites.net/api/Contract/${this.signedContractId}`, form, httpOptions)
       .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
-      debugger;
+     
     }
   }
 
@@ -302,7 +329,7 @@ export class ContractComponent implements OnInit {
     
     let i;
     if(data.type==0 || data.type==2 || data.type==3){
-      debugger;
+
       this.cType = data.type;
       let individualControl = this.contractform.controls.auxBeneficiaries as FormArray;
       for(i = 0; i < individualControl.length; i++){
@@ -322,7 +349,7 @@ export class ContractComponent implements OnInit {
           for(i =0; i <data.individuals.length; i++)
           {
             individualControl.push(this.fb.group(data.individuals[i]));
-            debugger;
+       
             
             console.log(data.individuals[i]);
           }
@@ -351,7 +378,7 @@ export class ContractComponent implements OnInit {
           for(j =0; j <data.pets.length; j++)
           {
             petControl.push(this.fb.group(data.pets[j]));
-            debugger;
+         
             
             console.log(data.pets[j]);
           }
@@ -361,25 +388,30 @@ export class ContractComponent implements OnInit {
     }
     
     if(data.type==4){
-      debugger;
+  
       this.cType = data.type;
       let realtyControl =  this.contractform.controls.auxBeneficiaries as FormArray;
       for(i = 0; i < realtyControl.length; i++){
         realtyControl.removeAt(i);
       }
+      console.log(data.realties.address)
       realtyControl.controls.pop();
+      debugger;
       this.contractform.addControl('realties', this.fb.array([]));
       this.contractform.removeControl('pets');
       this.contractform.removeControl('individuals');
       this.contractform.removeControl('vehicles');
       this.contractform.removeControl('mobileDevices');
       this.contractform.patchValue(data)
+      
+      
+
       const hasMaxRealties = realtyControl.length >= 5;
       if (!hasMaxRealties) {
         if (data.realties != ''){
           for(i =0; i <data.realties.length; i++)
           {
-            realtyControl.push(this.fb.group(data.realties[i]));
+            realtyControl.push(this.fb.group(data.realties[i].address));
           }
           
         }  
@@ -387,7 +419,7 @@ export class ContractComponent implements OnInit {
     }
     
     if(data.type==5){
-      debugger;
+ 
       this.cType = data.type;
       let vehicleControl =  this.contractform.controls.auxBeneficiaries as FormArray;
       for(i = 0; i < vehicleControl.length; i++){
@@ -413,7 +445,6 @@ export class ContractComponent implements OnInit {
     }
     
     if(data.type==6){
-      debugger;
       this.cType = data.type;
       let mobileDeviceControl =  this.contractform.controls.auxBeneficiaries as FormArray;
       for(i = 0; i < mobileDeviceControl.length; i++){
@@ -425,6 +456,8 @@ export class ContractComponent implements OnInit {
       this.contractform.removeControl('individuals');
       this.contractform.removeControl('realties');
       this.contractform.removeControl('vehicles');
+      this.contractform.patchValue(data)
+
       const hasMaxmobileDevices = mobileDeviceControl.length >= 5;
       if (!hasMaxmobileDevices) {
         if (data.mobileDevices != ''){

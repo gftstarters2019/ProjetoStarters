@@ -31,6 +31,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ObserversModule } from '@angular/cdk/observers';
 import { IndividualListComponent } from './individual-list/individual-list.component';
 import { PetListComponent } from './pet-list/pet-list.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { RealtiesListComponent } from './realties-list/realties-list.component';
 import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-list.component';
@@ -68,6 +69,7 @@ import { ActionButtonBeneficiariesComponent } from './action-button-beneficiarie
     BrowserAnimationsModule,
     AppRoutingModule,
     MatDialogModule,
+    NgxMatSelectSearchModule,
     MaterialModule,
     AgGridModule.withComponents([
       ActionButtonComponent,
