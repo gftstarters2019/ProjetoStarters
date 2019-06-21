@@ -7,6 +7,7 @@ namespace Backend.Infrastructure.Repositories.Contracts
     public interface IRepository<T>
     {
         T Find(Guid id);
+        T FindCPF(string cpf);
         IEnumerable<T> Get();
         bool Add(T t);
         bool Remove(Guid id);

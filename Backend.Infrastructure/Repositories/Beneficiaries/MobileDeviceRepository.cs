@@ -33,6 +33,11 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public MobileDevice FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<MobileDevice> Get() => _db
             .MobileDevices
             .Where(i => !i.IsDeleted)
