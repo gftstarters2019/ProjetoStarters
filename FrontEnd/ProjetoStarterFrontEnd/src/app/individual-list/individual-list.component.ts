@@ -24,6 +24,8 @@ export class IndividualListComponent implements OnInit {
   paginationPageSize;
   gridOptions: GridOptions;
   load_failure: boolean;
+  contractdata: any[];
+  dialogRef;
 
   constructor(public dialog: MatDialog, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
@@ -45,28 +47,20 @@ export class IndividualListComponent implements OnInit {
     console.log(id);
     const message = `Do you really want to delete this Beneficiary?`;
 
-    const dialogConfig = new MatDialogConfig();
-
-
-    const dialogData = new ConfirmDialogModel("Confirm Action", message);
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.hasBackdrop = true;
-
-
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '375px',
-      panelClass: 'content-container',
-      data: dialogData
-    });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      this.result = dialogResult;
-      if (this.result == true) {
-        this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
-      }
-    });
+      const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '375px',
+        panelClass:'content-container',
+        data: dialogData
+      });
+  
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.result = dialogResult;
+        if (this.result == true) {  
+          this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar("Error 403 - Invalid Action"), () => this.openSnackBar("Beneficiary removed"));
+          } 
+      });
   }
 
   openSnackBar(message: string): void {
