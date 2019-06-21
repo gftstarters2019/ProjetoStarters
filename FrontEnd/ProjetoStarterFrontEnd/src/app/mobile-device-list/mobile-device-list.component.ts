@@ -37,13 +37,9 @@ export class MobileDeviceListComponent implements OnInit {
     console.log(data);
     const id = data.beneficiaryId;
     console.log(id);
-    // let show: boolean = data.isActive;
-    // if(show == false){
-    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
-    // }
-    // else{
-    //   this.openSnackBar("Contract is active, cannot delete");
-    // }
+
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar('Error 403 - Invalid Option'), () => this.openSnackBar("Beneficiário removido com sucesso"));
+
   }
     
   openSnackBar(message: string): void {

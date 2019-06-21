@@ -30,9 +30,6 @@ export class IndividualListComponent implements OnInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
 
-    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
-      this.contractdata = data
-    });
   }
 
   private handle_editUser(data: any) {
@@ -43,13 +40,9 @@ export class IndividualListComponent implements OnInit {
     console.log(data);
     const id = data.beneficiaryId;
     console.log(id);
-    // let show: boolean = data.isActive;
-    // if(show == false){
-      this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
-    // }
-    // else{
-    //   this.openSnackBar("Contract is active, cannot delete");
-    // }
+
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar("Error 403 - Invalid Option"), () => this.openSnackBar("Beneficiário removido com sucesso"));
+
   }
 
   openSnackBar(message: string): void {
