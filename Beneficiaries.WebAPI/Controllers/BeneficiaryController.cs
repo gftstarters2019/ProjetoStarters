@@ -373,7 +373,7 @@ namespace Beneficiaries.WebAPI.Controllers
                 .ToList();
 
             if (beneficiariesContracts.Count > 0)
-                return Forbid();
+                return StatusCode(403);
 
             var obj = _beneficiaryRepository.Find(id);
 

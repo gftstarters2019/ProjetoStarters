@@ -5,9 +5,11 @@ import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories } from '
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
-import { MatSnackBar } from '@angular/material';
+import { ActionButtonComponent } from '../action-button/action-button.component';
+import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { Location } from '@angular/common';
 import { GenericValidator } from '../Validations/GenericValidator';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 
 export interface Type {
   value: number;
@@ -32,8 +34,10 @@ export interface Holder {
   styleUrls: ['./contract.component.scss']
 })
 export class ContractComponent implements OnInit {
+  public result: any = null;
   color = 'primary';
   beneficiaries: FormArray;
+  dialogRef;
 
   rowData$: Observable<any>;
   paginationPageSize;
@@ -56,7 +60,7 @@ export class ContractComponent implements OnInit {
     { value: 0, viewValue: 'Health Plan' },
     { value: 1, viewValue: 'Animal Health Plan' },
     { value: 2, viewValue: 'Dental Plan' },
-    { value: 3, viewValue: 'Life Insurance Plan' },
+    { value: 3, viewValue: 'Insurance Plan' },
     { value: 4, viewValue: 'Real State Insurance' },
     { value: 5, viewValue: 'Vehicle Insurance' },
     { value: 6, viewValue: 'Mobile Device Insurance' },
@@ -84,7 +88,7 @@ export class ContractComponent implements OnInit {
   //   // auxBeneficiaries: this.fb.array([])
   // });
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
 
   ngOnInit() {
     this.setup_form();
@@ -377,20 +381,42 @@ export class ContractComponent implements OnInit {
     return null;
   }
 
-  private handle_deleteUser(data: any) {
+  private async handle_deleteUser(data: any) {
+      const id = data.signedContractId;
+      let show: boolean = data.isActive;
+    const message = `Do you really want to delete this contract?`;
 
-    const id = data.signedContractId;
-    let show: boolean = data.isActive;
-    if (show == false) {
-      this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`)
-        .subscribe(response => this.setup_gridData(),
-          error => this.openSnackBar(error.message),
-          () => this.openSnackBar("Titular removido com sucesso"));
+    const dialogConfig = new MatDialogConfig();
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '375px',
+      panelClass: 'content-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if(this.result == true){
+          if (show == false) {
+              this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`)
+                  .subscribe(response => this.setup_gridData(),
+                      error => this.openSnackBar(error.message),
+                      () => this.openSnackBar("Titular removido com sucesso"));
+          }
+          else {
+              this.openSnackBar("Contract is active, cannot delete");
+          }
     }
-    else{
-      this.openSnackBar("Contract is active, cannot delete");
-    }
+    });
   }
+
+
 
   //AG-grid Table Contract
   private setup_gridOptions() {

@@ -134,15 +134,23 @@ namespace Contract.WebAPI.Controllers
                 .Where(sc => sc.ContractIndividualIsActive && sc.ContractId == id).ToList().Count > 0)
                 return Forbid();
 
-            var contract = _contractRepository.Find(id);
+            var signedContract = _signedContractRepository.Find(id);
 
-            if (contract != null)
+            if (signedContract != null)
             {
-                contract.ContractDeleted = !contract.ContractDeleted;
-                return Ok(_contractRepository.Update(id, contract));
+                var contract = _contractRepository.Find(signedContract.ContractId);
+                if (!signedContract.ContractIndividualIsActive)
+                {
+                    contract.ContractDeleted = !contract.ContractDeleted;
+                    return Ok(_contractRepository.Update(signedContract.ContractId, contract));
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
 
-            return NotFound(contract);
+            return NotFound(signedContract);
         }
 
         #region Validations
