@@ -116,7 +116,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result == true) {
-        this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage), () => this.openSnackBar('Titular deletado com sucesso'));
+        this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage), () => this.openSnackBar('Contract Holder removed'));
       }
     });
   }

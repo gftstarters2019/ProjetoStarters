@@ -146,7 +146,7 @@ namespace Contract.WebAPI.Controllers
                 }
                 else
                 {
-                    return Forbid();
+                    return StatusCode(403);
                 }
             }
 

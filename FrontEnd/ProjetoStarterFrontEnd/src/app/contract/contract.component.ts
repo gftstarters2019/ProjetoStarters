@@ -381,7 +381,9 @@ export class ContractComponent implements OnInit {
   }
 
   private async handle_deleteUser(data: any) {
-    const id = data.signedContractId;
+    const id = data.signedContractId;   
+    let show: boolean = data.isActive;
+
     const message = `Do you really want to delete this contract?`;
 
     const dialogConfig = new MatDialogConfig();
@@ -400,11 +402,20 @@ export class ContractComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
-      if (this.result == true) {
-        this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
+      if(this.result == true){
+        if (show == false) {
+          this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`)
+              .subscribe(response => this.setup_gridData(),
+                  error => this.openSnackBar(error.message),
+                  () => this.openSnackBar("Contract removed"));
       }
-    });
-  }
+      else {
+          this.openSnackBar("Contract is active, cannot delete");
+      }
+}
+});
+}
+
 
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -666,13 +677,13 @@ export class ContractComponent implements OnInit {
     this.gridColumApi = params.columnApi;
 
 
-    //   setTimeout(function () {
-    //     var rowCount = 0;
-    //     params.api.forEachNode(function (node) {
-    //       node.setExpanded(rowCount++ === 1);
-    //     });
-    //   }, 500);
-  }
+  //   setTimeout(function () {
+  //     var rowCount = 0;
+  //     params.api.forEachNode(function (node) {
+  //       node.setExpanded(rowCount++ === 1);
+  //     });
+  //   }, 500);
+   }
 
   private setup_gridData() {
     this.rowData$ = this.http
@@ -745,9 +756,9 @@ function changeTypValue(number) {
   }
 }
 
-// function formatting Status
-function currencyStatus(params) 
-{
+  
+//function formatting Status
+function currencyStatus(params) {
   return changeStatusValue(params.value);
 } 
 
