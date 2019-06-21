@@ -279,6 +279,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: maskCpf,
           onCellValueChanged: this.onCellEdit.bind(this),
         },
 
@@ -287,6 +288,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           field: 'individualRG',
           lockPosition: true,
           sortable: true,
+          valueFormatter: maskRG,
           onCellValueChanged: this.onCellEdit.bind(this)
         },
 
@@ -366,4 +368,18 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     location.reload()
   }
 
+}
+//function CPF Mask
+function maskCpf(params){
+  return maskValue(params.value);
+}
+function maskValue(cpf){
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4")
+}
+//function RG mask
+function maskRG(params){
+  return maskRGValue(params.value);
+}
+function maskRGValue(rg){
+  return rg.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/g,"\$1.\$2.\$3\-\$4")
 }
