@@ -5,6 +5,8 @@ import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-pet-list',
@@ -12,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./pet-list.component.scss']
 })
 export class PetListComponent implements OnInit {
-
+  public result: any;
   detailCellRendererParams;
   gridApi;
   gridColumApi;
@@ -21,31 +23,68 @@ export class PetListComponent implements OnInit {
   gridOptions: GridOptions;
   load_failure: boolean;
 
-  constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(public dialog: MatDialog, private http: HttpClient, private _snackBar: MatSnackBar) { }
+
+  confirmDialog(): void {
+    const message = `Do you really want to delete this Pet ?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '375px',
+      panelClass:'content-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+    });
+  }
 
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
     this.paginationPageSize = 50;
   }
-  
+
   private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
-    }
-  
-    private handle_deleteUser(data: any) {
-      console.log(data);
-      const id = data.beneficiaryId;
-      console.log(id);
-      this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
-    }
-      
-    openSnackBar(message: string): void {
-      this._snackBar.open(message, '', {
-        duration: 5000,
-        
-      });
-    }
+  }
+
+  private handle_deleteUser(data: any) {
+    console.log(data);
+    const id = data.beneficiaryId;
+    console.log(id);
+
+    const message = `Do you really want to delete this Pet ?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
+
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '375px',
+      panelClass:'content-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if (this.result == true) {
+        this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
+      }
+    });
+  }
+
+  openSnackBar(message: string): void {
+    this._snackBar.open(message, '', {
+      duration: 5000,
+
+    });
+  }
 
   private setup_gridOptions() {
 
@@ -66,14 +105,14 @@ export class PetListComponent implements OnInit {
             this.onCellEdit.bind(this)
         },
         {
-          headerName: 'Birth Date',
+          headerName: 'BirthDate',
           field: 'petBirthdate',
           lockPosition: true,
           sortable: true,
           filter: true,
           cellRenderer: (data) => {
             return data.value ? (new Date(data.value)).toLocaleDateString() : '';
-          }, 
+          },
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -123,23 +162,23 @@ export class PetListComponent implements OnInit {
     const { data } = event;
   }
 }
-function SpeciesFormmatter(params){
+function SpeciesFormmatter(params) {
   return speciesValue(params.value);
 }
-function speciesValue(number){
-  if(number == 0){
+function speciesValue(number) {
+  if (number == 0) {
     return "Canis Lupus Familiaris";
   }
-  if(number == 1){
+  if (number == 1) {
     return "Felis Catus"
   }
-  if(number == 2){
-return "Mesocricetus Auratus"
+  if (number == 2) {
+    return "Mesocricetus Auratus"
   }
-  if(number == 3){
+  if (number == 3) {
     return "Nymphicus Hollandicus"
   }
-  if(number == 4){
+  if (number == 4) {
     return "Ara Chloropterus"
   }
 }

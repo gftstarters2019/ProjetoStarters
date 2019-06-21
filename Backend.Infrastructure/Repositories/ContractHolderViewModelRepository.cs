@@ -10,7 +10,7 @@ using System.Transactions;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractHolderViewModelRepository : IReadOnlyRepository<ContractHolderViewModel>, IWriteRepository<ContractHolderViewModel>
+    public class ContractHolderViewModelRepository : IRepository<ContractHolderViewModel>
     {
         private readonly ConfigurationContext _db;
 
@@ -161,6 +161,74 @@ namespace Backend.Infrastructure.Repositories
 
                     ContractHolderViewModel.individualTelephones.Add(tel);
                 }               
+            }
+            return ContractHolderViewModel;
+        }
+
+        /// <summary>
+        /// Busca por cpf
+        /// </summary>
+        /// <param name="cpf"></param>
+        /// <returns></returns>
+        public ContractHolderViewModel FindCPF(string cpf)
+        {
+            Individual individual = _db.Individuals.Where(ind => (!ind.IsDeleted) && (ind.IndividualCPF == cpf)).FirstOrDefault();
+
+            if (individual == null)
+                return null;
+
+            var beneficiary_addresses = _db.Beneficiary_Address.Where(benAd => (individual != null) && (benAd.BeneficiaryId == individual.BeneficiaryId)).ToList();
+            var individual_telephones = _db.Individual_Telephone.Where(indTel => indTel.BeneficiaryId == individual.BeneficiaryId).ToList();
+
+            ContractHolderViewModel ContractHolderViewModel = new ContractHolderViewModel();
+
+            //Individual
+            ContractHolderViewModel.individualId = individual.BeneficiaryId;
+            ContractHolderViewModel.individualName = individual.IndividualName;
+            ContractHolderViewModel.individualCPF = individual.IndividualCPF;
+            ContractHolderViewModel.individualBirthdate = individual.IndividualBirthdate;
+            ContractHolderViewModel.individualEmail = individual.IndividualEmail;
+            ContractHolderViewModel.individualRG = individual.IndividualRG;
+
+            //Addresses
+            foreach (var beneficiary_address in beneficiary_addresses)
+            {
+                var addresses = _db.Addresses.Where(ad => ad.AddressId == beneficiary_address.AddressId).ToList();
+
+                foreach (var address in addresses)
+                {
+                    Address ad = new Address();
+
+                    ad.AddressId = address.AddressId;
+                    ad.AddressCity = address.AddressCity;
+                    ad.AddressComplement = address.AddressComplement;
+                    ad.AddressCountry = address.AddressCountry;
+                    ad.AddressNeighborhood = address.AddressNeighborhood;
+                    ad.AddressNumber = address.AddressNumber;
+                    ad.AddressState = address.AddressState;
+                    ad.AddressStreet = address.AddressStreet;
+                    ad.AddressType = address.AddressType;
+                    ad.AddressZipCode = address.AddressZipCode;
+
+                    ContractHolderViewModel.individualAddresses.Add(ad);
+                }
+            }
+
+            //Telephones
+            foreach (var individual_telephone in individual_telephones)
+            {
+                var telephones = _db.Telephones.Where(tel => tel.TelephoneId == individual_telephone.TelephoneId).ToList();
+
+                foreach (var telephone in telephones)
+                {
+                    Telephone tel = new Telephone();
+
+                    tel.TelephoneId = telephone.TelephoneId;
+                    tel.TelephoneNumber = telephone.TelephoneNumber;
+                    tel.TelephoneType = telephone.TelephoneType;
+
+                    ContractHolderViewModel.individualTelephones.Add(tel);
+                }
             }
             return ContractHolderViewModel;
         }
@@ -339,6 +407,11 @@ namespace Backend.Infrastructure.Repositories
 
                 scope.Complete();
             }
+        }
+
+        public bool Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }

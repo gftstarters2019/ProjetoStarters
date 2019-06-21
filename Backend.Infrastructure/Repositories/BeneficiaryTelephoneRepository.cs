@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class BeneficiaryTelephoneRepository : IReadOnlyRepository<BeneficiaryTelephone>, IWriteRepository<BeneficiaryTelephone>
+    public class BeneficiaryTelephoneRepository : IRepository<BeneficiaryTelephone>
     {
         private readonly ConfigurationContext _db;
 
@@ -60,6 +60,16 @@ namespace Backend.Infrastructure.Repositories
             }
 
             return telephones;
+        }
+
+        public bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public BeneficiaryTelephone FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
         }
     }
 }

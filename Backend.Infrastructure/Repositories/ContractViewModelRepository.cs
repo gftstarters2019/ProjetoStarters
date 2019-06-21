@@ -13,7 +13,7 @@ using System.Transactions;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractViewModelRepository : IReadOnlyRepository<ContractViewModel>, IWriteRepository<ContractViewModel>
+    public class ContractViewModelRepository : IRepository<ContractViewModel>
     {
         private readonly ConfigurationContext _db;
 
@@ -47,7 +47,7 @@ namespace Backend.Infrastructure.Repositories
                         return true;
                     }
                 }
-                scope.Complete();
+                scope.Dispose();
                 return false;
             }
         }
@@ -599,6 +599,16 @@ namespace Backend.Infrastructure.Repositories
                 _db.Contract_Beneficiary.Add(contract_beneficiary);
             }
             return true;
+        }
+
+        public bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ContractViewModel FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractHolderRepository : IReadOnlyRepository<Individual>, IWriteRepository<Individual>
+    public class ContractHolderRepository : IRepository<Individual>
     {
         private readonly ConfigurationContext _db;
 
@@ -61,6 +61,16 @@ namespace Backend.Infrastructure.Repositories
             }
 
             return individual;
+        }
+
+        public bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Individual FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
         }
     }
 }

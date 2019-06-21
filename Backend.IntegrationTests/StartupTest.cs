@@ -1,4 +1,5 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Application.ViewModels;
+using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
@@ -36,14 +37,17 @@ namespace Backend.IntegrationTests
         {
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddScoped<IReadOnlyRepository<Individual>, ContractHolderRepository>();
-            services.AddScoped<IWriteRepository<Individual>, ContractHolderRepository>();
-            services.AddScoped<IReadOnlyRepository<Telephone>, TelephoneRepository>();
-            services.AddScoped<IWriteRepository<Telephone>, TelephoneRepository>();
-            services.AddScoped<IReadOnlyRepository<Address>, AddressRepository>();
-            services.AddScoped<IWriteRepository<Address>, AddressRepository>();
-            services.AddScoped<IReadOnlyRepository<SignedContract>, SignedContractRepository>();
-            
+
+            services.AddScoped<IRepository<Individual>, ContractHolderRepository>();
+
+            services.AddScoped<IRepository<Telephone>, TelephoneRepository>();
+
+            services.AddScoped<IRepository<Address>, AddressRepository>();
+
+            services.AddScoped<IRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
+
+            services.AddScoped<IRepository<SignedContract>, SignedContractRepository>();
+
             services.AddMvc().AddJsonOptions(opt =>
             {
                 opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

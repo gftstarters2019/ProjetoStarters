@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContractHolderComponent } from './contract-holder/contract-holder.component';
 import { ContractComponent } from './contract/contract.component';
@@ -24,7 +24,6 @@ const routes: Routes = [
   { path: 'telephone', component: TelephoneComponent },
   { path: '', pathMatch: 'full', redirectTo: 'contract-holder' }
 ]
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

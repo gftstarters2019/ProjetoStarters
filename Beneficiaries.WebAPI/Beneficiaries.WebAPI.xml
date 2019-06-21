@@ -9,12 +9,10 @@
             Beneficiaries API
             </summary>
         </member>
-        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.#ctor(Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.Beneficiary},Backend.Infrastructure.Repositories.Contracts.IWriteRepository{Backend.Core.Models.Beneficiary},Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.ContractBeneficiary})">
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.#ctor(Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.Beneficiary},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.ContractBeneficiary},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.Individual},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.Pet},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.MobileDevice},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Application.ViewModels.RealtyViewModel},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.Vehicle})">
             <summary>
             BeneficiaryController constructor
             </summary>
-            <param name="beneficiaryReadOnlyRepository"></param>
-            <param name="beneficiaryWriteRepository"></param>
         </member>
         <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.Beneficiaries">
             <summary>
@@ -35,6 +33,12 @@
             <param name="id">GUID value representing a BeneficiaryId</param>
             <returns>Chosen beneficiary</returns>
         </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.GetIndividuals">
+            <summary>
+            Gets all Individuals beneficiaries.
+            </summary>
+            <returns>Individuals</returns>
+        </member>
         <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostIndividual(Backend.Core.Models.Individual)">
             <summary>
             Creates a new Individual in the database
@@ -49,6 +53,12 @@
             <param name="id">ID of the Individual to be updated</param>
             <param name="individual">New values for the individual</param>
             <returns>Updated Individual</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.GetMobileDevices">
+            <summary>
+            Gets all MobileDevices beneficiaries.
+            </summary>
+            <returns>MobileDevices</returns>
         </member>
         <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostMobileDevice(Backend.Core.Models.MobileDevice)">
             <summary>
@@ -65,6 +75,12 @@
             <param name="mobileDevice">New values for the mobile device</param>
             <returns>Updated Mobile Device</returns>
         </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.GetPets">
+            <summary>
+            Gets all Pets beneficiaries.
+            </summary>
+            <returns>Pets</returns>
+        </member>
         <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostPet(Backend.Core.Models.Pet)">
             <summary>
             Creates a new Pet in the database
@@ -80,6 +96,12 @@
             <param name="pet">New values for the pet</param>
             <returns>Updated Pet</returns>
         </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.GetRealties">
+            <summary>
+            Gets all Realties beneficiaries.
+            </summary>
+            <returns>Realties</returns>
+        </member>
         <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostRealty(Backend.Core.Models.Realty)">
             <summary>
             Creates a new Realty in the database
@@ -94,6 +116,12 @@
             <param name="id">ID of the Realty to be updated</param>
             <param name="realty">New values for the realty</param>
             <returns>Updated Realty</returns>
+        </member>
+        <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.GetVehicles">
+            <summary>
+            Gets all Vehicles beneficiaries.
+            </summary>
+            <returns>Vehicles</returns>
         </member>
         <member name="M:Beneficiaries.WebAPI.Controllers.BeneficiaryController.PostVehicle(Backend.Core.Models.Vehicle)">
             <summary>

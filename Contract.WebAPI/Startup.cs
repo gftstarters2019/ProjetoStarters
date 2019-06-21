@@ -3,6 +3,8 @@ using Backend.Core;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Services.Validators;
+using Backend.Services.Validators.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -42,12 +44,27 @@ namespace Contract.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.Contract>, ContractRepository>();
-            services.AddScoped<IWriteRepository<Backend.Core.Models.Contract>, ContractRepository>();
-            services.AddScoped<IReadOnlyRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
+            services.AddScoped<IRepository<Backend.Core.Models.Contract>, ContractRepository>();
 
-            services.AddScoped<IReadOnlyRepository<ContractViewModel>, ContractViewModelRepository>();
-            services.AddScoped<IWriteRepository<ContractViewModel>, ContractViewModelRepository>();
+            services.AddScoped<IRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
+
+            services.AddScoped<IRepository<ContractViewModel>, ContractViewModelRepository>();
+
+            services.AddScoped<IAddressValidator, AddressValidator>();
+
+            services.AddScoped<IDateValidator, DateValidator>();
+
+            services.AddScoped<IIndividualValidator, IndividualValidator>();
+
+            services.AddScoped<IMobileDeviceValidator, MobileDeviceValidator>();
+
+            services.AddScoped<INumberValidator, NumberValidator>();
+
+            services.AddScoped<IPetValidator, PetValidator>();
+
+            services.AddScoped<IRealtyValidator, RealtyValidator>();
+
+            services.AddScoped<IVehicleValidator, VehicleValidator>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 

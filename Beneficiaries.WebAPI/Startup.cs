@@ -46,24 +46,18 @@ namespace Beneficiaries.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IReadOnlyRepository<Beneficiary>, BeneficiaryRepository>();
-            services.AddScoped<IWriteRepository<Beneficiary>, BeneficiaryRepository>();
-            services.AddScoped<IReadOnlyRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
+            services.AddScoped<IRepository<Beneficiary>, BeneficiaryRepository>();
+            services.AddScoped<IRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
 
-            services.AddScoped<IReadOnlyRepository<Individual>, IndividualRepository>();
-            services.AddScoped<IWriteRepository<Individual>, IndividualRepository>();
+            services.AddScoped<IRepository<Individual>, IndividualRepository>();
 
-            services.AddScoped<IReadOnlyRepository<MobileDevice>, MobileDeviceRepository>();
-            services.AddScoped<IWriteRepository<MobileDevice>, MobileDeviceRepository>();
+            services.AddScoped<IRepository<MobileDevice>, MobileDeviceRepository>();
 
-            services.AddScoped<IReadOnlyRepository<RealtyViewModel>, RealtyRepository>();
-            services.AddScoped<IWriteRepository<Realty>, RealtyRepository>();
+            services.AddScoped<IRepository<RealtyViewModel>, RealtyRepository>();
 
-            services.AddScoped<IReadOnlyRepository<Pet>, PetRepository>();
-            services.AddScoped<IWriteRepository<Pet>, PetRepository>();
+            services.AddScoped<IRepository<Pet>, PetRepository>();
 
-            services.AddScoped<IReadOnlyRepository<Vehicle>, VehicleRepository>();
-            services.AddScoped<IWriteRepository<Vehicle>, VehicleRepository>();
+            services.AddScoped<IRepository<Vehicle>, VehicleRepository>();
 
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractBeneficiaryRepository : IReadOnlyRepository<ContractBeneficiary>, IWriteRepository<ContractBeneficiary>
+    public class ContractBeneficiaryRepository : IRepository<ContractBeneficiary>
     {
         private readonly ConfigurationContext _db;
 
@@ -27,12 +27,22 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public ContractBeneficiary FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ContractBeneficiary> Get() => _db
             .Contract_Beneficiary
             .Where(cb => cb.SignedContract.ContractIndividualIsActive)
             .ToList();
 
         public bool Remove(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
         {
             throw new NotImplementedException();
         }

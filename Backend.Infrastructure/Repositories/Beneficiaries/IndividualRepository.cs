@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class IndividualRepository : IReadOnlyRepository<Individual>, IWriteRepository<Individual>
+    public class IndividualRepository : IRepository<Individual>
     {
         private readonly ConfigurationContext _db;
 
@@ -33,12 +33,22 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public Individual FindCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Individual> Get() => _db
             .Individuals
             .Where(i => !i.IsDeleted)
             .ToList();
 
         public bool Remove(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
         {
             throw new NotImplementedException();
         }

@@ -15,25 +15,21 @@ namespace Contract.WebAPI.Controllers
     [ApiController]
     public class ContractController : ControllerBase
     {
-        private readonly IReadOnlyRepository<Backend.Core.Models.Contract> _contractReadOnlyRepository;
-        private readonly IWriteRepository<Backend.Core.Models.Contract> _contractWriteRepository;
-        private readonly IReadOnlyRepository<Backend.Core.Models.SignedContract> _signedContractReadOnlyRepository;
+        private readonly IRepository<Backend.Core.Models.Contract> _contractRepository;
+        private readonly IRepository<Backend.Core.Models.SignedContract> _signedContractRepository;
 
-        private readonly IReadOnlyRepository<ContractViewModel> _contractViewModelReadOnlyRepository;
-        private readonly IWriteRepository<ContractViewModel> _contractViewModelWriteRepository;
+        private readonly IRepository<ContractViewModel> _contractViewModelRepository;
 
         /// <summary>
         /// ContractController constructor
         /// </summary>
-        public ContractController(IReadOnlyRepository<Backend.Core.Models.Contract> contractReadOnlyRepository, IWriteRepository<Backend.Core.Models.Contract> contractWriteRepository, IReadOnlyRepository<Backend.Core.Models.SignedContract> signedContractReadOnlyRepository,
-            IReadOnlyRepository<ContractViewModel> contractViewModelReadOnlyRepository,
-            IWriteRepository<ContractViewModel> contractViewModelWriteRepository)
+        public ContractController(IRepository<Backend.Core.Models.Contract> contractRepository,
+                                  IRepository<Backend.Core.Models.SignedContract> signedContractRepository,
+                                  IRepository<ContractViewModel> contractViewModelRepository)
         {
-            _contractReadOnlyRepository = contractReadOnlyRepository;
-            _contractWriteRepository = contractWriteRepository;
-            _signedContractReadOnlyRepository = signedContractReadOnlyRepository;
-            _contractViewModelReadOnlyRepository = contractViewModelReadOnlyRepository;
-            _contractViewModelWriteRepository = contractViewModelWriteRepository;
+            _contractRepository = contractRepository;
+            _signedContractRepository = signedContractRepository;
+            _contractViewModelRepository = contractViewModelRepository;
         }
 
         /// <summary>
@@ -43,7 +39,7 @@ namespace Contract.WebAPI.Controllers
         [HttpGet]
         public IActionResult Contracts()
         {
-            return Ok(_contractViewModelReadOnlyRepository.Get());
+            return Ok(_contractViewModelRepository.Get());
         }
 
         /// <summary>
@@ -93,7 +89,7 @@ namespace Contract.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Contract(Guid id)
         {
-            var obj = _contractReadOnlyRepository.Find(id);
+            var obj = _contractRepository.Find(id);
             return Ok(obj);
         }
 
@@ -105,7 +101,7 @@ namespace Contract.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContract([FromBody] ContractViewModel contract)
         {
-            if (!_contractViewModelWriteRepository.Add(contract))
+            if (!_contractViewModelRepository.Add(contract))
                 return StatusCode(403);
 
             return Ok();
@@ -120,7 +116,7 @@ namespace Contract.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContract(Guid id, [FromBody] ContractViewModel contractViewModel)
         {
-            var updatedContract = _contractViewModelWriteRepository.Update(id, contractViewModel);
+            var updatedContract = _contractViewModelRepository.Update(id, contractViewModel);
             if (updatedContract == null)
                 return StatusCode(403);
             return Ok(updatedContract);
@@ -134,19 +130,27 @@ namespace Contract.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteContract(Guid id)
         {
-            if (_signedContractReadOnlyRepository.Get()
+            if (_signedContractRepository.Get()
                 .Where(sc => sc.ContractIndividualIsActive && sc.ContractId == id).ToList().Count > 0)
                 return Forbid();
 
-            var contract = _contractReadOnlyRepository.Find(id);
+            var signedContract = _signedContractRepository.Find(id);
 
-            if (contract != null)
+            if (signedContract != null)
             {
-                contract.ContractDeleted = !contract.ContractDeleted;
-                return Ok(_contractWriteRepository.Update(id, contract));
+                var contract = _contractRepository.Find(signedContract.ContractId);
+                if (!signedContract.ContractIndividualIsActive)
+                {
+                    contract.ContractDeleted = !contract.ContractDeleted;
+                    return Ok(_contractRepository.Update(signedContract.ContractId, contract));
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
 
-            return NotFound(contract);
+            return NotFound(signedContract);
         }
 
         #region Validations
