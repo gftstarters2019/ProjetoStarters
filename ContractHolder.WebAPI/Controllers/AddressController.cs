@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Backend.Core.Models;
-using Backend.Infrastructure.Repositories.Contracts;
+﻿using Backend.Core.Models;
+using Backend.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Text.RegularExpressions;
 
 namespace ContractHolder.WebAPI.Controllers
 {

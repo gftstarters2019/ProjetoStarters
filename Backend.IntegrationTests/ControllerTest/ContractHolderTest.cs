@@ -1,7 +1,6 @@
-using Backend.Core.Models;
-using Backend.IntegrationTests;
 using Backend.IntegrationTests.ControllerTest;
-using ContractHolder.WebAPI;
+using Backend.IntegrationTests.Helper;
+using ContractHolder.WebAPI.ViewModels;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
@@ -22,7 +21,7 @@ namespace IntegrationTests
 
             // Act
             var response = await client.GetAsync($"{url}");
-            var apiResponse = JsonConvert.DeserializeObject<List<IndividualEntity>>(await response.Content.ReadAsStringAsync());
+            var apiResponse = JsonConvert.DeserializeObject<List<ContractHolderViewModel>>(await response.Content.ReadAsStringAsync());
 
             // Assert
             Assert.IsNotNull(apiResponse);
@@ -33,12 +32,12 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            IndividualEntity individual = new IndividualEntity();
-            individual.IndividualName = "Elwing";
-            individual.IndividualEmail = "elwing@email.com";
-            individual.IndividualCPF = "36449769025";
-            individual.IndividualRG = "405589219";
-            individual.IndividualBirthdate = new DateTime(2017, 1, 18);
+            ContractHolderViewModel individual = new ContractHolderViewModel();
+            individual.individualName = "Elwing Tolkien";
+            individual.individualEmail = "elwing@email.com";
+            individual.individualCPF = CpfGenerator.GenerateCpf();
+            individual.individualRG = "405589219";
+            individual.individualBirthdate = new DateTime(1980, 1, 18);
 
             //act
             var jsonContent = JsonConvert.SerializeObject(individual);
@@ -46,20 +45,20 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var postResponse = await client.PostAsync($"{url}", contentString);
-            var postApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await postResponse.Content.ReadAsStringAsync());
+            var postApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await postResponse.Content.ReadAsStringAsync());
 
-            var getResponse = await client.GetAsync($"{url}/{postApiResponse.BeneficiaryId}");
-            var getApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await getResponse.Content.ReadAsStringAsync());
+            var getResponse = await client.GetAsync($"{url}/{postApiResponse.individualId}");
+            var getApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await getResponse.Content.ReadAsStringAsync());
 
             //assert
             Assert.IsNotNull(postApiResponse);
-            Assert.IsInstanceOf<IndividualEntity>(postApiResponse);
-            //Assert.AreEqual(postApiResponse.BeneficiaryId, getApiResponse.BeneficiaryId);
-            Assert.AreEqual(individual.IndividualName, getApiResponse.IndividualName);
-            Assert.AreEqual(individual.IndividualEmail, getApiResponse.IndividualEmail);
-            Assert.AreEqual(individual.IndividualCPF, getApiResponse.IndividualCPF);
-            Assert.AreEqual(individual.IndividualRG, getApiResponse.IndividualRG);
-            Assert.AreEqual(individual.IndividualBirthdate, getApiResponse.IndividualBirthdate);
+            Assert.IsInstanceOf<ContractHolderViewModel>(postApiResponse);
+            Assert.AreEqual(postApiResponse.individualId, getApiResponse.individualId);
+            Assert.AreEqual(individual.individualName, getApiResponse.individualName);
+            Assert.AreEqual(individual.individualEmail, getApiResponse.individualEmail);
+            Assert.AreEqual(individual.individualCPF, getApiResponse.individualCPF);
+            Assert.AreEqual(individual.individualRG, getApiResponse.individualRG);
+            Assert.AreEqual(individual.individualBirthdate, getApiResponse.individualBirthdate);
         }
 
         [Test]
@@ -67,12 +66,12 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            IndividualEntity individual = new IndividualEntity();
-            individual.IndividualName = "Feanor";
-            individual.IndividualEmail = "feanor@email.com";
-            individual.IndividualCPF = "58302207098";
-            individual.IndividualRG = "244025769";
-            individual.IndividualBirthdate = new DateTime(2017, 1, 18);
+            ContractHolderViewModel individual = new ContractHolderViewModel();
+            individual.individualName = "Feanor Elrond";
+            individual.individualEmail = "feanor@email.com";
+            individual.individualCPF = CpfGenerator.GenerateCpf();
+            individual.individualRG = "244025769";
+            individual.individualBirthdate = new DateTime(1990, 10, 12);
 
             //act
             var jsonContent = JsonConvert.SerializeObject(individual);
@@ -80,19 +79,18 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var postResponse = await client.PostAsync($"{url}", contentString);
-            var postApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await postResponse.Content.ReadAsStringAsync());
+            var postApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await postResponse.Content.ReadAsStringAsync());
 
-            var response = await client.GetAsync($"{url}/{postApiResponse.BeneficiaryId}");
-            var apiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await response.Content.ReadAsStringAsync());
+            var response = await client.GetAsync($"{url}/{postApiResponse.individualId}");
+            var apiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await response.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<IndividualEntity>(apiResponse);
-            
-            Assert.AreEqual(individual.IndividualName, apiResponse.IndividualName);
-            Assert.AreEqual(individual.IndividualEmail, apiResponse.IndividualEmail);
-            Assert.AreEqual(individual.IndividualCPF, apiResponse.IndividualCPF);
-            Assert.AreEqual(individual.IndividualRG, apiResponse.IndividualRG);
-            Assert.AreEqual(individual.IndividualBirthdate, apiResponse.IndividualBirthdate);
+            Assert.IsInstanceOf<ContractHolderViewModel>(apiResponse);
+            Assert.AreEqual(individual.individualName, apiResponse.individualName);
+            Assert.AreEqual(individual.individualEmail, apiResponse.individualEmail);
+            Assert.AreEqual(individual.individualCPF, apiResponse.individualCPF);
+            Assert.AreEqual(individual.individualRG, apiResponse.individualRG);
+            Assert.AreEqual(individual.individualBirthdate, apiResponse.individualBirthdate);
         }
 
         [Test]
@@ -100,45 +98,45 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            IndividualEntity individual = new IndividualEntity();
-            individual.IndividualName = "Earendil";
-            individual.IndividualEmail = "earendil@email.com";
-            individual.IndividualCPF = "35895879039";
-            individual.IndividualRG = "310291136";
-            individual.IndividualBirthdate = new DateTime(2017, 1, 18);
+            ContractHolderViewModel individual = new ContractHolderViewModel();
+            individual.individualName = "Earendil Tolkien";
+            individual.individualEmail = "earendil@email.com";
+            individual.individualCPF = CpfGenerator.GenerateCpf();
+            individual.individualRG = "310291136";
+            individual.individualBirthdate = new DateTime(1993, 2, 20);
 
 
             //act
-
             var jsonContent = JsonConvert.SerializeObject(individual);
             var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var postResponse = await client.PostAsync($"{url}", contentString);
-            var postApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await postResponse.Content.ReadAsStringAsync());
+            var postApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await postResponse.Content.ReadAsStringAsync());
 
-            postApiResponse.IndividualName = "Thorondor";
-            postApiResponse.IndividualEmail = "thorondor@gmail.com";
-            individual.IndividualCPF = "29823232067";
-            individual.IndividualRG = "288715524";
+            postApiResponse.individualName = "Thorondor Tolkien";
+            postApiResponse.individualEmail = "thorondor@gmail.com";
+            individual.individualCPF = CpfGenerator.GenerateCpf();
+            individual.individualRG = "288715524";
+            individual.individualBirthdate = new DateTime(2000, 3, 4);
 
             jsonContent = JsonConvert.SerializeObject(postApiResponse);
             contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
-            var putResponse = await client.PutAsync($"{url}/{postApiResponse.BeneficiaryId}", contentString);
-            var putApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await putResponse.Content.ReadAsStringAsync());
+            var putResponse = await client.PutAsync($"{url}/{postApiResponse.individualId}", contentString);
+            var putApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await putResponse.Content.ReadAsStringAsync());
 
-            var getResponse = await client.GetAsync($"{url}/{postApiResponse.BeneficiaryId}");
-            var getApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await getResponse.Content.ReadAsStringAsync());
+            var getResponse = await client.GetAsync($"{url}/{postApiResponse.individualId}");
+            var getApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await getResponse.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<IndividualEntity>(getApiResponse);
-            Assert.AreEqual(putApiResponse.IndividualName, getApiResponse.IndividualName);
-            Assert.AreEqual(putApiResponse.IndividualEmail, getApiResponse.IndividualEmail);
-            Assert.AreEqual(putApiResponse.IndividualCPF, getApiResponse.IndividualCPF);
-            Assert.AreEqual(putApiResponse.IndividualRG, getApiResponse.IndividualRG);
-            Assert.AreEqual(putApiResponse.IndividualBirthdate, getApiResponse.IndividualBirthdate);
+            Assert.IsInstanceOf<ContractHolderViewModel>(getApiResponse);
+            Assert.AreEqual(putApiResponse.individualName, getApiResponse.individualName);
+            Assert.AreEqual(putApiResponse.individualEmail, getApiResponse.individualEmail);
+            Assert.AreEqual(putApiResponse.individualCPF, getApiResponse.individualCPF);
+            Assert.AreEqual(putApiResponse.individualRG, getApiResponse.individualRG);
+            Assert.AreEqual(putApiResponse.individualBirthdate, getApiResponse.individualBirthdate);
         }
 
         [Test]
@@ -146,12 +144,12 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            IndividualEntity individual = new IndividualEntity();
-            individual.IndividualName = "Manwe";
-            individual.IndividualEmail = "manwe@email.com";
-            individual.IndividualCPF = "83094604064";
-            individual.IndividualRG = "485936781";
-            individual.IndividualBirthdate = new DateTime(2017, 1, 18);
+            ContractHolderViewModel individual = new ContractHolderViewModel();
+            individual.individualName = "Manwe Tolkien";
+            individual.individualEmail = "manwe@email.com"; 
+            individual.individualCPF = CpfGenerator.GenerateCpf();
+            individual.individualRG = "485936781";
+            individual.individualBirthdate = new DateTime(1978, 6, 1);
 
             //act
             var jsonContent = JsonConvert.SerializeObject(individual);
@@ -159,21 +157,21 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var postResponse = await client.PostAsync($"{url}", contentString);
-            var postApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await postResponse.Content.ReadAsStringAsync());
+            var postApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await postResponse.Content.ReadAsStringAsync());
 
-            var getResponse = await client.GetAsync($"{url}/{postApiResponse.BeneficiaryId}");
-            var getApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await getResponse.Content.ReadAsStringAsync());
+            var getResponse = await client.GetAsync($"{url}/{postApiResponse.individualId}");
+            var getApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await getResponse.Content.ReadAsStringAsync());
 
-            var deleteResponse = await client.DeleteAsync($"{url}/{getApiResponse.BeneficiaryId}");
-            var deleteApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await deleteResponse.Content.ReadAsStringAsync());
+            var deleteResponse = await client.DeleteAsync($"{url}/{getApiResponse.individualId}");
+            var deleteApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await deleteResponse.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<IndividualEntity>(deleteApiResponse);
-            Assert.AreEqual(individual.IndividualName,  deleteApiResponse.IndividualName);
-            Assert.AreEqual(individual.IndividualEmail, deleteApiResponse.IndividualEmail);
-            Assert.AreEqual(individual.IndividualCPF, deleteApiResponse.IndividualCPF);
-            Assert.AreEqual(individual.IndividualRG, deleteApiResponse.IndividualRG);
-            Assert.AreEqual(individual.IndividualBirthdate, deleteApiResponse.IndividualBirthdate);
+            Assert.IsInstanceOf<ContractHolderViewModel>(deleteApiResponse);
+            Assert.AreEqual(individual.individualName,  deleteApiResponse.individualName);
+            Assert.AreEqual(individual.individualEmail, deleteApiResponse.individualEmail);
+            Assert.AreEqual(individual.individualCPF, deleteApiResponse.individualCPF);
+            Assert.AreEqual(individual.individualRG, deleteApiResponse.individualRG);
+            Assert.AreEqual(individual.individualBirthdate, deleteApiResponse.individualBirthdate);
         }
     }
 }

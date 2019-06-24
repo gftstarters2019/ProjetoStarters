@@ -5,7 +5,7 @@ using Backend.Core.Domains;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Converters;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 
 namespace Backend.Infrastructure.Repositories
 {

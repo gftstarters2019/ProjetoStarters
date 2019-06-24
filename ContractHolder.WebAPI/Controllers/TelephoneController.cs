@@ -1,6 +1,6 @@
 ﻿using Backend.Core.Enums;
 using Backend.Core.Models;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Text.RegularExpressions;

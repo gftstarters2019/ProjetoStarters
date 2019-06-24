@@ -1,7 +1,7 @@
 ﻿using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

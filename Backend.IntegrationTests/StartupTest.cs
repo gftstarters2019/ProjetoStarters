@@ -2,7 +2,7 @@
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.IO;
 using System.Reflection;
 
 namespace Backend.IntegrationTests
@@ -37,11 +34,17 @@ namespace Backend.IntegrationTests
         {
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddScoped<IRepository<ContractHolderDomain>, ContractHolderRepository>();
+
             services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
+
             services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
+
+            services.AddScoped<IRepository<CompleteContractDomain>, CompleteContractRepository>();
+
             services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
-            
+
             services.AddMvc().AddJsonOptions(opt =>
             {
                 opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
