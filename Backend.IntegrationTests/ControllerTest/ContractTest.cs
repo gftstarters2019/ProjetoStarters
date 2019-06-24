@@ -1,10 +1,8 @@
-using Backend.Application.ViewModels;
+using Backend.Core.Domains;
 using Backend.Core.Enums;
-using Backend.Core.Models;
-using Backend.IntegrationTests;
 using Backend.IntegrationTests.ControllerTest;
 using Backend.IntegrationTests.Helper;
-using ContractHolder.WebAPI;
+using Contract.WebAPI.ViewModels;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
@@ -40,18 +38,18 @@ namespace IntegrationTests
             ContractViewModel contract = new ContractViewModel();
             contract.Type = ContractType.DentalPlan;
             contract.Category = ContractCategory.Silver;
-            contract.Individuals = new List<IndividualEntity>();
+            contract.Individuals = new List<IndividualDomain>();
             contract.ExpiryDate = new DateTime(2020, 10, 5);
             contract.IsActive = true;
 
-            IndividualEntity contractHolder = new IndividualEntity();
+            IndividualDomain contractHolder = new IndividualDomain();
             contractHolder.IndividualName = "Caio Silva Ferreira";
             contractHolder.IndividualEmail = "CaioSilva@rhyta.com";
             contractHolder.IndividualCPF = CpfGenerator.GenerateCpf();
             contractHolder.IndividualRG = "335373793";
             contractHolder.IndividualBirthdate = new DateTime(1966, 12, 28);
 
-            IndividualEntity firstBeneficiary = new IndividualEntity();
+            IndividualDomain firstBeneficiary = new IndividualDomain();
             firstBeneficiary.IndividualName = "Bianca Correia Fernandes";
             firstBeneficiary.IndividualEmail = "BiancaCorreia@teleworm.com";
             firstBeneficiary.IndividualCPF = CpfGenerator.GenerateCpf();
@@ -59,7 +57,7 @@ namespace IntegrationTests
             firstBeneficiary.IndividualBirthdate = new DateTime(1978, 6, 19);
             contract.Individuals.Add(firstBeneficiary);
 
-            IndividualEntity secondBeneficiary = new IndividualEntity();
+            IndividualDomain secondBeneficiary = new IndividualDomain();
             secondBeneficiary.IndividualName = "Cauã Costa Lima";
             secondBeneficiary.IndividualEmail = "CauaCosta@jourrapide.com";
             secondBeneficiary.IndividualCPF = CpfGenerator.GenerateCpf();
@@ -67,7 +65,7 @@ namespace IntegrationTests
             secondBeneficiary.IndividualBirthdate = new DateTime(1993, 4, 21);
             contract.Individuals.Add(secondBeneficiary);
 
-            IndividualEntity thirdBeneficiary = new IndividualEntity();
+            IndividualDomain thirdBeneficiary = new IndividualDomain();
             thirdBeneficiary.IndividualName = "Livia Pereira Costa";
             thirdBeneficiary.IndividualEmail = "LiviaPereira@dayrep.com";
             thirdBeneficiary.IndividualCPF = CpfGenerator.GenerateCpf();
@@ -75,7 +73,7 @@ namespace IntegrationTests
             thirdBeneficiary.IndividualBirthdate = new DateTime(1957, 7, 24);
             contract.Individuals.Add(thirdBeneficiary);
 
-            IndividualEntity fourthBeneficiary = new IndividualEntity();
+            IndividualDomain fourthBeneficiary = new IndividualDomain();
             fourthBeneficiary.IndividualName = "Beatrice Fernandes Barbosa";
             fourthBeneficiary.IndividualEmail = "BeatriceFernandes@teleworm.us";
             fourthBeneficiary.IndividualCPF = CpfGenerator.GenerateCpf();
@@ -83,7 +81,7 @@ namespace IntegrationTests
             fourthBeneficiary.IndividualBirthdate = new DateTime(1955, 9, 3);
             contract.Individuals.Add(fourthBeneficiary);
 
-            IndividualEntity fifthBeneficiary = new IndividualEntity();
+            IndividualDomain fifthBeneficiary = new IndividualDomain();
             fifthBeneficiary.IndividualName = "Júlio Souza Barros";
             fifthBeneficiary.IndividualEmail = "JulioSouza@rhyta.com";
             fifthBeneficiary.IndividualCPF = CpfGenerator.GenerateCpf();
@@ -97,7 +95,7 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var contractHolderPost = await client.PostAsync($"{urlContractHolder}", contentString);
-            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await contractHolderPost.Content.ReadAsStringAsync());
+            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualDomain>(await contractHolderPost.Content.ReadAsStringAsync());
             contract.ContractHolderId = contractHolderPostApiResponse.BeneficiaryId;
 
             jsonContent = JsonConvert.SerializeObject(contract);
@@ -129,39 +127,39 @@ namespace IntegrationTests
             ContractViewModel contract = new ContractViewModel();
             contract.Type = ContractType.AnimalHealthPlan;
             contract.Category = ContractCategory.Gold;
-            contract.Pets = new List<PetEntity>();
+            contract.Pets = new List<PetDomain>();
             contract.ExpiryDate = new DateTime(2032, 1, 1);
             contract.IsActive = false;
 
-            IndividualEntity contractHolder = new IndividualEntity();
+            IndividualDomain contractHolder = new IndividualDomain();
             contractHolder.IndividualName = "Isabela Rocha Costa";
             contractHolder.IndividualEmail = "IsabelaRocha@rhyta.com";
             contractHolder.IndividualCPF = CpfGenerator.GenerateCpf();
             contractHolder.IndividualRG = "156188326";
             contractHolder.IndividualBirthdate = new DateTime(1953, 11, 4);
 
-            PetEntity firstBeneficiary = new PetEntity();
+            PetDomain firstBeneficiary = new PetDomain();
             firstBeneficiary.PetName = "Joe";
             firstBeneficiary.PetBreed = "Mixed";
             firstBeneficiary.PetSpecies = PetSpecies.Canis_lupus_familiaris;
             firstBeneficiary.PetBirthdate = new DateTime(2005, 7, 20);
             contract.Pets.Add(firstBeneficiary);
 
-            PetEntity secondBeneficiary = new PetEntity();
+            PetDomain secondBeneficiary = new PetDomain();
             secondBeneficiary.PetName = "Lobo";
             secondBeneficiary.PetBreed = "Belgian Sheepdog";
             secondBeneficiary.PetSpecies = PetSpecies.Canis_lupus_familiaris;
             secondBeneficiary.PetBirthdate = new DateTime(2010, 10, 25);
             contract.Pets.Add(secondBeneficiary);
 
-            PetEntity thirdBeneficiary = new PetEntity();
+            PetDomain thirdBeneficiary = new PetDomain();
             thirdBeneficiary.PetName = "Dasha";
             thirdBeneficiary.PetBreed = "Chihuahua";
             thirdBeneficiary.PetSpecies = PetSpecies.Canis_lupus_familiaris;
             thirdBeneficiary.PetBirthdate = new DateTime(2016, 4, 1);
             contract.Pets.Add(thirdBeneficiary);
 
-            PetEntity fourthBeneficiary = new PetEntity();
+            PetDomain fourthBeneficiary = new PetDomain();
             fourthBeneficiary.PetName = "Axel";
             fourthBeneficiary.PetBreed = "Jack Russell Terrier";
             fourthBeneficiary.PetSpecies = PetSpecies.Canis_lupus_familiaris;
@@ -174,7 +172,7 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var contractHolderPost = await client.PostAsync($"{urlContractHolder}", contentString);
-            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await contractHolderPost.Content.ReadAsStringAsync());
+            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualDomain>(await contractHolderPost.Content.ReadAsStringAsync());
             contract.ContractHolderId = contractHolderPostApiResponse.BeneficiaryId;
 
             jsonContent = JsonConvert.SerializeObject(contract);
@@ -203,20 +201,20 @@ namespace IntegrationTests
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractViewModel contract = new ContractViewModel();
-            contract.MobileDevices = new List<MobileDeviceEntity>();
+            contract.MobileDevices = new List<MobileDeviceDomain>();
             contract.Type = (ContractType)6;
             contract.Category = (ContractCategory)2;
             contract.ExpiryDate = new DateTime(2019, 12, 30);
             contract.IsActive = true;
 
-            IndividualEntity contractHolder = new IndividualEntity();
+            IndividualDomain contractHolder = new IndividualDomain();
             contractHolder.IndividualName = "Eduardo Barbosa";
             contractHolder.IndividualEmail = "EduardoGoncalves@dayrep.com";
             contractHolder.IndividualCPF = CpfGenerator.GenerateCpf();
             contractHolder.IndividualRG = "240875278";
             contractHolder.IndividualBirthdate = new DateTime(1970, 8, 12);
 
-            MobileDeviceEntity firstBeneficiary = new MobileDeviceEntity();
+            MobileDeviceDomain firstBeneficiary = new MobileDeviceDomain();
             firstBeneficiary.MobileDeviceType = MobileDeviceType.Smartphone;
             firstBeneficiary.MobileDeviceBrand = "Motorola";
             firstBeneficiary.MobileDeviceModel = "MotoZ";
@@ -225,7 +223,7 @@ namespace IntegrationTests
             firstBeneficiary.MobileDeviceInvoiceValue = 1099.90;
             contract.MobileDevices.Add(firstBeneficiary);
 
-            MobileDeviceEntity secondBeneficiary = new MobileDeviceEntity();
+            MobileDeviceDomain secondBeneficiary = new MobileDeviceDomain();
             secondBeneficiary.MobileDeviceType = MobileDeviceType.Tablet;
             secondBeneficiary.MobileDeviceBrand = "Apple";
             secondBeneficiary.MobileDeviceModel = "IPad Pro";
@@ -234,7 +232,7 @@ namespace IntegrationTests
             secondBeneficiary.MobileDeviceInvoiceValue = 4499.99;
             contract.MobileDevices.Add(secondBeneficiary);
 
-            MobileDeviceEntity thirdBeneficiary = new MobileDeviceEntity();
+            MobileDeviceDomain thirdBeneficiary = new MobileDeviceDomain();
             thirdBeneficiary.MobileDeviceType = MobileDeviceType.Laptop;
             thirdBeneficiary.MobileDeviceBrand = "Asus";
             thirdBeneficiary.MobileDeviceModel = "Pro SX";
@@ -249,7 +247,7 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var contractHolderPost = await client.PostAsync($"{urlContractHolder}", contentString);
-            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await contractHolderPost.Content.ReadAsStringAsync());
+            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualDomain>(await contractHolderPost.Content.ReadAsStringAsync());
             contract.ContractHolderId = contractHolderPostApiResponse.BeneficiaryId;
 
             jsonContent = JsonConvert.SerializeObject(contract);
@@ -288,17 +286,17 @@ namespace IntegrationTests
             contract.Type = ContractType.VehicleInsurance;
             contract.Category = ContractCategory.Diamond;
             contract.ExpiryDate = new DateTime(2021, 2, 1);
-            contract.Vehicles = new List<VehicleEntity>();
+            contract.Vehicles = new List<VehicleDomain>();
             contract.IsActive = true;
 
-            IndividualEntity contractHolder = new IndividualEntity();
+            IndividualDomain contractHolder = new IndividualDomain();
             contractHolder.IndividualName = "Felipe Araujo Souza";
             contractHolder.IndividualEmail = "FelipeAraujo@dayrep.com";
             contractHolder.IndividualCPF = CpfGenerator.GenerateCpf();
             contractHolder.IndividualRG = "463205522";
             contractHolder.IndividualBirthdate = new DateTime(1992, 11, 28);
 
-            VehicleEntity firstBeneficiary = new VehicleEntity();
+            VehicleDomain firstBeneficiary = new VehicleDomain();
             firstBeneficiary.VehicleBrand = "Daewoo";
             firstBeneficiary.VehicleModel = "Leganza";
             firstBeneficiary.VehicleChassisNumber = "XDI0923";
@@ -310,7 +308,7 @@ namespace IntegrationTests
             firstBeneficiary.VehicleModelYear = new DateTime(2000, 1, 1);
             contract.Vehicles.Add(firstBeneficiary);
 
-            VehicleEntity secondBeneficiary = new VehicleEntity();
+            VehicleDomain secondBeneficiary = new VehicleDomain();
             secondBeneficiary.VehicleBrand = "Ford";
             secondBeneficiary.VehicleModel = "Fiesta";
             secondBeneficiary.VehicleChassisNumber = "LOP8761";
@@ -328,7 +326,7 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var contractHolderPost = await client.PostAsync($"{urlContractHolder}", contentString);
-            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await contractHolderPost.Content.ReadAsStringAsync());
+            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualDomain>(await contractHolderPost.Content.ReadAsStringAsync());
             contract.ContractHolderId = contractHolderPostApiResponse.BeneficiaryId;
 
             jsonContent = JsonConvert.SerializeObject(contract);

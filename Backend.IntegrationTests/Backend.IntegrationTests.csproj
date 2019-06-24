@@ -44,6 +44,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Backend.Core\Backend.Core.csproj" />
+    <ProjectReference Include="..\Backend.Infrastructure\Backend.Infrastructure.csproj" />
+    <ProjectReference Include="..\Backend.Services\Backend.Services.csproj" />
     <ProjectReference Include="..\Beneficiaries.WebAPI\Beneficiaries.WebAPI.csproj" />
     <ProjectReference Include="..\Contract.WebAPI\Contract.WebAPI.csproj" />
     <ProjectReference Include="..\ContractHolder.WebAPI\ContractHolder.WebAPI.csproj" />

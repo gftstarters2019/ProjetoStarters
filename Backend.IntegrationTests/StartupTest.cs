@@ -1,19 +1,17 @@
-﻿using Backend.Application.ViewModels;
+﻿using Backend.Core.Domains;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
+using Backend.Services.Services;
+using Backend.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.IO;
 using System.Reflection;
 
 namespace Backend.IntegrationTests
@@ -36,17 +34,39 @@ namespace Backend.IntegrationTests
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
+            // Services
+            services.AddScoped<IService<ContractHolderDomain>, ContractHolderService>();
+
+            services.AddScoped<IService<CompleteContractDomain>, CompleteContractService>();
+
+            // Repositories
+            services.AddScoped<IRepository<ContractHolderDomain>, ContractHolderRepository>();
+
             services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
+
+            services.AddScoped<IRepository<IndividualEntity>, IndividualRepository>();
+
+            services.AddScoped<IRepository<IndividualTelephone>, IndividualTelephoneRepository>();
+
             services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
+
+            services.AddScoped<IRepository<BeneficiaryAddress>, BeneficiaryAddressRepository>();
+
             services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
 
-            services.AddScoped<IRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
+            services.AddScoped<IRepository<CompleteContractDomain>, CompleteContractRepository>();
 
-            services.AddScoped<IRepository<Backend.Core.Models.Contract>, ContractRepository>();
+            services.AddScoped<IRepository<ContractEntity>, ContractRepository>();
 
-            services.AddScoped<IRepository<ContractViewModel>, ContractViewModelRepository>();
+            services.AddScoped<IRepository<PetEntity>, PetRepository>();
+
+            services.AddScoped<IRepository<MobileDeviceEntity>, MobileDeviceRepository>();
+
+            services.AddScoped<IRepository<RealtyEntity>, RealtyRepository>();
+
+            services.AddScoped<IRepository<VehicleEntity>, VehicleRepository>();
+
+            services.AddScoped<IRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
 
             services.AddMvc().AddJsonOptions(opt =>
             {
