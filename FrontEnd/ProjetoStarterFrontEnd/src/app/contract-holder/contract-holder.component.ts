@@ -139,13 +139,14 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     this.unMaskValues();
 
     let json = JSON.stringify(this.contractHolder.value);
+    console.log(json);
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
       if (this.IndividualId == null) {
-      this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json, httpOptions).subscribe(response => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
+      this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json, httpOptions).subscribe(response => console.log(response), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
   }
     else {
 

@@ -33,13 +33,14 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task WhenRequestOwnerControllerUsingPostSendingAListOfIndividuals_ThenICanGetContractObjectById()
+        public async Task WhenRequestContractControllerUsingPostSendingAListOfIndividuals_ThenICanGetContractObjectById()
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractViewModel contract = new ContractViewModel();
             contract.Type = ContractType.DentalPlan;
             contract.Category = ContractCategory.Silver;
+            contract.Individuals = new List<Individual>();
             contract.ExpiryDate = new DateTime(2020, 10, 5);
             contract.IsActive = true;
 
@@ -121,13 +122,14 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task WhenRequestOwnerControllerUsingPostSendingAListOfPets_ThenICanRequestContractObjectById()
+        public async Task WhenRequestContractControllerUsingPostSendingAListOfPets_ThenICanRequestContractObjectById()
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractViewModel contract = new ContractViewModel();
             contract.Type = ContractType.AnimalHealthPlan;
             contract.Category = ContractCategory.Gold;
+            contract.Pets = new List<Pet>();
             contract.ExpiryDate = new DateTime(2032, 1, 1);
             contract.IsActive = false;
 
@@ -278,7 +280,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task WhenRequestOwnerControllerUsingPostAndGet_ThenICanDeleteAnOwnerObjectById()
+        public async Task WhenRequestContractControllerUsingPostAndGet_ThenICanDeleteAContractObjectById()
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -286,6 +288,7 @@ namespace IntegrationTests
             contract.Type = ContractType.VehicleInsurance;
             contract.Category = ContractCategory.Diamond;
             contract.ExpiryDate = new DateTime(2021, 2, 1);
+            contract.Vehicles = new List<Vehicle>();
             contract.IsActive = true;
 
             ContractHolderViewModel contractHolder = new ContractHolderViewModel();
