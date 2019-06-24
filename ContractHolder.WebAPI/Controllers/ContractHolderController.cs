@@ -1,5 +1,5 @@
 ﻿using Backend.Core.Domains;
-using Backend.Services.Services.Contracts;
+using Backend.Services.Services.Interfaces;
 using ContractHolder.WebAPI.Factories;
 using ContractHolder.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -58,15 +58,14 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel contractHolderViewModel)
         {
-            var contractHolderToAdd = FactoriesManager.ContractHolder.Create(contractHolderViewModel);
+            var contractHolderToAdd = FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel);
 
             var addedContractHolder = _contractHolderService.Save(contractHolderToAdd);
             if (addedContractHolder == null)
                 return StatusCode(403);
-
-            // TODO: Usar Factory ContractHolderDomain => ContractHolderViewModel para passar para devolver para o Frontend
+            
             //SendWelcomeEmail(vm);
-            return Ok(contractHolderViewModel);
+            return Ok(FactoriesManager.ContractHolderViewModel.Create(addedContractHolder));
         }
 
         /// <summary>

@@ -44,7 +44,7 @@ namespace Contract.WebAPI
             });
 
             // Services
-            services.AddScoped<Backend.Services.Services.Contracts.IService<Backend.Core.Domains.CompleteContractDomain>, CompleteContractService>();
+            services.AddScoped<Backend.Services.Services.Interfaces.IService<Backend.Core.Domains.CompleteContractDomain>, CompleteContractService>();
 
             // Repositories
             services.AddScoped<IRepository<Backend.Core.Domains.CompleteContractDomain>, CompleteContractRepository>();

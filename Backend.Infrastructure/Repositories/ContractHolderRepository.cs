@@ -46,8 +46,9 @@ namespace Backend.Infrastructure.Repositories
                         _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
                             contractHolder.Individual)));
 
-                    if (contractHolder.Individual == null || !_individualsRepository.Save())
+                    if (contractHolder.Individual == null)
                         return null;
+                    _individualsRepository.Save();
 
                     // Add Telephones and Individual Telephones
                     var addedTelephones = new List<TelephoneDomain>();
@@ -60,7 +61,7 @@ namespace Backend.Infrastructure.Repositories
                         var addedIndividualTelephone = _individualTelephonesRepository.Add(new IndividualTelephone()
                         {
                             BeneficiaryId = contractHolder.Individual.BeneficiaryId,
-                            TelephoneId = telephone.TelephoneId
+                            TelephoneId = addedTelephone.TelephoneId
                         });
 
                         if (addedTelephone == null || addedIndividualTelephone == null)
@@ -68,10 +69,11 @@ namespace Backend.Infrastructure.Repositories
 
                         addedTelephones.Add(addedTelephone);
                     }
-                    if (addedTelephones.Count != contractHolder.IndividualTelephones.Count
-                        || _telephonesRepository.Save()
-                        || _individualTelephonesRepository.Save())
+                    if (addedTelephones.Count != contractHolder.IndividualTelephones.Count)
                         return null;
+                    _telephonesRepository.Save();
+                    _individualTelephonesRepository.Save();
+
 
                     contractHolder.IndividualTelephones = addedTelephones;
 
@@ -85,7 +87,7 @@ namespace Backend.Infrastructure.Repositories
 
                         var addedBeneficiaryAddress = _beneficiaryAddressRepository.Add(new BeneficiaryAddress()
                         {
-                            AddressId = address.AddressId,
+                            AddressId = addedAddress.AddressId,
                             BeneficiaryId = contractHolder.Individual.BeneficiaryId
                         });
 
@@ -94,10 +96,12 @@ namespace Backend.Infrastructure.Repositories
 
                         addedAddresses.Add(addedAddress);
                     }
-                    if (addedAddresses.Count != contractHolder.IndividualAddresses.Count
-                        || _addressRepository.Save()
-                        || _beneficiaryAddressRepository.Save())
+                    if (addedAddresses.Count != contractHolder.IndividualAddresses.Count)
                         return null;
+                    _addressRepository.Save();
+                    _beneficiaryAddressRepository.Save();
+
+                    contractHolder.IndividualAddresses = addedAddresses;
 
                     scope.Complete();
                     return contractHolder;

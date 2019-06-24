@@ -1,9 +1,6 @@
-﻿using Backend.Infrastructure.Services.Contracts;
-using System;
-using System.Collections.Generic;
+﻿using Backend.Infrastructure.Services.Interfaces;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 
 namespace Backend.Infrastructure.Services
 {

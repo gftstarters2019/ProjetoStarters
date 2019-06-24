@@ -75,10 +75,5 @@ namespace Backend.Infrastructure.Repositories
         {
             return _db.SaveChanges() > 0;
         }
-
-        AddressEntity IRepository<AddressEntity>.Add(AddressEntity t)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Backend.Services.Services.Contracts
+namespace Backend.Services.Services.Interfaces
 {
     public interface IService<T>
     {

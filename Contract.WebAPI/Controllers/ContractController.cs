@@ -1,5 +1,5 @@
 ﻿using Backend.Core.Domains;
-using Backend.Services.Services.Contracts;
+using Backend.Services.Services.Interfaces;
 using Contract.WebAPI.Factories;
 using Contract.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
