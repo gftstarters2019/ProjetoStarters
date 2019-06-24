@@ -24,7 +24,7 @@ namespace Backend.Infrastructure.Repositories
         {
             var signedContractContractHolder = _db
                                                .Individuals
-                                               .Where(ind => ind.BeneficiaryId == signedContract.IndividualId)
+                                               .Where(ind => ind.BeneficiaryId == signedContract.BeneficiaryId)
                                                .FirstOrDefault();
             if (signedContractContractHolder == null)
                 return null;
@@ -64,7 +64,7 @@ namespace Backend.Infrastructure.Repositories
                 if (signedContractToUpdate != null)
                 {
                     signedContractToUpdate.ContractIndividualIsActive = signedContract.ContractIndividualIsActive;
-                    signedContractToUpdate.IndividualId = signedContract.IndividualId;
+                    signedContractToUpdate.BeneficiaryId = signedContract.BeneficiaryId;
                     return _db.SignedContracts.Update(signedContractToUpdate).Entity;
                 }
             }

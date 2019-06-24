@@ -15,7 +15,7 @@ namespace Backend.Infrastructure.Converters
             {
                 SignedContractId = signedContractEntity.SignedContractId,
                 ContractId = signedContractEntity.ContractId,
-                IndividualId = signedContractEntity.IndividualId,
+                IndividualId = signedContractEntity.BeneficiaryId,
                 ContractIndividualIsActive = signedContractEntity.ContractIndividualIsActive,
                 SignedContractContract = ConvertersManager.ContractConverter.Convert(
                     signedContractEntity.SignedContractContract),
@@ -35,7 +35,7 @@ namespace Backend.Infrastructure.Converters
             {
                 SignedContractId = signedContractDomain.SignedContractId,
                 ContractId = signedContractDomain.ContractId,
-                IndividualId = signedContractDomain.IndividualId,
+                BeneficiaryId = signedContractDomain.IndividualId,
                 ContractIndividualIsActive = signedContractDomain.ContractIndividualIsActive,
                 SignedContractContract = ConvertersManager.ContractConverter.Convert(
                     signedContractDomain.SignedContractContract),
