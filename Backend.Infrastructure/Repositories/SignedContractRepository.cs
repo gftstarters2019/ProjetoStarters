@@ -43,7 +43,6 @@ namespace Backend.Infrastructure.Repositories
 
         public IEnumerable<SignedContractEntity> Get() => _db
             .SignedContracts
-            .Where(sc => sc.ContractIndividualIsActive)
             .ToList();
 
         public bool Remove(Guid id)

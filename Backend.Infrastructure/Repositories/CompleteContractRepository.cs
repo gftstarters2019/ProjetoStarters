@@ -539,136 +539,53 @@ namespace Backend.Infrastructure.Repositories
 
             var contracts = _contractRepository.Get();
 
-            //
-            //List<ContractViewModel> viewModelToReturn = new List<ContractViewModel>();
+            foreach (var contract in contracts)
+            {
+                var signedContracts = _signedContractRepository.Get().Where(sc => sc.ContractId == contract.ContractId).ToList();
 
-            //var contracts = _db.Contracts
-            //    .Where(con => !con.ContractDeleted)
-            //    .ToList();
-            //foreach (var contract in contracts)
-            //{
-            //    var signedContracts = _db
-            //        .SignedContracts
-            //        .Where(sc => sc.ContractId == contract.ContractId)
-            //        .ToList();
+                foreach (var signedContract in signedContracts)
+                {
+                    var completeContractToAdd = new CompleteContractDomain();
+                    completeContractToAdd.Contract = ConvertersManager.ContractConverter.Convert(contract);
+                    completeContractToAdd.SignedContract = ConvertersManager.SignedContractConverter.Convert(signedContract);
 
-            //    foreach (var signedContract in signedContracts)
-            //    {
-            //        var beneficiaries = _db
-            //            .Contract_Beneficiary
-            //            .Where(cb => cb.SignedContractId == signedContract.SignedContractId)
-            //            .Select(cb => cb.BeneficiaryId)
-            //            .ToList();
+                    switch (contract.ContractType)
+                    {
+                        case ContractType.DentalPlan:
+                        case ContractType.HealthPlan:
+                        case ContractType.LifeInsurance:
+                            completeContractToAdd.Individuals = _individualsRepository.Get().Where(ind => _contractBeneficiaryRepository.Get()
+                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ind.BeneficiaryId))
+                                .Select(ind => ConvertersManager.IndividualConverter.Convert(ind)).ToList();
+                            break;
+                        case ContractType.AnimalHealthPlan:
+                            completeContractToAdd.Pets = _petsRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                                .Select(ben => ConvertersManager.PetConverter.Convert(ben)).ToList();
+                            break;
+                        case ContractType.MobileDeviceInsurance:
+                            completeContractToAdd.MobileDevices = _mobileDevicesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                                .Select(ben => ConvertersManager.MobileDeviceConverter.Convert(ben)).ToList();
+                            break;
+                        case ContractType.RealStateInsurance:
+                            completeContractToAdd.Realties  = _realtiesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                                .Select(ben => ConvertersManager.RealtyConverter.Convert(ben)).ToList();
+                            break;
+                        case ContractType.VehicleInsurance:
+                            completeContractToAdd.Vehicles = _vehiclesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                                .Select(ben => ConvertersManager.VehicleConverter.Convert(ben)).ToList();
+                            break;
+                        default:
+                            continue;
+                    }
+                    completeContracts.Add(completeContractToAdd);
+                }
+            }
 
-            //        //
-            //        //ContractViewModel viewModelToAdd;
-            //        switch (contract.ContractType)
-            //        {
-            //            case Core.Enums.ContractType.DentalPlan:
-            //            case Core.Enums.ContractType.HealthPlan:
-            //            case Core.Enums.ContractType.LifeInsurance:
-            //                var viewModelIndividualToAdd = new ContractViewModel()
-            //                {
-            //                    Category = contract.ContractCategory,
-            //                    ExpiryDate = contract.ContractExpiryDate,
-            //                    IsActive = signedContract.ContractIndividualIsActive,
-            //                    Type = contract.ContractType,
-            //                    SignedContractId = signedContract.SignedContractId,
-            //                    ContractHolderId = signedContract.IndividualId,
-            //                    ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
-            //                    Individuals = _db.Individuals.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
-            //                };
-            //                viewModelToReturn.Add(viewModelIndividualToAdd);
-            //                break;
-
-            //            case Core.Enums.ContractType.AnimalHealthPlan:
-            //                var viewModelPetToAdd = new ContractViewModel()
-            //                {
-            //                    Category = contract.ContractCategory,
-            //                    ExpiryDate = contract.ContractExpiryDate,
-            //                    IsActive = signedContract.ContractIndividualIsActive,
-            //                    Type = contract.ContractType,
-            //                    SignedContractId = signedContract.SignedContractId,
-            //                    ContractHolderId = signedContract.IndividualId,
-            //                    ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
-            //                    Pets = _db.Pets.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
-            //                };
-            //                viewModelToReturn.Add(viewModelPetToAdd);
-            //                break;
-
-            //            case Core.Enums.ContractType.MobileDeviceInsurance:
-            //                var viewModelMobileDeviceToAdd = new ContractViewModel()
-            //                {
-            //                    Category = contract.ContractCategory,
-            //                    ExpiryDate = contract.ContractExpiryDate,
-            //                    IsActive = signedContract.ContractIndividualIsActive,
-            //                    Type = contract.ContractType,
-            //                    SignedContractId = signedContract.SignedContractId,
-            //                    ContractHolderId = signedContract.IndividualId,
-            //                    ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
-            //                    MobileDevices = _db.MobileDevices.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
-            //                };
-            //                viewModelToReturn.Add(viewModelMobileDeviceToAdd);
-            //                break;
-
-            //            case Core.Enums.ContractType.RealStateInsurance:
-            //                var contractRealties = _db.Realties.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList();
-            //                List<RealtyViewModel> realtiesToReturn = new List<RealtyViewModel>();
-            //                foreach (var real in contractRealties)
-            //                {
-            //                    realtiesToReturn.Add(new RealtyViewModel()
-            //                    {
-            //                        Id = real.BeneficiaryId,
-            //                        ConstructionDate = real.RealtyConstructionDate,
-            //                        MarketValue = real.RealtyMarketValue,
-            //                        MunicipalRegistration = real.RealtyMunicipalRegistration,
-            //                        SaleValue = real.RealtySaleValue,
-            //                        Address = _db
-            //                        .Addresses
-            //                        .Where(a => a.AddressId == _db.Beneficiary_Address
-            //                                                    .Where(ba => ba.BeneficiaryId == real.BeneficiaryId)
-            //                                                    .Select(ba => ba.AddressId)
-            //                                                    .FirstOrDefault())
-            //                        .FirstOrDefault()
-            //                    });
-            //                }
-            //                var viewModelRealtyToAdd = new ContractViewModel()
-            //                {
-            //                    Category = contract.ContractCategory,
-            //                    ExpiryDate = contract.ContractExpiryDate,
-            //                    IsActive = signedContract.ContractIndividualIsActive,
-            //                    Type = contract.ContractType,
-            //                    SignedContractId = signedContract.SignedContractId,
-            //                    ContractHolderId = signedContract.IndividualId,
-            //                    ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
-            //                    Realties = realtiesToReturn
-            //                };
-            //                viewModelToReturn.Add(viewModelRealtyToAdd);
-            //                break;
-
-            //            case Core.Enums.ContractType.VehicleInsurance:
-            //                var viewModelVehicleToAdd = new ContractViewModel()
-            //                {
-            //                    Category = contract.ContractCategory,
-            //                    ExpiryDate = contract.ContractExpiryDate,
-            //                    IsActive = signedContract.ContractIndividualIsActive,
-            //                    Type = contract.ContractType,
-            //                    SignedContractId = signedContract.SignedContractId,
-            //                    ContractHolderId = signedContract.IndividualId,
-            //                    ContractHolder = _db.Individuals.Where(ind => ind.BeneficiaryId == signedContract.IndividualId).FirstOrDefault(),
-            //                    Vehicles = _db.Vehicles.Where(ind => beneficiaries.Contains(ind.BeneficiaryId)).ToList()
-            //                };
-            //                viewModelToReturn.Add(viewModelVehicleToAdd);
-            //                break;
-
-            //            default:
-            //                break;
-            //        }
-            //    }
-            //}
-            //return viewModelToReturn;
-            //
-            throw new NotImplementedException();
+            return completeContracts;
         }
 
         public bool Remove(Guid id)
