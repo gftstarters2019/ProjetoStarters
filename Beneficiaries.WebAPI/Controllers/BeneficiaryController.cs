@@ -1,12 +1,8 @@
-﻿using Backend.Application.ModelValidations;
-using Backend.Application.ViewModels;
-using Backend.Core;
-using Backend.Core.Models;
+﻿using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using System.Net.Mail;
 
 namespace Beneficiaries.WebAPI.Controllers
 {
@@ -26,7 +22,7 @@ namespace Beneficiaries.WebAPI.Controllers
 
         private readonly IRepository<MobileDeviceEntity> _mobileDeviceRepository;
 
-        private readonly IRepository<RealtyViewModel> _realtyRepository;
+        private readonly IRepository<RealtyEntity> _realtyRepository;
 
         private readonly IRepository<VehicleEntity> _vehicleRepository;
 
@@ -38,7 +34,7 @@ namespace Beneficiaries.WebAPI.Controllers
                                      IRepository<IndividualEntity> individualRepository,
                                      IRepository<PetEntity> petRepository,
                                      IRepository<MobileDeviceEntity> mobileDeviceRepository,
-                                     IRepository<RealtyViewModel> realtyRepository,
+                                     IRepository<RealtyEntity> realtyRepository,
                                      IRepository<VehicleEntity> vehicleRepository)
         {
             _beneficiaryRepository = beneficiaryRepository;
@@ -109,8 +105,8 @@ namespace Beneficiaries.WebAPI.Controllers
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
 
-            if (!IndividualValidations.IndividualIsValid(individual))
-                return StatusCode(403);
+            //if (!IndividualValidations.IndividualIsValid(individual))
+            //    return StatusCode(403);
 
             _individualRepository.Add(individual);
 
@@ -126,8 +122,8 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Individual/{id}")]
         public IActionResult UpdateIndividual(Guid id, [FromBody] IndividualEntity individual)
         {
-            if (!IndividualValidations.IndividualIsValid(individual))
-                return Forbid();
+            //if (!IndividualValidations.IndividualIsValid(individual))
+            //    return Forbid();
 
             var obj = (IndividualEntity)_beneficiaryRepository.Find(id);
 
@@ -163,8 +159,8 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             mobileDevice.BeneficiaryId = Guid.NewGuid();
 
-            if (!MobileDeviceValidations.MobileDeviceIsValid(mobileDevice))
-                return Forbid();
+            //if (!MobileDeviceValidations.MobileDeviceIsValid(mobileDevice))
+            //    return Forbid();
 
             _mobileDeviceRepository.Add(mobileDevice);
 
@@ -180,8 +176,8 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("MobileDevice/{id}")]
         public IActionResult UpdateMobileDevice(Guid id, [FromBody] MobileDeviceEntity mobileDevice)
         {
-            if (!MobileDeviceValidations.MobileDeviceIsValid(mobileDevice))
-                return Forbid();
+            //if (!MobileDeviceValidations.MobileDeviceIsValid(mobileDevice))
+            //    return Forbid();
 
             var obj = (MobileDeviceEntity)_beneficiaryRepository.Find(id);
 
@@ -271,8 +267,8 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             realty.BeneficiaryId = Guid.NewGuid();
 
-            if (!RealtyValidations.RealtyIsValid(realty))
-                return Forbid();
+            //if (!RealtyValidations.RealtyIsValid(realty))
+            //    return Forbid();
 
             //_realtyRepository.Add(realty);
 
@@ -288,8 +284,8 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Realty/{id}")]
         public IActionResult UpdateRealty(Guid id, [FromBody] RealtyEntity realty)
         {
-            if (!RealtyValidations.RealtyIsValid(realty))
-                return Forbid();
+        //    if (!RealtyValidations.RealtyIsValid(realty))
+        //        return Forbid();
 
             var obj = (RealtyEntity)_beneficiaryRepository.Find(id);
 
@@ -324,8 +320,8 @@ namespace Beneficiaries.WebAPI.Controllers
         {
             vehicle.BeneficiaryId = Guid.NewGuid();
 
-            if (!VehicleValidations.VehicleIsValid(vehicle))
-                return Forbid();
+            //if (!VehicleValidations.VehicleIsValid(vehicle))
+            //    return Forbid();
 
             _vehicleRepository.Add(vehicle);
 
@@ -341,8 +337,8 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Vehicle/{id}")]
         public IActionResult UpdateVehicle(Guid id, [FromBody] VehicleEntity vehicle)
         {
-            if (!VehicleValidations.VehicleIsValid(vehicle))
-                return Forbid();
+            //if (!VehicleValidations.VehicleIsValid(vehicle))
+            //    return Forbid();
 
             var obj = (VehicleEntity)_beneficiaryRepository.Find(id);
 

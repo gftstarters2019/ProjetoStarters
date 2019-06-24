@@ -1,5 +1,6 @@
 ﻿//using Backend.Application.ViewModels;
 using Backend.Core;
+using Backend.Core.Domains;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
@@ -44,7 +45,7 @@ namespace ContractHolder.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
+            services.AddScoped<IRepository<ContractHolderDomain>, ContractHolderRepository>();
 
             services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
             

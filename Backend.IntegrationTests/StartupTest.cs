@@ -1,4 +1,5 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
+using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
@@ -36,7 +37,7 @@ namespace Backend.IntegrationTests
         {
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
+            services.AddScoped<IRepository<ContractHolderDomain>, ContractHolderRepository>();
             services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
             services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
             services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();

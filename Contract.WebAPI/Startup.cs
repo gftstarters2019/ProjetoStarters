@@ -1,10 +1,7 @@
-﻿using Backend.Application.ViewModels;
-using Backend.Core;
-using Backend.Infrastructure.Configuration;
+﻿using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
 using Backend.Services.Services;
-using Contract.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
