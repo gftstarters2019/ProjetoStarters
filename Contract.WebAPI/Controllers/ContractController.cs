@@ -1,4 +1,5 @@
 ﻿using Backend.Core.Domains;
+using Backend.Core.Enums;
 using Backend.Services.Services.Interfaces;
 using Contract.WebAPI.Factories;
 using Contract.WebAPI.ViewModels;
@@ -42,15 +43,11 @@ namespace Contract.WebAPI.Controllers
         [HttpGet("Categories")]
         public IActionResult Categories()
         {
-            var categories = new Dictionary<int, string>
+            var categories = new Dictionary<int, string>();
+            foreach (ContractCategory foo in Enum.GetValues(typeof(ContractCategory)))
             {
-                { 0, "iron" },
-                { 1, "bronze" },
-                { 2, "silver" },
-                { 3, "gold" },
-                { 4, "platinum" },
-                { 5, "diamond" }
-            };
+                categories.Add((int)foo, foo.ToString());
+            }
             return Ok(categories);
         }
 
@@ -61,16 +58,11 @@ namespace Contract.WebAPI.Controllers
         [HttpGet("Types")]
         public IActionResult Types()
         {
-            var types = new Dictionary<int, string>
+            var types = new Dictionary<int, string>();
+            foreach (ContractType foo in Enum.GetValues(typeof(ContractType)))
             {
-                { 0, "HealthPlan" },
-                { 1, "AnimalHealthPlan" },
-                { 2, "DentalPlan" },
-                { 3, "LifeInsurance" },
-                { 4, "RealStateInsurance" },
-                { 5, "VehicleInsurance" },
-                { 6, "MobileDeviceInsurance" }
-            };
+                types.Add((int)foo, foo.ToString());
+            }
             return Ok(types);
         }
 
