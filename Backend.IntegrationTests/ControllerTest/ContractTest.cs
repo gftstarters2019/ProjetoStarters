@@ -3,6 +3,7 @@ using Backend.Core.Enums;
 using Backend.IntegrationTests.ControllerTest;
 using Backend.IntegrationTests.Helper;
 using Contract.WebAPI.ViewModels;
+using ContractHolder.WebAPI.ViewModels;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
@@ -42,12 +43,12 @@ namespace IntegrationTests
             contract.ExpiryDate = new DateTime(2020, 10, 5);
             contract.IsActive = true;
 
-            IndividualDomain contractHolder = new IndividualDomain();
-            contractHolder.IndividualName = "Caio Silva Ferreira";
-            contractHolder.IndividualEmail = "CaioSilva@rhyta.com";
-            contractHolder.IndividualCPF = CpfGenerator.GenerateCpf();
-            contractHolder.IndividualRG = "335373793";
-            contractHolder.IndividualBirthdate = new DateTime(1966, 12, 28);
+            ContractHolderViewModel contractHolder = new ContractHolderViewModel();
+            contractHolder.individualName = "Caio Silva Ferreira";
+            contractHolder.individualEmail = "CaioSilva@rhyta.com";
+            contractHolder.individualCPF = CpfGenerator.GenerateCpf();
+            contractHolder.individualRG = "335373793";
+            contractHolder.individualBirthdate = new DateTime(1966, 12, 28);
 
             IndividualDomain firstBeneficiary = new IndividualDomain();
             firstBeneficiary.IndividualName = "Bianca Correia Fernandes";
@@ -95,8 +96,8 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var contractHolderPost = await client.PostAsync($"{urlContractHolder}", contentString);
-            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualDomain>(await contractHolderPost.Content.ReadAsStringAsync());
-            contract.ContractHolderId = contractHolderPostApiResponse.BeneficiaryId;
+            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await contractHolderPost.Content.ReadAsStringAsync());
+            contract.ContractHolderId = contractHolderPostApiResponse.individualId;
 
             jsonContent = JsonConvert.SerializeObject(contract);
             contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -131,12 +132,12 @@ namespace IntegrationTests
             contract.ExpiryDate = new DateTime(2032, 1, 1);
             contract.IsActive = false;
 
-            IndividualDomain contractHolder = new IndividualDomain();
-            contractHolder.IndividualName = "Isabela Rocha Costa";
-            contractHolder.IndividualEmail = "IsabelaRocha@rhyta.com";
-            contractHolder.IndividualCPF = CpfGenerator.GenerateCpf();
-            contractHolder.IndividualRG = "156188326";
-            contractHolder.IndividualBirthdate = new DateTime(1953, 11, 4);
+            ContractHolderViewModel contractHolder = new ContractHolderViewModel();
+            contractHolder.individualName = "Isabela Rocha Costa";
+            contractHolder.individualEmail = "IsabelaRocha@rhyta.com";
+            contractHolder.individualCPF = CpfGenerator.GenerateCpf();
+            contractHolder.individualRG = "156188326";
+            contractHolder.individualBirthdate = new DateTime(1953, 11, 4);
 
             PetDomain firstBeneficiary = new PetDomain();
             firstBeneficiary.PetName = "Joe";
@@ -172,8 +173,8 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var contractHolderPost = await client.PostAsync($"{urlContractHolder}", contentString);
-            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualDomain>(await contractHolderPost.Content.ReadAsStringAsync());
-            contract.ContractHolderId = contractHolderPostApiResponse.BeneficiaryId;
+            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await contractHolderPost.Content.ReadAsStringAsync());
+            contract.ContractHolderId = contractHolderPostApiResponse.individualId;
 
             jsonContent = JsonConvert.SerializeObject(contract);
             contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -207,12 +208,12 @@ namespace IntegrationTests
             contract.ExpiryDate = new DateTime(2019, 12, 30);
             contract.IsActive = true;
 
-            IndividualDomain contractHolder = new IndividualDomain();
-            contractHolder.IndividualName = "Eduardo Barbosa";
-            contractHolder.IndividualEmail = "EduardoGoncalves@dayrep.com";
-            contractHolder.IndividualCPF = CpfGenerator.GenerateCpf();
-            contractHolder.IndividualRG = "240875278";
-            contractHolder.IndividualBirthdate = new DateTime(1970, 8, 12);
+            ContractHolderViewModel contractHolder = new ContractHolderViewModel();
+            contractHolder.individualName = "Eduardo Barbosa";
+            contractHolder.individualEmail = "EduardoGoncalves@dayrep.com";
+            contractHolder.individualCPF = CpfGenerator.GenerateCpf();
+            contractHolder.individualRG = "240875278";
+            contractHolder.individualBirthdate = new DateTime(1970, 8, 12);
 
             MobileDeviceDomain firstBeneficiary = new MobileDeviceDomain();
             firstBeneficiary.MobileDeviceType = MobileDeviceType.Smartphone;
@@ -247,8 +248,8 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var contractHolderPost = await client.PostAsync($"{urlContractHolder}", contentString);
-            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualDomain>(await contractHolderPost.Content.ReadAsStringAsync());
-            contract.ContractHolderId = contractHolderPostApiResponse.BeneficiaryId;
+            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await contractHolderPost.Content.ReadAsStringAsync());
+            contract.ContractHolderId = contractHolderPostApiResponse.individualId;
 
             jsonContent = JsonConvert.SerializeObject(contract);
             contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -289,12 +290,12 @@ namespace IntegrationTests
             contract.Vehicles = new List<VehicleDomain>();
             contract.IsActive = true;
 
-            IndividualDomain contractHolder = new IndividualDomain();
-            contractHolder.IndividualName = "Felipe Araujo Souza";
-            contractHolder.IndividualEmail = "FelipeAraujo@dayrep.com";
-            contractHolder.IndividualCPF = CpfGenerator.GenerateCpf();
-            contractHolder.IndividualRG = "463205522";
-            contractHolder.IndividualBirthdate = new DateTime(1992, 11, 28);
+            ContractHolderViewModel contractHolder = new ContractHolderViewModel();
+            contractHolder.individualName = "Felipe Araujo Souza";
+            contractHolder.individualEmail = "FelipeAraujo@dayrep.com";
+            contractHolder.individualCPF = CpfGenerator.GenerateCpf();
+            contractHolder.individualRG = "463205522";
+            contractHolder.individualBirthdate = new DateTime(1992, 11, 28);
 
             VehicleDomain firstBeneficiary = new VehicleDomain();
             firstBeneficiary.VehicleBrand = "Daewoo";
@@ -326,8 +327,8 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var contractHolderPost = await client.PostAsync($"{urlContractHolder}", contentString);
-            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<IndividualDomain>(await contractHolderPost.Content.ReadAsStringAsync());
-            contract.ContractHolderId = contractHolderPostApiResponse.BeneficiaryId;
+            var contractHolderPostApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await contractHolderPost.Content.ReadAsStringAsync());
+            contract.ContractHolderId = contractHolderPostApiResponse.individualId;
 
             jsonContent = JsonConvert.SerializeObject(contract);
             contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");

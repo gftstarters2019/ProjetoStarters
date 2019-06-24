@@ -1,3 +1,5 @@
+using Backend.Core.Domains;
+using Backend.Core.Enums;
 using Backend.Core.Models;
 using Backend.IntegrationTests.ControllerTest;
 using Backend.IntegrationTests.Helper;
@@ -33,15 +35,15 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            ContractHolderViewModel individual = new ContractHolderViewModel();
-            individual.individualName = "Emilly Rodrigues Cardoso";
-            individual.individualEmail = "EmillyRodrigues@rhyta.com";
-            individual.individualCPF = CpfGenerator.GenerateCpf();
-            individual.individualRG = "405589219";
-            individual.individualBirthdate = new DateTime(1948, 10, 6);
+            ContractHolderViewModel contractHolder = new ContractHolderViewModel();
+            contractHolder.individualName = "Emilly Rodrigues Cardoso";
+            contractHolder.individualEmail = "EmillyRodrigues@rhyta.com";
+            contractHolder.individualCPF = CpfGenerator.GenerateCpf();
+            contractHolder.individualRG = "405589219";
+            contractHolder.individualBirthdate = new DateTime(1948, 10, 6);
 
             //act
-            var jsonContent = JsonConvert.SerializeObject(individual);
+            var jsonContent = JsonConvert.SerializeObject(contractHolder);
             var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
@@ -55,11 +57,11 @@ namespace IntegrationTests
             Assert.IsNotNull(postApiResponse);
             Assert.IsInstanceOf<ContractHolderViewModel>(postApiResponse);
             Assert.AreEqual(postApiResponse.individualId, getApiResponse.individualId);
-            Assert.AreEqual(individual.individualName, getApiResponse.individualName);
-            Assert.AreEqual(individual.individualEmail, getApiResponse.individualEmail);
-            Assert.AreEqual(individual.individualCPF, getApiResponse.individualCPF);
-            Assert.AreEqual(individual.individualRG, getApiResponse.individualRG);
-            Assert.AreEqual(individual.individualBirthdate, getApiResponse.individualBirthdate);
+            Assert.AreEqual(contractHolder.individualName, getApiResponse.individualName);
+            Assert.AreEqual(contractHolder.individualEmail, getApiResponse.individualEmail);
+            Assert.AreEqual(contractHolder.individualCPF, getApiResponse.individualCPF);
+            Assert.AreEqual(contractHolder.individualRG, getApiResponse.individualRG);
+            Assert.AreEqual(contractHolder.individualBirthdate, getApiResponse.individualBirthdate);
         }
 
         [Test]
@@ -67,15 +69,34 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            ContractHolderViewModel individual = new ContractHolderViewModel();
-            individual.individualName = "Otávio Ribeiro Lima";
-            individual.individualEmail = "OtavioRibeiroLima@rhyta.com";
-            individual.individualCPF = CpfGenerator.GenerateCpf();
-            individual.individualRG = "244025769";
-            individual.individualBirthdate = new DateTime(1990, 10, 12);
+            ContractHolderViewModel contractHolder = new ContractHolderViewModel();
+            contractHolder.individualName = "Otávio Ribeiro Lima";
+            contractHolder.individualEmail = "OtavioRibeiroLima@rhyta.com";
+            contractHolder.individualCPF = CpfGenerator.GenerateCpf();
+            contractHolder.individualRG = "244025769";
+            contractHolder.individualBirthdate = new DateTime(1990, 10, 12);
+            contractHolder.individualAddresses = new List<AddressDomain>();
+            contractHolder.individualTelephones = new List<TelephoneDomain>();
+
+            AddressDomain address = new AddressDomain();
+            address.AddressStreet = "Rua Gonçalves";
+            address.AddressNumber = "542";
+            address.AddressNeighborhood = "Jardim Pereira";
+            address.AddressComplement = "A";
+            address.AddressZipCode = "18067098";
+            address.AddressCity = "Sorocaba";
+            address.AddressState = "SP";
+            address.AddressCountry = "Brasil";
+            address.AddressType = AddressType.Home;
+            contractHolder.individualAddresses.Add(address);
+
+            TelephoneDomain telephone = new TelephoneDomain();
+            telephone.TelephoneNumber = "1534158971";
+            telephone.TelephoneType = TelephoneType.Home;
+            contractHolder.individualTelephones.Add(telephone);
 
             //act
-            var jsonContent = JsonConvert.SerializeObject(individual);
+            var jsonContent = JsonConvert.SerializeObject(contractHolder);
             var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
@@ -87,11 +108,11 @@ namespace IntegrationTests
 
             //assert
             Assert.IsInstanceOf<ContractHolderViewModel>(apiResponse);
-            Assert.AreEqual(individual.individualName, apiResponse.individualName);
-            Assert.AreEqual(individual.individualEmail, apiResponse.individualEmail);
-            Assert.AreEqual(individual.individualCPF, apiResponse.individualCPF);
-            Assert.AreEqual(individual.individualRG, apiResponse.individualRG);
-            Assert.AreEqual(individual.individualBirthdate, apiResponse.individualBirthdate);
+            Assert.AreEqual(contractHolder.individualName, apiResponse.individualName);
+            Assert.AreEqual(contractHolder.individualEmail, apiResponse.individualEmail);
+            Assert.AreEqual(contractHolder.individualCPF, apiResponse.individualCPF);
+            Assert.AreEqual(contractHolder.individualRG, apiResponse.individualRG);
+            Assert.AreEqual(contractHolder.individualBirthdate, apiResponse.individualBirthdate);
         }
 
         [Test]
@@ -99,16 +120,16 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            ContractHolderViewModel individual = new ContractHolderViewModel();
-            individual.individualName = "Samuel Cavalcanti Martins";
-            individual.individualEmail = "SamuelCavalcantiMartins@rhyta.com";
-            individual.individualCPF = CpfGenerator.GenerateCpf();
-            individual.individualRG = "310291136";
-            individual.individualBirthdate = new DateTime(1993, 2, 20);
+            ContractHolderViewModel contractHolder = new ContractHolderViewModel();
+            contractHolder.individualName = "Samuel Cavalcanti Martins";
+            contractHolder.individualEmail = "SamuelCavalcantiMartins@rhyta.com";
+            contractHolder.individualCPF = CpfGenerator.GenerateCpf();
+            contractHolder.individualRG = "310291136";
+            contractHolder.individualBirthdate = new DateTime(1993, 2, 20);
 
 
             //act
-            var jsonContent = JsonConvert.SerializeObject(individual);
+            var jsonContent = JsonConvert.SerializeObject(contractHolder);
             var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
@@ -144,15 +165,15 @@ namespace IntegrationTests
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            ContractHolderViewModel individual = new ContractHolderViewModel();
-            individual.individualName = "Vinicius Araujo";
-            individual.individualEmail = "ViniciusAraujo@dayrep.com"; 
-            individual.individualCPF = CpfGenerator.GenerateCpf();
-            individual.individualRG = "485936781";
-            individual.individualBirthdate = new DateTime(1980, 6, 1);
+            ContractHolderViewModel contractHolder = new ContractHolderViewModel();
+            contractHolder.individualName = "Vinicius Araujo";
+            contractHolder.individualEmail = "ViniciusAraujo@dayrep.com"; 
+            contractHolder.individualCPF = CpfGenerator.GenerateCpf();
+            contractHolder.individualRG = "485936781";
+            contractHolder.individualBirthdate = new DateTime(1980, 6, 1);
 
             //act
-            var jsonContent = JsonConvert.SerializeObject(individual);
+            var jsonContent = JsonConvert.SerializeObject(contractHolder);
             var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
@@ -167,11 +188,11 @@ namespace IntegrationTests
 
             //assert
             Assert.IsInstanceOf<ContractHolderViewModel>(deleteApiResponse);
-            Assert.AreEqual(individual.individualName,  deleteApiResponse.individualName);
-            Assert.AreEqual(individual.individualEmail, deleteApiResponse.individualEmail);
-            Assert.AreEqual(individual.individualCPF, deleteApiResponse.individualCPF);
-            Assert.AreEqual(individual.individualRG, deleteApiResponse.individualRG);
-            Assert.AreEqual(individual.individualBirthdate, deleteApiResponse.individualBirthdate);
+            Assert.AreEqual(contractHolder.individualName,  deleteApiResponse.individualName);
+            Assert.AreEqual(contractHolder.individualEmail, deleteApiResponse.individualEmail);
+            Assert.AreEqual(contractHolder.individualCPF, deleteApiResponse.individualCPF);
+            Assert.AreEqual(contractHolder.individualRG, deleteApiResponse.individualRG);
+            Assert.AreEqual(contractHolder.individualBirthdate, deleteApiResponse.individualBirthdate);
         }
     }
 }
