@@ -95,6 +95,7 @@ namespace Contract.WebAPI.Controllers
         public IActionResult PostContract([FromBody] ContractViewModel contract)
         {
             var contractToAdd = FactoriesManager.CompleteContractDomain.Create(contract);
+
             var addedContract = _contractService.Save(contractToAdd);
             if (addedContract == null)
                 return StatusCode(403);
