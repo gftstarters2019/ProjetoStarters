@@ -36,7 +36,7 @@ export class ActionButtonComponent implements OnInit, ICellRendererAngularComp {
     this.rendererParams.onEdit(this.params.data);
   }
 
- handle_deleteUser() {
+ handle_deleteUser() {   
     this.rendererParams.onDelete(this.params.data);
  }
 }
