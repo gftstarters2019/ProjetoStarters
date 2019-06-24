@@ -219,7 +219,7 @@ namespace IntegrationTests
             firstBeneficiary.MobileDeviceType = MobileDeviceType.Smartphone;
             firstBeneficiary.MobileDeviceBrand = "Motorola";
             firstBeneficiary.MobileDeviceModel = "MotoZ";
-            firstBeneficiary.MobileDeviceSerialNumber = "sjktZgP2";
+            firstBeneficiary.MobileDeviceSerialNumber = AlphanumericGenerator.RandomString(8);
             firstBeneficiary.MobileDeviceManufactoringYear = new DateTime(2017, 6, 25);
             firstBeneficiary.MobileDeviceInvoiceValue = 1099.90;
             contract.MobileDevices.Add(firstBeneficiary);
@@ -228,7 +228,7 @@ namespace IntegrationTests
             secondBeneficiary.MobileDeviceType = MobileDeviceType.Tablet;
             secondBeneficiary.MobileDeviceBrand = "Apple";
             secondBeneficiary.MobileDeviceModel = "IPad Pro";
-            secondBeneficiary.MobileDeviceSerialNumber = "6HTCXhUT";
+            secondBeneficiary.MobileDeviceSerialNumber = AlphanumericGenerator.RandomString(8);
             secondBeneficiary.MobileDeviceManufactoringYear = new DateTime(2018, 9, 11);
             secondBeneficiary.MobileDeviceInvoiceValue = 4499.99;
             contract.MobileDevices.Add(secondBeneficiary);
@@ -237,7 +237,7 @@ namespace IntegrationTests
             thirdBeneficiary.MobileDeviceType = MobileDeviceType.Laptop;
             thirdBeneficiary.MobileDeviceBrand = "Asus";
             thirdBeneficiary.MobileDeviceModel = "Pro SX";
-            thirdBeneficiary.MobileDeviceSerialNumber = "qb4FsTyY";
+            thirdBeneficiary.MobileDeviceSerialNumber = AlphanumericGenerator.RandomString(8);
             thirdBeneficiary.MobileDeviceManufactoringYear = new DateTime(2019, 2, 6);
             thirdBeneficiary.MobileDeviceInvoiceValue = 29.90;
             contract.MobileDevices.Add(thirdBeneficiary);
@@ -300,7 +300,7 @@ namespace IntegrationTests
             VehicleDomain firstBeneficiary = new VehicleDomain();
             firstBeneficiary.VehicleBrand = "Daewoo";
             firstBeneficiary.VehicleModel = "Leganza";
-            firstBeneficiary.VehicleChassisNumber = "XDI0923";
+            firstBeneficiary.VehicleChassisNumber = AlphanumericGenerator.RandomString(7);
             firstBeneficiary.VehicleColor = Color.Gray;
             firstBeneficiary.VehicleCurrentFipeValue = 16978.00;
             firstBeneficiary.VehicleCurrentMileage = 100000;
@@ -312,7 +312,7 @@ namespace IntegrationTests
             VehicleDomain secondBeneficiary = new VehicleDomain();
             secondBeneficiary.VehicleBrand = "Ford";
             secondBeneficiary.VehicleModel = "Fiesta";
-            secondBeneficiary.VehicleChassisNumber = "LOP8761";
+            secondBeneficiary.VehicleChassisNumber = AlphanumericGenerator.RandomString(7);
             secondBeneficiary.VehicleColor = Color.Silver;
             secondBeneficiary.VehicleCurrentFipeValue = 19870.00;
             secondBeneficiary.VehicleCurrentMileage = 200000;
