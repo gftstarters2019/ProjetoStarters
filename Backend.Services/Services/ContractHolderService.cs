@@ -1,6 +1,6 @@
 ﻿using Backend.Core.Domains;
-using Backend.Infrastructure.Repositories.Contracts;
-using Backend.Services.Services.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
+using Backend.Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 

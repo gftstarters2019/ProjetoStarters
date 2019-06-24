@@ -2,7 +2,8 @@
 {
     public class FactoriesManager
     {
-        private static ContractHolderFactory contractHolderFactory = null;
+        private static ContractHolderDomainFactory contractHolderFactory = null;
+        private static ContractHolderViewModelFactory contractHolderViewModelFactory = null;
         private static IndividualDomainFactory individualDomainFactory = null;
         private static AddressDomainListFactory addressDomainListFactory = null;
         private static TelephoneDomainListFactory telephoneDomainListFactory = null;
@@ -11,8 +12,8 @@
         public FactoriesManager()
         {
         }
-
-        public static ContractHolderFactory ContractHolder
+        
+        public static ContractHolderDomainFactory ContractHolderDomain
         {
             get
             {
@@ -22,11 +23,29 @@
                     {
                         if (contractHolderFactory == null)
                         {
-                            contractHolderFactory = new ContractHolderFactory();
+                            contractHolderFactory = new ContractHolderDomainFactory();
                         }
                     }
                 }
                 return contractHolderFactory;
+            }
+        }
+
+        public static ContractHolderViewModelFactory ContractHolderViewModel
+        {
+            get
+            {
+                if (contractHolderViewModelFactory == null)
+                {
+                    lock (padlock)
+                    {
+                        if (contractHolderViewModelFactory == null)
+                        {
+                            contractHolderViewModelFactory = new ContractHolderViewModelFactory();
+                        }
+                    }
+                }
+                return contractHolderViewModelFactory;
             }
         }
 

@@ -9,7 +9,7 @@ using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using Beneficiaries.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -1,12 +1,10 @@
-﻿using Backend.Core.Models;
-using System;
+﻿using Backend.Core.Domains;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators.Contracts
 {
     public interface IContractValidator
     {
-        bool IsValid(Contract contract, List<Individual> individuals, List<MobileDevice> mobileDevices, List<Pet> pets, List<Realty> realties, List<Vehicle> vehicles);
+        bool IsValid(ContractDomain contract, List<IndividualDomain> individuals, List<MobileDeviceDomain> mobileDevices, List<PetDomain> pets, List<RealtyDomain> realties, List<VehicleDomain> vehicles);
     }
 }

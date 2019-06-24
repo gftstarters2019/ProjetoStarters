@@ -1,7 +1,7 @@
-﻿using Backend.Application.ViewModels;
+﻿
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,30 +57,7 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RealtyViewModel> Get()
-        {
-            List<RealtyViewModel> realtiesToReturn = new List<RealtyViewModel>();
-            var realties = _db.Realties.ToList();
-            foreach (var realty in realties)
-            {
-                realtiesToReturn.Add(new RealtyViewModel()
-                {
-                    Id = realty.BeneficiaryId,
-                    ConstructionDate = realty.RealtyConstructionDate,
-                    MarketValue = realty.RealtyMarketValue,
-                    MunicipalRegistration = realty.RealtyMunicipalRegistration,
-                    SaleValue = realty.RealtySaleValue,
-                    Address = _db
-                                    .Addresses
-                                    .Where(a => a.AddressId == _db.Beneficiary_Address
-                                                                .Where(ba => ba.BeneficiaryId == realty.BeneficiaryId)
-                                                                .Select(ba => ba.AddressId)
-                                                                .FirstOrDefault())
-                                    .FirstOrDefault()
-                });
-            }
-            return realtiesToReturn;
-        }
+        
 
         public bool Remove(Guid id)
         {
@@ -143,11 +120,6 @@ namespace Backend.Infrastructure.Repositories
         }
 
         IEnumerable<RealtyEntity> IRepository<RealtyEntity>.Get()
-        {
-            throw new NotImplementedException();
-        }
-
-        public RealtyViewModel FindCPF(string cpf)
         {
             throw new NotImplementedException();
         }

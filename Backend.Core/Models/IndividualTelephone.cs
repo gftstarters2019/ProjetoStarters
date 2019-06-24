@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Core.Models
 {
     public class IndividualTelephone
     {
+        [Key]
         public Guid BeneficiaryTelephoneId { get; set; }
         public Guid TelephoneId { get; set; }
         public TelephoneEntity Telephone { get; set; }

@@ -1,15 +1,12 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Backend.Services.Validators
 {
     public class AddressValidator : IAddressValidator
     {
-        public bool IsValid(Address address)
+        public bool IsValid(AddressDomain address)
         {
             Regex regexLetters = new Regex("^[a-zA-Z]+$");
 

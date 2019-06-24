@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Contract.WebAPI.ViewModels
 {
-    public class RealtyViewModel : Beneficiary
+    public class RealtyViewModel
     {
         public Guid Id { get; set; }
         public string MunicipalRegistration { get; set; }

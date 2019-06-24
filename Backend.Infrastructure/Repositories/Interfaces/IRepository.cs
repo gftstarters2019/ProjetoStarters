@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Backend.Infrastructure.Repositories.Contracts
+namespace Backend.Infrastructure.Repositories.Interfaces
 {
     public interface IRepository<T>
     {
         T Find(Guid id);
-        T FindCPF(string cpf);
         IEnumerable<T> Get();
         T Add(T t);
         bool Remove(Guid id);

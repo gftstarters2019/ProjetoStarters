@@ -7,7 +7,7 @@ namespace ContractHolder.WebAPI.Factories
     /// <summary>
     /// 
     /// </summary>
-    public class ContractHolderFactory : IFactory<ContractHolderDomain, ContractHolderViewModel>
+    public class ContractHolderDomainFactory : IFactory<ContractHolderDomain, ContractHolderViewModel>
     {
         /// <summary>
         /// 

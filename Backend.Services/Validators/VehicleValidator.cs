@@ -1,8 +1,5 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators
 {
@@ -17,7 +14,7 @@ namespace Backend.Services.Validators
             _numberValidator = numberValidator;
         }
 
-        public bool IsValid(Vehicle vehicle)
+        public bool IsValid(VehicleDomain vehicle)
         {
             if (!_dateValidator.IsValid(vehicle.VehicleManufactoringYear) && !_dateValidator.IsValid(vehicle.VehicleModelYear))
                 return false;

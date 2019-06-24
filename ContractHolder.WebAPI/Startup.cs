@@ -1,10 +1,12 @@
-﻿//using Backend.Application.ViewModels;
-using Backend.Core;
+﻿using Backend.Core.Domains;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
-using ContractHolder.WebAPI.ViewModels;
+using Backend.Infrastructure.Repositories.Interfaces;
+using Backend.Services.Services;
+using Backend.Services.Services.Interfaces;
+using Backend.Services.Validators;
+using Backend.Services.Validators.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -44,13 +46,34 @@ namespace ContractHolder.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
+            // Services
+            services.AddScoped<IService<ContractHolderDomain>, ContractHolderService>();
+
+            // Repositories
+            services.AddScoped<IRepository<ContractHolderDomain>, ContractHolderRepository>();
 
             services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
+
+            services.AddScoped<IRepository<IndividualEntity>, IndividualRepository>();
+
+            services.AddScoped<IRepository<IndividualTelephone>, IndividualTelephoneRepository>();
             
             services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
+
+            services.AddScoped<IRepository<BeneficiaryAddress>, BeneficiaryAddressRepository>();
             
             services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
+
+            // Validators
+            services.AddScoped<IContractHolderValidator, ContractHolderValidator>();
+
+            services.AddScoped<IDateValidator, DateValidator>();
+
+            services.AddScoped<IIndividualValidator, IndividualValidator>();
+
+            services.AddScoped<ITelephoneValidator, TelephoneValidator>();
+
+            services.AddScoped<IAddressValidator, AddressValidator>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 

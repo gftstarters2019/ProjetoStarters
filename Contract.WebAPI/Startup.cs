@@ -1,10 +1,9 @@
-﻿using Backend.Application.ViewModels;
-using Backend.Core;
-using Backend.Infrastructure.Configuration;
+﻿using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using Backend.Services.Services;
-using Contract.WebAPI.ViewModels;
+using Backend.Services.Validators;
+using Backend.Services.Validators.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -44,8 +43,10 @@ namespace Contract.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<Backend.Services.Services.Contracts.IService<Backend.Core.Domains.CompleteContractDomain>, CompleteContractService>();
+            // Services
+            services.AddScoped<Backend.Services.Services.Interfaces.IService<Backend.Core.Domains.CompleteContractDomain>, CompleteContractService>();
 
+            // Repositories
             services.AddScoped<IRepository<Backend.Core.Domains.CompleteContractDomain>, CompleteContractRepository>();
 
             services.AddScoped<IRepository<Backend.Core.Models.ContractEntity>, ContractRepository>();
@@ -63,9 +64,26 @@ namespace Contract.WebAPI
             services.AddScoped<IRepository<Backend.Core.Models.VehicleEntity>, VehicleRepository>();
 
             services.AddScoped<IRepository<Backend.Core.Models.ContractBeneficiary>, ContractBeneficiaryRepository>();
+            
+            // Validators
+            services.AddScoped<IAddressValidator, AddressValidator>();
+
+            services.AddScoped<IDateValidator, DateValidator>();
+
+            services.AddScoped<IIndividualValidator, IndividualValidator>();
+
+            services.AddScoped<IMobileDeviceValidator, MobileDeviceValidator>();
+
+            services.AddScoped<INumberValidator, NumberValidator>();
+
+            services.AddScoped<IPetValidator, PetValidator>();
+
+            services.AddScoped<IRealtyValidator, RealtyValidator>();
 
             services.AddScoped<IRepository<Backend.Core.Models.AddressEntity>, AddressRepository>();
-            
+
+            services.AddScoped<IVehicleValidator, VehicleValidator>();
+
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
             ConfigureSwagger(services);

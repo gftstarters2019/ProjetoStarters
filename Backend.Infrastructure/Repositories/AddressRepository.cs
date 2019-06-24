@@ -1,6 +1,6 @@
 ﻿using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,16 +74,6 @@ namespace Backend.Infrastructure.Repositories
         public bool Save()
         {
             return _db.SaveChanges() > 0;
-        }
-
-        AddressEntity IRepository<AddressEntity>.Add(AddressEntity t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Address FindCPF(string cpf)
-        {
-            throw new NotImplementedException();
         }
     }
 }
