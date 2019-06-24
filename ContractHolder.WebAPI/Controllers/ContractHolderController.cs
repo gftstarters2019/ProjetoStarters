@@ -4,6 +4,7 @@ using ContractHolder.WebAPI.Factories;
 using ContractHolder.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace ContractHolder.WebAPI.Controllers
 {
@@ -31,7 +32,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet]
         public IActionResult ContractHolders()
         {
-            return Ok(_contractHolderService.GetAll());
+            return Ok(_contractHolderService.GetAll().Select(ch => FactoriesManager.ContractHolderViewModel.Create(ch)));
         }
 
         /// <summary>
