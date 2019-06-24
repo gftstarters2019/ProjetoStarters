@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Transactions;
 using Backend.Core.Domains;
 using Backend.Core.Models;
@@ -117,7 +118,24 @@ namespace Backend.Infrastructure.Repositories
 
         public IEnumerable<ContractHolderDomain> Get()
         {
-            throw new NotImplementedException();
+            var contractHolders = new List<ContractHolderDomain>();
+
+            foreach(var individual in _db.Individuals)
+            {
+                var contractHolderToAdd = new ContractHolderDomain();
+                contractHolderToAdd.Individual = ConvertersManager.IndividualConverter.Convert(individual);
+
+                contractHolderToAdd.IndividualAddresses = _addressRepository.Get().Where(add => _beneficiaryAddressRepository.Get()
+                                                            .Where(ba => ba.BeneficiaryId == contractHolderToAdd.Individual.BeneficiaryId).Select(ba => ba.AddressId).Contains(add.AddressId))
+                                                            .Select(add => ConvertersManager.AddressConverter.Convert(add)).ToList();
+
+                contractHolderToAdd.IndividualTelephones = _telephonesRepository.Get().Where(tel => _individualTelephonesRepository.Get()
+                                                            .Where(it => it.BeneficiaryId == contractHolderToAdd.Individual.BeneficiaryId).Select(it => it.TelephoneId).Contains(tel.TelephoneId))
+                                                            .Select(tel => ConvertersManager.TelephoneConverter.Convert(tel)).ToList();
+                contractHolders.Add(contractHolderToAdd);
+            }
+
+            return contractHolders;
         }
 
         public bool Remove(Guid id)

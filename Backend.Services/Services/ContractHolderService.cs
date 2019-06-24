@@ -3,6 +3,7 @@ using Backend.Infrastructure.Repositories.Interfaces;
 using Backend.Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Backend.Services.Services
 {
@@ -27,7 +28,7 @@ namespace Backend.Services.Services
 
         public List<ContractHolderDomain> GetAll()
         {
-            throw new NotImplementedException();
+            return _contractHolderRepository.Get().ToList();
         }
 
         public ContractHolderDomain Save(ContractHolderDomain contractHolderDomain)

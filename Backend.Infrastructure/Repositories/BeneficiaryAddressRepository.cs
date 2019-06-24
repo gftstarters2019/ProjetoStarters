@@ -30,10 +30,7 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BeneficiaryAddress> Get()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<BeneficiaryAddress> Get() => _db.Beneficiary_Address;
 
         public bool Remove(Guid id)
         {
