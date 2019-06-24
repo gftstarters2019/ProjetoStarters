@@ -22,10 +22,9 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public SignedContract Find(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public SignedContract Find(Guid id) => _db
+            .SignedContracts
+            .FirstOrDefault(con => con.SignedContractId == id);
 
         public SignedContract FindCPF(string cpf)
         {

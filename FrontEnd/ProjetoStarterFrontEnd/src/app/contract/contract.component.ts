@@ -5,12 +5,14 @@ import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractCon
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { Location } from '@angular/common';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GenericValidator } from '../Validations/GenericValidator';
 import { take, takeUntil } from 'rxjs/operators';
 import { Data } from '@angular/router';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+
 
 export interface Type {
   value: number;
@@ -35,8 +37,10 @@ export interface Holder {
   styleUrls: ['./contract.component.scss']
 })
 export class ContractComponent implements OnInit {
+  public result: any = null;
   color = 'primary';
   beneficiaries: FormArray;
+  dialogRef;
 
   rowData$: Observable<any>;
   paginationPageSize;
@@ -61,6 +65,7 @@ export class ContractComponent implements OnInit {
   signedContractId: any = null;
 
   contractTypes: Type[] = [
+
     { value: 0, viewValue: ' Health Plan' },
     { value: 1, viewValue: ' Animal Health Plan' },
     { value: 2, viewValue: ' Dental Plan' },
@@ -78,7 +83,9 @@ export class ContractComponent implements OnInit {
     { value: 5, viewValue: ' Diamond' },
   ];
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
+
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) { }
+
 
   ngOnInit() {
     this.setup_form();
@@ -150,50 +157,50 @@ export class ContractComponent implements OnInit {
   public openSnackBar(message: string): void {
     this._snackBar.open(message, '', {
       duration: 4000,
-      
+
     });
   }
 
   public assignContractType(): void {
-    let i =0;
+    let i = 0;
     this.cType = this.contractform.get(['type']).value;
-    
-      this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
-      for (i=0; i <= this.beneficiaries.length; i++){
-        this.beneficiaries.controls.pop();
-      }
 
-      this.beneficiaries = this.contractform.get('individuals') as FormArray;
-      for (i=0; i <= this.beneficiaries.length; i++){
-        this.beneficiaries.controls.pop();
-      }
+    this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
+    for (i = 0; i <= this.beneficiaries.length; i++) {
+      this.beneficiaries.controls.pop();
+    }
 
-      this.beneficiaries = this.contractform.get('pets') as FormArray;
-      for (i=0; i <= this.beneficiaries.length; i++){
-        this.beneficiaries.controls.pop();
-      }
+    this.beneficiaries = this.contractform.get('individuals') as FormArray;
+    for (i = 0; i <= this.beneficiaries.length; i++) {
+      this.beneficiaries.controls.pop();
+    }
 
-      this.beneficiaries = this.contractform.get('realties') as FormArray;
-      for (i=0; i <= this.beneficiaries.length; i++){
-        this.beneficiaries.controls.pop();
-      }
+    this.beneficiaries = this.contractform.get('pets') as FormArray;
+    for (i = 0; i <= this.beneficiaries.length; i++) {
+      this.beneficiaries.controls.pop();
+    }
 
-      this.beneficiaries = this.contractform.get('vehicles') as FormArray;
-      for (i=0; i <= this.beneficiaries.length; i++){
-        this.beneficiaries.controls.pop();
-      }
+    this.beneficiaries = this.contractform.get('realties') as FormArray;
+    for (i = 0; i <= this.beneficiaries.length; i++) {
+      this.beneficiaries.controls.pop();
+    }
 
-      this.beneficiaries = this.contractform.get('mobileDevices') as FormArray;
-      for (i=0; i <= this.beneficiaries.length; i++){
-        this.beneficiaries.controls.pop();
-      }
+    this.beneficiaries = this.contractform.get('vehicles') as FormArray;
+    for (i = 0; i <= this.beneficiaries.length; i++) {
+      this.beneficiaries.controls.pop();
+    }
+
+    this.beneficiaries = this.contractform.get('mobileDevices') as FormArray;
+    for (i = 0; i <= this.beneficiaries.length; i++) {
+      this.beneficiaries.controls.pop();
+    }
   }
 
   addBeneficiary(): void {
-    
+
     this.beneficiaries = this.contractform.get('auxBeneficiaries') as FormArray;
     if (this.beneficiaries.length < 5) {
-      if(this.cType == 0 || this.cType==2 || this.cType==3){
+      if (this.cType == 0 || this.cType == 2 || this.cType == 3) {
         this.beneficiaries.push(this.fb.group({
           individualName: ['', Validators.pattern(GenericValidator.regexName)],
           individualCPF: ['', GenericValidator.isValidCpf()],
@@ -202,9 +209,8 @@ export class ContractComponent implements OnInit {
           individualEmail: ['', Validators.required]
         }));
       }
-        
-      if(this.cType == 1)
-      {
+
+      if (this.cType == 1) {
         this.beneficiaries.push(this.fb.group({
           petName: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
           petBirthdate: new FormControl('', GenericValidator.dateValidation()),
@@ -212,7 +218,7 @@ export class ContractComponent implements OnInit {
           petBreed: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName))
         }));
       }
-      if(this.cType == 4){
+      if (this.cType == 4) {
         this.beneficiaries.push(this.fb.group({
           municipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
           constructionDate: new FormControl('', GenericValidator.dateValidation()),
@@ -222,14 +228,14 @@ export class ContractComponent implements OnInit {
           addressType: ['', Validators.required],
           addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
           addressState: ['', [Validators.pattern(/^[[A-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
-          addressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
+          addressNeighborhood: ['', Validators.pattern(GenericValidator.regexSimpleName)],
           addressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
           addressZipCode: ['', this.zipCodeValidation],
           addressCity: [''],
           addressComplement: ['']
         }));
       }
-      if(this.cType == 5){
+      if (this.cType == 5) {
         this.beneficiaries.push(this.fb.group({
           vehicleBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
           vehicleModel: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -242,7 +248,7 @@ export class ContractComponent implements OnInit {
           vehicleDoneInspection: new FormControl(false)
         }));
       }
-      if(this.cType == 6){
+      if (this.cType == 6) {
         this.beneficiaries.push(this.fb.group({
           mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
           mobileDeviceModel: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -256,25 +262,24 @@ export class ContractComponent implements OnInit {
   }
 
   receiveMessage($event) {
-    if(this.cType == 0 || this.cType==2 || this.cType==3){
+    if (this.cType == 0 || this.cType == 2 || this.cType == 3) {
       this.beneficiaries = this.contractform.get('individuals') as FormArray;
       this.beneficiaries.push($event);
     }
-      
-    if(this.cType == 1)
-    {
+
+    if (this.cType == 1) {
       this.beneficiaries = this.contractform.get('pets') as FormArray;
       this.beneficiaries.push($event);
     }
-    if(this.cType == 4){
+    if (this.cType == 4) {
       this.beneficiaries = this.contractform.get('realties') as FormArray;
       this.beneficiaries.push($event);
     }
-    if(this.cType == 5){
+    if (this.cType == 5) {
       this.beneficiaries = this.contractform.get('vehicles') as FormArray;
       this.beneficiaries.push($event);
     }
-    if(this.cType == 6){
+    if (this.cType == 6) {
       this.beneficiaries = this.contractform.get('mobileDevices') as FormArray;
       this.beneficiaries.push($event);
     }
@@ -293,7 +298,7 @@ export class ContractComponent implements OnInit {
 
   changeMessageValue(): void {
     this.message = 1;
-  } 
+  }
 
   onSubmit() {
 
@@ -306,6 +311,7 @@ export class ContractComponent implements OnInit {
     console.log(form);
     if (this.signedContractId == null) {
       this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+
       .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
   
     }
@@ -313,6 +319,7 @@ export class ContractComponent implements OnInit {
       this.http.put(`https://contractwebapi.azurewebsites.net/api/Contract/${this.signedContractId}`, form, httpOptions)
       .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
      
+
     }
   }
 
@@ -321,10 +328,9 @@ export class ContractComponent implements OnInit {
   }
 
   private handle_editUser(data: any) {
-    
+
     this.signedContractId = data.signedContractId;
-    // this.contractform.patchValue(data)
-    
+   
     
     
     let i;
@@ -352,11 +358,13 @@ export class ContractComponent implements OnInit {
        
             
             console.log(data.individuals[i]);
+
           }
-        }  
+        }
       }
 
     }
+
        
     if(data.type==1){
       this.cType = data.type;
@@ -365,6 +373,7 @@ export class ContractComponent implements OnInit {
       for(j = 0; j < petControl.length; j++){
         petControl.removeAt(j);
       }
+
       petControl.controls.pop();
       this.contractform.addControl('pets', this.fb.array([]));
       this.contractform.removeControl('individuals');
@@ -374,6 +383,7 @@ export class ContractComponent implements OnInit {
        this.contractform.patchValue(data)
       const hasMaxPets = petControl.length >= 5;
       if (!hasMaxPets) {
+
         if (data.pets != ''){
           for(j =0; j <data.pets.length; j++)
           {
@@ -381,11 +391,13 @@ export class ContractComponent implements OnInit {
          
             
             console.log(data.pets[j]);
+
           }
-          
-        }  
+
+        }
       }
     }
+
     
     if(data.type==4){
   
@@ -472,16 +484,19 @@ export class ContractComponent implements OnInit {
   }
     
 
-  zipCodeValidation(control: AbstractControl): {[key: string]: boolean} | null {
+
+
+  zipCodeValidation(control: AbstractControl): { [key: string]: boolean } | null {
     let zipCodeNumber = control.value;
 
     zipCodeNumber = zipCodeNumber.replace(/\D+/g, '');
 
-    if(zipCodeNumber.length < 8)
-      return {"zipCodeIsTooShort": true};
-    
+    if (zipCodeNumber.length < 8)
+      return { "zipCodeIsTooShort": true };
+
     return null;
   }
+
  
   private handle_deleteUser(data: any) {
  
@@ -489,6 +504,7 @@ export class ContractComponent implements OnInit {
  
     this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
   }
+
 
   private setup_gridOptions() {
     this.gridOption = {
@@ -498,69 +514,96 @@ export class ContractComponent implements OnInit {
       masterDetail: true,
       columnDefs: [
         {
-          headerName: 'Contract Holder ',
-          field: 'contractHolder.individualName',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          // cellRenderer: "agGroupCellRenderer",
-          onCellValueChanged:
-            this.onCellEdit.bind(this),
+          headerName: "Contract Holder",
+          // rowGroupIndex: 0,
+          // rowGroup: true,
+          // hide: false,
+          children: [
+            {
+              headerName: 'Name',
+              field: 'contractHolder.individualName',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              // cellRenderer: "agGroupCellRenderer",
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
+            },
+            {
+              headerName: 'CPF ',
+              field: 'contractHolder.individualCPF',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: maskCpf,
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
+            }
+          ]
         },
         {
-          headerName: 'Category',
-          field: 'category',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          valueFormatter: currencyCategory,
-          onCellValueChanged:
-            this.onCellEdit.bind(this),
-        },
-        {
-          headerName: 'Type',
-          field: 'type',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          valueFormatter: currencyType,
-          onCellValueChanged:
-            this.onCellEdit.bind(this),
-        },
-        {
-          headerName: 'Expiry Date',
-          field: 'expiryDate',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
-          },
-          onCellValueChanged:
-            this.onCellEdit.bind(this)
-        },
-        {
-          headerName: 'Status',
-          field: 'isActive',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          valueFormatter: currencyStatus,
-          onCellValueChanged:
-            this.onCellEdit.bind(this)
-        },
-        {
-          headerName: 'Edit/Delete',
-          field: 'editDelete',
-          lockPosition: true,
-          cellRendererFramework: ActionButtonComponent,
-          cellRendererParams: {
-            onEdit: this.handle_editUser.bind(this),
-            onDelete: this.handle_deleteUser.bind(this)
-          }
+          headerName: "Contract",
+          // rowGroupIndex: 0,
+          // rowGroup: true,
+          // hide: false,
+          children: [
+            {
+              headerName: 'Category',
+              field: 'category',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: currencyCategory,
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
+            },
+            {
+              headerName: 'Type',
+              field: 'type',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: currencyType,
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
+            },
+            {
+              headerName: 'Expiry Date',
+              field: 'expiryDate',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              cellRenderer: (data) => {
+                return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+              },
+              onCellValueChanged:
+                this.onCellEdit.bind(this)
+            },
+            {
+              headerName: 'Status',
+              field: 'isActive',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: currencyStatus,
+              onCellValueChanged:
+                this.onCellEdit.bind(this)
+            },
+            {
+              headerName: 'Edit/Delete',
+              field: 'editDelete',
+              lockPosition: true,
+              cellRendererFramework: ActionButtonComponent,
+              cellRendererParams: {
+                onEdit: this.handle_editUser.bind(this),
+                onDelete: this.handle_deleteUser.bind(this)
+              }
+            },
+          ]
         },
       ]
     }
+
 
   }
   onGridReady(params) {
@@ -574,17 +617,18 @@ export class ContractComponent implements OnInit {
   private setup_gridData() {
     this.rowData$ = this.http
       .get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
-  
+
   }
   private onCellEdit(params: any) {
 
   }
 
+
 }
+
 function currencyCategory(params) {
   return changeCategoryValue(params.value);
 }
-
 function changeCategoryValue(number) {
   if (number == 0) {
     return "Iron";
@@ -610,7 +654,6 @@ function changeCategoryValue(number) {
 function currencyType(params) {
   return changeTypValue(params.value);
 }
-
 function changeTypValue(number) {
   if (number == 0) {
     return "Health Plan";
@@ -639,11 +682,20 @@ function changeTypValue(number) {
 //function formatting Status
 function currencyStatus(params) {
   return changeStatusValue(params.value);
-}
+} 
+
 function changeStatusValue(stats: boolean) {
   if (stats == true) {
     return "Active";
-  } else {
+} else {
     return "Inactive"
   }
+}
+
+//function mask Cpf Contract Holder
+function maskCpf(params){
+  return maskValue(params.value);
+}
+function maskValue(cpf){
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4")
 }

@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-realties-list',
@@ -13,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./realties-list.component.scss']
 })
 export class RealtiesListComponent implements OnInit {
-
+  public result: any;
   detailCellRendererParams;
   gridApi;
   gridColumApi;
@@ -22,7 +24,8 @@ export class RealtiesListComponent implements OnInit {
   gridOptions: GridOptions;
   load_failure: boolean;
 
-  constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(public dialog: MatDialog, private http: HttpClient, private _snackBar: MatSnackBar) { }
+
 
   ngOnInit() {
     this.setup_gridData();
@@ -32,21 +35,37 @@ export class RealtiesListComponent implements OnInit {
 
   private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
-    }
-  
-    private handle_deleteUser(data: any) {
-      console.log(data);
-      const id = data.beneficiaryId;
-      console.log(id);
-      this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
-    }
-      
-    openSnackBar(message: string): void {
-      this._snackBar.open(message, '', {
-        duration: 5000,
-        
-      });
-    }
+  }
+
+  private handle_deleteUser(data: any) {
+    console.log(data);
+    const id = data.beneficiaryId;
+    console.log(id);
+
+    const message = `Do you really want to delete this Realty?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '375px',
+      panelClass:'content-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if (this.result == true) {  
+        this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar("Error 403 - Invalid Action"), () => this.openSnackBar("Beneficiary removed"));
+        } 
+    });
+  }
+
+  openSnackBar(message: string): void {
+    this._snackBar.open(message, '', {
+      duration: 5000,
+
+    });
+  }
 
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -181,16 +200,16 @@ export class RealtiesListComponent implements OnInit {
           valueFormatter: MarketFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
-          },
-          {
-            headerName: 'Delete',
-            field: 'Delete',
-            lockPosition: true,
-            cellRendererFramework: ActionButtonBeneficiariesComponent,
-            cellRendererParams: {
-              onDelete: this.handle_deleteUser.bind(this)
-            }
-          },
+        },
+        {
+          headerName: 'Delete',
+          field: 'Delete',
+          lockPosition: true,
+          cellRendererFramework: ActionButtonBeneficiariesComponent,
+          cellRendererParams: {
+            onDelete: this.handle_deleteUser.bind(this)
+          }
+        },
       ],
       onGridReady: this.onGridReady.bind(this)
     }
@@ -210,26 +229,26 @@ export class RealtiesListComponent implements OnInit {
     const { data } = event;
   }
 }
-function SaleFormatter(params){
+function SaleFormatter(params) {
   return "R$ " + saleValue(params.value);
 }
-function saleValue(number){
+function saleValue(number) {
   return number.toFixed(2);
 }
-function MarketFormatter(params){
+function MarketFormatter(params) {
   return "R$ " + marketvalue(params.value);
 }
-function marketvalue(number){
+function marketvalue(number) {
   return number.toFixed(2);
 }
-function realtiestypeFormatter(params){
+function realtiestypeFormatter(params) {
   return typeValue(params.value);
 }
-function typeValue(number){
-  if(number == 0){
+function typeValue(number) {
+  if (number == 0) {
     return "Home";
   }
-  if(number == 1){
+  if (number == 1) {
     return "Commercial";
   }
 }

@@ -37,6 +37,7 @@ import { RealtiesListComponent } from './realties-list/realties-list.component';
 import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-list.component';
 import { ActionButtonComponent } from './action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from './action-button-beneficiaries/action-button-beneficiaries.component';
+import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,6 +62,7 @@ import { ActionButtonBeneficiariesComponent } from './action-button-beneficiarie
     RealtiesListComponent,
     MobileDeviceListComponent,
     ActionButtonBeneficiariesComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     ObserversModule,
@@ -84,9 +86,9 @@ import { ActionButtonBeneficiariesComponent } from './action-button-beneficiarie
   exports: [
     MaterialModule,
     AgGridModule,
-
-
-
+  ],
+  entryComponents: [
+    ConfirmationDialogComponent
   ],
 
   providers: [
