@@ -6,6 +6,7 @@ using Contract.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Contract.WebAPI.Controllers
 {
@@ -33,7 +34,7 @@ namespace Contract.WebAPI.Controllers
         [HttpGet]
         public IActionResult Contracts()
         {
-            return Ok(_contractService.GetAll());
+            return Ok(_contractService.GetAll().Select(con => FactoriesManager.ContractViewModel.Create(con)));//.ToList());
         }
 
         /// <summary>

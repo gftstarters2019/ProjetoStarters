@@ -547,7 +547,9 @@ namespace Backend.Infrastructure.Repositories
                 {
                     var completeContractToAdd = new CompleteContractDomain();
                     completeContractToAdd.Contract = ConvertersManager.ContractConverter.Convert(contract);
+                    signedContract.SignedContractIndividual = _individualsRepository.Find(signedContract.BeneficiaryId);
                     completeContractToAdd.SignedContract = ConvertersManager.SignedContractConverter.Convert(signedContract);
+                    
 
                     switch (contract.ContractType)
                     {
