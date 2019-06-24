@@ -1,6 +1,8 @@
 ﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
@@ -10,14 +12,22 @@ namespace Backend.Services.Validators
     {
         public bool IsValid(IndividualDomain individual)
         {
+            var ex = new List<Exception>();
+
             if (!CPFIsValid(individual.IndividualCPF))
-                return false;
+                //return false;
+                ex.Add(new ArgumentException("CPF inválido!"));
             if (!EmailIsValid(individual.IndividualEmail))
-                return false;
+                //return false;
+                ex.Add(new ArgumentException("Email inválido!"));
             if (!NameIsValid(individual.IndividualName))
-                return false;
+                //return false;
+                ex.Add(new ArgumentException("Nome inválido!"));
             if (!RGIsValid(individual.IndividualRG))
-                return false;
+                //return false;
+                ex.Add(new ArgumentException("RG inválido!"));
+            if (ex.Any())
+                throw new AggregateException(ex);
             return true;
         }
         /// <summary>
