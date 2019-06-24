@@ -121,12 +121,12 @@ export class ContractComponent implements OnInit {
       return;
     } else {
       search = search.toLowerCase();
-    }
+          }
     
     this.filteredHolder.next(
-      this.holders.filter(holder => holder.individualName.toLowerCase().indexOf(search) > -1)
+      this.holders.filter(holder => holder.individualName.indexOf(search) > -1)
       );
-      debugger;
+      console.log(this.filteredHolder)
   }
  
        
@@ -411,8 +411,8 @@ export class ContractComponent implements OnInit {
         if (data.realties != ''){
           for(i =0; i <data.realties.length; i++)
           {
-            realtyControl.push(this.fb.group(data.realties[i].address));
-          }
+            realtyControl.push(this.fb.group(data.realties[i]));
+            }
           
         }  
       }
@@ -490,7 +490,6 @@ export class ContractComponent implements OnInit {
     this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
   }
 
-  //AG-grid Table Contract
   private setup_gridOptions() {
     this.gridOption = {
       rowSelection: 'single',
@@ -562,161 +561,6 @@ export class ContractComponent implements OnInit {
         },
       ]
     }
-    // this.detailCellRendererParams = {
-    //   detailGridOptions: {
-    //     columnDefs: [
-    //       {
-    //         headerName: "Individual Details",
-    //         // rowGroupIndex: 0,
-    //         // rowGroup: true,
-    //         // hide: false,
-    //         children: [
-    //           { headerName: 'Name ', field: "individualName" },
-    //           { headerName: 'CPF ', field: "individualCPF" },
-    //           { headerName: 'RG ', field: "individualRG" },
-    //           { headerName: 'Birthdate ', field: "individualBirthdate" },
-    //           { headerName: 'Email ', field: "individualEmail" }
-    //         ]
-    //       },
-    //       {
-    //         headerName: "Pet Details",
-    //         // rowGroupIndex: 1,
-    //         // rowGroup: true,
-    //         // hide: true,
-    //         children: [
-    //           { headerName: 'Name ', field: "petName" },
-    //           { headerName: 'Breed ', field: "petBreed" },
-    //           { headerName: 'Species ', field: "petSpecies" },
-    //           { headerName: 'Birthdate ', field: "petBirthdate" },
-    //         ]
-    //       },
-    //       {
-    //         headerName: "Realties Details",
-    //         // rowGroupIndex: 2,
-    //         // rowGroup: true,
-    //         // hide: true,
-    //         children: [
-    //           { headerName: 'Type', field: "addressType" },
-    //           { headerName: 'Street', field: "addressStreet" },
-    //           { headerName: 'No.', field: "addressNumber" },
-    //           { headerName: 'Complement', field: "addressComplement" },
-    //           { headerName: 'Neighborhood', field: "addressNeighborhood" },
-    //           { headerName: 'City', field: "addressCity" },
-    //           { headerName: 'State', field: "addressState" },
-    //           { headerName: 'Country', field: "addressCountry" },
-    //           { headerName: 'Zip-Code', field: "addressZipCode" },
-    //           { headerName: 'Construction Date', field: "constructionDate" },
-    //           { headerName: 'Municipal Registration', field: "municipalRegistration" },
-    //           { headerName: 'Market Value', field: "marketValue" },
-    //           { headerName: 'Sale Value', field: "saleValue" },
-    //         ]
-    //       },
-    //       {
-    //         headerName: "Vehicles Details",
-    //         // rowGroupIndex: 3,
-    //         // rowGroup: true,
-    //         // hide: true,
-    //         children: [
-    //           { headerName: 'Brand', field: "vehicleBrand" },
-    //           { headerName: 'Model', field: "vehicleModel" },
-    //           { headerName: 'Color', field: "vehicleColor" },
-    //           { headerName: 'Manufactoring Year', field: "vehicleManufactoringYear" },
-    //           { headerName: 'Model Year', field: "vehicleModelYear" },
-    //           { headerName: 'No. Chassis', field: "vehicleChassisNumber" },
-    //           { headerName: 'Current Mileage', field: "vehicleCurrentMileage" },
-    //           { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue" },
-    //           { headerName: 'Done Inspection', field: "vehicleDoneInspection" },
-    //         ]
-    //       },
-    //       {
-    //         headerName: "Mobile Device Details",
-    //         // rowGroup: true,
-    //         // rowGroupIndex: 4,
-    //         // hide: true,
-    //         children: [
-    //           { headerName: 'Brand', field: "mobileDeviceBrand" },
-    //           { headerName: 'Model', field: "mobileDeviceModel" },
-    //           { headerName: 'Device Type', field: "mobileDeviceType" },
-    //           { headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear" },
-    //           { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber" },
-    //           { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue" },
-    //         ]
-    //       }
-    //     ],
-
-    //     onFirstDataRendered(params) {
-    //       params.api.sizeColumnsToFit();
-    //     },
-
-
-    //   } as GridOptions,
-
-
-    //   getDetailRowData: function (params) {
-
-    //     // switch (params.data.type) {
-    //     //   case 0:
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 0;
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-    //     //     break;
-    //     //   case 1:
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 1;
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-    //     //     break;
-    //     //   case 2:
-    //     //     this.detailCellRendererParams.detailGidOptions.columnDefs.rowGroupIndex = 0;
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-    //     //     break;
-    //     //   case 3:
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 0;
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-    //     //     break;
-    //     //   case 4:
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 2;
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-    //     //     break;
-    //     //   case 5:
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 3;
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-    //     //     break;
-    //     //   case 6:
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 4;
-    //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-    //     //     break;
-
-    //     // }
-
-    //     switch (params.data.type) {
-    //       case 0:
-    //         params.successCallback(params.data.individuals);
-    //         break;
-    //       case 1:
-    //         params.successCallback(params.data.pets);
-    //         break;
-    //       case 2:
-    //         params.successCallback(params.data.individuals);
-    //         break;
-    //       case 3:
-    //         params.successCallback(params.data.individuals);
-    //         break;
-    //       case 4:
-    //         params.successCallback(params.data.realties);
-    //         break;
-    //       case 5:
-    //         params.successCallback(params.data.vehicles);
-    //         break;
-    //       case 6:
-    //         params.successCallback(params.data.mobileDevices);
-    //         break;
-    //     }
-    //   },
-
-    //   template:
-    //     '<div style="height: 100%; background-color: #edf6ff; padding: 25px; box-sizing: border-box;">' +
-    //     '  <div style="height: 20%;">Beneficiary Details</div>' +
-    //     '  <div ref="eDetailGrid" style="height: 90%;"></div>' +
-    //     "</div>"
-    // };
 
   }
   onGridReady(params) {
@@ -724,12 +568,7 @@ export class ContractComponent implements OnInit {
     this.gridColumApi = params.columnApi;
 
 
-  //   setTimeout(function () {
-  //     var rowCount = 0;
-  //     params.api.forEachNode(function (node) {
-  //       node.setExpanded(rowCount++ === 1);
-  //     });
-  //   }, 500);
+
    }
 
   private setup_gridData() {
@@ -741,15 +580,7 @@ export class ContractComponent implements OnInit {
 
   }
 
-  // private onRowSelected(event: RowSelectedEvent) {
-    
-  //   const { data } = event;
-  //   this.contractform.getRawValue();
-  //   console.log(data);
-  //   this.contractform.patchValue(data);
-  // }
 }
-//Function Formatting Category
 function currencyCategory(params) {
   return changeCategoryValue(params.value);
 }
