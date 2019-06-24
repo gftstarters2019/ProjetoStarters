@@ -33,10 +33,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public IndividualEntity Find(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public IndividualEntity Find(Guid id) => _db.Individuals.Where(ind => ind.BeneficiaryId == id).FirstOrDefault();
 
         public IEnumerable<IndividualEntity> Get() => _db
             .Individuals

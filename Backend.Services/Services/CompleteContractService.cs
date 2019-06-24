@@ -1,10 +1,9 @@
 ﻿using Backend.Core.Domains;
-using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Interfaces;
 using Backend.Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Transactions;
+using System.Linq;
 
 namespace Backend.Services.Services
 {
@@ -29,7 +28,7 @@ namespace Backend.Services.Services
 
         public List<CompleteContractDomain> GetAll()
         {
-            throw new NotImplementedException();
+            return _completeContractRepository.Get().ToList();
         }
 
         public CompleteContractDomain Save(CompleteContractDomain completeContract)
