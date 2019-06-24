@@ -37,16 +37,12 @@ namespace Backend.IntegrationTests
         {
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddScoped<IRepository<Individual>, ContractHolderRepository>();
-
-            services.AddScoped<IRepository<Telephone>, TelephoneRepository>();
-
-            services.AddScoped<IRepository<Address>, AddressRepository>();
+            services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
+            services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
+            services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
+            services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
 
             services.AddScoped<IRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
-
-            services.AddScoped<IRepository<SignedContract>, SignedContractRepository>();
 
             services.AddScoped<IRepository<Backend.Core.Models.Contract>, ContractRepository>();
 

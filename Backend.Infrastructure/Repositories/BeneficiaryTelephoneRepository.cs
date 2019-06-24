@@ -25,17 +25,14 @@ namespace Backend.Infrastructure.Repositories
             .Individual_Telephone
             .ToList();
 
-        public bool Add(BeneficiaryTelephone telephones)
+        BeneficiaryTelephone IRepository<BeneficiaryTelephone>.Add(BeneficiaryTelephone beneficiaryTelephone)
         {
-            if (telephones != null)
+            if (beneficiaryTelephone != null)
             {
-                _db.Add(telephones);
-                if (_db.SaveChanges() == 1)
-                    return true;
-
-                return false;
+                beneficiaryTelephone.BeneficiaryTelephoneId = Guid.NewGuid();
+                return _db.Individual_Telephone.Add(beneficiaryTelephone).Entity;
             }
-            return false;
+            return null;
         }
 
         public bool Remove(Guid id)
@@ -64,7 +61,7 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
         public BeneficiaryTelephone FindCPF(string cpf)

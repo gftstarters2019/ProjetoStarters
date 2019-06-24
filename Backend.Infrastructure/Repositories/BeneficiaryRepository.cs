@@ -106,7 +106,7 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Beneficiary FindCPF(string cpf)
+        Beneficiary IRepository<Beneficiary>.Add(Beneficiary t)
         {
             throw new NotImplementedException();
         }

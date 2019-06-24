@@ -1,11 +1,10 @@
-﻿using Backend.Application.ViewModels;
+﻿//using Backend.Application.ViewModels;
 using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
-using Backend.Services.Validators;
-using Backend.Services.Validators.Contracts;
+using ContractHolder.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -45,25 +44,13 @@ namespace ContractHolder.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IRepository<Individual>, ContractHolderRepository>();
+            services.AddScoped<IRepository<IndividualEntity>, ContractHolderRepository>();
 
-            services.AddScoped<IRepository<Telephone>, TelephoneRepository>();
+            services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
             
-            services.AddScoped<IRepository<Address>, AddressRepository>();
+            services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
             
-            services.AddScoped<IRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
-            
-            services.AddScoped<IRepository<SignedContract>, SignedContractRepository>();
-
-            services.AddScoped<IContractHolderValidator, ContractHolderValidator>();
-
-            services.AddScoped<IDateValidator, DateValidator>();
-
-            services.AddScoped<IIndividualValidator, IndividualValidator>();
-
-            services.AddScoped<ITelephoneValidator, TelephoneValidator>();
-
-            services.AddScoped<IAddressValidator, AddressValidator>();
+            services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 

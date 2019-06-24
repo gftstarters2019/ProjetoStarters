@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class ContractRepository : IRepository<Contract>
+    public class ContractRepository : IRepository<ContractEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -18,25 +18,23 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Contract Find(Guid id) => _db
+        public ContractEntity Find(Guid id) => _db
             .Contracts
             .FirstOrDefault(con => con.ContractId == id);
 
-        public IEnumerable<Contract> Get() => _db
+        public IEnumerable<ContractEntity> Get() => _db
             .Contracts
+            .Where(con => !con.ContractDeleted)
             .ToList();
 
-        public bool Add(Contract contract)
+        public ContractEntity Add(ContractEntity contract)
         {
-            if (contract != null)
-            {
-                _db.Add(contract);
-                if (_db.SaveChanges() == 1)
-                    return true;
+            if (contract == null)
+                return null;
 
-                return false;
-            }
-            return false;
+            contract.ContractId = Guid.NewGuid();
+
+            return _db.Contracts.Add(contract).Entity;
         }
 
         public bool Remove(Guid id)
@@ -52,29 +50,27 @@ namespace Backend.Infrastructure.Repositories
             return false;
         }
 
-        public Contract Update(Guid id, Contract contract)
+        public ContractEntity Update(Guid id, ContractEntity contract)
         {
             if (contract != null)
             {
-                var contractToUpdate = contract;
-                if (contract.ContractId != id)
+                var contractToUpdate = Find(id);
+                if (contractToUpdate != null)
                 {
-                    contractToUpdate = Find(id);
                     contractToUpdate.ContractCategory = contract.ContractCategory;
                     contractToUpdate.ContractDeleted = contract.ContractDeleted;
                     contractToUpdate.ContractExpiryDate = contract.ContractExpiryDate;
                     contractToUpdate.ContractType = contract.ContractType;
-                }
-                _db.Update(contractToUpdate);
-                _db.SaveChanges();
-            }
 
-            return contract;
+                    return _db.Contracts.Update(contractToUpdate).Entity;
+                }
+            }
+            return null;
         }
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
         public Contract FindCPF(string cpf)

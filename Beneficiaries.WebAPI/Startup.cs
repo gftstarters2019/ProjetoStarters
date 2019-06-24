@@ -4,12 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Backend.Application.ViewModels;
+//using Backend.Application.ViewModels;
 using Backend.Core;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Contracts;
+using Beneficiaries.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -49,15 +50,15 @@ namespace Beneficiaries.WebAPI
             services.AddScoped<IRepository<Beneficiary>, BeneficiaryRepository>();
             services.AddScoped<IRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
 
-            services.AddScoped<IRepository<Individual>, IndividualRepository>();
+            services.AddScoped<IRepository<IndividualEntity>, IndividualRepository>();
 
-            services.AddScoped<IRepository<MobileDevice>, MobileDeviceRepository>();
+            services.AddScoped<IRepository<MobileDeviceEntity>, MobileDeviceRepository>();
 
-            services.AddScoped<IRepository<RealtyViewModel>, RealtyRepository>();
+            services.AddScoped<IRepository<RealtyEntity>, RealtyRepository>();
 
-            services.AddScoped<IRepository<Pet>, PetRepository>();
+            services.AddScoped<IRepository<PetEntity>, PetRepository>();
 
-            services.AddScoped<IRepository<Vehicle>, VehicleRepository>();
+            services.AddScoped<IRepository<VehicleEntity>, VehicleRepository>();
 
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));

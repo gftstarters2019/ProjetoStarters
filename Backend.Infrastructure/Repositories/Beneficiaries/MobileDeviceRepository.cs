@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class MobileDeviceRepository : IRepository<MobileDevice>
+    public class MobileDeviceRepository : IRepository<MobileDeviceEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -17,28 +17,31 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(MobileDevice mobile)
+        public MobileDeviceEntity Add(MobileDeviceEntity mobile)
         {
             if (mobile != null)
             {
-                _db.MobileDevices.Add(mobile);
-                if (_db.SaveChanges() == 1)
-                    return true;
+                // Verifies if Serial Number is already in DB of active MobileDevice
+                if (_db.MobileDevices
+                        .Where(mob => mob.MobileDeviceSerialNumber == mobile.MobileDeviceSerialNumber
+                                      && !mob.IsDeleted)
+                        .Any())
+                    return null;
+
+                mobile.IsDeleted = false;
+                mobile.BeneficiaryId = Guid.NewGuid();
+
+                return _db.MobileDevices.Add(mobile).Entity;
             }
-            return false;
+            return null;
         }
 
-        public MobileDevice Find(Guid id)
+        public MobileDeviceEntity Find(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public MobileDevice FindCPF(string cpf)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<MobileDevice> Get() => _db
+        public IEnumerable<MobileDeviceEntity> Get() => _db
             .MobileDevices
             .Where(i => !i.IsDeleted)
             .ToList();
@@ -50,12 +53,35 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
-        public MobileDevice Update(Guid id, MobileDevice t)
+        public MobileDeviceEntity Update(Guid id, MobileDeviceEntity mobileDevice)
         {
-            throw new NotImplementedException();
+            if (mobileDevice != null)
+            {
+                var mobileDeviceToUpdate = Find(id);
+                if (mobileDeviceToUpdate != null)
+                {
+                    // Verifies if Serial Number is already in DB of active MobileDevice
+                    if (_db.MobileDevices
+                    .Where(mob => mob.MobileDeviceSerialNumber == mobileDevice.MobileDeviceSerialNumber
+                                  && !mob.IsDeleted)
+                    .Any())
+                        return null;
+
+                    mobileDeviceToUpdate.IsDeleted = mobileDevice.IsDeleted;
+                    mobileDeviceToUpdate.MobileDeviceBrand = mobileDevice.MobileDeviceBrand;
+                    mobileDeviceToUpdate.MobileDeviceInvoiceValue = mobileDevice.MobileDeviceInvoiceValue;
+                    mobileDeviceToUpdate.MobileDeviceManufactoringYear = mobileDevice.MobileDeviceManufactoringYear;
+                    mobileDeviceToUpdate.MobileDeviceModel = mobileDevice.MobileDeviceModel;
+                    mobileDeviceToUpdate.MobileDeviceSerialNumber = mobileDevice.MobileDeviceSerialNumber;
+                    mobileDeviceToUpdate.MobileDeviceType = mobileDevice.MobileDeviceType;
+
+                    return _db.MobileDevices.Update(mobileDeviceToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

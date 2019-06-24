@@ -15,13 +15,13 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class TelephoneController : Controller
     {
-        private readonly IRepository<Telephone> _telephoneRepository;
+        private readonly IRepository<TelephoneEntity> _telephoneRepository;
 
         /// <summary>
         /// TelephoneController constructor
         /// </summary>
         /// <param name="telephoneRepository"></param>
-        public TelephoneController(IRepository<Telephone> telephoneRepository)
+        public TelephoneController(IRepository<TelephoneEntity> telephoneRepository)
         {
             _telephoneRepository = telephoneRepository;
         }
@@ -54,7 +54,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="telephone"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult PostTelephone([FromBody] Telephone telephone)
+        public IActionResult PostTelephone([FromBody] TelephoneEntity telephone)
         {
             telephone.TelephoneId = Guid.NewGuid();
 
@@ -97,7 +97,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="telephone"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateTelephone(Guid id, [FromBody] Telephone telephone)
+        public IActionResult UpdateTelephone(Guid id, [FromBody] TelephoneEntity telephone)
         {
             var obj = _telephoneRepository.Find(id);
 
@@ -112,7 +112,7 @@ namespace ContractHolder.WebAPI.Controllers
                 return Conflict();
         }
 
-        private bool Validate(Telephone telephone)
+        private bool Validate(TelephoneEntity telephone)
         {
             Regex regex = new Regex("^[0-9]+$");
 

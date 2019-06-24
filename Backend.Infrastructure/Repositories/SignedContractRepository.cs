@@ -8,30 +8,40 @@ using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class SignedContractRepository : IRepository<SignedContract>
+    public class SignedContractRepository : IRepository<SignedContractEntity>
     {
         private readonly ConfigurationContext _db;
+        private readonly IRepository<ContractEntity> _contractRepository;
 
-        public SignedContractRepository(ConfigurationContext db)
+        public SignedContractRepository(ConfigurationContext db,
+                                        IRepository<ContractEntity> contractRepository)
         {
             _db = db;
+            _contractRepository = contractRepository;
         }
 
-        public bool Add(SignedContract t)
+        public SignedContractEntity Add(SignedContractEntity signedContract)
         {
-            throw new NotImplementedException();
+            var signedContractContractHolder = _db
+                                               .Individuals
+                                               .Where(ind => ind.BeneficiaryId == signedContract.IndividualId)
+                                               .FirstOrDefault();
+            if (signedContractContractHolder == null)
+                return null;
+
+            signedContract.SignedContractId = Guid.NewGuid();
+
+            return _db.SignedContracts.Add(signedContract).Entity;
         }
 
-        public SignedContract Find(Guid id) => _db
-            .SignedContracts
-            .FirstOrDefault(con => con.SignedContractId == id);
-
-        public SignedContract FindCPF(string cpf)
+        public SignedContractEntity Find(Guid id)
         {
-            throw new NotImplementedException();
+            var signedContract = _db.SignedContracts.FirstOrDefault(sc => sc.ContractId == id);
+            signedContract.SignedContractContract = _contractRepository.Find(signedContract.ContractId);
+            return signedContract;
         }
 
-        public IEnumerable<SignedContract> Get() => _db
+        public IEnumerable<SignedContractEntity> Get() => _db
             .SignedContracts
             .Where(sc => sc.ContractIndividualIsActive)
             .ToList();
@@ -43,12 +53,22 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
-        public SignedContract Update(Guid id, SignedContract t)
+        public SignedContractEntity Update(Guid id, SignedContractEntity signedContract)
         {
-            throw new NotImplementedException();
+            if (signedContract != null)
+            {
+                var signedContractToUpdate = Find(id);
+                if (signedContractToUpdate != null)
+                {
+                    signedContractToUpdate.ContractIndividualIsActive = signedContract.ContractIndividualIsActive;
+                    signedContractToUpdate.IndividualId = signedContract.IndividualId;
+                    return _db.SignedContracts.Update(signedContractToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

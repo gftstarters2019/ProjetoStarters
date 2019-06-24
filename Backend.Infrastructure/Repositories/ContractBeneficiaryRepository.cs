@@ -17,9 +17,34 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public bool Add(ContractBeneficiary t)
+        public ContractBeneficiary Add(ContractBeneficiary contractBeneficiary)
         {
-            throw new NotImplementedException();
+            if(contractBeneficiary != null)
+            {
+                // Gets all Active SignedContracts that the Beneficiary is in
+                var signedContracts = _db
+                                         .SignedContracts
+                                         .Where(sc => _db
+                                                         .Contract_Beneficiary
+                                                         .Where(cb => cb.BeneficiaryId == contractBeneficiary.BeneficiaryId)
+                                                         .Select(cb => cb.SignedContractId)
+                                                         .Contains(sc.SignedContractId)
+                                                && sc.ContractIndividualIsActive)
+                                         .ToList();
+
+                // Verifies if any of the active SignedContracts is the same type as the one being added
+                foreach (var beneficiarySignedContract in signedContracts)
+                {
+                    if (_db.Contracts.Where(con => con.ContractId == beneficiarySignedContract.ContractId
+                                                   && con.ContractType == contractBeneficiary.SignedContract.SignedContractContract.ContractType)
+                                     .Any())
+                        return null;
+                }
+
+                contractBeneficiary.ContractBeneficiaryId = Guid.NewGuid();
+                return _db.Contract_Beneficiary.Add(contractBeneficiary).Entity;
+            }
+            return null;
         }
 
         public ContractBeneficiary Find(Guid id)
@@ -44,7 +69,7 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
         public ContractBeneficiary Update(Guid id, ContractBeneficiary t)

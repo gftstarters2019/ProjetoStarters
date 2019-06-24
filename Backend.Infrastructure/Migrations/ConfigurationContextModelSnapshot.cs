@@ -19,7 +19,7 @@ namespace Backend.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Backend.Core.Models.Address", b =>
+            modelBuilder.Entity("Backend.Core.Models.AddressEntity", b =>
                 {
                     b.Property<Guid>("AddressId")
                         .ValueGeneratedOnAdd();
@@ -100,24 +100,6 @@ namespace Backend.Infrastructure.Migrations
                     b.ToTable("Individual_Telephone");
                 });
 
-            modelBuilder.Entity("Backend.Core.Models.Contract", b =>
-                {
-                    b.Property<Guid>("ContractId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ContractCategory");
-
-                    b.Property<bool>("ContractDeleted");
-
-                    b.Property<DateTime>("ContractExpiryDate");
-
-                    b.Property<int>("ContractType");
-
-                    b.HasKey("ContractId");
-
-                    b.ToTable("Contracts");
-                });
-
             modelBuilder.Entity("Backend.Core.Models.ContractBeneficiary", b =>
                 {
                     b.Property<Guid>("ContractBeneficiaryId")
@@ -136,7 +118,25 @@ namespace Backend.Infrastructure.Migrations
                     b.ToTable("Contract_Beneficiary");
                 });
 
-            modelBuilder.Entity("Backend.Core.Models.SignedContract", b =>
+            modelBuilder.Entity("Backend.Core.Models.ContractEntity", b =>
+                {
+                    b.Property<Guid>("ContractId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ContractCategory");
+
+                    b.Property<bool>("ContractDeleted");
+
+                    b.Property<DateTime>("ContractExpiryDate");
+
+                    b.Property<int>("ContractType");
+
+                    b.HasKey("ContractId");
+
+                    b.ToTable("Contracts");
+                });
+
+            modelBuilder.Entity("Backend.Core.Models.SignedContractEntity", b =>
                 {
                     b.Property<Guid>("SignedContractId")
                         .ValueGeneratedOnAdd();
@@ -147,11 +147,13 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<Guid>("IndividualId");
 
+                    b.Property<Guid?>("SignedContractIndividualBeneficiaryId");
+
                     b.HasKey("SignedContractId");
 
                     b.HasIndex("ContractId");
 
-                    b.HasIndex("IndividualId");
+                    b.HasIndex("SignedContractIndividualBeneficiaryId");
 
                     b.ToTable("SignedContracts");
                 });
@@ -170,7 +172,7 @@ namespace Backend.Infrastructure.Migrations
                     b.ToTable("Telephones");
                 });
 
-            modelBuilder.Entity("Backend.Core.Models.Individual", b =>
+            modelBuilder.Entity("Backend.Core.Models.IndividualEntity", b =>
                 {
                     b.HasBaseType("Backend.Core.Models.Beneficiary");
 
@@ -188,10 +190,12 @@ namespace Backend.Infrastructure.Migrations
                     b.Property<string>("IndividualRG")
                         .HasMaxLength(9);
 
-                    b.HasDiscriminator().HasValue("Individual");
+                    b.ToTable("Beneficiaries");
+
+                    b.HasDiscriminator().HasValue("IndividualEntity");
                 });
 
-            modelBuilder.Entity("Backend.Core.Models.MobileDevice", b =>
+            modelBuilder.Entity("Backend.Core.Models.MobileDeviceEntity", b =>
                 {
                     b.HasBaseType("Backend.Core.Models.Beneficiary");
 
@@ -210,10 +214,12 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<int>("MobileDeviceType");
 
-                    b.HasDiscriminator().HasValue("MobileDevice");
+                    b.ToTable("Beneficiaries");
+
+                    b.HasDiscriminator().HasValue("MobileDeviceEntity");
                 });
 
-            modelBuilder.Entity("Backend.Core.Models.Pet", b =>
+            modelBuilder.Entity("Backend.Core.Models.PetEntity", b =>
                 {
                     b.HasBaseType("Backend.Core.Models.Beneficiary");
 
@@ -227,10 +233,12 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<int>("PetSpecies");
 
-                    b.HasDiscriminator().HasValue("Pet");
+                    b.ToTable("Beneficiaries");
+
+                    b.HasDiscriminator().HasValue("PetEntity");
                 });
 
-            modelBuilder.Entity("Backend.Core.Models.Realty", b =>
+            modelBuilder.Entity("Backend.Core.Models.RealtyEntity", b =>
                 {
                     b.HasBaseType("Backend.Core.Models.Beneficiary");
 
@@ -243,10 +251,12 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<double>("RealtySaleValue");
 
-                    b.HasDiscriminator().HasValue("Realty");
+                    b.ToTable("Beneficiaries");
+
+                    b.HasDiscriminator().HasValue("RealtyEntity");
                 });
 
-            modelBuilder.Entity("Backend.Core.Models.Vehicle", b =>
+            modelBuilder.Entity("Backend.Core.Models.VehicleEntity", b =>
                 {
                     b.HasBaseType("Backend.Core.Models.Beneficiary");
 
@@ -268,12 +278,14 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<DateTime>("VehicleModelYear");
 
-                    b.HasDiscriminator().HasValue("Vehicle");
+                    b.ToTable("Beneficiaries");
+
+                    b.HasDiscriminator().HasValue("VehicleEntity");
                 });
 
             modelBuilder.Entity("Backend.Core.Models.BeneficiaryAddress", b =>
                 {
-                    b.HasOne("Backend.Core.Models.Address", "Address")
+                    b.HasOne("Backend.Core.Models.AddressEntity", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -304,22 +316,22 @@ namespace Backend.Infrastructure.Migrations
                         .HasForeignKey("BeneficiaryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Backend.Core.Models.SignedContract", "SignedContract")
+                    b.HasOne("Backend.Core.Models.SignedContractEntity", "SignedContract")
                         .WithMany()
                         .HasForeignKey("SignedContractId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Backend.Core.Models.SignedContract", b =>
+            modelBuilder.Entity("Backend.Core.Models.SignedContractEntity", b =>
                 {
-                    b.HasOne("Backend.Core.Models.Contract", "SignedContractContract")
+                    b.HasOne("Backend.Core.Models.ContractEntity", "SignedContractContract")
                         .WithMany()
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Backend.Core.Models.Individual", "SignedContractIndividual")
+                    b.HasOne("Backend.Core.Models.IndividualEntity", "SignedContractIndividual")
                         .WithMany()
-                        .HasForeignKey("IndividualId")
+                        .HasForeignKey("SignedContractIndividualBeneficiaryId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618

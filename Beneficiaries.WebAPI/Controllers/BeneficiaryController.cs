@@ -20,26 +20,26 @@ namespace Beneficiaries.WebAPI.Controllers
         private readonly IRepository<Beneficiary> _beneficiaryRepository;
         private readonly IRepository<ContractBeneficiary> _contractsRepository;
 
-        private readonly IRepository<Individual> _individualRepository;
+        private readonly IRepository<IndividualEntity> _individualRepository;
 
-        private readonly IRepository<Pet> _petRepository;
+        private readonly IRepository<PetEntity> _petRepository;
 
-        private readonly IRepository<MobileDevice> _mobileDeviceRepository;
+        private readonly IRepository<MobileDeviceEntity> _mobileDeviceRepository;
 
         private readonly IRepository<RealtyViewModel> _realtyRepository;
 
-        private readonly IRepository<Vehicle> _vehicleRepository;
+        private readonly IRepository<VehicleEntity> _vehicleRepository;
 
         /// <summary>
         /// BeneficiaryController constructor
         /// </summary>
         public BeneficiaryController(IRepository<Beneficiary> beneficiaryRepository,
                                      IRepository<ContractBeneficiary> contractsRepository,
-                                     IRepository<Individual> individualRepository,
-                                     IRepository<Pet> petRepository,
-                                     IRepository<MobileDevice> mobileDeviceRepository,
+                                     IRepository<IndividualEntity> individualRepository,
+                                     IRepository<PetEntity> petRepository,
+                                     IRepository<MobileDeviceEntity> mobileDeviceRepository,
                                      IRepository<RealtyViewModel> realtyRepository,
-                                     IRepository<Vehicle> vehicleRepository)
+                                     IRepository<VehicleEntity> vehicleRepository)
         {
             _beneficiaryRepository = beneficiaryRepository;
             _contractsRepository = contractsRepository;
@@ -104,7 +104,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="individual">Individual without IDs</param>
         /// <returns>Created individual, with IDs</returns>
         [HttpPost("Individual")]
-        public IActionResult PostIndividual([FromBody] Individual individual)
+        public IActionResult PostIndividual([FromBody] IndividualEntity individual)
         {
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
@@ -124,12 +124,12 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="individual">New values for the individual</param>
         /// <returns>Updated Individual</returns>
         [HttpPut("Individual/{id}")]
-        public IActionResult UpdateIndividual(Guid id, [FromBody] Individual individual)
+        public IActionResult UpdateIndividual(Guid id, [FromBody] IndividualEntity individual)
         {
             if (!IndividualValidations.IndividualIsValid(individual))
                 return Forbid();
 
-            var obj = (Individual)_beneficiaryRepository.Find(id);
+            var obj = (IndividualEntity)_beneficiaryRepository.Find(id);
 
             obj.IsDeleted = individual.IsDeleted;
             obj.IndividualBirthdate = individual.IndividualBirthdate;
@@ -159,7 +159,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="mobileDevice">Mobile Device without IDs</param>
         /// <returns>Created mobile device, with IDs</returns>
         [HttpPost("MobileDevice")]
-        public IActionResult PostMobileDevice([FromBody] MobileDevice mobileDevice)
+        public IActionResult PostMobileDevice([FromBody] MobileDeviceEntity mobileDevice)
         {
             mobileDevice.BeneficiaryId = Guid.NewGuid();
 
@@ -178,12 +178,12 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="mobileDevice">New values for the mobile device</param>
         /// <returns>Updated Mobile Device</returns>
         [HttpPut("MobileDevice/{id}")]
-        public IActionResult UpdateMobileDevice(Guid id, [FromBody] MobileDevice mobileDevice)
+        public IActionResult UpdateMobileDevice(Guid id, [FromBody] MobileDeviceEntity mobileDevice)
         {
             if (!MobileDeviceValidations.MobileDeviceIsValid(mobileDevice))
                 return Forbid();
 
-            var obj = (MobileDevice)_beneficiaryRepository.Find(id);
+            var obj = (MobileDeviceEntity)_beneficiaryRepository.Find(id);
 
             obj.IsDeleted = mobileDevice.IsDeleted;
             obj.MobileDeviceBrand = mobileDevice.MobileDeviceBrand;
@@ -214,7 +214,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="pet">Pet without IDs</param>
         /// <returns>Created pet, with IDs</returns>
         [HttpPost("Pet")]
-        public IActionResult PostPet([FromBody] Pet pet)
+        public IActionResult PostPet([FromBody] PetEntity pet)
         {
             pet.BeneficiaryId = Guid.NewGuid();
             //pet.PetId = Guid.NewGuid();
@@ -233,12 +233,12 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="pet">New values for the pet</param>
         /// <returns>Updated Pet</returns>
         [HttpPut("Pet/{id}")]
-        public IActionResult UpdatePet(Guid id, [FromBody] Pet pet)
+        public IActionResult UpdatePet(Guid id, [FromBody] PetEntity pet)
         {
             //if (!PetIsValid(pet))
             //    return Forbid();
 
-            var obj = (Pet)_beneficiaryRepository.Find(id);
+            var obj = (PetEntity)_beneficiaryRepository.Find(id);
 
             obj.IsDeleted = pet.IsDeleted;
             obj.PetBirthdate = pet.PetBirthdate;
@@ -267,7 +267,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="realty">Realty without IDs</param>
         /// <returns>Created realty, with IDs</returns>
         [HttpPost("Realty")]
-        public IActionResult PostRealty([FromBody] Realty realty)
+        public IActionResult PostRealty([FromBody] RealtyEntity realty)
         {
             realty.BeneficiaryId = Guid.NewGuid();
 
@@ -286,12 +286,12 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="realty">New values for the realty</param>
         /// <returns>Updated Realty</returns>
         [HttpPut("Realty/{id}")]
-        public IActionResult UpdateRealty(Guid id, [FromBody] Realty realty)
+        public IActionResult UpdateRealty(Guid id, [FromBody] RealtyEntity realty)
         {
             if (!RealtyValidations.RealtyIsValid(realty))
                 return Forbid();
 
-            var obj = (Realty)_beneficiaryRepository.Find(id);
+            var obj = (RealtyEntity)_beneficiaryRepository.Find(id);
 
             obj.IsDeleted = realty.IsDeleted;
             obj.RealtyConstructionDate = realty.RealtyConstructionDate;
@@ -320,7 +320,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="vehicle">Vehicle without IDs</param>
         /// <returns>Created vehicle, with IDs</returns>
         [HttpPost("Vehicle")]
-        public IActionResult PostVehicle([FromBody] Vehicle vehicle)
+        public IActionResult PostVehicle([FromBody] VehicleEntity vehicle)
         {
             vehicle.BeneficiaryId = Guid.NewGuid();
 
@@ -339,12 +339,12 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <param name="vehicle">New values for the vehicle</param>
         /// <returns>Updated Vehicle</returns>
         [HttpPut("Vehicle/{id}")]
-        public IActionResult UpdateVehicle(Guid id, [FromBody] Vehicle vehicle)
+        public IActionResult UpdateVehicle(Guid id, [FromBody] VehicleEntity vehicle)
         {
             if (!VehicleValidations.VehicleIsValid(vehicle))
                 return Forbid();
 
-            var obj = (Vehicle)_beneficiaryRepository.Find(id);
+            var obj = (VehicleEntity)_beneficiaryRepository.Find(id);
 
             obj.VehicleBrand = vehicle.VehicleBrand;
             obj.VehicleChassisNumber = vehicle.VehicleChassisNumber;
