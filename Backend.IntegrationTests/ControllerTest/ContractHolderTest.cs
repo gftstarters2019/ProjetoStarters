@@ -1,6 +1,5 @@
 using Backend.Core.Domains;
 using Backend.Core.Enums;
-using Backend.Core.Models;
 using Backend.IntegrationTests.ControllerTest;
 using Backend.IntegrationTests.Helper;
 using ContractHolder.WebAPI.ViewModels;
@@ -21,7 +20,6 @@ namespace IntegrationTests
         [Test]
         public async Task WhenRequestGetUsingController_ThenIShouldReceiveContractHolders()
         {
-
             // act
             var response = await client.GetAsync($"{url}");
             var apiResponse = JsonConvert.DeserializeObject<List<ContractHolderViewModel>>(await response.Content.ReadAsStringAsync());
@@ -54,14 +52,17 @@ namespace IntegrationTests
             var getApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await getResponse.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsNotNull(postApiResponse);
-            Assert.IsInstanceOf<ContractHolderViewModel>(postApiResponse);
+            Assert.IsNotNull(getApiResponse);
+            Assert.IsInstanceOf<ContractHolderViewModel>(getApiResponse);
             Assert.AreEqual(postApiResponse.individualId, getApiResponse.individualId);
             Assert.AreEqual(contractHolder.individualName, getApiResponse.individualName);
             Assert.AreEqual(contractHolder.individualEmail, getApiResponse.individualEmail);
             Assert.AreEqual(contractHolder.individualCPF, getApiResponse.individualCPF);
             Assert.AreEqual(contractHolder.individualRG, getApiResponse.individualRG);
             Assert.AreEqual(contractHolder.individualBirthdate, getApiResponse.individualBirthdate);
+
+            //cleaning
+            var delete = await client.DeleteAsync($"{url}/{getApiResponse.individualId}");
         }
 
         [Test]
@@ -79,13 +80,13 @@ namespace IntegrationTests
             contractHolder.individualTelephones = new List<TelephoneDomain>();
 
             AddressDomain address = new AddressDomain();
-            address.AddressStreet = "Rua Gonçalves";
-            address.AddressNumber = "542";
-            address.AddressNeighborhood = "Jardim Pereira";
+            address.AddressStreet = "Avenida V-008";
+            address.AddressNumber = "2000";
+            address.AddressNeighborhood = "Mansões Paraíso";
             address.AddressComplement = "A";
-            address.AddressZipCode = "18067098";
-            address.AddressCity = "Sorocaba";
-            address.AddressState = "SP";
+            address.AddressZipCode = "74952560";
+            address.AddressCity = "Aparecida de Goiânia";
+            address.AddressState = "GO";
             address.AddressCountry = "Brasil";
             address.AddressType = AddressType.Home;
             contractHolder.individualAddresses.Add(address);
@@ -103,16 +104,23 @@ namespace IntegrationTests
             var postResponse = await client.PostAsync($"{url}", contentString);
             var postApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await postResponse.Content.ReadAsStringAsync());
 
-            var response = await client.GetAsync($"{url}/{postApiResponse.individualId}");
-            var apiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await response.Content.ReadAsStringAsync());
+            var getResponse = await client.GetAsync($"{url}/{postApiResponse.individualId}");
+            var getApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await getResponse.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<ContractHolderViewModel>(apiResponse);
-            Assert.AreEqual(contractHolder.individualName, apiResponse.individualName);
-            Assert.AreEqual(contractHolder.individualEmail, apiResponse.individualEmail);
-            Assert.AreEqual(contractHolder.individualCPF, apiResponse.individualCPF);
-            Assert.AreEqual(contractHolder.individualRG, apiResponse.individualRG);
-            Assert.AreEqual(contractHolder.individualBirthdate, apiResponse.individualBirthdate);
+            Assert.IsNotNull(postApiResponse);
+            Assert.IsInstanceOf<ContractHolderViewModel>(postApiResponse);
+            Assert.AreEqual(postApiResponse.individualId, getApiResponse.individualId);
+            Assert.AreEqual(contractHolder.individualName, getApiResponse.individualName);
+            Assert.AreEqual(contractHolder.individualEmail, getApiResponse.individualEmail);
+            Assert.AreEqual(contractHolder.individualCPF, getApiResponse.individualCPF);
+            Assert.AreEqual(contractHolder.individualRG, getApiResponse.individualRG);
+            Assert.AreEqual(contractHolder.individualBirthdate, getApiResponse.individualBirthdate);
+            Assert.AreEqual(contractHolder.individualAddresses, getApiResponse.individualAddresses);
+            Assert.AreEqual(contractHolder.individualTelephones, getApiResponse.individualTelephones);
+
+            //cleaning
+            var delete = await client.DeleteAsync($"{url}/{getApiResponse.individualId}");
         }
 
         [Test]
@@ -126,7 +134,6 @@ namespace IntegrationTests
             contractHolder.individualCPF = CpfGenerator.GenerateCpf();
             contractHolder.individualRG = "310291136";
             contractHolder.individualBirthdate = new DateTime(1993, 2, 20);
-
 
             //act
             var jsonContent = JsonConvert.SerializeObject(contractHolder);
@@ -146,18 +153,22 @@ namespace IntegrationTests
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var putResponse = await client.PutAsync($"{url}/{postApiResponse.individualId}", contentString);
-            var putApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await putResponse.Content.ReadAsStringAsync());
+            var putApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await putResponse.Content.ReadAsStringAsync());
 
             var getResponse = await client.GetAsync($"{url}/{postApiResponse.individualId}");
-            var getApiResponse = JsonConvert.DeserializeObject<IndividualEntity>(await getResponse.Content.ReadAsStringAsync());
+            var getApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await getResponse.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<ContractHolderViewModel>(getApiResponse);
-            Assert.AreEqual(putApiResponse.IndividualName, getApiResponse.IndividualName);
-            Assert.AreEqual(putApiResponse.IndividualEmail, getApiResponse.IndividualEmail);
-            Assert.AreEqual(putApiResponse.IndividualCPF, getApiResponse.IndividualCPF);
-            Assert.AreEqual(putApiResponse.IndividualRG, getApiResponse.IndividualRG);
-            Assert.AreEqual(putApiResponse.IndividualBirthdate, getApiResponse.IndividualBirthdate);
+            Assert.IsNotNull(putApiResponse);
+            Assert.IsInstanceOf<ContractHolderViewModel>(putApiResponse);
+            Assert.AreEqual(putApiResponse.individualName, getApiResponse.individualName);
+            Assert.AreEqual(putApiResponse.individualEmail, getApiResponse.individualEmail);
+            Assert.AreEqual(putApiResponse.individualCPF, getApiResponse.individualCPF);
+            Assert.AreEqual(putApiResponse.individualRG, getApiResponse.individualRG);
+            Assert.AreEqual(putApiResponse.individualBirthdate, getApiResponse.individualBirthdate);
+
+            //cleaning
+            var delete = await client.DeleteAsync($"{url}/{getApiResponse.individualId}");
         }
 
         [Test]
@@ -187,6 +198,7 @@ namespace IntegrationTests
             var deleteApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await deleteResponse.Content.ReadAsStringAsync());
 
             //assert
+            Assert.IsNotNull(deleteApiResponse);
             Assert.IsInstanceOf<ContractHolderViewModel>(deleteApiResponse);
             Assert.AreEqual(contractHolder.individualName,  deleteApiResponse.individualName);
             Assert.AreEqual(contractHolder.individualEmail, deleteApiResponse.individualEmail);

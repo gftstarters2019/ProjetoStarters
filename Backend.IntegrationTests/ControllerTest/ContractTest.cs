@@ -22,7 +22,6 @@ namespace IntegrationTests
         [Test]
         public async Task WhenRequestGetUsingController_ThenIShouldReceiveContracts()
         {
-
             // act
             var response = await client.GetAsync($"{url}");
             var apiResponse = JsonConvert.DeserializeObject<IEnumerable<ContractViewModel>>(await response.Content.ReadAsStringAsync());
@@ -118,6 +117,10 @@ namespace IntegrationTests
             Assert.AreEqual(contract.Category, getApiResponse.Category);
             Assert.AreEqual(contract.IsActive, getApiResponse.IsActive);
             Assert.AreEqual(contractPostApiResponse.SignedContractId, getApiResponse.SignedContractId);
+
+            //cleaning
+            var deleteContract = await client.DeleteAsync($"{url}/{getApiResponse.SignedContractId}");
+            var deleteContractHolder = await client.DeleteAsync($"{urlContractHolder}/{contractHolderPostApiResponse.individualId}");
         }
 
         [Test]
@@ -155,8 +158,8 @@ namespace IntegrationTests
 
             PetDomain thirdBeneficiary = new PetDomain();
             thirdBeneficiary.PetName = "Dasha";
-            thirdBeneficiary.PetBreed = "Chihuahua";
-            thirdBeneficiary.PetSpecies = PetSpecies.Canis_lupus_familiaris;
+            thirdBeneficiary.PetBreed = "Siamese";
+            thirdBeneficiary.PetSpecies = PetSpecies.Felis_catus;
             thirdBeneficiary.PetBirthdate = new DateTime(2016, 4, 1);
             contract.Pets.Add(thirdBeneficiary);
 
@@ -187,13 +190,18 @@ namespace IntegrationTests
             var getApiResponse = JsonConvert.DeserializeObject<ContractViewModel>(await getResponse.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<ContractViewModel>(getApiResponse);
+            Assert.IsNotNull(contractPostApiResponse);
+            Assert.IsInstanceOf<ContractViewModel>(contractPostApiResponse);
             Assert.AreEqual(contract.ContractHolderId, getApiResponse.ContractHolderId);
             Assert.AreEqual(contract.ExpiryDate, getApiResponse.ExpiryDate);
             Assert.AreEqual(contract.Type, getApiResponse.Type);
             Assert.AreEqual(contract.Category, getApiResponse.Category);
             Assert.AreEqual(contract.IsActive, getApiResponse.IsActive);
             Assert.AreEqual(contractPostApiResponse.SignedContractId, getApiResponse.SignedContractId);
+
+            //cleaning
+            var deleteContract = await client.DeleteAsync($"{url}/{getApiResponse.SignedContractId}");
+            var deleteContractHolder = await client.DeleteAsync($"{urlContractHolder}/{contractHolderPostApiResponse.individualId}");
         }
 
         [Test]
@@ -203,8 +211,8 @@ namespace IntegrationTests
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractViewModel contract = new ContractViewModel();
             contract.MobileDevices = new List<MobileDeviceDomain>();
-            contract.Type = (ContractType)6;
-            contract.Category = (ContractCategory)2;
+            contract.Type = ContractType.MobileDeviceInsurance; //(ContractType)6;
+            contract.Category = ContractCategory.Silver; //(ContractCategory)2;
             contract.ExpiryDate = new DateTime(2019, 12, 30);
             contract.IsActive = true;
 
@@ -272,14 +280,19 @@ namespace IntegrationTests
             var getApiResponse = JsonConvert.DeserializeObject<ContractViewModel>(await getResponse.Content.ReadAsStringAsync());
 
             //assert
-            Assert.IsInstanceOf<ContractViewModel>(getApiResponse);
+            Assert.IsNotNull(putApiResponse);
+            Assert.IsInstanceOf<ContractViewModel>(putApiResponse);
             Assert.AreEqual(putApiResponse.Category, getApiResponse.Category);
             Assert.AreEqual(putApiResponse.ExpiryDate, getApiResponse.ExpiryDate);
             Assert.AreEqual(putApiResponse.IsActive, getApiResponse.IsActive);
+
+            //cleaning
+            var deleteContract = await client.DeleteAsync($"{url}/{getApiResponse.SignedContractId}");
+            var deleteContractHolder = await client.DeleteAsync($"{urlContractHolder}/{contractHolderPostApiResponse.individualId}");
         }
 
         [Test]
-        public async Task WhenRequestContractControllerUsingPostAndGet_ThenICanDeleteAContractObjectById()
+        public async Task WhenRequestContractControllerUsingPostSendingAListOfVehicles_ThenICanDeleteAContractObjectById()
         {
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -344,11 +357,99 @@ namespace IntegrationTests
             var deleteApiResponse = JsonConvert.DeserializeObject<ContractViewModel>(await deleteResponse.Content.ReadAsStringAsync());
 
             //assert
+            Assert.IsNotNull(deleteApiResponse);
             Assert.IsInstanceOf<ContractViewModel>(deleteApiResponse);
             Assert.AreEqual(contract.Category,  deleteApiResponse.Category);
             Assert.AreEqual(contract.ExpiryDate, deleteApiResponse.ExpiryDate);
             Assert.AreEqual(contract.ContractHolderId, deleteApiResponse.ContractHolderId);
             Assert.AreEqual(contract.Type, deleteApiResponse.Type);
+
+            //cleaning
+            var deleteContractHolder = await client.DeleteAsync($"{urlContractHolder}/{contractHolderPostApiResponse.individualId}");
         }
+
+
+        //[Test]
+        //public async Task WhenRequestContractControllerUsingPostSendingAListOfRealties_ThenICanGetContractObjectById()
+        //{
+        //    //arrange
+        //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        //    ContractViewModel contract = new ContractViewModel();
+        //    contract.Type = ContractType.DentalPlan;
+        //    contract.Category = ContractCategory.Silver;
+        //    contract.Realties = new List<RealtyViewModel>();
+        //    contract.ExpiryDate = new DateTime(2020, 10, 5);
+        //    contract.IsActive = true;
+
+        //    ContractHolderViewModel contractHolder = new ContractHolderViewModel();
+        //    contractHolder.individualName = "Julia Santos Souza";
+        //    contractHolder.individualEmail = "JuliaSantos@rhyta.com";
+        //    contractHolder.individualCPF = CpfGenerator.GenerateCpf();
+        //    contractHolder.individualRG = "474475906";
+        //    contractHolder.individualBirthdate = new DateTime(1978, 5, 11);
+
+        //    RealtyViewModel firstBeneficiary = new RealtyViewModel();
+        //    firstBeneficiary.MunicipalRegistration = AlphanumericGenerator.RandomString(10);
+        //    firstBeneficiary.MarketValue = 120000;
+        //    firstBeneficiary.SaleValue = 116000.54;
+        //    firstBeneficiary.ConstructionDate = new DateTime(1980, 10, 11);
+        //    firstBeneficiary.AddressStreet = "Rua Ermando Matrângulo";
+        //    firstBeneficiary.AddressNumber = "835";
+        //    firstBeneficiary.AddressNeighborhood = "Jardim Athenas";
+        //    firstBeneficiary.AddressZipCode = "14161010";
+        //    firstBeneficiary.AddressCity = "Sertãozinho";
+        //    firstBeneficiary.AddressState = "SP";
+        //    firstBeneficiary.AddressCountry = "Brasil";
+        //    firstBeneficiary.AddressType = AddressType.Commercial;
+        //    contract.Realties.Add(firstBeneficiary);
+
+        //    RealtyViewModel secondBeneficiary = new RealtyViewModel();
+        //    secondBeneficiary.MunicipalRegistration = AlphanumericGenerator.RandomString(10);
+        //    secondBeneficiary.MarketValue = 586000;
+        //    secondBeneficiary.SaleValue = 735000.99;
+        //    secondBeneficiary.ConstructionDate = new DateTime(2016, 1, 29);
+        //    secondBeneficiary.AddressStreet = "Rua Almir Celso";
+        //    secondBeneficiary.AddressNumber = "383";
+        //    secondBeneficiary.AddressNeighborhood = "Jangurussu";
+        //    secondBeneficiary.AddressZipCode = "60866665";
+        //    secondBeneficiary.AddressCity = "Fortaleza";
+        //    secondBeneficiary.AddressState = "CE";
+        //    secondBeneficiary.AddressCountry = "Brasil";
+        //    secondBeneficiary.AddressType = AddressType.Home;
+        //    contract.Realties.Add(secondBeneficiary);
+
+        //    //act
+        //    var jsonContent = JsonConvert.SerializeObject(contractHolder);
+        //    var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+        //    contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+        //    var contractHolderPost = await client.PostAsync($"{urlContractHolder}", contentString);
+        //    var contractHolderPostApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await contractHolderPost.Content.ReadAsStringAsync());
+        //    contract.ContractHolderId = contractHolderPostApiResponse.individualId;
+
+        //    jsonContent = JsonConvert.SerializeObject(contract);
+        //    contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+        //    contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+        //    var contractPost = await client.PostAsync($"{url}", contentString);
+        //    var contractPostApiResponse = JsonConvert.DeserializeObject<ContractViewModel>(await contractPost.Content.ReadAsStringAsync());
+
+        //    var getResponse = await client.GetAsync($"{url}/{contractPostApiResponse.SignedContractId}");
+        //    var getApiResponse = JsonConvert.DeserializeObject<ContractViewModel>(await getResponse.Content.ReadAsStringAsync());
+
+        //    //assert
+        //    Assert.IsNotNull(getApiResponse);
+        //    Assert.IsInstanceOf<ContractViewModel>(getApiResponse);
+        //    Assert.AreEqual(contract.ContractHolderId, getApiResponse.ContractHolderId);
+        //    Assert.AreEqual(contract.ExpiryDate, getApiResponse.ExpiryDate);
+        //    Assert.AreEqual(contract.Type, getApiResponse.Type);
+        //    Assert.AreEqual(contract.Category, getApiResponse.Category);
+        //    Assert.AreEqual(contract.IsActive, getApiResponse.IsActive);
+        //    Assert.AreEqual(contractPostApiResponse.SignedContractId, getApiResponse.SignedContractId);
+
+        //    //cleaning
+        //    var deleteContract = await client.DeleteAsync($"{url}/{getApiResponse.SignedContractId}");
+        //    var deleteContractHolder = await client.DeleteAsync($"{urlContractHolder}/{contractHolderPostApiResponse.individualId}");
+        //}
     }
 }
