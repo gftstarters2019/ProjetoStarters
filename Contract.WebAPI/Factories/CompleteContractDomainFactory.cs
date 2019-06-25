@@ -38,7 +38,7 @@ namespace Contract.WebAPI.Factories
                 Individuals = contractViewModel.Individuals,
                 MobileDevices = contractViewModel.MobileDevices,
                 Pets = contractViewModel.Pets,
-                Realties = contractViewModel.Realties,
+                Realties = FactoriesManager.RealtyDomainList.Create(contractViewModel.Realties),
                 Vehicles = contractViewModel.Vehicles,
             };
         }

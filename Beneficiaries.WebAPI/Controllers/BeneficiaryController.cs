@@ -1,5 +1,7 @@
-﻿using Backend.Core.Models;
-using Backend.Infrastructure.Repositories.Interfaces;
+﻿using Backend.Core.Domains;
+using Backend.Core.Models;
+using Backend.Services.Services.Interfaces;
+using Beneficiaries.WebAPI.Factories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -13,42 +15,29 @@ namespace Beneficiaries.WebAPI.Controllers
     [ApiController]
     public class BeneficiaryController : ControllerBase
     {
-        private readonly IRepository<Beneficiary> _beneficiaryRepository;
-        private readonly IRepository<ContractBeneficiary> _contractsRepository;
-
-        private readonly IRepository<IndividualEntity> _individualRepository;
-
-        private readonly IRepository<PetEntity> _petRepository;
-
-        private readonly IRepository<MobileDeviceEntity> _mobileDeviceRepository;
-
-        private readonly IRepository<RealtyEntity> _realtyRepository;
-
-        private readonly IRepository<VehicleEntity> _vehicleRepository;
+        private readonly IService<Backend.Core.Models.BeneficiaryEntity> _beneficiaryService;
+        private readonly IService<IndividualDomain> _individualService;
+        private readonly IService<MobileDeviceDomain> _mobileDeviceService;
+        private readonly IService<PetDomain> _petService;
+        private readonly IService<RealtyDomain> _realtyService;
+        private readonly IService<VehicleDomain> _vehicleService;
 
         /// <summary>
         /// BeneficiaryController constructor
         /// </summary>
-        public BeneficiaryController(IRepository<Beneficiary> beneficiaryRepository,
-                                     IRepository<ContractBeneficiary> contractsRepository,
-                                     IRepository<IndividualEntity> individualRepository,
-                                     IRepository<PetEntity> petRepository,
-                                     IRepository<MobileDeviceEntity> mobileDeviceRepository,
-                                     IRepository<RealtyEntity> realtyRepository,
-                                     IRepository<VehicleEntity> vehicleRepository)
+        public BeneficiaryController(IService<Backend.Core.Models.BeneficiaryEntity> beneficiaryService,
+                                     IService<IndividualDomain> individualService,
+                                     IService<MobileDeviceDomain> mobileDeviceService,
+                                     IService<PetDomain> petService,
+                                     IService<RealtyDomain> realtyService,
+                                     IService<VehicleDomain> vehicleService)
         {
-            _beneficiaryRepository = beneficiaryRepository;
-            _contractsRepository = contractsRepository;
-
-            _individualRepository = individualRepository;
-
-            _petRepository = petRepository;
-
-            _mobileDeviceRepository = mobileDeviceRepository;
-
-            _realtyRepository = realtyRepository;
-
-            _vehicleRepository = vehicleRepository;
+            _beneficiaryService = beneficiaryService;
+            _individualService = individualService;
+            _mobileDeviceService = mobileDeviceService;
+            _petService = petService;
+            _realtyService = realtyService;
+            _vehicleService = vehicleService;
         }
 
         /// <summary>
@@ -58,7 +47,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet]
         public IActionResult Beneficiaries()
         {
-            return Ok(_beneficiaryRepository.Get().Where(b => !b.IsDeleted));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -68,7 +57,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Deleted")]
         public IActionResult DeletedBeneficiaries()
         {
-            return Ok(_beneficiaryRepository.Get().Where(b => b.IsDeleted));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -79,8 +68,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Beneficiary(Guid id)
         {
-            var obj = _beneficiaryRepository.Find(id);
-            return Ok(obj);
+            return Ok(_beneficiaryService.Get(id));
         }
 
         #region Individual
@@ -91,7 +79,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Individuals")]
         public IActionResult GetIndividuals()
         {
-            return Ok(_individualRepository.Get());
+            return Ok(_individualService.GetAll().Select(ind => FactoriesManager.IndividualViewModel.Create(ind)));
         }
 
         /// <summary>
@@ -102,15 +90,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPost("Individual")]
         public IActionResult PostIndividual([FromBody] IndividualEntity individual)
         {
-            individual.BeneficiaryId = Guid.NewGuid();
-            //individual.IndividualId = Guid.NewGuid();
-
-            //if (!IndividualValidations.IndividualIsValid(individual))
-            //    return StatusCode(403);
-
-            _individualRepository.Add(individual);
-
-            return Ok(individual);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -122,19 +102,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Individual/{id}")]
         public IActionResult UpdateIndividual(Guid id, [FromBody] IndividualEntity individual)
         {
-            //if (!IndividualValidations.IndividualIsValid(individual))
-            //    return Forbid();
-
-            var obj = (IndividualEntity)_beneficiaryRepository.Find(id);
-
-            obj.IsDeleted = individual.IsDeleted;
-            obj.IndividualBirthdate = individual.IndividualBirthdate;
-            obj.IndividualCPF = individual.IndividualCPF;
-            obj.IndividualEmail = individual.IndividualEmail;
-            obj.IndividualName = individual.IndividualName;
-            obj.IndividualRG = individual.IndividualRG;
-
-            return Ok(_beneficiaryRepository.Update(id, obj));
+            throw new NotImplementedException();
         }
         #endregion Individual
 
@@ -146,7 +114,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("MobileDevices")]
         public IActionResult GetMobileDevices()
         {
-            return Ok(_mobileDeviceRepository.Get());
+            return Ok(_mobileDeviceService.GetAll().Select(mob => FactoriesManager.MobileDeviceViewModel.Create(mob)));
         }
 
         /// <summary>
@@ -157,14 +125,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPost("MobileDevice")]
         public IActionResult PostMobileDevice([FromBody] MobileDeviceEntity mobileDevice)
         {
-            mobileDevice.BeneficiaryId = Guid.NewGuid();
-
-            //if (!MobileDeviceValidations.MobileDeviceIsValid(mobileDevice))
-            //    return Forbid();
-
-            _mobileDeviceRepository.Add(mobileDevice);
-
-            return Ok(mobileDevice);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -176,20 +137,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("MobileDevice/{id}")]
         public IActionResult UpdateMobileDevice(Guid id, [FromBody] MobileDeviceEntity mobileDevice)
         {
-            //if (!MobileDeviceValidations.MobileDeviceIsValid(mobileDevice))
-            //    return Forbid();
-
-            var obj = (MobileDeviceEntity)_beneficiaryRepository.Find(id);
-
-            obj.IsDeleted = mobileDevice.IsDeleted;
-            obj.MobileDeviceBrand = mobileDevice.MobileDeviceBrand;
-            obj.MobileDeviceInvoiceValue = mobileDevice.MobileDeviceInvoiceValue;
-            obj.MobileDeviceManufactoringYear = mobileDevice.MobileDeviceManufactoringYear;
-            obj.MobileDeviceModel = mobileDevice.MobileDeviceModel;
-            obj.MobileDeviceSerialNumber = mobileDevice.MobileDeviceSerialNumber;
-            obj.MobileDeviceType = mobileDevice.MobileDeviceType;
-
-            return Ok(_beneficiaryRepository.Update(id, obj));
+            throw new NotImplementedException();
         }
         #endregion MobileDevice
 
@@ -201,7 +149,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Pets")]
         public IActionResult GetPets()
         {
-            return Ok(_petRepository.Get());
+            return Ok(_petService.GetAll().Select(pet => FactoriesManager.PetViewModel.Create(pet)));
         }
 
         /// <summary>
@@ -212,14 +160,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPost("Pet")]
         public IActionResult PostPet([FromBody] PetEntity pet)
         {
-            pet.BeneficiaryId = Guid.NewGuid();
-            //pet.PetId = Guid.NewGuid();
-
-            //if (!PetIsValid(pet))
-            //    return Forbid();
-            _petRepository.Add(pet);
-
-            return Ok(pet);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -231,18 +172,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Pet/{id}")]
         public IActionResult UpdatePet(Guid id, [FromBody] PetEntity pet)
         {
-            //if (!PetIsValid(pet))
-            //    return Forbid();
-
-            var obj = (PetEntity)_beneficiaryRepository.Find(id);
-
-            obj.IsDeleted = pet.IsDeleted;
-            obj.PetBirthdate = pet.PetBirthdate;
-            obj.PetBreed = pet.PetBreed;
-            obj.PetName = pet.PetName;
-            obj.PetSpecies = pet.PetSpecies;
-
-            return Ok(_beneficiaryRepository.Update(id, obj));
+            throw new NotImplementedException();
         }
         #endregion Pet
 
@@ -254,7 +184,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Realties")]
         public IActionResult GetRealties()
         {
-            return Ok(_realtyRepository.Get());
+            return Ok(_realtyService.GetAll().Select(real => FactoriesManager.RealtyViewModel.Create(real)).Where(real => real != null));
         }
 
         /// <summary>
@@ -265,14 +195,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPost("Realty")]
         public IActionResult PostRealty([FromBody] RealtyEntity realty)
         {
-            realty.BeneficiaryId = Guid.NewGuid();
-
-            //if (!RealtyValidations.RealtyIsValid(realty))
-            //    return Forbid();
-
-            //_realtyRepository.Add(realty);
-
-            return Ok(realty);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -284,18 +207,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Realty/{id}")]
         public IActionResult UpdateRealty(Guid id, [FromBody] RealtyEntity realty)
         {
-        //    if (!RealtyValidations.RealtyIsValid(realty))
-        //        return Forbid();
-
-            var obj = (RealtyEntity)_beneficiaryRepository.Find(id);
-
-            obj.IsDeleted = realty.IsDeleted;
-            obj.RealtyConstructionDate = realty.RealtyConstructionDate;
-            obj.RealtyMarketValue = realty.RealtyMarketValue;
-            obj.RealtyMunicipalRegistration = realty.RealtyMunicipalRegistration;
-            obj.RealtySaleValue = realty.RealtySaleValue;
-
-            return Ok(_beneficiaryRepository.Update(id, obj));
+            throw new NotImplementedException();
         }
         #endregion Realty
 
@@ -307,7 +219,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("Vehicles")]
         public IActionResult GetVehicles()
         {
-            return Ok(_vehicleRepository.Get());
+            return Ok(_vehicleService.GetAll().Select(veh => FactoriesManager.VehicleViewModel.Create(veh)));
         }
 
         /// <summary>
@@ -318,14 +230,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPost("Vehicle")]
         public IActionResult PostVehicle([FromBody] VehicleEntity vehicle)
         {
-            vehicle.BeneficiaryId = Guid.NewGuid();
-
-            //if (!VehicleValidations.VehicleIsValid(vehicle))
-            //    return Forbid();
-
-            _vehicleRepository.Add(vehicle);
-
-            return Ok(vehicle);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -337,22 +242,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpPut("Vehicle/{id}")]
         public IActionResult UpdateVehicle(Guid id, [FromBody] VehicleEntity vehicle)
         {
-            //if (!VehicleValidations.VehicleIsValid(vehicle))
-            //    return Forbid();
-
-            var obj = (VehicleEntity)_beneficiaryRepository.Find(id);
-
-            obj.VehicleBrand = vehicle.VehicleBrand;
-            obj.VehicleChassisNumber = vehicle.VehicleChassisNumber;
-            obj.VehicleColor = vehicle.VehicleColor;
-            obj.VehicleCurrentFipeValue = vehicle.VehicleCurrentFipeValue;
-            obj.VehicleCurrentMileage = vehicle.VehicleCurrentMileage;
-            obj.VehicleDoneInspection = vehicle.VehicleDoneInspection;
-            obj.VehicleManufactoringYear = vehicle.VehicleManufactoringYear;
-            obj.VehicleModel = vehicle.VehicleModel;
-            obj.VehicleModelYear = vehicle.VehicleModelYear;
-
-            return Ok(_beneficiaryRepository.Update(id, obj));
+            throw new NotImplementedException();
         }
         #endregion Vehicle
 
@@ -364,22 +254,10 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBeneficiary(Guid id)
         {
-            var beneficiariesContracts = _contractsRepository.Get()
-                .Where(cb => cb.BeneficiaryId == id)
-                .ToList();
-
-            if (beneficiariesContracts.Count > 0)
-                return StatusCode(403);
-
-            var obj = _beneficiaryRepository.Find(id);
-
-            if (obj != null)
-            {
-                obj.IsDeleted = !obj.IsDeleted;
-                return Ok(_beneficiaryRepository.Update(id, obj));
-            }
-
-            return NotFound(obj);
+            var deletedBeneficiary = _beneficiaryService.Delete(id);
+            if (deletedBeneficiary == null)
+                return NotFound();
+            return Ok();
         }
     }
 }

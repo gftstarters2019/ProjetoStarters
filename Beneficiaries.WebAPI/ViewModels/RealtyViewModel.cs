@@ -1,13 +1,9 @@
 ﻿using Backend.Core.Enums;
-using Backend.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Beneficiaries.WebAPI.ViewModels
 {
-    public class RealtyViewModel : Beneficiary
+    public class RealtyViewModel
     {
         public Guid Id { get; set; }
         public string MunicipalRegistration { get; set; }
@@ -16,7 +12,6 @@ namespace Beneficiaries.WebAPI.ViewModels
         public double MarketValue { get; set; }
 
         // Address
-        public AddressEntity Address { get; set; }
         public Guid AddressId { get; set; }
         public string AddressStreet { get; set; }
         public string AddressNumber { get; set; }

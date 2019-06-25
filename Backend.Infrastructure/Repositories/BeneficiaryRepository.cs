@@ -1,15 +1,13 @@
-﻿using Backend.Core;
-using Backend.Core.Models;
+﻿using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class BeneficiaryRepository : IRepository<Beneficiary>
+    public class BeneficiaryRepository : IRepository<BeneficiaryEntity>
     {
         private readonly ConfigurationContext _db;
 
@@ -18,9 +16,9 @@ namespace Backend.Infrastructure.Repositories
             _db = db;
         }
 
-        public Beneficiary Find(Guid id)
+        public BeneficiaryEntity Find(Guid id)
         {
-            Beneficiary beneficiary;
+            BeneficiaryEntity beneficiary;
 
             // Individual
             beneficiary = _db
@@ -60,53 +58,35 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public IEnumerable<Beneficiary> Get() => _db
-            //.Beneficiaries
+        public IEnumerable<BeneficiaryEntity> Get() => _db
             .Individuals
             .ToList();
-
-        public bool Add(Beneficiary beneficiary)
-        {
-            if(beneficiary != null)
-            {
-                _db.Add(beneficiary);
-                if (_db.SaveChanges() == 1)
-                    return true;
-
-                return false;
-            }
-            return false;
-        }
-
+        
         public bool Remove(Guid id)
         {
             var beneficiary = Find(id);
             if(beneficiary != null)
             {
                 _db.Remove(beneficiary);
-                _db.SaveChanges();
                 return true;
             }
             return false;
         }
 
-        public Beneficiary Update(Guid id, Beneficiary beneficiary)
+        public BeneficiaryEntity Update(Guid id, BeneficiaryEntity beneficiary)
         {
             if(beneficiary != null)
-            {
                 _db.Update(beneficiary);
-                _db.SaveChanges();
-            }
 
             return beneficiary;
         }
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
-        Beneficiary IRepository<Beneficiary>.Add(Beneficiary t)
+        public BeneficiaryEntity Add(BeneficiaryEntity t)
         {
             throw new NotImplementedException();
         }

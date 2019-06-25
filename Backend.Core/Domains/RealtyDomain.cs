@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Backend.Core.Domains
 {
-    public class RealtyDomain : BeneficiaryDomain
+    public class RealtyDomain : Beneficiary
     {
         public string RealtyMunicipalRegistration { get; set; }
         public DateTime RealtyConstructionDate { get; set; }

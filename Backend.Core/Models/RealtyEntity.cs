@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Core.Models
 {
-    public class RealtyEntity : Beneficiary
+    public class RealtyEntity : BeneficiaryEntity
     {
         [MaxLength(50)]
         public string RealtyMunicipalRegistration { get; set; }

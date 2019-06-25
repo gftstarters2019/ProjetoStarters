@@ -3,7 +3,7 @@ using System;
 
 namespace Backend.Core.Domains
 {
-    public class VehicleDomain : BeneficiaryDomain
+    public class VehicleDomain : Beneficiary
     {
         public string VehicleBrand { get; set; }
         public string VehicleModel { get; set; }

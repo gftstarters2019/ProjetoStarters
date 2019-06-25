@@ -5,7 +5,7 @@ namespace Beneficiaries.WebAPI.ViewModels
 {
     public class VehicleViewModel
     {
-        public Guid individualId { get; set; }
+        public Guid BeneficiaryId { get; set; }
         public string VehicleBrand { get; set; }
         public string VehicleModel { get; set; }
         public DateTime VehicleManufactoringYear { get; set; }

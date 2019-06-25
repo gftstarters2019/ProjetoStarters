@@ -5,7 +5,7 @@ namespace Beneficiaries.WebAPI.ViewModels
 {
     public class IndividualViewModel
     {
-        public Guid individualId { get; set; }
+        public Guid IndividualId { get; set; }
         [MaxLength(50)]
         public string IndividualName { get; set; }
         [MaxLength(11)]

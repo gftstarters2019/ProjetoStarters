@@ -6,7 +6,7 @@ namespace Beneficiaries.WebAPI.ViewModels
 {
     public class PetViewModel
     {
-        public Guid individualId { get; set; }
+        public Guid BeneficiaryId { get; set; }
         [MaxLength(40)]
         public string PetName { get; set; }
         public PetSpecies PetSpecies { get; set; }
