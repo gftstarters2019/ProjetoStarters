@@ -1,11 +1,9 @@
-﻿
-using Backend.Core.Models;
+﻿using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
@@ -13,12 +11,15 @@ namespace Backend.Infrastructure.Repositories
     {
         private readonly ConfigurationContext _db;
         private readonly IRepository<AddressEntity> _addressRepository;
+        private readonly IRepository<BeneficiaryAddress> _beneficiaryAddressRepository;
 
         public RealtyRepository(ConfigurationContext db,
-                                IRepository<AddressEntity> addressRepository)
+                                IRepository<AddressEntity> addressRepository,
+                                IRepository<BeneficiaryAddress> beneficiaryAddressRepository)
         {
             _db = db;
             _addressRepository = addressRepository;
+            _beneficiaryAddressRepository = beneficiaryAddressRepository;
         }
 
         public RealtyEntity Add(RealtyEntity realty)
@@ -57,7 +58,15 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        
+        public IEnumerable<RealtyEntity> Get()
+        {
+            var realties = _db.Realties.Where(real => !real.IsDeleted).ToList();
+
+            foreach (var realty in realties)
+                realty.Address = _addressRepository.Get().Where(add => _beneficiaryAddressRepository.Get().Where(ba => ba.BeneficiaryId == realty.BeneficiaryId).Select(ba => ba.AddressId).Contains(add.AddressId)).FirstOrDefault();
+
+            return realties;
+        }
 
         public bool Remove(Guid id)
         {
@@ -117,11 +126,6 @@ namespace Backend.Infrastructure.Repositories
                 }
             }
             return null;
-        }
-
-        IEnumerable<RealtyEntity> IRepository<RealtyEntity>.Get()
-        {
-            throw new NotImplementedException();
         }
     }
 }

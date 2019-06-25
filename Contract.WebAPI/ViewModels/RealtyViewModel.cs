@@ -16,7 +16,6 @@ namespace Contract.WebAPI.ViewModels
         public double MarketValue { get; set; }
 
         // Address
-        public AddressEntity Address { get; set; }
         public Guid AddressId { get; set; }
         public string AddressStreet { get; set; }
         public string AddressNumber { get; set; }
