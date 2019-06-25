@@ -34,7 +34,7 @@ namespace Backend.Services.Validators
                 errors.Add($"{address.AddressState}: Estado Inválido! ");
 
             if (!regexLetters.IsMatch(address.AddressCountry))
-                errors.Add($"{address.AddressCountry}: País Inválido!");
+                errors.Add($"{address.AddressCountry}: País Inválido! ");
 
             return errors;
         }

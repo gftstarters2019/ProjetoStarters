@@ -70,9 +70,7 @@ namespace ContractHolder.WebAPI.Controllers
             }
             catch (Exception e)
             {
-                string errors;
-
-                errors = e.Message;
+                string errors = e.Message;
 
                 return ValidationProblem(new ValidationProblemDetails()
                 {
