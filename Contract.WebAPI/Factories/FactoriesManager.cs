@@ -4,6 +4,8 @@
     {
         private static CompleteContractDomainFactory completeContractDomainFactory = null;
         private static ContractViewModelFactory contractViewModelFactory = null;
+        private static RealtyViewModelListFactory realtyViewModelListFactory = null;
+        private static RealtyDomainListFactory realtyDomainListFactory = null;
         private static readonly object padlock = new object();
 
         public FactoriesManager()
@@ -43,6 +45,42 @@
                     }
                 }
                 return contractViewModelFactory;
+            }
+        }
+
+        public static RealtyViewModelListFactory RealtyViewModelList
+        {
+            get
+            {
+                if (realtyViewModelListFactory == null)
+                {
+                    lock (padlock)
+                    {
+                        if (realtyViewModelListFactory == null)
+                        {
+                            realtyViewModelListFactory = new RealtyViewModelListFactory();
+                        }
+                    }
+                }
+                return realtyViewModelListFactory;
+            }
+        }
+
+        public static RealtyDomainListFactory RealtyDomainList
+        {
+            get
+            {
+                if (realtyDomainListFactory == null)
+                {
+                    lock (padlock)
+                    {
+                        if (realtyDomainListFactory == null)
+                        {
+                            realtyDomainListFactory = new RealtyDomainListFactory();
+                        }
+                    }
+                }
+                return realtyDomainListFactory;
             }
         }
     }

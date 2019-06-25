@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
-    public class PetEntity : Beneficiary
+    public class PetEntity : BeneficiaryEntity
     {
         [MaxLength(40)]
         public string PetName { get; set; }

@@ -11,6 +11,6 @@ namespace Backend.Core.Models
         public Guid TelephoneId { get; set; }
         public TelephoneEntity Telephone { get; set; }
         public Guid BeneficiaryId { get; set; }
-        public Beneficiary Beneficiary { get; set; }
+        public BeneficiaryEntity Beneficiary { get; set; }
     }
 }

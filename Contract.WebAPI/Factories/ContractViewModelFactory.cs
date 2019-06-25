@@ -17,7 +17,7 @@ namespace Contract.WebAPI.Factories
                 Individuals = completeContractDomain.Individuals,
                 Pets = completeContractDomain.Pets,
                 MobileDevices = completeContractDomain.MobileDevices,
-                Realties = completeContractDomain.Realties,
+                Realties = FactoriesManager.RealtyViewModelList.Create(completeContractDomain.Realties),
                 Vehicles = completeContractDomain.Vehicles,
                 IsActive = completeContractDomain.SignedContract.ContractIndividualIsActive,
                 SignedContractId = completeContractDomain.SignedContract.SignedContractId,

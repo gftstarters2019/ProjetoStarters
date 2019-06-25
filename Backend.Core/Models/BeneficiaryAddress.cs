@@ -10,6 +10,6 @@ namespace Backend.Core.Models
         public Guid AddressId { get; set; }
         public AddressEntity Address { get; set; }
         public Guid BeneficiaryId { get; set; }
-        public Beneficiary Beneficiary { get; set; }
+        public BeneficiaryEntity Beneficiary { get; set; }
     }
 }

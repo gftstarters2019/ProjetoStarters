@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Backend.Core.Domains
 {
-    public class PetDomain : BeneficiaryDomain
+    public class PetDomain : Beneficiary
     {
         public string PetName { get; set; }
         public PetSpecies PetSpecies { get; set; }
