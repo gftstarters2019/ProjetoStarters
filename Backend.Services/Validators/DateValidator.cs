@@ -7,16 +7,25 @@ namespace Backend.Services.Validators
 {
     public class DateValidator : IDateValidator
     {
-        public bool IsValid(DateTime date)
+        public List<string> IsValid(DateTime date)
         {
-            return date != null ? date <= DateTime.Today : false;
+            var errors = new List<string>();
+
+            if (date == null)
+                errors.Add("Data Vazia! ");
+            else if (date > DateTime.Today)
+                errors.Add($"{date}: Data Inválida! ");
+
+            return errors;
 
         }
-        public bool IsOfAge(DateTime date)
+        public List<string> IsOfAge(DateTime date)
         {
+            var errors = new List<string>();
+
             if (date.Year - DateTime.Today.Year < 18)
-                return false;
-            return true;
+                errors.Add($"{date}: Pessoa não é maior de idade!");
+            return errors;
         }
     }
 }

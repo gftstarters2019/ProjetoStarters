@@ -27,8 +27,7 @@ namespace Backend.Services.Validators
 
             errors = _individualValidator.IsValid(individual);
 
-            //if (!_dateValidator.IsOfAge(individual.IndividualBirthdate))
-            //    return false;
+            errors.Concat(_dateValidator.IsOfAge(individual.IndividualBirthdate));
 
             if (addresses != null)
             {
