@@ -41,6 +41,7 @@ export class ContractComponent implements OnInit {
   rowData$: Observable<any>;
   paginationPageSize;
   detailCellRendererParams;
+  detailRowHeight;
   contractform: FormGroup;
 
   gridApi;
@@ -381,7 +382,7 @@ export class ContractComponent implements OnInit {
   }
 
   private async handle_deleteUser(data: any) {
-    const id = data.signedContractId;   
+    const id = data.signedContractId;
     let show: boolean = data.isActive;
 
     const message = `Do you really want to delete this contract?`;
@@ -402,19 +403,19 @@ export class ContractComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
-      if(this.result == true){
+      if (this.result == true) {
         if (show == false) {
           this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`)
-              .subscribe(response => this.setup_gridData(),
-                  error => this.openSnackBar(error.message),
-                  () => this.openSnackBar("Contract removed"));
-      }
-      else {
+            .subscribe(response => this.setup_gridData(),
+              error => this.openSnackBar(error.message),
+              () => this.openSnackBar("Contract removed"));
+        }
+        else {
           this.openSnackBar("Contract is active, cannot delete");
+        }
       }
-}
-});
-}
+    });
+  }
 
 
   //AG-grid Table Contract
@@ -427,9 +428,6 @@ export class ContractComponent implements OnInit {
       columnDefs: [
         {
           headerName: "Contract Holder",
-          // rowGroupIndex: 0,
-          // rowGroup: true,
-          // hide: false,
           children: [
             {
               headerName: 'Name',
@@ -437,7 +435,7 @@ export class ContractComponent implements OnInit {
               lockPosition: true,
               sortable: true,
               filter: true,
-              // cellRenderer: "agGroupCellRenderer",
+              cellRenderer: "agGroupCellRenderer",
               onCellValueChanged:
                 this.onCellEdit.bind(this),
             },
@@ -455,9 +453,6 @@ export class ContractComponent implements OnInit {
         },
         {
           headerName: "Contract",
-          // rowGroupIndex: 0,
-          // rowGroup: true,
-          // hide: false,
           children: [
             {
               headerName: 'Category',
@@ -515,130 +510,10 @@ export class ContractComponent implements OnInit {
         },
       ]
     }
-    this.detailCellRendererParams = {
-      detailGridOptions: {
-        columnDefs: [
-          {
-            headerName: "Individual Details",
-            // rowGroupIndex: 0,
-            // rowGroup: true,
-            // hide: false,
-            children: [
-              { headerName: 'Name ', field: "individualName" },
-              { headerName: 'CPF ', field: "individualCPF" },
-              { headerName: 'RG ', field: "individualRG" },
-              { headerName: 'Birthdate ', field: "individualBirthdate" },
-              { headerName: 'Email ', field: "individualEmail" }
-            ]
-          },
-          //       {
-          //         headerName: "Pet Details",
-          //         // rowGroupIndex: 1,
-          //         // rowGroup: true,
-          //         // hide: true,
-          //         children: [
-          //           { headerName: 'Name ', field: "petName" },
-          //           { headerName: 'Breed ', field: "petBreed" },
-          //           { headerName: 'Species ', field: "petSpecies" },
-          //           { headerName: 'Birthdate ', field: "petBirthdate" },
-          //         ]
-          //       },
-          //       {
-          //         headerName: "Realties Details",
-          //         // rowGroupIndex: 2,
-          //         // rowGroup: true,
-          //         // hide: true,
-          //         children: [
-          //           { headerName: 'Type', field: "addressType" },
-          //           { headerName: 'Street', field: "addressStreet" },
-          //           { headerName: 'No.', field: "addressNumber" },
-          //           { headerName: 'Complement', field: "addressComplement" },
-          //           { headerName: 'Neighborhood', field: "addressNeighborhood" },
-          //           { headerName: 'City', field: "addressCity" },
-          //           { headerName: 'State', field: "addressState" },
-          //           { headerName: 'Country', field: "addressCountry" },
-          //           { headerName: 'Zip-Code', field: "addressZipCode" },
-          //           { headerName: 'Construction Date', field: "constructionDate" },
-          //           { headerName: 'Municipal Registration', field: "municipalRegistration" },
-          //           { headerName: 'Market Value', field: "marketValue" },
-          //           { headerName: 'Sale Value', field: "saleValue" },
-          //         ]
-          //       },
-          //       {
-          //         headerName: "Vehicles Details",
-          //         // rowGroupIndex: 3,
-          //         // rowGroup: true,
-          //         // hide: true,
-          //         children: [
-          //           { headerName: 'Brand', field: "vehicleBrand" },
-          //           { headerName: 'Model', field: "vehicleModel" },
-          //           { headerName: 'Color', field: "vehicleColor" },
-          //           { headerName: 'Manufactoring Year', field: "vehicleManufactoringYear" },
-          //           { headerName: 'Model Year', field: "vehicleModelYear" },
-          //           { headerName: 'No. Chassis', field: "vehicleChassisNumber" },
-          //           { headerName: 'Current Mileage', field: "vehicleCurrentMileage" },
-          //           { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue" },
-          //           { headerName: 'Done Inspection', field: "vehicleDoneInspection" },
-          //         ]
-          //       },
-          //       {
-          //         headerName: "Mobile Device Details",
-          //         // rowGroup: true,
-          //         // rowGroupIndex: 4,
-          //         // hide: true,
-          //         children: [
-          //           { headerName: 'Brand', field: "mobileDeviceBrand" },
-          //           { headerName: 'Model', field: "mobileDeviceModel" },
-          //           { headerName: 'Device Type', field: "mobileDeviceType" },
-          //           { headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear" },
-          //           { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber" },
-          //           { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue" },
-          //         ]
-          //       }
-        ],
-
-        onFirstDataRendered(params) {
-          params.api.sizeColumnsToFit();
-        },
-
-
-      } as GridOptions,
-
-
-      getDetailRowData: function (params) {
-
-        //     // switch (params.data.type) {
-        //     //   case 0:
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 0;
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-        //     //     break;
-        //     //   case 1:
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 1;
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-        //     //     break;
-        //     //   case 2:
-        //     //     this.detailCellRendererParams.detailGidOptions.columnDefs.rowGroupIndex = 0;
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-        //     //     break;
-        //     //   case 3:
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 0;
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-        //     //     break;
-        //     //   case 4:
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 2;
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-        //     //     break;
-        //     //   case 5:
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 3;
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-        //     //     break;
-        //     //   case 6:
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.rowGroupIndex = 4;
-        //     //     this.detailCellRendererParams.detailGridOptions.columnDefs.hide = false;
-        //     //     break;
-
-        //     // }
-
+    this.detailRowHeight = 150;
+    this.detailCellRendererParams = function (params) {
+      let res;
+      res.getDetailRowData = function (params) {
         switch (params.data.type) {
           case 0:
             params.successCallback(params.data.individuals);
@@ -662,47 +537,108 @@ export class ContractComponent implements OnInit {
             params.successCallback(params.data.mobileDevices);
             break;
         }
-      },
+        if (params.data.type === 0 || params.data.name === 2 || params.data.name === 3) {
+          res.detailGridOptions = {
+            columnDefs: [{
+              headerName: "Individual Details",
+              children: [
+                { headerName: 'Name ', field: "individualName" },
+                { headerName: 'CPF ', field: "individualCPF" },
+                { headerName: 'RG ', field: "individualRG" },
+                { headerName: 'Birthdate ', field: "individualBirthdate" },
+                { headerName: 'Email ', field: "individualEmail" }
+              ]
+            }],
 
-      template:
-        '<div style="height: 100%; background-color: #edf6ff; padding: 25px; box-sizing: border-box;">' +
-        '  <div style="height: 20%;">Beneficiary Details</div>' +
-        '  <div ref="eDetailGrid" style="height: 90%;"></div>' +
-        "</div>"
+            onGridReady: function (params) {
+              this.gridApi = params.api;
+              this.gridColumApi = params.columnApi;
+            },
+            onFirstDataRendered(params) {
+              params.api.sizeColumnsToFit();
+            },
+          }
+        }
+        if (params.data.type === 1) {
+          res.detailGridOptions = {
+            columnDefs: [{
+              headerName: "Pet Details",
+              children: [
+                { headerName: 'Name ', field: "petName" },
+                { headerName: 'Breed ', field: "petBreed" },
+                { headerName: 'Species ', field: "petSpecies" },
+                { headerName: 'Birthdate ', field: "petBirthdate" },
+              ]
+            }],
+
+            onGridReady: function (params) {
+              this.gridApi = params.api;
+              this.gridColumApi = params.columnApi;
+            },
+            onFirstDataRendered(params) {
+              params.api.sizeColumnsToFit();
+            },
+          }
+        }
+        if (params.data.type === 4) {
+          res.detailGridOptions = {
+            columnDefs: [{
+              headerName: "Realties Details",
+              children: [
+                { headerName: 'Type', field: "addressType" },
+                { headerName: 'Street', field: "addressStreet" },
+                { headerName: 'No.', field: "addressNumber" },
+                { headerName: 'Complement', field: "addressComplement" },
+                { headerName: 'Neighborhood', field: "addressNeighborhood" },
+                { headerName: 'City', field: "addressCity" },
+                { headerName: 'State', field: "addressState" },
+                { headerName: 'Country', field: "addressCountry" },
+                { headerName: 'Zip-Code', field: "addressZipCode" },
+                { headerName: 'Construction Date', field: "constructionDate" },
+                { headerName: 'Municipal Registration', field: "municipalRegistration" },
+                { headerName: 'Market Value', field: "marketValue" },
+                { headerName: 'Sale Value', field: "saleValue" },
+              ]
+            }],
+
+            onGridReady: function (params) {
+              this.gridApi = params.api;
+              this.gridColumApi = params.columnApi;
+            },
+            onFirstDataRendered(params) {
+              params.api.sizeColumnsToFit();
+            },
+          }
+        }
+        return res;
+      }
     };
-
   }
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
-
-
-  //   setTimeout(function () {
-  //     var rowCount = 0;
-  //     params.api.forEachNode(function (node) {
-  //       node.setExpanded(rowCount++ === 1);
-  //     });
-  //   }, 500);
-   }
-
+  }
   private setup_gridData() {
     this.rowData$ = this.http
       .get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
-
+      
+      setTimeout(function() {
+        var nodeA = params.api.getDisplayedRowAtIndex(1);
+        var nodeB = params.api.getDisplayedRowAtIndex(2);
+        nodeA.setExpanded(true);
+        nodeB.setExpanded(true);
+      }, 500);
   }
   private onCellEdit(params: any) {
+    // private onRowSelected(event: RowSelectedEvent) {
 
+    //   const { data } = event;
+    //   this.contractform.getRawValue();
+    //   console.log(data);
+    //   this.contractform.patchValue(data);
+    // }
   }
-
-  // private onRowSelected(event: RowSelectedEvent) {
-
-  //   const { data } = event;
-  //   this.contractform.getRawValue();
-  //   console.log(data);
-  //   this.contractform.patchValue(data);
-  // }
 }
-
 //Function Formatting Category
 function currencyCategory(params) {
   return changeCategoryValue(params.value);
@@ -756,24 +692,80 @@ function changeTypValue(number) {
   }
 }
 
-  
+
 //function formatting Status
 function currencyStatus(params) {
   return changeStatusValue(params.value);
-} 
+}
 
 function changeStatusValue(stats: boolean) {
   if (stats == true) {
     return "Active";
-} else {
+  } else {
     return "Inactive"
   }
 }
 
 //function mask Cpf Contract Holder
-function maskCpf(params){
+function maskCpf(params) {
   return maskValue(params.value);
 }
-function maskValue(cpf){
-  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4")
+function maskValue(cpf) {
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "\$1.\$2.\$3\-\$4")
 }
+
+
+
+
+// {
+//   headerName: "Pet Details",
+//   children: [
+//     { headerName: 'Name ', field: "petName" },
+//     { headerName: 'Breed ', field: "petBreed" },
+//     { headerName: 'Species ', field: "petSpecies" },
+//     { headerName: 'Birthdate ', field: "petBirthdate" },
+//   ]
+// },
+// {
+//   headerName: "Realties Details",
+//   children: [
+//     { headerName: 'Type', field: "addressType" },
+//     { headerName: 'Street', field: "addressStreet" },
+//     { headerName: 'No.', field: "addressNumber" },
+//     { headerName: 'Complement', field: "addressComplement" },
+//     { headerName: 'Neighborhood', field: "addressNeighborhood" },
+//     { headerName: 'City', field: "addressCity" },
+//     { headerName: 'State', field: "addressState" },
+//     { headerName: 'Country', field: "addressCountry" },
+//     { headerName: 'Zip-Code', field: "addressZipCode" },
+//     { headerName: 'Construction Date', field: "constructionDate" },
+//     { headerName: 'Municipal Registration', field: "municipalRegistration" },
+//     { headerName: 'Market Value', field: "marketValue" },
+//     { headerName: 'Sale Value', field: "saleValue" },
+//   ]
+// },
+// {
+//   headerName: "Vehicles Details",
+//   children: [
+//     { headerName: 'Brand', field: "vehicleBrand" },
+//     { headerName: 'Model', field: "vehicleModel" },
+//     { headerName: 'Color', field: "vehicleColor" },
+//     { headerName: 'Manufactoring Year', field: "vehicleManufactoringYear" },
+//     { headerName: 'Model Year', field: "vehicleModelYear" },
+//     { headerName: 'No. Chassis', field: "vehicleChassisNumber" },
+//     { headerName: 'Current Mileage', field: "vehicleCurrentMileage" },
+//     { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue" },
+//     { headerName: 'Done Inspection', field: "vehicleDoneInspection" },
+//   ]
+// },
+// {
+//   headerName: "Mobile Device Details",
+//   children: [
+//     { headerName: 'Brand', field: "mobileDeviceBrand" },
+//     { headerName: 'Model', field: "mobileDeviceModel" },
+//     { headerName: 'Device Type', field: "mobileDeviceType" },
+//     { headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear" },
+//     { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber" },
+//     { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue" },
+//   ]
+// }
