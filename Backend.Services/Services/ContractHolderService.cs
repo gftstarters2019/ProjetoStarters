@@ -1,6 +1,8 @@
 ﻿using Backend.Core.Domains;
 using Backend.Infrastructure.Repositories.Interfaces;
 using Backend.Services.Services.Interfaces;
+using Backend.Services.Validators;
+using Backend.Services.Validators.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,12 @@ namespace Backend.Services.Services
     public class ContractHolderService : IService<ContractHolderDomain>
     {
         private IRepository<ContractHolderDomain> _contractHolderRepository;
+        private readonly IContractHolderValidator _contractHolderValidator;
 
-        public ContractHolderService(IRepository<ContractHolderDomain> contractHolderRepository)
+        public ContractHolderService(IRepository<ContractHolderDomain> contractHolderRepository, IContractHolderValidator contractHolderValidator)
         {
             _contractHolderRepository = contractHolderRepository;
+            _contractHolderValidator = contractHolderValidator;
         }
 
         public ContractHolderDomain Delete(Guid id)
@@ -33,14 +37,27 @@ namespace Backend.Services.Services
 
         public ContractHolderDomain Save(ContractHolderDomain contractHolderDomain)
         {
+            var errors = string.Empty;
+
             if (contractHolderDomain == null)
                 return null;
 
-            /*
-             * Validations
-            */
+            var validationErrorsList = _contractHolderValidator.IsValid(contractHolderDomain.Individual,contractHolderDomain.IndividualAddresses,contractHolderDomain.IndividualTelephones);
 
-            return _contractHolderRepository.Add(contractHolderDomain);
+            if(validationErrorsList.Any())
+                foreach (var er in validationErrorsList)
+                {
+                    errors += er;
+                }
+
+            if (errors != null)
+                throw new Exception(errors);
+
+
+            var addedContractHolder = _contractHolderRepository.Add(contractHolderDomain);
+            if (addedContractHolder == null)
+                throw new Exception("Model not added to DB");
+            return addedContractHolder;
         }
 
         public ContractHolderDomain Update(Guid id, ContractHolderDomain modelToUpdate)

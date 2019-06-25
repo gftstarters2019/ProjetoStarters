@@ -10,25 +10,20 @@ namespace Backend.Services.Validators
 {
     public class IndividualValidator: IIndividualValidator
     {
-        public bool IsValid(IndividualDomain individual)
+        public List<string> IsValid(IndividualDomain individual)
         {
-            var ex = new List<Exception>();
+            var errors = new List<string>();
 
             if (!CPFIsValid(individual.IndividualCPF))
-                //return false;
-                ex.Add(new ArgumentException("CPF inválido!"));
+                errors.Add("CPF inválido! ");
             if (!EmailIsValid(individual.IndividualEmail))
-                //return false;
-                ex.Add(new ArgumentException("Email inválido!"));
+                errors.Add("Email inválido! ");
             if (!NameIsValid(individual.IndividualName))
-                //return false;
-                ex.Add(new ArgumentException("Nome inválido!"));
+                errors.Add("Nome inválido! ");
             if (!RGIsValid(individual.IndividualRG))
-                //return false;
-                ex.Add(new ArgumentException("RG inválido!"));
-            if (ex.Any())
-                throw new AggregateException(ex);
-            return true;
+                errors.Add("RG inválido! ");
+
+            return errors;
         }
         /// <summary>
         /// Validação de CPF

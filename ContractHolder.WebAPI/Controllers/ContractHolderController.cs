@@ -61,12 +61,28 @@ namespace ContractHolder.WebAPI.Controllers
         {
             var contractHolderToAdd = FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel);
 
-            var addedContractHolder = _contractHolderService.Save(contractHolderToAdd);
-            if (addedContractHolder == null)
-                return StatusCode(403);
-            
-            //SendWelcomeEmail(vm);
-            return Ok(FactoriesManager.ContractHolderViewModel.Create(addedContractHolder));
+            try
+            {
+                var addedContractHolder = _contractHolderService.Save(contractHolderToAdd);
+                if (addedContractHolder == null)
+                    return StatusCode(403);
+                return Ok(FactoriesManager.ContractHolderViewModel.Create(addedContractHolder));
+            }
+            catch (Exception e)
+            {
+                string errors;
+
+                errors = e.Message;
+
+                return ValidationProblem(new ValidationProblemDetails()
+                {
+                    Type = "Model Validation Error",
+                    Detail = errors
+                }
+                );
+            }
+
+            //SendWelcomeEmail(vm);         
         }
 
         /// <summary>

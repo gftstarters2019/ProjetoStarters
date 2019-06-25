@@ -2,6 +2,7 @@
 using Backend.Services.Validators.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Backend.Services.Validators
 {
@@ -12,44 +13,42 @@ namespace Backend.Services.Validators
         private readonly IAddressValidator _addressValidator;
         private readonly ITelephoneValidator _telephoneValidator;
 
-        public ContractHolderValidator(IIndividualValidator individualValidator, IAddressValidator addressValidator, ITelephoneValidator telephoneValidator)
+        public ContractHolderValidator(IIndividualValidator individualValidator, IAddressValidator addressValidator, ITelephoneValidator telephoneValidator, IDateValidator dateValidator)
         {
             _individualValidator = individualValidator;
             _addressValidator = addressValidator;
             _telephoneValidator = telephoneValidator;
+            _dateValidator = dateValidator;
         }
 
-        public bool IsValid(IndividualDomain individual, List<AddressDomain> addresses, List<TelephoneDomain> telephones)
+        public List<string> IsValid(IndividualDomain individual, List<AddressDomain> addresses, List<TelephoneDomain> telephones)
         {
-            try
-            {
-                if (!_individualValidator.IsValid(individual))
-                    return false;
-                if (!_dateValidator.IsOfAge(individual.IndividualBirthdate))
-                    return false;
-                if (addresses != null)
-                {
-                    foreach (var item in addresses)
-                    {
-                        if (!_addressValidator.IsValid(item))
-                            return false;
-                    }
-                }
-                if (telephones != null)
-                {
-                    foreach (var item in telephones)
-                    {
-                        if (!_telephoneValidator.IsValid(item))
-                            return false;
-                    }
-                }
-                return true;
-            }
-            catch(Exception e)
-            {
-                throw;
-            }
-        }
+            List<string> errors = new List<string>();
 
+            //if (_individualValidator.IsValid(individual).Any())
+
+            errors = _individualValidator.IsValid(individual);
+                
+            //if (!_dateValidator.IsOfAge(individual.IndividualBirthdate))
+            //    return false;
+
+            //if (addresses != null)
+            //{
+            //    foreach (var item in addresses)
+            //    {
+            //        if (!_addressValidator.IsValid(item))
+            //            return false;
+            //    }
+            //}
+            //if (telephones != null)
+            //{
+            //    foreach (var item in telephones)
+            //    {
+            //        if (!_telephoneValidator.IsValid(item))
+            //            return false;
+            //    }
+            //}
+            return errors;            
+        }
     }
 }
