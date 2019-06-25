@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Backend.Infrastructure.Migrations
 {
-    public partial class Teste : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -125,14 +125,14 @@ namespace Backend.Infrastructure.Migrations
                 name: "SignedContracts",
                 columns: table => new
                 {
-                    ContractSignedId = table.Column<Guid>(nullable: false),
+                    SignedContractId = table.Column<Guid>(nullable: false),
                     IndividualId = table.Column<Guid>(nullable: false),
                     ContractId = table.Column<Guid>(nullable: false),
                     ContractIndividualIsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SignedContracts", x => x.ContractSignedId);
+                    table.PrimaryKey("PK_SignedContracts", x => x.SignedContractId);
                     table.ForeignKey(
                         name: "FK_SignedContracts_Contracts_ContractId",
                         column: x => x.ContractId,
@@ -193,7 +193,7 @@ namespace Backend.Infrastructure.Migrations
                         name: "FK_Contract_Beneficiary_SignedContracts_SignedContractId",
                         column: x => x.SignedContractId,
                         principalTable: "SignedContracts",
-                        principalColumn: "ContractSignedId",
+                        principalColumn: "SignedContractId",
                         onDelete: ReferentialAction.Restrict);
                 });
 

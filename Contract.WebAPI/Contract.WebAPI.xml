@@ -4,6 +4,63 @@
         <name>Contract.WebAPI</name>
     </assembly>
     <members>
+        <member name="T:Contract.WebAPI.Controllers.ContractController">
+            <summary>
+            Contract API
+            </summary>
+        </member>
+        <member name="M:Contract.WebAPI.Controllers.ContractController.#ctor(Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.Contract},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.SignedContract},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Application.ViewModels.ContractViewModel})">
+            <summary>
+            ContractController constructor
+            </summary>
+        </member>
+        <member name="M:Contract.WebAPI.Controllers.ContractController.Contracts">
+            <summary>
+            Gets all Contracts
+            </summary>
+            <returns>All Contracts</returns>
+        </member>
+        <member name="M:Contract.WebAPI.Controllers.ContractController.Categories">
+            <summary>
+            Gets the contracts' categories
+            </summary>
+            <returns>Categories</returns>
+        </member>
+        <member name="M:Contract.WebAPI.Controllers.ContractController.Types">
+            <summary>
+            Gets the contract types
+            </summary>
+            <returns>Types</returns>
+        </member>
+        <member name="M:Contract.WebAPI.Controllers.ContractController.Contract(System.Guid)">
+            <summary>
+            Gets a specific Contract
+            </summary>
+            <param name="id">ID of the chosen Contract</param>
+            <returns>Chosen Contract</returns>
+        </member>
+        <member name="M:Contract.WebAPI.Controllers.ContractController.PostContract(Backend.Application.ViewModels.ContractViewModel)">
+            <summary>
+            Creates a new Contract
+            </summary>
+            <param name="contract">Contract to be created</param>
+            <returns>Created Contract</returns>
+        </member>
+        <member name="M:Contract.WebAPI.Controllers.ContractController.UpdateContract(System.Guid,Backend.Application.ViewModels.ContractViewModel)">
+            <summary>
+            Updates a Contract
+            </summary>
+            <param name="id">GUID of the Contract to update</param>
+            <param name="contractViewModel">ContractViewModel with updated values</param>
+            <returns>Updated Contract</returns>
+        </member>
+        <member name="M:Contract.WebAPI.Controllers.ContractController.DeleteContract(System.Guid)">
+            <summary>
+            Soft deletes a Contract
+            </summary>
+            <param name="id">GUID of the chosen Contract</param>
+            <returns>Deleted Contract</returns>
+        </member>
         <member name="M:Contract.WebAPI.Controllers.ContractController.ContractIsValid(Backend.Core.Models.Contract)">
             <summary>
             Verifies if Contract is valid

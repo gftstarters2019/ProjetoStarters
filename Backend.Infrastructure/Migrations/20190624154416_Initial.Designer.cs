@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(ConfigurationContext))]
-    [Migration("20190605135132_Teste")]
-    partial class Teste
+    [Migration("20190624154416_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -140,7 +140,7 @@ namespace Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("Backend.Core.Models.SignedContract", b =>
                 {
-                    b.Property<Guid>("ContractSignedId")
+                    b.Property<Guid>("SignedContractId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("ContractId");
@@ -149,7 +149,7 @@ namespace Backend.Infrastructure.Migrations
 
                     b.Property<Guid>("IndividualId");
 
-                    b.HasKey("ContractSignedId");
+                    b.HasKey("SignedContractId");
 
                     b.HasIndex("ContractId");
 
@@ -314,12 +314,12 @@ namespace Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("Backend.Core.Models.SignedContract", b =>
                 {
-                    b.HasOne("Backend.Core.Models.Contract", "ContractSignedContract")
+                    b.HasOne("Backend.Core.Models.Contract", "SignedContractContract")
                         .WithMany()
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Backend.Core.Models.Individual", "ContractSignedIndividual")
+                    b.HasOne("Backend.Core.Models.Individual", "SignedContractIndividual")
                         .WithMany()
                         .HasForeignKey("IndividualId")
                         .OnDelete(DeleteBehavior.Restrict);

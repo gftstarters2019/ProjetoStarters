@@ -9,12 +9,11 @@
             Address Controller
             </summary>
         </member>
-        <member name="M:ContractHolder.WebAPI.Controllers.AddressController.#ctor(Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.Address},Backend.Infrastructure.Repositories.Contracts.IWriteRepository{Backend.Core.Models.Address})">
+        <member name="M:ContractHolder.WebAPI.Controllers.AddressController.#ctor(Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.Address})">
             <summary>
             AddressController constructor
             </summary>
-            <param name="addressReadoOnlyRepository"></param>
-            <param name="addressWriteRepository"></param>
+            <param name="addressRepository"></param>
         </member>
         <member name="M:ContractHolder.WebAPI.Controllers.AddressController.Addresses">
             <summary>
@@ -44,6 +43,44 @@
             <param name="address"></param>
             <returns></returns>
         </member>
+        <member name="T:ContractHolder.WebAPI.Controllers.ContractHolderController">
+            <summary>
+            Contract Holder API
+            </summary>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.#ctor(Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.Individual},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Application.ViewModels.ContractHolderViewModel},Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.SignedContract})">
+            <summary>
+            ContractHolderController constructor
+            </summary>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.ContractHolders">
+            <summary>
+            Gets all Contract Holders
+            </summary>
+            <returns>All Contract Holders</returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.ContractHolder(System.Guid)">
+            <summary>
+            Gets a single Contract Holder
+            </summary>
+            <param name="id">GUID of the chosen Contract Holder</param>
+            <returns>Chosen Contract Holder</returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.PostContractHolder(Backend.Application.ViewModels.ContractHolderViewModel)">
+            <summary>
+            Creates a new Contract Holder
+            </summary>
+            <param name="vm">Contract Holder to be created</param>
+            <returns>Created Contract Holder</returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.UpdateContractHolder(System.Guid,Backend.Application.ViewModels.ContractHolderViewModel)">
+            <summary>
+            Updates a Contract Holder
+            </summary>
+            <param name="id"></param>
+            <param name="vm"></param>
+            <returns></returns>
+        </member>
         <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.DeleteContractHolder(System.Guid)">
             <summary>
             Soft deletes a Contract Holder from the DB
@@ -51,17 +88,37 @@
             <param name="id">GUID of the Contract Holder</param>
             <returns>Deleted Contract Holder</returns>
         </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.ContractHolderIsValid(Backend.Core.Models.Individual)">
+            <summary>
+            Does all validations to see if Contract Holder is valid.
+            </summary>
+            <param name="individual"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.CPFIsValid(System.String)">
+            <summary>
+            Algorithm to verify if a string is a CPF
+            </summary>
+            <param name="cpf">String to be verified</param>
+            <returns>If the string is a CPF</returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.ContractHolderController.EmailIsValid(System.String)">
+            <summary>
+            Verifies if an email is valid.
+            </summary>
+            <param name="emailaddress">Email to be verified</param>
+            <returns>If email is valid</returns>
+        </member>
         <member name="T:ContractHolder.WebAPI.Controllers.TelephoneController">
             <summary>
             Telephone Controller
             </summary>
         </member>
-        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.#ctor(Backend.Infrastructure.Repositories.Contracts.IReadOnlyRepository{Backend.Core.Models.Telephone},Backend.Infrastructure.Repositories.Contracts.IWriteRepository{Backend.Core.Models.Telephone})">
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.#ctor(Backend.Infrastructure.Repositories.Contracts.IRepository{Backend.Core.Models.Telephone})">
             <summary>
             TelephoneController constructor
             </summary>
-            <param name="telephoneReadoOnlyRepository"></param>
-            <param name="telephoneWriteRepository"></param>
+            <param name="telephoneRepository"></param>
         </member>
         <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.Telephones">
             <summary>
@@ -79,6 +136,13 @@
         <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.PostTelephone(Backend.Core.Models.Telephone)">
             <summary>
             Creates a new Telephone in the database
+            </summary>
+            <param name="telephone"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ContractHolder.WebAPI.Controllers.TelephoneController.LinkTelephone(Backend.Application.ViewModels.TelephoneIndividualViewModel)">
+            <summary>
+            
             </summary>
             <param name="telephone"></param>
             <returns></returns>
