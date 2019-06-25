@@ -1,9 +1,10 @@
 ﻿using Backend.Core.Domains;
+using System.Collections.Generic;
 
 namespace Backend.Services.Validators.Contracts
 {
     public interface IAddressValidator
     {
-        bool IsValid(AddressDomain address);
+        List<string> IsValid(AddressDomain address);
     }
 }

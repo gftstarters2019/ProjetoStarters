@@ -14,14 +14,14 @@ namespace Backend.Services.Validators
         {
             var errors = new List<string>();
 
-            if (!CPFIsValid(individual.IndividualCPF))
-                errors.Add("CPF inválido! ");
-            if (!EmailIsValid(individual.IndividualEmail))
-                errors.Add("Email inválido! ");
             if (!NameIsValid(individual.IndividualName))
-                errors.Add("Nome inválido! ");
+                errors.Add($"{individual.IndividualName}: Nome inválido! ");
+            if (!CPFIsValid(individual.IndividualCPF))
+                errors.Add($"{individual.IndividualCPF}: CPF inválido! ");
+            if (!EmailIsValid(individual.IndividualEmail))
+                errors.Add($"{individual.IndividualEmail}: Email inválido! ");
             if (!RGIsValid(individual.IndividualRG))
-                errors.Add("RG inválido! ");
+                errors.Add($"{individual.IndividualRG}: RG inválido! ");
 
             return errors;
         }
