@@ -18,12 +18,15 @@ namespace Backend.Services.Validators
             return true;
         }
 
-        public bool LengthValidator(string number, int length)
+        public List<string> LengthValidator(string number, int length)
         {
+            var errors = new List<string>();
+
             number = NumberUnmask(number);
             if (number.Length < length)
-                return false;
-            return true;
+                errors.Add($"{number}: Numero Inválido!; ");
+
+            return errors;
         }
 
         private string NumberUnmask(string number)

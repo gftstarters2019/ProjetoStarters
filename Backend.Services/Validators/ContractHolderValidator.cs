@@ -25,25 +25,24 @@ namespace Backend.Services.Validators
         {
             List<string> errors = new List<string>();
 
-            errors = _individualValidator.IsValid(individual);
+            errors.AddRange(_individualValidator.IsValid(individual));
 
-            errors.Concat(_dateValidator.IsOfAge(individual.IndividualBirthdate));
+            errors.AddRange(_dateValidator.IsOfAge(individual.IndividualBirthdate));
 
             if (addresses != null)
             {
                 foreach (var item in addresses)
                 {
-                    errors.Concat(_addressValidator.IsValid(item));
+                    errors.AddRange(_addressValidator.IsValid(item));
                 }
             }
-            //if (telephones != null)
-            //{
-            //    foreach (var item in telephones)
-            //    {
-            //        if (!_telephoneValidator.IsValid(item))
-            //            return false;
-            //    }
-            //}
+            if (telephones != null)
+            {
+                foreach (var item in telephones)
+                {
+                    errors.AddRange(_telephoneValidator.IsValid(item));
+                }
+            }
             return errors;            
         }
     }

@@ -23,8 +23,8 @@ namespace Backend.Services.Validators
         {
             var errors = new List<string>();
 
-            if (date.Year - DateTime.Today.Year < 18)
-                errors.Add($"{date}: Pessoa não é maior de idade!");
+            if (DateTime.Today.Year - date.Year < 18)
+                errors.Add($"{date}: Pessoa não é maior de idade!; ");
             return errors;
         }
     }

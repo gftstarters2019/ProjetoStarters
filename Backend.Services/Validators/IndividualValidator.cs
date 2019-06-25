@@ -15,13 +15,13 @@ namespace Backend.Services.Validators
             var errors = new List<string>();
 
             if (!NameIsValid(individual.IndividualName))
-                errors.Add($"{individual.IndividualName}: Nome inválido! ");
+                errors.Add($"{individual.IndividualName}: Nome inválido!; ");
             if (!CPFIsValid(individual.IndividualCPF))
-                errors.Add($"{individual.IndividualCPF}: CPF inválido! ");
+                errors.Add($"{individual.IndividualCPF}: CPF inválido!; ");
             if (!EmailIsValid(individual.IndividualEmail))
-                errors.Add($"{individual.IndividualEmail}: Email inválido! ");
+                errors.Add($"{individual.IndividualEmail}: Email inválido!; ");
             if (!RGIsValid(individual.IndividualRG))
-                errors.Add($"{individual.IndividualRG}: RG inválido! ");
+                errors.Add($"{individual.IndividualRG}: RG inválido!; ");
 
             return errors;
         }
