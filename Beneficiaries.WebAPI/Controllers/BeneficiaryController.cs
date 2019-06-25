@@ -15,7 +15,7 @@ namespace Beneficiaries.WebAPI.Controllers
     [ApiController]
     public class BeneficiaryController : ControllerBase
     {
-        private readonly IService<BeneficiaryDomain> _beneficiaryService;
+        private readonly IService<Backend.Core.Models.BeneficiaryEntity> _beneficiaryService;
         private readonly IService<IndividualDomain> _individualService;
         private readonly IService<MobileDeviceDomain> _mobileDeviceService;
         private readonly IService<PetDomain> _petService;
@@ -25,7 +25,7 @@ namespace Beneficiaries.WebAPI.Controllers
         /// <summary>
         /// BeneficiaryController constructor
         /// </summary>
-        public BeneficiaryController(IService<BeneficiaryDomain> beneficiaryService,
+        public BeneficiaryController(IService<Backend.Core.Models.BeneficiaryEntity> beneficiaryService,
                                      IService<IndividualDomain> individualService,
                                      IService<MobileDeviceDomain> mobileDeviceService,
                                      IService<PetDomain> petService,
@@ -68,7 +68,7 @@ namespace Beneficiaries.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Beneficiary(Guid id)
         {
-            throw new NotImplementedException();
+            return Ok(_beneficiaryService.Get(id));
         }
 
         #region Individual

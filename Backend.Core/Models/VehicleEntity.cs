@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
-    public class VehicleEntity : Beneficiary
+    public class VehicleEntity : BeneficiaryEntity
     {
         public string VehicleBrand { get; set; }
         public string VehicleModel { get; set; }

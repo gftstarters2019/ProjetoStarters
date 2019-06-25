@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Core.Models
 {
-    public class IndividualEntity : Beneficiary
+    public class IndividualEntity : BeneficiaryEntity
     {
         [MaxLength(50)]
         public string IndividualName { get; set; }

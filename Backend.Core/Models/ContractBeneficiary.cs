@@ -10,6 +10,6 @@ namespace Backend.Core.Models
         public Guid SignedContractId { get; set; }
         public SignedContractEntity SignedContract { get; set; }
         public Guid BeneficiaryId { get; set; }
-        public Beneficiary Beneficiary { get; set; }
+        public BeneficiaryEntity Beneficiary { get; set; }
     }
 }

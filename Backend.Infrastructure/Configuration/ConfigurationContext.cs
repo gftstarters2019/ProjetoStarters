@@ -33,11 +33,11 @@ namespace Backend.Infrastructure.Configuration
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            builder.Entity<IndividualEntity>().HasBaseType<Beneficiary>().ToTable("Beneficiaries");
-            builder.Entity<RealtyEntity>().HasBaseType<Beneficiary>().ToTable("Beneficiaries");
-            builder.Entity<PetEntity>().HasBaseType<Beneficiary>().ToTable("Beneficiaries");
-            builder.Entity<VehicleEntity>().HasBaseType<Beneficiary>().ToTable("Beneficiaries");
-            builder.Entity<MobileDeviceEntity>().HasBaseType<Beneficiary>().ToTable("Beneficiaries");
+            builder.Entity<IndividualEntity>().HasBaseType<BeneficiaryEntity>().ToTable("Beneficiaries");
+            builder.Entity<RealtyEntity>().HasBaseType<BeneficiaryEntity>().ToTable("Beneficiaries");
+            builder.Entity<PetEntity>().HasBaseType<BeneficiaryEntity>().ToTable("Beneficiaries");
+            builder.Entity<VehicleEntity>().HasBaseType<BeneficiaryEntity>().ToTable("Beneficiaries");
+            builder.Entity<MobileDeviceEntity>().HasBaseType<BeneficiaryEntity>().ToTable("Beneficiaries");
             builder.Entity<ContractEntity>().ToTable("Contracts");
             builder.Entity<AddressEntity>().ToTable("Addresses");
             builder.Entity<TelephoneEntity>().ToTable("Telephones");

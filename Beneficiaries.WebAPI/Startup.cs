@@ -50,7 +50,8 @@ namespace Beneficiaries.WebAPI
             });
 
             // Services
-            services.AddScoped<IService<BeneficiaryDomain>, BeneficiaryService>();
+            //services.AddScoped<IService<Backend.Core.Domains.Beneficiary>, BeneficiaryService>();
+            services.AddScoped<IService<Backend.Core.Models.BeneficiaryEntity>, BeneficiaryService>();
 
             services.AddScoped<IService<IndividualDomain>, IndividualService>();
 
@@ -63,7 +64,7 @@ namespace Beneficiaries.WebAPI
             services.AddScoped<IService<VehicleDomain>, VehicleService>();
             
             // Repositories
-            services.AddScoped<IRepository<Beneficiary>, BeneficiaryRepository>();
+            services.AddScoped<IRepository<Backend.Core.Models.BeneficiaryEntity>, BeneficiaryRepository>();
 
             services.AddScoped<IRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
 

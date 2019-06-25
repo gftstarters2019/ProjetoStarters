@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Backend.Core.Domains
 {
-    public class MobileDeviceDomain : BeneficiaryDomain
+    public class MobileDeviceDomain : Beneficiary
     {
         public string MobileDeviceBrand { get; set; }
         public string MobileDeviceModel { get; set; }
