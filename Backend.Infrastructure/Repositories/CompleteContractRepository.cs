@@ -78,8 +78,7 @@ namespace Backend.Infrastructure.Repositories
                 if (addedBeneficiaries == null)
                     return null;
                 if (AddContractBeneficiaries(addedBeneficiaries,
-                                             completeContract.SignedContract,
-                                             completeContract.Contract.ContractType))
+                                             completeContract.SignedContract))
                 {
                     _db.SaveChanges();
                     scope.Complete();
@@ -139,6 +138,12 @@ namespace Backend.Infrastructure.Repositories
                     return null;
             }
         }
+        private IndividualDomain AddIndividual(IndividualDomain individual)
+        {
+            return ConvertersManager.IndividualConverter.Convert(
+                _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
+                    individual)));
+        }
 
         private List<IndividualDomain> AddIndividuals(List<IndividualDomain> individuals)
         {
@@ -150,9 +155,7 @@ namespace Backend.Infrastructure.Repositories
                     insertedIndividuals.Add(ind);
                 else
                 {
-                    var addedIndividual = ConvertersManager.IndividualConverter.Convert(
-                        _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
-                            ind)));
+                    var addedIndividual = AddIndividual(ind);
 
                     if (addedIndividual != null)
                         insertedIndividuals.Add(addedIndividual);
@@ -165,6 +168,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
+        private PetDomain AddPet(PetDomain pet)
+        {
+            return ConvertersManager.PetConverter.Convert(
+                _petsRepository.Add(ConvertersManager.PetConverter.Convert(pet)));
+        }
+
         private List<PetDomain> AddPets(List<PetDomain> pets)
         {
             var insertedPets = new List<PetDomain>();
@@ -175,9 +184,7 @@ namespace Backend.Infrastructure.Repositories
                     insertedPets.Add(pet);
                 else
                 {
-                    var addedPet = ConvertersManager.PetConverter.Convert(
-                        _petsRepository.Add(ConvertersManager.PetConverter.Convert(
-                            pet)));
+                    var addedPet = AddPet(pet);
 
                     if (addedPet != null)
                         insertedPets.Add(addedPet);
@@ -190,6 +197,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
+        private MobileDeviceDomain AddMobileDevice(MobileDeviceDomain mobileDevice)
+        {
+            return ConvertersManager.MobileDeviceConverter.Convert(
+                _mobileDevicesRepository.Add(ConvertersManager.MobileDeviceConverter.Convert(mobileDevice)));
+        }
+
         private List<MobileDeviceDomain> AddMobileDevices(List<MobileDeviceDomain> mobileDevices)
         {
             var insertedMobileDevices = new List<MobileDeviceDomain>();
@@ -200,9 +213,7 @@ namespace Backend.Infrastructure.Repositories
                     insertedMobileDevices.Add(mobile);
                 else
                 {
-                    var addedMobile = ConvertersManager.MobileDeviceConverter.Convert(
-                        _mobileDevicesRepository.Add(ConvertersManager.MobileDeviceConverter.Convert(
-                            mobile)));
+                    var addedMobile = AddMobileDevice(mobile);
 
                     if (addedMobile != null)
                         insertedMobileDevices.Add(addedMobile);
@@ -215,6 +226,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
+        private RealtyDomain AddRealty(RealtyDomain realty)
+        {
+            return ConvertersManager.RealtyConverter.Convert(
+                _realtiesRepository.Add(ConvertersManager.RealtyConverter.Convert(realty)));
+        }
+
         private List<RealtyDomain> AddRealties(List<RealtyDomain> realties)
         {
             var insertedRealties = new List<RealtyDomain>();
@@ -225,9 +242,7 @@ namespace Backend.Infrastructure.Repositories
                     insertedRealties.Add(realty);
                 else
                 {
-                    var addedRealty = ConvertersManager.RealtyConverter.Convert(
-                        _realtiesRepository.Add(ConvertersManager.RealtyConverter.Convert(
-                            realty)));
+                    var addedRealty = AddRealty(realty);
 
                     if (addedRealty != null)
                         insertedRealties.Add(addedRealty);
@@ -240,6 +255,12 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
+        private VehicleDomain AddVehicle(VehicleDomain vehicle)
+        {
+            return ConvertersManager.VehicleConverter.Convert(
+                _vehiclesRepository.Add(ConvertersManager.VehicleConverter.Convert(vehicle)));
+        }
+
         private List<VehicleDomain> AddVehicles(List<VehicleDomain> vehicles)
         {
             var insertedVehicles = new List<VehicleDomain>();
@@ -250,9 +271,7 @@ namespace Backend.Infrastructure.Repositories
                     insertedVehicles.Add(vehicle);
                 else
                 {
-                    var addedVehicle = ConvertersManager.VehicleConverter.Convert(
-                        _vehiclesRepository.Add(ConvertersManager.VehicleConverter.Convert(
-                            vehicle)));
+                    var addedVehicle = AddVehicle(vehicle);
 
                     if (addedVehicle != null)
                         insertedVehicles.Add(addedVehicle);
@@ -265,7 +284,7 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private bool AddContractBeneficiaries(List<Guid> beneficiariesGuidList, SignedContractDomain signedContract, ContractType contractType)
+        private bool AddContractBeneficiaries(List<Guid> beneficiariesGuidList, SignedContractDomain signedContract)
         {
             if (beneficiariesGuidList == null)
                 return false;
@@ -292,31 +311,69 @@ namespace Backend.Infrastructure.Repositories
         #endregion Add
 
         #region Update
-        public CompleteContractDomain Update(Guid id, CompleteContractDomain completeContract)
+        public CompleteContractDomain Update(Guid id, CompleteContractDomain completeContractToUpdate)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
                    new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
-                var updatedSignedContract = _signedContractRepository.Update(id, ConvertersManager.SignedContractConverter.Convert(
-                    completeContract.SignedContract));
-                if (!_signedContractRepository.Save())
+                var updatedCompleteContract = new CompleteContractDomain();
+                updatedCompleteContract.SignedContract = ConvertersManager.SignedContractConverter.Convert(
+                    _signedContractRepository.Update(id, ConvertersManager.SignedContractConverter.Convert(
+                        updatedCompleteContract.SignedContract)));
+                if (updatedCompleteContract.SignedContract == null)
                     return null;
+                _signedContractRepository.Save();
 
-                var updatedContract = _contractRepository.Update(updatedSignedContract.ContractId, ConvertersManager.ContractConverter.Convert(
-                    completeContract.Contract));
-                if (!_contractRepository.Save())
+                updatedCompleteContract.Contract = ConvertersManager.ContractConverter.Convert(
+                    _contractRepository.Update(updatedCompleteContract.SignedContract.ContractId, ConvertersManager.ContractConverter.Convert(
+                        updatedCompleteContract.Contract)));
+                if (updatedCompleteContract.Contract == null)
                     return null;
+                _contractRepository.Save();
 
-                var updatedBeneficiaries = UpdatedBeneficiaries(id, completeContract);
+                var updatedBeneficiaries = UpdateBeneficiaries(id, updatedCompleteContract);
                 if (updatedBeneficiaries == null)
                     return null;
-                //
-                scope.Complete();
-                throw new NotImplementedException();
+
+                if(UpdateContractBeneficiaries(updatedBeneficiaries,
+                                             updatedCompleteContract.SignedContract))
+                {
+                    _db.SaveChanges();
+                    scope.Complete();
+                    return updatedCompleteContract;
+                }
+                return null;
             }
         }
 
-        private List<Guid> UpdatedBeneficiaries(Guid id, CompleteContractDomain completeContract)
+        private bool UpdateContractBeneficiaries(List<Guid> updatedBeneficiaries, SignedContractDomain signedContract)
+        {
+            if (updatedBeneficiaries == null)
+                return false;
+
+            _contractBeneficiaryRepository.Get().Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => _contractBeneficiaryRepository.Remove(cb.ContractBeneficiaryId));
+
+            foreach (var ben in updatedBeneficiaries)
+            {
+                _contractBeneficiaryRepository.Add(new ContractBeneficiary()
+                {
+                    BeneficiaryId = ben,
+                    SignedContractId = signedContract.SignedContractId,
+                    SignedContract = ConvertersManager.SignedContractConverter.Convert(signedContract)
+                });
+            }
+            _contractBeneficiaryRepository.Save();
+
+            if (updatedBeneficiaries.Count == _db.Contract_Beneficiary
+                                                 .Where(cb => cb.SignedContractId == signedContract.SignedContractId)
+                                                 .Count())
+                return true;
+            else
+                return false;
+            
+        }
+
+        private List<Guid> UpdateBeneficiaries(Guid id, CompleteContractDomain completeContract)
         {
             switch (completeContract.Contract.ContractType)
             {
@@ -376,8 +433,7 @@ namespace Backend.Infrastructure.Repositories
                 // If Individual doesn't have an ID, add it do the DB
                 if (ind.BeneficiaryId == Guid.Empty)
                 {
-                    var addedIndividual = _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
-                        ind));
+                    var addedIndividual = AddIndividual(ind);
 
                     if (addedIndividual != null)
                         updatedIndividuals.Add(addedIndividual.BeneficiaryId);
@@ -408,8 +464,7 @@ namespace Backend.Infrastructure.Repositories
                 // If Pet doesn't have an ID, add it do the DB
                 if (pet.BeneficiaryId == Guid.Empty)
                 {
-                    var addedPet = _petsRepository.Add(ConvertersManager.PetConverter.Convert(
-                        pet));
+                    var addedPet = AddPet(pet);
 
                     if (addedPet != null)
                         updatedPets.Add(addedPet.BeneficiaryId);
@@ -440,8 +495,7 @@ namespace Backend.Infrastructure.Repositories
                 // If MobileDevice doesn't have an ID, add it do the DB
                 if (mobileDevice.BeneficiaryId == Guid.Empty)
                 {
-                    var addedMobileDevice = _mobileDevicesRepository.Add(ConvertersManager.MobileDeviceConverter.Convert(
-                        mobileDevice));
+                    var addedMobileDevice = AddMobileDevice(mobileDevice);
 
                     if (addedMobileDevice != null)
                         updatedMobileDevices.Add(addedMobileDevice.BeneficiaryId);
@@ -472,8 +526,7 @@ namespace Backend.Infrastructure.Repositories
                 // If Realty doesn't have an ID, add it do the DB
                 if (realty.BeneficiaryId == Guid.Empty)
                 {
-                    var addedRealty = _realtiesRepository.Add(ConvertersManager.RealtyConverter.Convert(
-                        realty));
+                    var addedRealty = AddRealty(realty);
 
                     if (addedRealty != null)
                         updatedRealties.Add(addedRealty.BeneficiaryId);
@@ -504,8 +557,7 @@ namespace Backend.Infrastructure.Repositories
                 // If Vehicle doesn't have an ID, add it do the DB
                 if (vehicle.BeneficiaryId == Guid.Empty)
                 {
-                    var addedVehicle = _vehiclesRepository.Add(ConvertersManager.VehicleConverter.Convert(
-                        vehicle));
+                    var addedVehicle = AddVehicle(vehicle);
 
                     if (addedVehicle != null)
                         updatedVehicles.Add(addedVehicle.BeneficiaryId);
@@ -648,7 +700,6 @@ namespace Backend.Infrastructure.Repositories
                 return false;
 
             _db.Contracts.Remove(_db.Contracts.Where(c => c.ContractId == contractToDelete).FirstOrDefault());
-            _db.SaveChanges();
 
             return true;
         }
