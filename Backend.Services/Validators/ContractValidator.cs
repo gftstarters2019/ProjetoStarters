@@ -53,8 +53,7 @@ namespace Backend.Services.Validators
             {
                 foreach (var item in realties)
                 {
-                    if (!_realtyValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_realtyValidator.IsValid(item));
                 }
             }
 
