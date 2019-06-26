@@ -137,7 +137,7 @@ namespace IntegrationTests
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractHolderViewModel contractHolder = new ContractHolderViewModel();
             contractHolder.individualName = "Samuel Cavalcanti Martins";
-            contractHolder.individualEmail = "SamuelCavalcantiMartins@rhyta.com";
+            contractHolder.individualEmail = "SamuelCavalcanti@rhyta.com";
             contractHolder.individualCPF = CpfGenerator.GenerateCpf();
             contractHolder.individualRG = "310291136";
             contractHolder.individualBirthdate = new DateTime(1993, 2, 20);
@@ -150,8 +150,8 @@ namespace IntegrationTests
             var postResponse = await client.PostAsync($"{url}", contentString);
             var postApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await postResponse.Content.ReadAsStringAsync());
 
-            postApiResponse.individualName = "Samuel Cavalcanti Martin";
-            postApiResponse.individualEmail = "SamuelCavalcantiMartin@rhyta.com";
+            postApiResponse.individualName = "Samuel Cavalcant Martin";
+            postApiResponse.individualEmail = "SamuelCavalcant@rhyta.com";
             postApiResponse.individualRG = "310291137";
             postApiResponse.individualBirthdate = new DateTime(1993, 2, 21);
 
