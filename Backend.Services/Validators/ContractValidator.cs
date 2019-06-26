@@ -45,8 +45,7 @@ namespace Backend.Services.Validators
             {
                 foreach (var item in pets)
                 {
-                    if (!_petValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_petValidator.IsValid(item));
                 }
             }
 
