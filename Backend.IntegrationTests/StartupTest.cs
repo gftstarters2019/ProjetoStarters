@@ -39,6 +39,18 @@ namespace Backend.IntegrationTests
 
             services.AddScoped<IService<CompleteContractDomain>, CompleteContractService>();
 
+            services.AddScoped<IService<BeneficiaryEntity>, BeneficiaryService>();
+
+            services.AddScoped<IService<IndividualDomain>, IndividualService>();
+
+            services.AddScoped<IService<MobileDeviceDomain>, MobileDeviceService>();
+
+            services.AddScoped<IService<RealtyDomain>, RealtyService>();
+
+            services.AddScoped<IService<PetDomain>, PetService>();
+
+            services.AddScoped<IService<VehicleDomain>, VehicleService>();
+
             // Repositories
             services.AddScoped<IRepository<ContractHolderDomain>, ContractHolderRepository>();
 
@@ -68,6 +80,16 @@ namespace Backend.IntegrationTests
 
             services.AddScoped<IRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
 
+            services.AddScoped<IRepository<BeneficiaryEntity>, BeneficiaryRepository>();
+
+            services.AddScoped<IRepository<MobileDeviceEntity>, MobileDeviceRepository>();
+
+            services.AddScoped<IRepository<RealtyEntity>, RealtyRepository>();
+
+            services.AddScoped<IRepository<PetEntity>, PetRepository>();
+
+            services.AddScoped<IRepository<VehicleEntity>, VehicleRepository>();
+
             services.AddMvc().AddJsonOptions(opt =>
             {
                 opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -81,6 +103,13 @@ namespace Backend.IntegrationTests
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 opt.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             }).AddApplicationPart(Assembly.Load("Contract.WebAPI"));
+
+            services.AddMvc().AddJsonOptions(opt =>
+            {
+                opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                opt.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+            }).AddApplicationPart(Assembly.Load("Beneficiaries.WebAPI"));
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
         }

@@ -17,6 +17,7 @@ namespace IntegrationTests
     {
         private const string url = "/api/ContractHolder";
 
+        #region Get All
         [Test]
         public async Task WhenRequestGetUsingController_ThenIShouldReceiveContractHolders()
         {
@@ -27,7 +28,9 @@ namespace IntegrationTests
             // assert
             Assert.IsNotNull(apiResponse);
         }
+        #endregion
 
+        #region Get By Id
         [Test]
         public async Task WhenRequestContractHolderControllerUsingPost_ThenICanGetContractHolderObjectById()
         {
@@ -64,7 +67,9 @@ namespace IntegrationTests
             //cleaning
             var delete = await client.DeleteAsync($"{url}/{getApiResponse.individualId}");
         }
+        #endregion
 
+        #region Post
         [Test]
         public async Task WhenRequestContractHolderControllerUsingPost_ThenICanRequestAContractHolderObjectById()
         {
@@ -122,7 +127,9 @@ namespace IntegrationTests
             //cleaning
             var delete = await client.DeleteAsync($"{url}/{getApiResponse.individualId}");
         }
+        #endregion
 
+        #region Update
         [Test]
         public async Task WhenRequestContractHolderControllerUsingPost_ThenICanUpdateAContractHolderRegistryAndReceiveThatObject()
         {
@@ -163,14 +170,16 @@ namespace IntegrationTests
             Assert.IsInstanceOf<ContractHolderViewModel>(putApiResponse);
             Assert.AreEqual(putApiResponse.individualName, getApiResponse.individualName);
             Assert.AreEqual(putApiResponse.individualEmail, getApiResponse.individualEmail);
-            Assert.AreEqual(putApiResponse.individualCPF, getApiResponse.individualCPF);
+            Assert.AreEqual(contractHolder.individualCPF, getApiResponse.individualCPF);
             Assert.AreEqual(putApiResponse.individualRG, getApiResponse.individualRG);
             Assert.AreEqual(putApiResponse.individualBirthdate, getApiResponse.individualBirthdate);
 
             //cleaning
             var delete = await client.DeleteAsync($"{url}/{getApiResponse.individualId}");
         }
+        #endregion
 
+        #region Delete
         [Test]
         public async Task WhenRequestContractHolderControllerUsingPostAndGet_ThenICanDeleteAContractHolderObjectById()
         {
@@ -200,11 +209,8 @@ namespace IntegrationTests
             //assert
             Assert.IsNotNull(deleteApiResponse);
             Assert.IsInstanceOf<ContractHolderViewModel>(deleteApiResponse);
-            Assert.AreEqual(contractHolder.individualName,  deleteApiResponse.individualName);
-            Assert.AreEqual(contractHolder.individualEmail, deleteApiResponse.individualEmail);
-            Assert.AreEqual(contractHolder.individualCPF, deleteApiResponse.individualCPF);
-            Assert.AreEqual(contractHolder.individualRG, deleteApiResponse.individualRG);
-            Assert.AreEqual(contractHolder.individualBirthdate, deleteApiResponse.individualBirthdate);
+            Assert.AreEqual(deleteApiResponse.isDeleted, true);
         }
+        #endregion
     }
 }
