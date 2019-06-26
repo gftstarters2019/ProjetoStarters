@@ -4,6 +4,7 @@ using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 
 namespace Backend.Infrastructure.Repositories
 {
@@ -60,7 +61,7 @@ namespace Backend.Infrastructure.Repositories
                     // Verifies if CPF is already in DB of Individual not deleted
                     if (_db.Individuals
                             .Where(ind => ind.IndividualCPF == individual.IndividualCPF && !ind.IsDeleted)
-                            .Any())
+                            .Any() && individual.IndividualCPF != individualToUpdate.IndividualCPF)
                         return null;
 
                     individualToUpdate.IndividualBirthdate = individual.IndividualBirthdate;
