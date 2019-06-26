@@ -21,7 +21,7 @@ namespace Backend.Services.Validators
             _vehicleValidator = vehicleValidator;
         }
 
-        public bool IsValid(ContractDomain contract, List<IndividualDomain> individuals, List<MobileDeviceDomain> mobileDevices, List<PetDomain> pets, List<RealtyDomain> realties, List<VehicleDomain> vehicles)
+        public List<string> IsValid(ContractDomain contract, List<IndividualDomain> individuals, List<MobileDeviceDomain> mobileDevices, List<PetDomain> pets, List<RealtyDomain> realties, List<VehicleDomain> vehicles)
         {
             List<string> errors = new List<string>();
 
@@ -65,7 +65,7 @@ namespace Backend.Services.Validators
                 }
             }
 
-            return true;
+            return errors;
         }
     }
 }
