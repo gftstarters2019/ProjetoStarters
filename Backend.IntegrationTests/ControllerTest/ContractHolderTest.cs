@@ -111,6 +111,9 @@ namespace IntegrationTests
 
             var getResponse = await client.GetAsync($"{url}/{postApiResponse.individualId}");
             var getApiResponse = JsonConvert.DeserializeObject<ContractHolderViewModel>(await getResponse.Content.ReadAsStringAsync());
+            
+            var getAddress = getApiResponse.individualAddresses[0];
+            var getTelephone = getApiResponse.individualTelephones[0];
 
             //assert
             Assert.IsNotNull(postApiResponse);
@@ -121,8 +124,17 @@ namespace IntegrationTests
             Assert.AreEqual(contractHolder.individualCPF, getApiResponse.individualCPF);
             Assert.AreEqual(contractHolder.individualRG, getApiResponse.individualRG);
             Assert.AreEqual(contractHolder.individualBirthdate, getApiResponse.individualBirthdate);
-            Assert.AreEqual(contractHolder.individualAddresses, getApiResponse.individualAddresses);
-            Assert.AreEqual(contractHolder.individualTelephones, getApiResponse.individualTelephones);
+            Assert.AreEqual(address.AddressStreet, getAddress.AddressStreet);
+            Assert.AreEqual(address.AddressNumber, getAddress.AddressNumber);
+            Assert.AreEqual(address.AddressNeighborhood, getAddress.AddressNeighborhood);
+            Assert.AreEqual(address.AddressComplement, getAddress.AddressComplement);
+            Assert.AreEqual(address.AddressZipCode, getAddress.AddressZipCode);
+            Assert.AreEqual(address.AddressCity, getAddress.AddressCity);
+            Assert.AreEqual(address.AddressState, getAddress.AddressState);
+            Assert.AreEqual(address.AddressCountry, getAddress.AddressCountry);
+            Assert.AreEqual(address.AddressType, getAddress.AddressType);
+            Assert.AreEqual(telephone.TelephoneNumber, getTelephone.TelephoneNumber);
+            Assert.AreEqual(telephone.TelephoneType, getTelephone.TelephoneType);
 
             //cleaning
             var delete = await client.DeleteAsync($"{url}/{getApiResponse.individualId}");

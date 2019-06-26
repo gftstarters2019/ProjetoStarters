@@ -215,7 +215,7 @@ namespace IntegrationTests
             //arrange
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             ContractViewModel contract = new ContractViewModel();
-            contract.Type = ContractType.DentalPlan;
+            contract.Type = ContractType.RealStateInsurance;
             contract.Category = ContractCategory.Silver;
             contract.Realties = new List<RealtyViewModel>();
             contract.ExpiryDate = new DateTime(2020, 10, 5);
