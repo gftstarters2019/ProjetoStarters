@@ -42,6 +42,7 @@ namespace IntegrationTests
             contract.Type = ContractType.DentalPlan;
             contract.Category = ContractCategory.Silver;
             contract.Individuals = new List<IndividualDomain>();
+            contract.Realties = new List<RealtyViewModel>();
             contract.ExpiryDate = new DateTime(2020, 10, 5);
             contract.IsActive = true;
 
@@ -137,6 +138,7 @@ namespace IntegrationTests
             contract.Type = ContractType.AnimalHealthPlan;
             contract.Category = ContractCategory.Gold;
             contract.Pets = new List<PetDomain>();
+            contract.Realties = new List<RealtyViewModel>();
             contract.ExpiryDate = new DateTime(2032, 1, 1);
             contract.IsActive = false;
 
@@ -303,6 +305,7 @@ namespace IntegrationTests
             contract.MobileDevices = new List<MobileDeviceDomain>();
             contract.Type = ContractType.MobileDeviceInsurance; //(ContractType)6;
             contract.Category = ContractCategory.Silver; //(ContractCategory)2;
+            contract.Realties = new List<RealtyViewModel>();
             contract.ExpiryDate = new DateTime(2019, 12, 30);
             contract.IsActive = true;
 
@@ -392,6 +395,7 @@ namespace IntegrationTests
             contract.Category = ContractCategory.Diamond;
             contract.ExpiryDate = new DateTime(2021, 2, 1);
             contract.Vehicles = new List<VehicleDomain>();
+            contract.Realties = new List<RealtyViewModel>();
             contract.IsActive = true;
 
             ContractHolderViewModel contractHolder = new ContractHolderViewModel();
