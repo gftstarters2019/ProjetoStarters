@@ -18,7 +18,15 @@ namespace Backend.Services.Services
 
         public ContractHolderDomain Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var contractHolderToDelete = _contractHolderRepository.Find(id);
+            if (contractHolderToDelete == null)
+                return null;
+
+            contractHolderToDelete.Individual.IsDeleted = !contractHolderToDelete.Individual.IsDeleted;
+            var deletedBeneficiary = _contractHolderRepository.Update(id, contractHolderToDelete);
+            if (_contractHolderRepository.Save())
+                return deletedBeneficiary;
+            return null;
         }
 
         public ContractHolderDomain Get(Guid id)
