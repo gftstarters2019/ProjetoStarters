@@ -23,7 +23,7 @@ namespace Backend.Services.Services
 
         public ContractHolderDomain Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _contractHolderRepository.Find(id);
         }
 
         public List<ContractHolderDomain> GetAll()

@@ -48,7 +48,7 @@ namespace ContractHolder.WebAPI.Controllers
             if (obj == null)
                 return NotFound();
 
-            return Ok(obj);
+            return Ok(FactoriesManager.ContractHolderViewModel.Create(obj));
         }
 
         /// <summary>

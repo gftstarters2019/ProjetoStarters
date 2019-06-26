@@ -113,7 +113,21 @@ namespace Backend.Infrastructure.Repositories
 
         public ContractHolderDomain Find(Guid id)
         {
-            throw new NotImplementedException();
+            var individual = _individualsRepository.Find(id);
+            if (individual == null)
+                return null;
+
+            var contractHolder = new ContractHolderDomain();
+            contractHolder.Individual = ConvertersManager.IndividualConverter.Convert(individual);
+
+            contractHolder.IndividualAddresses = _addressRepository.Get().Where(add => _beneficiaryAddressRepository.Get()
+                                                        .Where(ba => ba.BeneficiaryId == contractHolder.Individual.BeneficiaryId).Select(ba => ba.AddressId).Contains(add.AddressId))
+                                                        .Select(add => ConvertersManager.AddressConverter.Convert(add)).ToList();
+
+            contractHolder.IndividualTelephones = _telephonesRepository.Get().Where(tel => _individualTelephonesRepository.Get()
+                                                        .Where(it => it.BeneficiaryId == contractHolder.Individual.BeneficiaryId).Select(it => it.TelephoneId).Contains(tel.TelephoneId))
+                                                        .Select(tel => ConvertersManager.TelephoneConverter.Convert(tel)).ToList();
+            return contractHolder;
         }
 
         public IEnumerable<ContractHolderDomain> Get()
