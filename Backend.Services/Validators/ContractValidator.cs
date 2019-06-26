@@ -61,8 +61,7 @@ namespace Backend.Services.Validators
             {
                 foreach (var item in vehicles)
                 {
-                    if (!_vehicleValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_vehicleValidator.IsValid(item));
                 }
             }
 
