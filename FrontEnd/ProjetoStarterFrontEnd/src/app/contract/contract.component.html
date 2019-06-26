@@ -47,10 +47,11 @@
                 <span>
 
                   <mat-form-field >
-                    <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" name ="expiryDate"
+                    <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" maxlength="100" name ="expiryDate"
                     formControlName="expiryDate" required>
                     <mat-datepicker-toggle matSuffix [for]="expiryDate"></mat-datepicker-toggle>
                     <mat-datepicker #expiryDate></mat-datepicker>
+                    <mat-error>Date is invalid!</mat-error>
                   </mat-form-field> 
                 </span>
 

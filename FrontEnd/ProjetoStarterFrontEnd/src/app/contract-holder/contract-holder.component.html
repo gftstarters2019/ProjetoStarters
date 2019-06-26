@@ -9,7 +9,7 @@
   <div class="addressBg"> 
     <mat-card> 
   <mat-form-field style="width: 500px;">
-    <input matInput placeholder="Name" name="individualName" maxlength="50" required formControlName="individualName" >
+    <input matInput placeholder="Name" name="individualName" maxlength="100" required formControlName="individualName" >
     <mat-error>Name is invalid!</mat-error>
   </mat-form-field> <br>
   
@@ -26,14 +26,14 @@
   </mat-form-field> <br>
 
   <mat-form-field style="width: 250px;">
-      <input matInput [matDatepicker]="picker" placeholder="Birthdate" id="individualBirthdate" formControlName="individualBirthdate" required>
+      <input matInput [matDatepicker]="picker" placeholder="Birthdate" maxlength="100" id="individualBirthdate" formControlName="individualBirthdate" required>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error>Date is invalid!</mat-error>
     </mat-form-field>
     
     <mat-form-field style="width: 350px;">
-        <input matInput placeholder="Email" name="individualEmail" type= "email" maxlength="30" formControlName="individualEmail" required email>
+        <input matInput placeholder="Email" name="individualEmail" maxlength="100" type= "email" maxlength="30" formControlName="individualEmail" required email>
         <mat-error>E-mail is invalid!</mat-error>
       </mat-form-field>
     </mat-card>
