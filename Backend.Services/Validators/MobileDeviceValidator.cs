@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
+using System.Collections.Generic;
 
 namespace Backend.Services.Validators
 {
@@ -13,13 +14,14 @@ namespace Backend.Services.Validators
             _dateValidator = dateValidator;
             _numberValidator = numberValidator;
         }
-        public bool IsValid(MobileDeviceDomain mobileDevice)
+        public List<string> IsValid(MobileDeviceDomain mobileDevice)
         {
-            if (!_dateValidator.IsValid(mobileDevice.MobileDeviceManufactoringYear))
-                return false;
-            if (!_numberValidator.IsPositive(mobileDevice.MobileDeviceInvoiceValue.ToString()))
-                return false;
-            return true;
+            var errors = new List<string>();
+
+            errors.AddRange(_dateValidator.IsValid(mobileDevice.MobileDeviceManufactoringYear));
+            errors.AddRange(_numberValidator.IsPositive(mobileDevice.MobileDeviceInvoiceValue.ToString()));
+
+            return errors;
         }
     }
 }

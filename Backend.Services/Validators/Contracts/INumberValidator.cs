@@ -6,7 +6,7 @@ namespace Backend.Services.Validators.Contracts
 {
     public interface INumberValidator
     {
-        bool IsPositive(string number);
+        List<string> IsPositive(string number);
         List<string> LengthValidator(string number, int length);
     }
 }

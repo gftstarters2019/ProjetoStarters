@@ -23,12 +23,13 @@ namespace Backend.Services.Validators
 
         public bool IsValid(ContractDomain contract, List<IndividualDomain> individuals, List<MobileDeviceDomain> mobileDevices, List<PetDomain> pets, List<RealtyDomain> realties, List<VehicleDomain> vehicles)
         {
+            List<string> errors = new List<string>();
+
             if (individuals != null)
             {
                 foreach (var item in individuals)
                 {
-                    if (!_individualValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_individualValidator.IsValid(item));
                 }
             }
 
@@ -36,8 +37,7 @@ namespace Backend.Services.Validators
             {
                 foreach (var item in mobileDevices)
                 {
-                    if (!_mobileDeviceValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_mobileDeviceValidator.IsValid(item));
                 }
             }
 
