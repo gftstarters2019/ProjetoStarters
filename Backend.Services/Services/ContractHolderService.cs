@@ -50,7 +50,7 @@ namespace Backend.Services.Services
                     errors += er;
                 }
 
-            if (errors != null)
+            if (errors != "")
                 throw new Exception(errors);
 
 
