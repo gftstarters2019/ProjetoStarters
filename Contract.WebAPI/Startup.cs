@@ -61,6 +61,8 @@ namespace Contract.WebAPI
 
             services.AddScoped<IRepository<Backend.Core.Models.RealtyEntity>, RealtyRepository>();
 
+            services.AddScoped<IRepository<Backend.Core.Models.BeneficiaryAddress>, BeneficiaryAddressRepository>();
+
             services.AddScoped<IRepository<Backend.Core.Models.VehicleEntity>, VehicleRepository>();
 
             services.AddScoped<IRepository<Backend.Core.Models.ContractBeneficiary>, ContractBeneficiaryRepository>();
