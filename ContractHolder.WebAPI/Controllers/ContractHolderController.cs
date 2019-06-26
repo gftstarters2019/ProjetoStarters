@@ -59,9 +59,8 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel contractHolderViewModel)
         {
-            var contractHolderToAdd = FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel);
+            var addedContractHolder = _contractHolderService.Save(FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel));
 
-            var addedContractHolder = _contractHolderService.Save(contractHolderToAdd);
             if (addedContractHolder == null)
                 return StatusCode(403);
             
@@ -78,13 +77,12 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContractHolder(Guid id, [FromBody] ContractHolderViewModel vm)
         {
-            // TODO: Usar Factory ContractHolderViewModel => ContractHolderDomain para passar para a Service
-            var contractHolderToUpdate = _contractHolderService.Update(id, new ContractHolderDomain());
-            if (contractHolderToUpdate == null)
-                return StatusCode(403);
+            var updatedContractHolder = _contractHolderService.Update(id, FactoriesManager.ContractHolderDomain.Create(vm));
 
-            // TODO: Usar Factory ContractHolderDomain => ContractHolderViewModel para passar para devolver para o Frontend
-            return Ok(vm);
+            if (updatedContractHolder == null)
+                return StatusCode(403);
+            
+            return Ok(FactoriesManager.ContractHolderViewModel.Create(updatedContractHolder));
         }
 
         /// <summary>

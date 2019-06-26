@@ -23,7 +23,7 @@ namespace Backend.Services.Services
 
         public CompleteContractDomain Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _completeContractRepository.Find(id);
         }
 
         public List<CompleteContractDomain> GetAll()

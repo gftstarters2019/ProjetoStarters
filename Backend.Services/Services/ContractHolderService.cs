@@ -43,9 +43,16 @@ namespace Backend.Services.Services
             return _contractHolderRepository.Add(contractHolderDomain);
         }
 
-        public ContractHolderDomain Update(Guid id, ContractHolderDomain modelToUpdate)
+        public ContractHolderDomain Update(Guid id, ContractHolderDomain contractToBeUpdated)
         {
-            throw new NotImplementedException();
+            if (contractToBeUpdated == null)
+                return null;
+
+            /*
+             * Validations
+            */
+
+            return _contractHolderRepository.Update(id, contractToBeUpdated);
         }
     }
 }

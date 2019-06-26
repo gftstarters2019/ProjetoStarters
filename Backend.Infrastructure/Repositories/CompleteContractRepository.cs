@@ -530,7 +530,51 @@ namespace Backend.Infrastructure.Repositories
 
         public CompleteContractDomain Find(Guid id)
         {
-            throw new NotImplementedException();
+            var signedContract = _db.SignedContracts.Where(sc => sc.SignedContractId == id).FirstOrDefault();
+            if (signedContract == null)
+                return null;
+
+            var completeContractToReturn = new CompleteContractDomain();
+            completeContractToReturn.Contract = ConvertersManager.ContractConverter.Convert(
+                _db.Contracts.Where(con => con.ContractId == signedContract.ContractId).FirstOrDefault());
+
+            signedContract.SignedContractIndividual = _individualsRepository.Find(signedContract.BeneficiaryId);
+            completeContractToReturn.SignedContract = ConvertersManager.SignedContractConverter.Convert(signedContract);
+
+
+            switch (completeContractToReturn.Contract.ContractType)
+            {
+                case ContractType.DentalPlan:
+                case ContractType.HealthPlan:
+                case ContractType.LifeInsurance:
+                    completeContractToReturn.Individuals = _individualsRepository.Get().Where(ind => _contractBeneficiaryRepository.Get()
+                        .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ind.BeneficiaryId))
+                        .Select(ind => ConvertersManager.IndividualConverter.Convert(ind)).ToList();
+                    break;
+                case ContractType.AnimalHealthPlan:
+                    completeContractToReturn.Pets = _petsRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                        .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                        .Select(ben => ConvertersManager.PetConverter.Convert(ben)).ToList();
+                    break;
+                case ContractType.MobileDeviceInsurance:
+                    completeContractToReturn.MobileDevices = _mobileDevicesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                        .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                        .Select(ben => ConvertersManager.MobileDeviceConverter.Convert(ben)).ToList();
+                    break;
+                case ContractType.RealStateInsurance:
+                    completeContractToReturn.Realties = _realtiesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                       .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                        .Select(ben => ConvertersManager.RealtyConverter.Convert(ben)).ToList();
+                    break;
+                case ContractType.VehicleInsurance:
+                    completeContractToReturn.Vehicles = _vehiclesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                        .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                        .Select(ben => ConvertersManager.VehicleConverter.Convert(ben)).ToList();
+                    break;
+                default:
+                    return null;
+            }
+            return completeContractToReturn;
         }
 
         public IEnumerable<CompleteContractDomain> Get()
