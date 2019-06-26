@@ -42,6 +42,10 @@ export class ContractComponent implements OnInit {
   paginationPageSize;
   detailCellRendererParams;
   detailRowHeight;
+  colResizeDefault;
+  rowHeight;
+  defaultColDef: { resizable: boolean; };
+
   contractform: FormGroup;
 
   gridApi;
@@ -435,6 +439,8 @@ export class ContractComponent implements OnInit {
               lockPosition: true,
               sortable: true,
               filter: true,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               cellRenderer: "agGroupCellRenderer",
               onCellValueChanged:
                 this.onCellEdit.bind(this),
@@ -446,6 +452,8 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               valueFormatter: maskCpf,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this),
             }
@@ -461,6 +469,8 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               valueFormatter: currencyCategory,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this),
             },
@@ -471,6 +481,8 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               valueFormatter: currencyType,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this),
             },
@@ -483,6 +495,8 @@ export class ContractComponent implements OnInit {
               cellRenderer: (data) => {
                 return data.value ? (new Date(data.value)).toLocaleDateString() : '';
               },
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this)
             },
@@ -493,6 +507,8 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               valueFormatter: currencyStatus,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this)
             },
@@ -501,6 +517,8 @@ export class ContractComponent implements OnInit {
               field: 'editDelete',
               lockPosition: true,
               cellRendererFramework: ActionButtonComponent,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               cellRendererParams: {
                 onEdit: this.handle_editUser.bind(this),
                 onDelete: this.handle_deleteUser.bind(this)
@@ -510,6 +528,8 @@ export class ContractComponent implements OnInit {
         },
       ]
     }
+    this.defaultColDef = { resizable: true };
+    this.colResizeDefault = "shift";
     this.detailRowHeight = 400;
     this.detailCellRendererParams = function (params) {
       var res: any = {};
@@ -530,16 +550,16 @@ export class ContractComponent implements OnInit {
           columnDefs: [{
             headerName: "Individual Details",
             children: [
-              { headerName: 'Name ', field: "individualName" },
-              { headerName: 'CPF ', field: "individualCPF", valueFormatter: maskCpf },
-              { headerName: 'RG ', field: "individualRG", valueFormatter: maskRG },
+              { headerName: 'Name ', field: "individualName", minWidth: 125, },
+              { headerName: 'CPF ', field: "individualCPF", valueFormatter: maskCpf, minWidth: 145, },
+              { headerName: 'RG ', field: "individualRG", valueFormatter: maskRG, minWidth: 125, },
               {
-                headerName: 'Birthdate ', field: "individualBirthdate",
+                headerName: 'Birthdate ', field: "individualBirthdate", minWidth: 115,
                 cellRenderer: (data) => {
                   return data.value ? (new Date(data.value)).toLocaleDateString() : '';
                 },
               },
-              { headerName: 'Email ', field: "individualEmail" }
+              { headerName: 'Email ', field: "individualEmail", minWidth: 150, }
             ]
           }],
 
@@ -557,11 +577,11 @@ export class ContractComponent implements OnInit {
           columnDefs: [{
             headerName: "Pet Details",
             children: [
-              { headerName: 'Name ', field: "petName" },
-              { headerName: 'Breed ', field: "petBreed" },
-              { headerName: 'Species ', field: "petSpecies" },
+              { headerName: 'Name ', field: "petName", minWidth: 115, },
+              { headerName: 'Breed ', field: "petBreed", minWidth: 100, },
+              { headerName: 'Species ', field: "petSpecies", minWidth: 180, valueFormatter: SpeciesFormmatter },
               {
-                headerName: 'Birthdate ', field: "petBirthdate", cellRenderer: (data) => {
+                headerName: 'Birthdate ', field: "petBirthdate", minWidth: 115, cellRenderer: (data) => {
                   return data.value ? (new Date(data.value)).toLocaleDateString() : '';
                 },
               },
@@ -578,27 +598,27 @@ export class ContractComponent implements OnInit {
         }
       }
       if (params.data.type === 4) {
-        res.detailGridOptions = {
+        res.detailGridOptions = { 
           columnDefs: [{
             headerName: "Realties Details",
             children: [
-              { headerName: 'Type', field: "addressType", valueFormatter: realtiestypeFormatter },
-              { headerName: 'Street', field: "addressStreet" },
-              { headerName: 'No.', field: "addressNumber" },
-              { headerName: 'Complement', field: "addressComplement" },
-              { headerName: 'Neighborhood', field: "addressNeighborhood" },
-              { headerName: 'City', field: "addressCity" },
-              { headerName: 'State', field: "addressState" },
-              { headerName: 'Country', field: "addressCountry" },
-              { headerName: 'Zip-Code', field: "addressZipCode" },
+              { headerName: 'Type', field: "addressType", valueFormatter: realtiestypeFormatter, minWidth: 115, },
+              { headerName: 'Street', field: "addressStreet", minWidth: 165, },
+              { headerName: 'No.', field: "addressNumber", minWidth: 110, },
+              { headerName: 'Complement', field: "addressComplement", minWidth: 145, },
+              { headerName: 'Neighborhood', field: "addressNeighborhood", minWidth: 145, },
+              { headerName: 'City', field: "addressCity", minWidth: 145, },
+              { headerName: 'State', field: "addressState", minWidth: 130, },
+              { headerName: 'Country', field: "addressCountry", minWidth: 120, },
+              { headerName: 'Zip-Code', field: "addressZipCode", minWidth: 125, },
               {
-                headerName: 'Construction Date', field: "constructionDate", cellRenderer: (data) => {
+                headerName: 'Construction Date', field: "constructionDate", minWidth: 165, cellRenderer: (data) => {
                   return data.value ? (new Date(data.value)).toLocaleDateString() : '';
                 },
               },
-              { headerName: 'Municipal Registration', field: "municipalRegistration" },
-              { headerName: 'Market Value', field: "marketValue", valueFormatter: SaleFormatter },
-              { headerName: 'Sale Value', field: "saleValue", valueFormatter: SaleFormatter },
+              { headerName: 'Municipal Registration', field: "municipalRegistration", minWidth: 195, },
+              { headerName: 'Market Value', field: "marketValue", valueFormatter: SaleFormatter, minWidth: 140, },
+              { headerName: 'Sale Value', field: "saleValue", valueFormatter: SaleFormatter, minWidth: 135, },
             ]
           }],
 
@@ -616,23 +636,23 @@ export class ContractComponent implements OnInit {
           columnDefs: [{
             headerName: "Vehicles Details",
             children: [
-              { headerName: 'Brand', field: "vehicleBrand" },
-              { headerName: 'Model', field: "vehicleModel" },
-              { headerName: 'Color', field: "vehicleColor", valueFormatter: colorFormatter },
+              { headerName: 'Brand', field: "vehicleBrand", minWidth: 110, },
+              { headerName: 'Model', field: "vehicleModel", minWidth: 110, },
+              { headerName: 'Color', field: "vehicleColor", valueFormatter: colorFormatter, minWidth: 110, },
               {
-                headerName: 'Manufactoring Year', field: "vehicleManufactoringYear", cellRenderer: (data) => {
+                headerName: 'Manufactoring Year', field: "vehicleManufactoringYear", minWidth: 100, cellRenderer: (data) => {
                   return data.value ? (new Date(data.value)).toLocaleDateString() : '';
                 },
               },
               {
-                headerName: 'Model Year', field: "vehicleModelYear", cellRenderer: (data) => {
+                headerName: 'Model Year', field: "vehicleModelYear", minWidth: 135, cellRenderer: (data) => {
                   return data.value ? (new Date(data.value)).toLocaleDateString() : '';
                 },
               },
-              { headerName: 'No. Chassis', field: "vehicleChassisNumber" },
-              { headerName: 'Current Mileage', field: "vehicleCurrentMileage", valueFormatter: MileageFormatter },
-              { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue", valueFormatter: SaleFormatter },
-              { headerName: 'Done Inspection', field: "vehicleDoneInspection", valueFormatter: doneFormatter },
+              { headerName: 'No. Chassis', field: "vehicleChassisNumber", minWidth: 160, },
+              { headerName: 'Current Mileage', field: "vehicleCurrentMileage", valueFormatter: MileageFormatter, minWidth: 165 },
+              { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue", valueFormatter: SaleFormatter, minWidth: 165, },
+              { headerName: 'Done Inspection', field: "vehicleDoneInspection", valueFormatter: doneFormatter, minWidth: 155, },
             ]
           }],
 
@@ -650,16 +670,16 @@ export class ContractComponent implements OnInit {
           columnDefs: [{
             headerName: "Mobile Device Details",
             children: [
-              { headerName: 'Brand', field: "mobileDeviceBrand" },
-              { headerName: 'Model', field: "mobileDeviceModel" },
-              { headerName: 'Device Type', field: "mobileDeviceType", valueFormatter: DeviceFormatter },
+              { headerName: 'Brand', field: "mobileDeviceBrand", minWidth: 120, },
+              { headerName: 'Model', field: "mobileDeviceModel", minWidth: 120, },
+              { headerName: 'Device Type', field: "mobileDeviceType", valueFormatter: DeviceFormatter, minWidth: 135, },
               {
-                headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear", cellRenderer: (data) => {
+                headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear", minWidth: 176, cellRenderer: (data) => {
                   return data.value ? (new Date(data.value)).toLocaleDateString() : '';
                 },
               },
-              { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber" },
-              { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue", valueFormatter: SaleFormatter },
+              { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber", minWidth: 180, },
+              { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue", valueFormatter: SaleFormatter, minWidth: 176, },
             ]
           }],
           onGridReady: function (params) {
@@ -668,6 +688,7 @@ export class ContractComponent implements OnInit {
           },
           onFirstDataRendered(params) {
             params.api.sizeColumnsToFit();
+            params.api.autoSizeColumns();
           },
         }
       }
@@ -860,7 +881,7 @@ function mileageValue(number) {
 function doneFormatter(params) {
   return doneValue(params.value);
 }
-function doneValue(bool){
+function doneValue(bool) {
   if (bool == true)
     return "Check";
   else
@@ -878,5 +899,27 @@ function deviceValue(number) {
     return "Tablet";
   if (number == 2)
     return "Laptop";
+}
+
+//function mask species
+function SpeciesFormmatter(params) {
+  return speciesValue(params.value);
+}
+function speciesValue(number) {
+  if (number == 0) {
+    return "Canis Lupus Familiaris";
+  }
+  if (number == 1) {
+    return "Felis Catus"
+  }
+  if (number == 2) {
+    return "Mesocricetus Auratus"
+  }
+  if (number == 3) {
+    return "Nymphicus Hollandicus"
+  }
+  if (number == 4) {
+    return "Ara Chloropterus"
+  }
 }
 
