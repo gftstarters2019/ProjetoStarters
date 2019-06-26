@@ -52,6 +52,9 @@ namespace Backend.Infrastructure.Repositories
                     _individualsRepository.Save();
 
                     // Add Telephones and Individual Telephones
+                    if (contractHolder.IndividualTelephones.Count > 5)
+                        return null;
+
                     var addedTelephones = new List<TelephoneDomain>();
                     foreach(var telephone in contractHolder.IndividualTelephones)
                     {
@@ -79,6 +82,9 @@ namespace Backend.Infrastructure.Repositories
                     contractHolder.IndividualTelephones = addedTelephones;
 
                     // Add Addresses
+                    if (contractHolder.IndividualAddresses.Count > 3)
+                        return null;
+
                     var addedAddresses = new List<AddressDomain>();
                     foreach (var address in contractHolder.IndividualAddresses)
                     {
