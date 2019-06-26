@@ -34,7 +34,7 @@ namespace Contract.WebAPI.Controllers
         [HttpGet]
         public IActionResult Contracts()
         {
-            return Ok(_contractService.GetAll().Select(con => FactoriesManager.ContractViewModel.Create(con)));//.ToList());
+            return Ok(_contractService.GetAll().Select(con => FactoriesManager.ContractViewModel.Create(con)));
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Contract.WebAPI.Controllers
         public IActionResult Contract(Guid id)
         {
             var obj = _contractService.Get(id);
-            return Ok(obj);
+            return Ok(FactoriesManager.ContractViewModel.Create(obj));
         }
 
         /// <summary>

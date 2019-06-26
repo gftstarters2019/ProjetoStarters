@@ -100,18 +100,5 @@ namespace ContractHolder.WebAPI.Controllers
 
             return StatusCode(403);
         }
-
-        #region SendEmail
-        /// <summary>
-        /// Sends welcome email to Contract Holder
-        /// </summary>
-        /// <param name="vm">Individual to send the email</param>
-        //public void SendWelcomeEmail(ContractHolderViewModel vm)
-        //{
-        //    new EmailService().SendEmail("Welcome!",
-        //        $"Welcome {vm.IndividualName}!",
-        //        vm.IndividualEmail);
-        //}
-        #endregion SendEmail
     }
 }

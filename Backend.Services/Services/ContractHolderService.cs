@@ -24,8 +24,11 @@ namespace Backend.Services.Services
 
             contractHolderToDelete.Individual.IsDeleted = !contractHolderToDelete.Individual.IsDeleted;
             var deletedBeneficiary = _contractHolderRepository.Update(id, contractHolderToDelete);
-            if (_contractHolderRepository.Save())
+            if (deletedBeneficiary != null)
+            {
+                _contractHolderRepository.Save();
                 return deletedBeneficiary;
+            }
             return null;
         }
 
@@ -48,7 +51,19 @@ namespace Backend.Services.Services
              * Validations
             */
 
-            return _contractHolderRepository.Add(contractHolderDomain);
+            var addedContractHolder = _contractHolderRepository.Add(contractHolderDomain);
+
+            if (addedContractHolder != null)
+                SendEmail(addedContractHolder);
+
+            return addedContractHolder;
+        }
+
+        private void SendEmail(ContractHolderDomain addedContractHolder)
+        {
+            new EmailService().SendEmail("Welcome!",
+                $"Welcome {addedContractHolder.Individual.IndividualName}!",
+                addedContractHolder.Individual.IndividualEmail);
         }
 
         public ContractHolderDomain Update(Guid id, ContractHolderDomain contractToBeUpdated)
