@@ -148,9 +148,73 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public ContractHolderDomain Update(Guid id, ContractHolderDomain t)
+        public ContractHolderDomain Update(Guid id, ContractHolderDomain updatedContractHolder)
         {
-            throw new NotImplementedException();
+            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
+            {
+                var contractHolderToUpdate = Find(id);
+                if (contractHolderToUpdate == null)
+                    return null;
+
+                // Individual
+                contractHolderToUpdate.Individual = ConvertersManager.IndividualConverter.Convert(
+                    _individualsRepository.Update(contractHolderToUpdate.Individual.BeneficiaryId, ConvertersManager.IndividualConverter.Convert(updatedContractHolder.Individual)));
+                if (contractHolderToUpdate.Individual == null)
+                    return null;
+                _individualsRepository.Save();
+
+                // Addresses
+                contractHolderToUpdate.IndividualAddresses.RemoveAll(ad => updatedContractHolder.IndividualAddresses.Select(add => add.AddressId).Contains(ad.AddressId));
+                updatedContractHolder.IndividualAddresses.RemoveAll(ad => ad.AddressId != Guid.Empty);
+                foreach(var address in contractHolderToUpdate.IndividualAddresses)
+                {
+                    _beneficiaryAddressRepository.Remove(_beneficiaryAddressRepository.Get().FirstOrDefault(ba => ba.BeneficiaryId == id && ba.AddressId == address.AddressId).BeneficiaryId);
+                    _addressRepository.Remove(address.AddressId);
+                }
+                foreach(var address in updatedContractHolder.IndividualAddresses)
+                {
+                    var addedAddress = ConvertersManager.AddressConverter.Convert(
+                        _addressRepository.Add(ConvertersManager.AddressConverter.Convert(address)));
+                    if (_beneficiaryAddressRepository.Add(new BeneficiaryAddress()
+                    {
+                        AddressId = addedAddress.AddressId,
+                        BeneficiaryId = id
+                    }) == null)
+                        return null;
+
+                    contractHolderToUpdate.IndividualAddresses.Add(addedAddress);
+                }
+                _addressRepository.Save();
+                _beneficiaryAddressRepository.Save();
+
+                // Telephones
+                contractHolderToUpdate.IndividualTelephones.RemoveAll(tel => updatedContractHolder.IndividualTelephones.Select(tele => tele.TelephoneId).Contains(tel.TelephoneId));
+                updatedContractHolder.IndividualTelephones.RemoveAll(ad => ad.TelephoneId != Guid.Empty);
+                foreach (var telephone in contractHolderToUpdate.IndividualTelephones)
+                {
+                    _individualTelephonesRepository.Remove(_individualTelephonesRepository.Get().FirstOrDefault(it => it.BeneficiaryId == id && it.TelephoneId == telephone.TelephoneId).BeneficiaryId);
+                    _telephonesRepository.Remove(telephone.TelephoneId);
+                }
+                foreach (var telephone in updatedContractHolder.IndividualTelephones)
+                {
+                    var addedTelephone = ConvertersManager.TelephoneConverter.Convert(
+                        _telephonesRepository.Add(ConvertersManager.TelephoneConverter.Convert(telephone)));
+                    if (_individualTelephonesRepository.Add(new IndividualTelephone()
+                    {
+                        TelephoneId = addedTelephone.TelephoneId,
+                        BeneficiaryId = id
+                    }) == null)
+                        return null;
+
+                    contractHolderToUpdate.IndividualTelephones.Add(addedTelephone);
+                }
+                _telephonesRepository.Save();
+                _individualTelephonesRepository.Save();
+
+                scope.Complete();
+                return contractHolderToUpdate;
+            }
         }
     }
 }
