@@ -59,7 +59,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel contractHolderViewModel)
         {
-            var addedContractHolder = _contractHolderService.Save(FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel));
+            var contractHolderToAdd = _contractHolderService.Save(FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel));
 
             try
             {
