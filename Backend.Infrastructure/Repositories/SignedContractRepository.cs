@@ -37,6 +37,9 @@ namespace Backend.Infrastructure.Repositories
         public SignedContractEntity Find(Guid id)
         {
             var signedContract = _db.SignedContracts.FirstOrDefault(sc => sc.ContractId == id);
+            if (signedContract == null)
+                return null;
+
             signedContract.SignedContractContract = _contractRepository.Find(signedContract.ContractId);
             return signedContract;
         }

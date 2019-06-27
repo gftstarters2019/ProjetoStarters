@@ -319,19 +319,19 @@ namespace Backend.Infrastructure.Repositories
                 var updatedCompleteContract = new CompleteContractDomain();
                 updatedCompleteContract.SignedContract = ConvertersManager.SignedContractConverter.Convert(
                     _signedContractRepository.Update(id, ConvertersManager.SignedContractConverter.Convert(
-                        updatedCompleteContract.SignedContract)));
+                        completeContractToUpdate.SignedContract)));
                 if (updatedCompleteContract.SignedContract == null)
                     return null;
                 _signedContractRepository.Save();
 
                 updatedCompleteContract.Contract = ConvertersManager.ContractConverter.Convert(
                     _contractRepository.Update(updatedCompleteContract.SignedContract.ContractId, ConvertersManager.ContractConverter.Convert(
-                        updatedCompleteContract.Contract)));
+                        completeContractToUpdate.Contract)));
                 if (updatedCompleteContract.Contract == null)
                     return null;
                 _contractRepository.Save();
 
-                var updatedBeneficiaries = UpdateBeneficiaries(id, updatedCompleteContract);
+                var updatedBeneficiaries = UpdateBeneficiaries(id, completeContractToUpdate);
                 if (updatedBeneficiaries == null)
                     return null;
 
