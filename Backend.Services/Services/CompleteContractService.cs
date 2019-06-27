@@ -54,7 +54,7 @@ namespace Backend.Services.Services
 
             var addedContract = _completeContractRepository.Add(completeContract);
             if (addedContract == null)
-                throw new Exception("Model not added to DB!");
+                throw new Exception("Erro de validação ao salvar no banco de dados!");
 
             return addedContract;
         }
