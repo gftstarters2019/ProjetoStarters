@@ -64,12 +64,16 @@ namespace Backend.Services.Services
             if (errors != "")
                 throw new Exception(errors);
 
-
-            var addedContractHolder = _contractHolderRepository.Add(contractHolderDomain);
-            if (addedContractHolder == null)
-                throw new Exception("Model not added to DB");
-            SendEmail(addedContractHolder);
-            return addedContractHolder;
+            try
+            {
+                var addedContractHolder = _contractHolderRepository.Add(contractHolderDomain);
+                SendEmail(addedContractHolder);
+                return addedContractHolder;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private void SendEmail(ContractHolderDomain addedContractHolder)

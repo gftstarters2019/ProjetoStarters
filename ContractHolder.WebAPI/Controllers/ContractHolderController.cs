@@ -58,12 +58,10 @@ namespace ContractHolder.WebAPI.Controllers
         /// <returns>Created Contract Holder</returns>
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel contractHolderViewModel)
-        {
-            var contractHolderToAdd = _contractHolderService.Save(FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel));
-
+        {           
             try
             {
-                var addedContractHolder = _contractHolderService.Save(contractHolderToAdd);
+                var addedContractHolder = _contractHolderService.Save(FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel));
                 if (addedContractHolder == null)
                     return StatusCode(403);
                 return Ok(FactoriesManager.ContractHolderViewModel.Create(addedContractHolder));
@@ -74,7 +72,7 @@ namespace ContractHolder.WebAPI.Controllers
 
                 return ValidationProblem(new ValidationProblemDetails()
                 {
-                    Type = "Model Validation Error",
+                    Type = "Validation Error",
                     Detail = errors
                 }
                 );

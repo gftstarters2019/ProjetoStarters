@@ -48,12 +48,13 @@ namespace Backend.Infrastructure.Repositories
                             contractHolder.Individual)));
 
                     if (contractHolder.Individual == null)
-                        return null;
+                        throw new Exception("CPF já cadastrado! ");
+
                     _individualsRepository.Save();
 
                     // Add Telephones and Individual Telephones
                     if (contractHolder.IndividualTelephones.Count > 5)
-                        return null;
+                        throw new Exception("Quantidade máxima de telefones excedida! ");
 
                     var addedTelephones = new List<TelephoneDomain>();
                     foreach(var telephone in contractHolder.IndividualTelephones)
@@ -83,7 +84,7 @@ namespace Backend.Infrastructure.Repositories
 
                     // Add Addresses
                     if (contractHolder.IndividualAddresses.Count > 3)
-                        return null;
+                        throw new Exception("Quantidade máxima de endereços excedida! ");
 
                     var addedAddresses = new List<AddressDomain>();
                     foreach (var address in contractHolder.IndividualAddresses)
