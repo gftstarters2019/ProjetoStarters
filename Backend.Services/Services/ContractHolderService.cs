@@ -85,12 +85,21 @@ namespace Backend.Services.Services
 
         public ContractHolderDomain Update(Guid id, ContractHolderDomain contractToBeUpdated)
         {
+            var errors = string.Empty;
+
             if (contractToBeUpdated == null)
                 return null;
 
-            /*
-             * Validations
-            */
+            var validationErrorsList = _contractHolderValidator.IsValid(contractToBeUpdated.Individual, contractToBeUpdated.IndividualAddresses, contractToBeUpdated.IndividualTelephones);
+
+            if (validationErrorsList.Any())
+                foreach (var er in validationErrorsList)
+                {
+                    errors += er;
+                }
+
+            if (errors != "")
+                throw new Exception(errors);
 
             return _contractHolderRepository.Update(id, contractToBeUpdated);
         }

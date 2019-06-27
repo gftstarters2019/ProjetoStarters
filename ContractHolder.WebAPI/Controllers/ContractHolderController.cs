@@ -90,12 +90,26 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContractHolder(Guid id, [FromBody] ContractHolderViewModel vm)
         {
-            var updatedContractHolder = _contractHolderService.Update(id, FactoriesManager.ContractHolderDomain.Create(vm));
+            try
+            {
+                var updatedContractHolder = _contractHolderService.Update(id, FactoriesManager.ContractHolderDomain.Create(vm));
 
-            if (updatedContractHolder == null)
-                return StatusCode(403);
-            
-            return Ok(FactoriesManager.ContractHolderViewModel.Create(updatedContractHolder));
+                if (updatedContractHolder == null)
+                    return StatusCode(403);
+
+                return Ok(FactoriesManager.ContractHolderViewModel.Create(updatedContractHolder));
+            }
+            catch (Exception e)
+            {
+                string errors = e.Message;
+
+                return ValidationProblem(new ValidationProblemDetails()
+                {
+                    Type = "Validation Error",
+                    Detail = errors
+                }
+                );
+            }
         }
 
         /// <summary>

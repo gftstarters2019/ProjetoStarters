@@ -120,11 +120,27 @@ namespace Contract.WebAPI.Controllers
         public IActionResult UpdateContract(Guid id, [FromBody] ContractViewModel contractViewModel)
         {
             var contractToUpdate = FactoriesManager.CompleteContractDomain.Create(contractViewModel);
-            var updatedContract = _contractService.Update(id, contractToUpdate);
-            if (updatedContract == null)
-                return StatusCode(403);
-            
-            return Ok(FactoriesManager.ContractViewModel.Create(updatedContract));
+
+            try
+            {
+                var updatedContract = _contractService.Update(id, contractToUpdate);
+                if (updatedContract == null)
+                    return StatusCode(403);
+
+                return Ok(FactoriesManager.ContractViewModel.Create(updatedContract));
+            }
+            catch (Exception)
+            {
+                string errors = e.Message;
+
+                return ValidationProblem(new ValidationProblemDetails()
+                {
+                    Type = "Model Validation Error",
+                    Detail = errors
+                }
+                );
+            }
+
         }
 
         /// <summary>
