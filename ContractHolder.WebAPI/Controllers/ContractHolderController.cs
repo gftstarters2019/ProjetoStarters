@@ -96,7 +96,7 @@ namespace ContractHolder.WebAPI.Controllers
             var contractHolder = _contractHolderService.Delete(id);
 
             if (contractHolder != null)
-                return Ok(id);
+                return Ok(FactoriesManager.ContractHolderViewModel.Create(contractHolder));
 
             return StatusCode(403);
         }

@@ -123,7 +123,7 @@ namespace Contract.WebAPI.Controllers
         {
             var deletedContract = _contractService.Delete(id);
             if (deletedContract != null)
-                return Ok(deletedContract);
+                return Ok(FactoriesManager.ContractViewModel.Create(deletedContract));
 
             return StatusCode(403);
         }

@@ -10,6 +10,7 @@ namespace Backend.Infrastructure.Repositories
     public class BeneficiaryRepository : IRepository<BeneficiaryEntity>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public BeneficiaryRepository(ConfigurationContext db)
         {
@@ -91,9 +92,22 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
