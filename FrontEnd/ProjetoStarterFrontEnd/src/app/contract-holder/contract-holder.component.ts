@@ -116,7 +116,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result == true) {
-        this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage), () => this.openSnackBar('Contract Holder removed'));
+        this.http.delete(`https://contractholderapi.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage), () => this.openSnackBar('Contract Holder removed'));
       }
     });
   }
@@ -162,12 +162,12 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       })
     };
     if (this.IndividualId == null) {
-      this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json, httpOptions).subscribe(response => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
+      this.http.post('https://contractholderapi.azurewebsites.net/api/contractholder', json, httpOptions).subscribe(response => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
     }
     else {
 
 
-      this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
+      this.http.put(`https://contractholderapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
     }
   }
   openSnackBar(message: string): void {
@@ -346,7 +346,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   private setup_gridData() {
-    this.rowData$ = this.http.get<Array<any>>('https://contractholderwebapi.azurewebsites.net/api/ContractHolder');
+    this.rowData$ = this.http.get<Array<any>>('https://contractholderapi.azurewebsites.net/api/ContractHolder');
 
   }
 
