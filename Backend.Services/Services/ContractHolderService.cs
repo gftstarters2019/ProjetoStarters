@@ -22,12 +22,23 @@ namespace Backend.Services.Services
 
         public ContractHolderDomain Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var contractHolderToDelete = _contractHolderRepository.Find(id);
+            if (contractHolderToDelete == null)
+                return null;
+
+            contractHolderToDelete.Individual.IsDeleted = !contractHolderToDelete.Individual.IsDeleted;
+            var deletedBeneficiary = _contractHolderRepository.Update(id, contractHolderToDelete);
+            if (deletedBeneficiary != null)
+            {
+                _contractHolderRepository.Save();
+                return deletedBeneficiary;
+            }
+            return null;
         }
 
         public ContractHolderDomain Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _contractHolderRepository.Find(id);
         }
 
         public List<ContractHolderDomain> GetAll()
@@ -57,12 +68,27 @@ namespace Backend.Services.Services
             var addedContractHolder = _contractHolderRepository.Add(contractHolderDomain);
             if (addedContractHolder == null)
                 throw new Exception("Model not added to DB");
+            SendEmail(addedContractHolder);
             return addedContractHolder;
         }
 
-        public ContractHolderDomain Update(Guid id, ContractHolderDomain modelToUpdate)
+        private void SendEmail(ContractHolderDomain addedContractHolder)
         {
-            throw new NotImplementedException();
+            new EmailService().SendEmail("Welcome!",
+                $"Welcome {addedContractHolder.Individual.IndividualName}!",
+                addedContractHolder.Individual.IndividualEmail);
+        }
+
+        public ContractHolderDomain Update(Guid id, ContractHolderDomain contractToBeUpdated)
+        {
+            if (contractToBeUpdated == null)
+                return null;
+
+            /*
+             * Validations
+            */
+
+            return _contractHolderRepository.Update(id, contractToBeUpdated);
         }
     }
 }

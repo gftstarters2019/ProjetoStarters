@@ -48,7 +48,7 @@ namespace ContractHolder.WebAPI.Controllers
             if (obj == null)
                 return NotFound();
 
-            return Ok(obj);
+            return Ok(FactoriesManager.ContractHolderViewModel.Create(obj));
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel contractHolderViewModel)
         {
-            var contractHolderToAdd = FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel);
+            var addedContractHolder = _contractHolderService.Save(FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel));
 
             try
             {
@@ -92,13 +92,12 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContractHolder(Guid id, [FromBody] ContractHolderViewModel vm)
         {
-            // TODO: Usar Factory ContractHolderViewModel => ContractHolderDomain para passar para a Service
-            var contractHolderToUpdate = _contractHolderService.Update(id, new ContractHolderDomain());
-            if (contractHolderToUpdate == null)
-                return StatusCode(403);
+            var updatedContractHolder = _contractHolderService.Update(id, FactoriesManager.ContractHolderDomain.Create(vm));
 
-            // TODO: Usar Factory ContractHolderDomain => ContractHolderViewModel para passar para devolver para o Frontend
-            return Ok(vm);
+            if (updatedContractHolder == null)
+                return StatusCode(403);
+            
+            return Ok(FactoriesManager.ContractHolderViewModel.Create(updatedContractHolder));
         }
 
         /// <summary>
@@ -116,18 +115,5 @@ namespace ContractHolder.WebAPI.Controllers
 
             return StatusCode(403);
         }
-
-        #region SendEmail
-        /// <summary>
-        /// Sends welcome email to Contract Holder
-        /// </summary>
-        /// <param name="vm">Individual to send the email</param>
-        //public void SendWelcomeEmail(ContractHolderViewModel vm)
-        //{
-        //    new EmailService().SendEmail("Welcome!",
-        //        $"Welcome {vm.IndividualName}!",
-        //        vm.IndividualEmail);
-        //}
-        #endregion SendEmail
     }
 }

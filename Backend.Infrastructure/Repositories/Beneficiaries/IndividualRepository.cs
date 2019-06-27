@@ -50,25 +50,25 @@ namespace Backend.Infrastructure.Repositories
             return _db.SaveChanges() > 0;
         }
 
-        public IndividualEntity Update(Guid id, IndividualEntity individual)
+        public IndividualEntity Update(Guid id, IndividualEntity updatedIndividual)
         {
-            if (individual != null)
+            if (updatedIndividual != null)
             {
                 var individualToUpdate = Find(id);
                 if (individualToUpdate != null)
                 {
                     // Verifies if CPF is already in DB of Individual not deleted
                     if (_db.Individuals
-                            .Where(ind => ind.IndividualCPF == individual.IndividualCPF && !ind.IsDeleted)
-                            .Any())
+                            .Where(ind => ind.IndividualCPF == updatedIndividual.IndividualCPF && !ind.IsDeleted)
+                            .Any() && updatedIndividual.IndividualCPF != individualToUpdate.IndividualCPF)
                         return null;
 
-                    individualToUpdate.IndividualBirthdate = individual.IndividualBirthdate;
-                    individualToUpdate.IndividualCPF = individual.IndividualCPF;
-                    individualToUpdate.IndividualEmail = individual.IndividualEmail;
-                    individualToUpdate.IndividualName = individual.IndividualName;
-                    individualToUpdate.IndividualRG = individual.IndividualRG;
-                    individualToUpdate.IsDeleted = individual.IsDeleted;
+                    individualToUpdate.IndividualBirthdate = updatedIndividual.IndividualBirthdate;
+                    individualToUpdate.IndividualCPF = updatedIndividual.IndividualCPF;
+                    individualToUpdate.IndividualEmail = updatedIndividual.IndividualEmail;
+                    individualToUpdate.IndividualName = updatedIndividual.IndividualName;
+                    individualToUpdate.IndividualRG = updatedIndividual.IndividualRG;
+                    individualToUpdate.IsDeleted = updatedIndividual.IsDeleted;
 
                     return _db.Individuals.Update(individualToUpdate).Entity;
                 }
