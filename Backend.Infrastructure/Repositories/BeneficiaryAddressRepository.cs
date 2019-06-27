@@ -9,6 +9,7 @@ namespace Backend.Infrastructure.Repositories
     public class BeneficiaryAddressRepository : IRepository<BeneficiaryAddress>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public BeneficiaryAddressRepository(ConfigurationContext db)
         {
@@ -23,6 +24,24 @@ namespace Backend.Infrastructure.Repositories
                 return _db.Beneficiary_Address.Add(beneficiaryAddress).Entity;
             }
             return null;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public BeneficiaryAddress Find(Guid id)

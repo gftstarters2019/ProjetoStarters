@@ -10,6 +10,7 @@ namespace Backend.Infrastructure.Repositories
     public class IndividualTelephoneRepository : IRepository<IndividualTelephone>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public IndividualTelephoneRepository(ConfigurationContext db)
         {
@@ -61,6 +62,24 @@ namespace Backend.Infrastructure.Repositories
         public bool Save()
         {
             return _db.SaveChanges() > 0;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

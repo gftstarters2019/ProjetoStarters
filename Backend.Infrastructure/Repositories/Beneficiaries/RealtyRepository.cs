@@ -12,6 +12,7 @@ namespace Backend.Infrastructure.Repositories
         private readonly ConfigurationContext _db;
         private readonly IRepository<AddressEntity> _addressRepository;
         private readonly IRepository<BeneficiaryAddress> _beneficiaryAddressRepository;
+        private bool disposed = false;
 
         public RealtyRepository(ConfigurationContext db,
                                 IRepository<AddressEntity> addressRepository,
@@ -51,6 +52,24 @@ namespace Backend.Infrastructure.Repositories
                     return addedRealty;
             }
             return null;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public RealtyEntity Find(Guid id)

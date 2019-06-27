@@ -10,6 +10,7 @@ namespace Backend.Infrastructure.Repositories
     public class IndividualRepository : IRepository<IndividualEntity>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public IndividualRepository(ConfigurationContext db)
         {
@@ -31,6 +32,24 @@ namespace Backend.Infrastructure.Repositories
                 return _db.Individuals.Add(individual).Entity;
             }
             return null;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public IndividualEntity Find(Guid id) => _db.Individuals.Where(ind => ind.BeneficiaryId == id).FirstOrDefault();

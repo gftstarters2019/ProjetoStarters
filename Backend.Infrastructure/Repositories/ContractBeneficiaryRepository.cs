@@ -11,6 +11,7 @@ namespace Backend.Infrastructure.Repositories
     public class ContractBeneficiaryRepository : IRepository<ContractBeneficiary>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public ContractBeneficiaryRepository(ConfigurationContext db)
         {
@@ -59,12 +60,17 @@ namespace Backend.Infrastructure.Repositories
 
         public IEnumerable<ContractBeneficiary> Get() => _db
             .Contract_Beneficiary
-            .Where(cb => cb.SignedContract.ContractIndividualIsActive)
             .ToList();
 
         public bool Remove(Guid id)
         {
-            throw new NotImplementedException();
+            var contractBeneficiaryToDelete = _db.Contract_Beneficiary.Where(cb => cb.ContractBeneficiaryId == id).FirstOrDefault();
+            if(contractBeneficiaryToDelete != null)
+            {
+                if (_db.Contract_Beneficiary.Remove(contractBeneficiaryToDelete) != null)
+                    return true;
+            }
+            return false;
         }
 
         public bool Save()
@@ -75,6 +81,24 @@ namespace Backend.Infrastructure.Repositories
         public ContractBeneficiary Update(Guid id, ContractBeneficiary t)
         {
             throw new NotImplementedException();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

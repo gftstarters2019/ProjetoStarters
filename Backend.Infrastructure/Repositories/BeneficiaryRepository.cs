@@ -90,5 +90,10 @@ namespace Backend.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
