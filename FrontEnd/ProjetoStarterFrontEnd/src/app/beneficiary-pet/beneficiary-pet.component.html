@@ -2,32 +2,33 @@
   <div class="container">
 
     <div class="flex-wrapper">
-        <mat-form-field style="width: 60%;">
+        <mat-form-field style="width: 300px;">
           <input matInput placeholder="Name" name="petName" formControlName="petName" required>
           <mat-error>Name is invalid!</mat-error>
         </mat-form-field>
     </div>
 
-    <div class="flex-wrapper">
-      <mat-form-field style="width: 30%;">
-        <input matInput [matDatepicker]="picker" placeholder="Birthdate" name="petBirthdate" formControlName="petBirthdate" required>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error>Date is invalid!</mat-error>
-      </mat-form-field>
+      <div class="flex-wrapper">
+      <mat-form-field  style="width: 200px;">
+          <input matInput  placeholder="Birthdate" name="petBirthdate" formControlName="petBirthdate"
+            bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" type="text" required>
+          <mat-error>Date is invalid!</mat-error>
+        </mat-form-field>
     </div>
 
-    <mat-form-field style="width: 30%;">
+    <mat-form-field style="width: 200px;">
       <mat-label>Species</mat-label>
       <mat-select name="animalSpecies" formControlName="petSpecies" required>
-          <mat-option *ngFor="let specie of species" [value]="specie.value" >
-              {{specie.name}}
-          </mat-option>
+          <mat-option [value]="0">Canis lupus familiaris</mat-option>
+          <mat-option [value]="1">Felis catus</mat-option>
+          <mat-option [value]="2">Mesocricetus auratus</mat-option>
+          <mat-option [value]="3">Nymphicus hollandicus</mat-option>
+          <mat-option [value]="4">Ara chloropterus</mat-option>
       </mat-select>
   </mat-form-field>
 
   <div class="flex-wrapper">
-    <mat-form-field style="width: 60%;">
+    <mat-form-field style="width: 300px;">
         <input matInput placeholder="Breed" name="petBreed" formControlName="petBreed">
         <mat-error>Breed is invalid!</mat-error>
     </mat-form-field>

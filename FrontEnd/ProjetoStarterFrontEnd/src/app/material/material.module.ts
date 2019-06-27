@@ -8,7 +8,6 @@ import "ag-grid-enterprise";
   declarations: [],
   imports: [
     CommonModule,
-    MatAutocompleteModule,
     MatBadgeModule,
     MatBottomSheetModule,
     MatButtonModule,
@@ -50,7 +49,6 @@ import "ag-grid-enterprise";
     MatBottomSheetModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatAutocompleteModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,

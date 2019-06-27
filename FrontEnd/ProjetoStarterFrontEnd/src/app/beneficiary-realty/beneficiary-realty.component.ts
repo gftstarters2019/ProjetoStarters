@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormControl, Validators, FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
+import { BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-beneficiary-realty',
@@ -16,6 +17,8 @@ export class BeneficiaryRealtyComponent implements OnInit {
   @Input() realtyPushPermission !: number;
 
   @Output() messageRealtyEvent = new EventEmitter<any>();
+  
+  bsConfig: Partial<BsDatepickerConfig>;
 
   realtyCreateForm= this.formBuilder.group({
     municipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -33,7 +36,10 @@ export class BeneficiaryRealtyComponent implements OnInit {
     addressComplement: ['']
   });
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) { 
+    this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
+
+  }
 
   ngOnInit() {
   }

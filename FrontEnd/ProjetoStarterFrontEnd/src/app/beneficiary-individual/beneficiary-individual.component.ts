@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
+import { BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-beneficiary-individual',
@@ -8,12 +9,13 @@ import { GenericValidator } from '../Validations/GenericValidator';
   styleUrls: ['./beneficiary-individual.component.scss']
 })
 export class BeneficiaryIndividualComponent implements OnInit {
-
+  
   @Input() individualForm: FormGroup;
-
+  
   @Input() individualPushPermission !: number;
-
+  
   @Output() messageIndividualEvent = new EventEmitter<any>();
+  bsConfig: Partial<BsDatepickerConfig>;
 
   public cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
   public rgMask= [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/]
@@ -26,7 +28,10 @@ export class BeneficiaryIndividualComponent implements OnInit {
     individualEmail: ['', Validators.required]
   });
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) { 
+    this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
+
+  }
 
   ngOnInit() {
     

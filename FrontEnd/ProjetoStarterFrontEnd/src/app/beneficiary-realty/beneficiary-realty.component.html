@@ -9,9 +9,7 @@
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 30%;">
-          <input matInput [matDatepicker]="picker" placeholder="Construction Date" name="constructionDate" formControlName="constructionDate" required>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <input matInput placeholder="Construction Date" name="constructionDate"  bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" formControlName="constructionDate" required>
           <mat-error>Date is invalid!</mat-error>
         </mat-form-field>
       </div>
@@ -22,15 +20,15 @@
             <mat-error>Sale value is invalid!</mat-error>
           </mat-form-field>
 
-        <mat-form-field style="width: 45%;">
+        <mat-form-field style="width: 300px;" class="positionMatForm" > 
             <input matInput type="number" placeholder="Market Value" name="marketValue" formControlName="marketValue" required>
             <mat-error>Market value is invalid!</mat-error>
           </mat-form-field>
     </div>
 
-    <mat-card>
+    <mat-card class="first-container">
       <p>Address Info</p>
-      <div class="first-container">
+      <div >
 
         <mat-form-field style="width: 300px;" class="espace">
           <input matInput placeholder="Street/Avenue" name="street" formControlName="addressStreet" required>

@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Validators, FormBuilder, FormArray, FormGroup, AbstractControl } from '@angular/forms';
+import { Validators, FormBuilder, FormArray, FormGroup, AbstractControl, MaxLengthValidator } from '@angular/forms';
 import { GridOptions, ColDef, RowSelectedEvent, RowClickedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { Location } from '@angular/common';
@@ -8,6 +8,9 @@ import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BsDatepickerConfig, BsLocaleService} from 'ngx-bootstrap/datepicker';
+import {ContractHolderService} from 'src/app/dataService/contractHolder/contract-holder.service';
+
 
 @Component({
   selector: 'app-contract-holder',
@@ -18,6 +21,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
   rgMask = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/];
   cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+  
+  
+bsConfig: Partial<BsDatepickerConfig>;
 
 
 
@@ -26,8 +32,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   detailCellRendererParams;
   gridApi;
   gridColumApi;
-
-
+  
   gridOptions: GridOptions;
   load_failure: boolean;
   contractHolder: FormGroup;
@@ -36,8 +41,16 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   showList: boolean = false;
   showAddresslist: boolean = false;
   showTelephonelist: boolean = false;
-    constructor(private chfb: FormBuilder, private http: HttpClient, private _snackBar: MatSnackBar, private location: Location) {
-
+  constructor(
+    private chfb: FormBuilder,
+    private contractHolderService: ContractHolderService , 
+    private http: HttpClient, 
+    private localeService: BsLocaleService,
+    private _snackBar: MatSnackBar, 
+    private location: Location) 
+    {
+    this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
+    localeService.use('pt-br');
   }
 
   message: number = 0;
@@ -48,16 +61,17 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     this.setup_form();
     this.setup_form();
     
+    
   }
 
   ngAfterViewInit() {
   }
 
   private handle_editUser(data: any) {
-    
     this.IndividualId = data.individualId;
+    //data.individualBirthdate = Date.parse(DateString);
+    data.individualBirthdate = new Date(data.individualBirthdate).toLocaleDateString('pt-br');
     this.contractHolder.patchValue(data);
-    
     
     let telephoneControl =  this.contractHolder.controls.idTelephone as FormArray;
     telephoneControl.controls.pop();
@@ -98,7 +112,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       })
     };
 
-    this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      
+    this.http.delete(`https://contractholderapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      
     
     
 
@@ -135,9 +149,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   } 
 
   onSubmit(): void {
-
+ 
     this.unMaskValues();
-
     let json = JSON.stringify(this.contractHolder.value);
     let httpOptions = {
       headers: new HttpHeaders({
@@ -145,12 +158,11 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       })
     };
       if (this.IndividualId == null) {
-      this.http.post('https://contractholderwebapi.azurewebsites.net/api/contractholder', json, httpOptions).subscribe(response => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
+        this.contractHolderService.post_contractHolder(this.contractHolder.value).subscribe(response => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
   }
     else {
 
-
-    this.http.put(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
+    this.http.put(`https://contractholderapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
 }
 }
   openSnackBar(message: string): void {
@@ -171,15 +183,15 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     if (!hasMax) {
       addressControl.push(this.chfb.group({
-        addressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
+        addressStreet: [''],
         addressType: ['', Validators.required],
         addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(6)]],
-        addressState: ['', [Validators.pattern(/^[[A-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
+        addressState: [''],
         addressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
         addressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
         addressZipCode: ['', this.zipCodeValidation],
         addressCity: ['', Validators.pattern(GenericValidator.regexSimpleName)],
-        addressComplement: ['', Validators.pattern(GenericValidator.regexSimpleName)]
+        addressComplement: ['']
       }))
     }
 
@@ -220,6 +232,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     individualAddressesControl.removeAt(index);
   }
 
+    
   private setup_gridOptions() {
 
     this.gridOptions = {
@@ -280,7 +293,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
           cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+            return data.value ? (new Date(data.value)).toLocaleDateString('pt-br') : '';
           }, 
         },
 
@@ -327,8 +340,8 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   private setup_gridData() {
-    this.rowData$ = this.http.get<Array<any>>('https://contractholderwebapi.azurewebsites.net/api/ContractHolder');
-
+    //get
+    this.rowData$ = this.contractHolderService.get_contractHolder();
   }
 
   private onCellEdit(params: any) {
@@ -349,5 +362,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     location.reload()
   }
 
+  
 }
-    
+  

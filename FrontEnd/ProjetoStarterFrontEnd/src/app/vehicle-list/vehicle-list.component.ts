@@ -34,9 +34,7 @@ export class VehicleListComponent implements OnInit {
     }
   
     private handle_deleteUser(data: any) {
-      console.log(data);
       const id = data.beneficiaryId;
-      console.log(id);
       this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
     }
       

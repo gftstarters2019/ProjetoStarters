@@ -8,6 +8,9 @@
   padding-bottom: 1em;
   padding-top: 1em;
 }
+.container {
+  width: 80%;
+}
 
 .contractHolderName{
   
@@ -34,4 +37,8 @@ button{
   position: sticky;
   margin-left: 1em;
 
+}
+.btn-list {
+  position: absolute;
+  left: 74%; 
 }
