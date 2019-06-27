@@ -2,7 +2,7 @@
   <div class="first-container">
 
     <mat-form-field style="width: 300px;">
-      <input matInput placeholder="Street/Avenue" name="addressStreet" formControlName="addressStreet" required>
+      <input matInput placeholder="Street/Avenue" name="addressStreet"  maxlength="100" formControlName="addressStreet" required>
       <mat-error>Street/Avenue is invalid!</mat-error>
     </mat-form-field>
 
@@ -14,22 +14,22 @@
       
     </mat-form-field>
     <mat-form-field style="width: 150px;" >
-      <input matInput placeholder="Number" name="number" formControlName="addressNumber" required>
+      <input matInput placeholder="Number" name="number" maxlength="100" formControlName="addressNumber" required>
       <mat-error>Number is invalid!</mat-error>
     </mat-form-field>
     <mat-form-field style="width: 150px;">
-        <input matInput placeholder="State" name="state" formControlName="addressState" required>
+        <input matInput placeholder="State" name="state" maxlength="100" formControlName="addressState" required>
         <mat-error>State is invalid!</mat-error>
       </mat-form-field>
     </div>
           <div class="second-container">
     <mat-form-field style="width: 150px;">
-      <input matInput placeholder="Neighborhood" name="neighborhood" formControlName="addressNeighborhood" required>
+      <input matInput placeholder="Neighborhood" name="neighborhood" maxlength="100" formControlName="addressNeighborhood" required>
       <mat-error>Neighborhood is invalid!</mat-error>
     </mat-form-field>
 
     <mat-form-field style="width: 150px;">
-      <input matInput type='Country' placeholder="Country" name="country" formControlName="addressCountry" required>
+      <input matInput type='Country' placeholder="Country" name="country" maxlength="100" formControlName="addressCountry" required>
       <mat-error>Country is invalid!</mat-error>
     </mat-form-field>
     <mat-form-field style="width: 150px;">
@@ -37,11 +37,11 @@
     <mat-error>Zip code is invalid!</mat-error>
     </mat-form-field>
     <mat-form-field style="width: 200px;">
-        <input matInput type='City'  placeholder="City" name="city" formControlName="addressCity" required>
+        <input matInput type='City'  placeholder="City" name="city" maxlength="100" formControlName="addressCity" required>
     <mat-error>City is invalid!</mat-error>
     </mat-form-field>
     <mat-form-field style="width: 200px;">
-        <input matInput type='Complement'  placeholder="Complement" name="complement" formControlName="addressComplement">
+        <input matInput type='Complement'  placeholder="Complement" maxlength="100" name="complement" formControlName="addressComplement">
     <mat-error>Complement is invalid!</mat-error>
       
     </mat-form-field>

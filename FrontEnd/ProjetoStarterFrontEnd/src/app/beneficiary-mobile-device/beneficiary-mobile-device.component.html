@@ -3,17 +3,17 @@
 
       <div class="flex-wrapper">
            <mat-form-field style="width: 30%;">
-            <input matInput placeholder="Brand" name="mobileDeviceBrand" formControlName="mobileDeviceBrand" required>
+            <input matInput placeholder="Brand" name="mobileDeviceBrand" maxlength="100" formControlName="mobileDeviceBrand" required>
             <mat-error>Brand is invalid!</mat-error>
           </mat-form-field>
 
           <mat-form-field style="width: 30%;">
-              <input matInput placeholder="Model" name="mobileDeviceModel" formControlName="mobileDeviceModel" required>
+              <input matInput placeholder="Model" name="mobileDeviceModel" maxlength="100" formControlName="mobileDeviceModel" required>
               <mat-error>Model is invalid!</mat-error>
             </mat-form-field>
 
           <mat-form-field style="width: 30%;">
-            <input matInput [matDatepicker]="picker" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
+            <input matInput [matDatepicker]="picker" maxlength="100" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error>Date is invalid!</mat-error>
@@ -22,13 +22,13 @@
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 30%;">
-          <input matInput placeholder="Serial Number" name="mobileDeviceSerialNumber" formControlName="mobileDeviceSerialNumber" required>
+          <input matInput placeholder="Serial Number" maxlength="100" name="mobileDeviceSerialNumber" formControlName="mobileDeviceSerialNumber" required>
           <mat-error>Seria is invalid!</mat-error>
         </mat-form-field>
 
         <mat-form-field style="width: 30%;">
           <mat-label>Type</mat-label>
-          <mat-select name="mobileDeviceType" formControlName="mobileDeviceType" required >
+          <mat-select name="mobileDeviceType" formControlName="mobileDeviceType"  required >
               <mat-option *ngFor="let type of mobileType" [value]="type.value" >
                   {{type.name}}
               </mat-option>
@@ -36,7 +36,7 @@
       </mat-form-field>
 
         <mat-form-field style="width: 30%;">
-          <input matInput type="number" placeholder="Invoice Value" name="mobileDeviceInvoiceValue" formControlName="mobileDeviceInvoiceValue" required>
+          <input matInput type="number" placeholder="Invoice Value" maxlength="100" name="mobileDeviceInvoiceValue" formControlName="mobileDeviceInvoiceValue" required>
           <mat-error>Invoice value is invalid!</mat-error>
         </mat-form-field>
       </div>
