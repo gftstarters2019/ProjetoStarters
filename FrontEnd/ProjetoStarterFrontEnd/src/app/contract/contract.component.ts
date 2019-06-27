@@ -100,7 +100,7 @@ export class ContractComponent implements OnInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
 
-    this.http.get('https://contractholderwebapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
+    this.http.get('https://contractholderapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
       this.holders = data;
     });
   }
@@ -128,6 +128,9 @@ export class ContractComponent implements OnInit {
     });
   }
 
+  log(){
+    console.log(this.contractform);
+  }
   public assignContractType(): void {
     let i = 0;
     this.cType = this.contractform.get(['type']).value;
@@ -280,11 +283,11 @@ export class ContractComponent implements OnInit {
     };
     console.log(form);
     if (this.signedContractId == null) {
-      this.http.post('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+      this.http.post('https://contract-api.azurewebsites.net/api/Contract', form, httpOptions)
         .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
     }
     else {
-      this.http.put('https://contractwebapi.azurewebsites.net/api/Contract', form, httpOptions)
+      this.http.put('https://contract-api.azurewebsites.net/api/Contract', form, httpOptions)
         .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
     }
   }
@@ -409,7 +412,7 @@ export class ContractComponent implements OnInit {
       this.result = dialogResult;
       if (this.result == true) {
         if (show == false) {
-          this.http.delete(`https://contractwebapi.azurewebsites.net/api/Contract/${id}`)
+          this.http.delete(`https://contract-api.azurewebsites.net/api/Contract/${id}`)
             .subscribe(response => this.setup_gridData(),
               error => this.openSnackBar(error.message),
               () => this.openSnackBar("Contract removed"));
@@ -717,7 +720,7 @@ export class ContractComponent implements OnInit {
   }
   private setup_gridData() {
     this.rowData$ = this.http
-      .get<Array<any>>('https://contractwebapi.azurewebsites.net/api/Contract');
+      .get<Array<any>>('https://contract-api.azurewebsites.net/api/Contract');
   }
   private onCellEdit(params: any) {
     // private onRowSelected(event: RowSelectedEvent) {
