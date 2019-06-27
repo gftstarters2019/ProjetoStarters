@@ -1,0 +1,21 @@
+.content-container{
+    margin: 2px 5px 5px;
+    display: flex;
+}
+.btn-yes{
+
+    height: 30px;
+    width: 50%;
+    color: green;
+    background-color: whitesmoke;
+    border-color: lightgray;
+    border-radius: 0px;
+}
+.btn-no{
+    height: 30px;
+    width: 50%;
+    color: red;    
+    background-color: whitesmoke;
+    border-color: lightgray;
+    border-radius: 0px;
+}

@@ -43,6 +43,8 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 defineLocale('pt-br', ptBrLocale); 
 import { MomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,6 +69,7 @@ import { MomentDateModule, MomentDateAdapter } from '@angular/material-moment-ad
     RealtiesListComponent,
     MobileDeviceListComponent,
     ActionButtonBeneficiariesComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     ObserversModule,
@@ -91,9 +94,9 @@ import { MomentDateModule, MomentDateAdapter } from '@angular/material-moment-ad
   exports: [
     MaterialModule,
     AgGridModule,
-
-
-
+  ],
+  entryComponents: [
+    ConfirmationDialogComponent
   ],
 
   providers: [

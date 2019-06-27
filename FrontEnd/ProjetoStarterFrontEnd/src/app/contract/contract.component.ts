@@ -11,10 +11,12 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GenericValidator } from '../Validations/GenericValidator';
 import { take, takeUntil, startWith, filter, map, debounceTime, switchMap, debounce } from 'rxjs/operators';
 import { Data } from '@angular/router';
+
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ContractService } from 'src/app/dataService/contract/contract.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { listLocales } from 'ngx-bootstrap/chronos';
+
 
 export interface Type {
   value: number;
@@ -39,8 +41,10 @@ export interface Holder {
   styleUrls: ['./contract.component.scss']
 })
 export class ContractComponent implements OnInit {
+  public result: any = null;
   color = 'primary';
   beneficiaries: FormArray;
+  dialogRef;
 
   rowData$: Observable<any>;
   paginationPageSize;
@@ -68,6 +72,7 @@ export class ContractComponent implements OnInit {
   signedContractId: any = null;
 
   contractTypes: Type[] = [
+
     { value: 0, viewValue: ' Health Plan' },
     { value: 1, viewValue: ' Animal Health Plan' },
     { value: 2, viewValue: ' Dental Plan' },
@@ -85,6 +90,7 @@ export class ContractComponent implements OnInit {
     { value: 5, viewValue: ' Diamond' },
   ];
 
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -101,6 +107,7 @@ export class ContractComponent implements OnInit {
     pop.hide();
     pop.show();
   }
+
 
   ngOnInit() {
     this.setup_form();
@@ -317,6 +324,7 @@ export class ContractComponent implements OnInit {
       this.http.put(`https://contractgftapi.azurewebsites.net/api/Contract/${this.signedContractId}`, form, httpOptions)
         .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
 
+
     }
   }
 
@@ -329,6 +337,7 @@ export class ContractComponent implements OnInit {
 
     this.signedContractId = data.signedContractId;
     // this.contractform.patchValue(data)
+
 
 
 
@@ -362,14 +371,15 @@ export class ContractComponent implements OnInit {
       }
 
     }
-
     if (data.type == 1) {
+
       this.cType = data.type;
       let j;
       let petControl = this.contractform.controls.auxBeneficiaries as FormArray;
       for (j = 0; j < petControl.length; j++) {
         petControl.removeAt(j);
       }
+
       petControl.controls.pop();
       this.contractform.addControl('pets', this.fb.array([]));
       this.contractform.removeControl('individuals');
@@ -387,13 +397,14 @@ export class ContractComponent implements OnInit {
             petControl.push(this.fb.group(data.pets[j]));
 
 
+
           }
 
         }
       }
     }
-
     if (data.type == 4) {
+
 
       this.cType = data.type;
       let realtyControl = this.contractform.controls.auxBeneficiaries as FormArray;
@@ -476,6 +487,7 @@ export class ContractComponent implements OnInit {
   }
 
 
+
   zipCodeValidation(control: AbstractControl): { [key: string]: boolean } | null {
     let zipCodeNumber = control.value;
 
@@ -494,6 +506,7 @@ export class ContractComponent implements OnInit {
     this.http.delete(`https://contractgftapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
   }
 
+
   private setup_gridOptions() {
     this.gridOption = {
       rowSelection: 'single',
@@ -502,69 +515,96 @@ export class ContractComponent implements OnInit {
       masterDetail: true,
       columnDefs: [
         {
-          headerName: 'Contract Holder ',
-          field: 'contractHolder.individualName',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          // cellRenderer: "agGroupCellRenderer",
-          onCellValueChanged:
-            this.onCellEdit.bind(this),
+          headerName: "Contract Holder",
+          // rowGroupIndex: 0,
+          // rowGroup: true,
+          // hide: false,
+          children: [
+            {
+              headerName: 'Name',
+              field: 'contractHolder.individualName',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              // cellRenderer: "agGroupCellRenderer",
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
+            },
+            {
+              headerName: 'CPF ',
+              field: 'contractHolder.individualCPF',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: maskCpf,
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
+            }
+          ]
         },
         {
-          headerName: 'Category',
-          field: 'category',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          valueFormatter: currencyCategory,
-          onCellValueChanged:
-            this.onCellEdit.bind(this),
-        },
-        {
-          headerName: 'Type',
-          field: 'type',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          valueFormatter: currencyType,
-          onCellValueChanged:
-            this.onCellEdit.bind(this),
-        },
-        {
-          headerName: 'Expiry Date',
-          field: 'expiryDate',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
-          },
-          onCellValueChanged:
-            this.onCellEdit.bind(this)
-        },
-        {
-          headerName: 'Status',
-          field: 'isActive',
-          lockPosition: true,
-          sortable: true,
-          filter: true,
-          valueFormatter: currencyStatus,
-          onCellValueChanged:
-            this.onCellEdit.bind(this)
-        },
-        {
-          headerName: 'Edit/Delete',
-          field: 'editDelete',
-          lockPosition: true,
-          cellRendererFramework: ActionButtonComponent,
-          cellRendererParams: {
-            onEdit: this.handle_editUser.bind(this),
-            onDelete: this.handle_deleteUser.bind(this)
-          }
+          headerName: "Contract",
+          // rowGroupIndex: 0,
+          // rowGroup: true,
+          // hide: false,
+          children: [
+            {
+              headerName: 'Category',
+              field: 'category',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: currencyCategory,
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
+            },
+            {
+              headerName: 'Type',
+              field: 'type',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: currencyType,
+              onCellValueChanged:
+                this.onCellEdit.bind(this),
+            },
+            {
+              headerName: 'Expiry Date',
+              field: 'expiryDate',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              cellRenderer: (data) => {
+                return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+              },
+              onCellValueChanged:
+                this.onCellEdit.bind(this)
+            },
+            {
+              headerName: 'Status',
+              field: 'isActive',
+              lockPosition: true,
+              sortable: true,
+              filter: true,
+              valueFormatter: currencyStatus,
+              onCellValueChanged:
+                this.onCellEdit.bind(this)
+            },
+            {
+              headerName: 'Edit/Delete',
+              field: 'editDelete',
+              lockPosition: true,
+              cellRendererFramework: ActionButtonComponent,
+              cellRendererParams: {
+                onEdit: this.handle_editUser.bind(this),
+                onDelete: this.handle_deleteUser.bind(this)
+              }
+            },
+          ]
         },
       ]
     }
+
 
   }
   onGridReady(params) {
@@ -578,16 +618,18 @@ export class ContractComponent implements OnInit {
   private setup_gridData() {
     this.rowData$ = this.contractService.get_contract();
 
+
   }
   private onCellEdit(params: any) {
 
   }
 
+
 }
+
 function currencyCategory(params) {
   return changeCategoryValue(params.value);
 }
-
 function changeCategoryValue(number) {
   if (number == 0) {
     return "Iron";
@@ -613,7 +655,6 @@ function changeCategoryValue(number) {
 function currencyType(params) {
   return changeTypValue(params.value);
 }
-
 function changeTypValue(number) {
   if (number == 0) {
     return "Health Plan";
@@ -642,11 +683,20 @@ function changeTypValue(number) {
 //function formatting Status
 function currencyStatus(params) {
   return changeStatusValue(params.value);
-}
+} 
+
 function changeStatusValue(stats: boolean) {
   if (stats == true) {
     return "Active";
-  } else {
+} else {
     return "Inactive"
   }
+}
+
+//function mask Cpf Contract Holder
+function maskCpf(params){
+  return maskValue(params.value);
+}
+function maskValue(cpf){
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4")
 }
