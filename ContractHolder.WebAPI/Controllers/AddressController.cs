@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Backend.Core.Models;
-using Backend.Infrastructure.Repositories.Contracts;
+﻿using Backend.Core.Models;
+using Backend.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Text.RegularExpressions;
 
 namespace ContractHolder.WebAPI.Controllers
 {
@@ -16,18 +13,15 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class AddressController : Controller
     {
-        private readonly IReadOnlyRepository<Address> _addressReadOnlyRepository;
-        private readonly IWriteRepository<Address> _addressWriteRepository;
+        private readonly IRepository<AddressEntity> _addressRepository;
 
         /// <summary>
         /// AddressController constructor
         /// </summary>
-        /// <param name="addressReadoOnlyRepository"></param>
-        /// <param name="addressWriteRepository"></param>
-        public AddressController(IReadOnlyRepository<Address> addressReadoOnlyRepository, IWriteRepository<Address> addressWriteRepository)
+        /// <param name="addressRepository"></param>
+        public AddressController(IRepository<AddressEntity> addressRepository)
         {
-            _addressReadOnlyRepository = addressReadoOnlyRepository;
-            _addressWriteRepository = addressWriteRepository;
+            _addressRepository = addressRepository;
         }
 
         /// <summary>
@@ -37,7 +31,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet]
         public IActionResult Addresses()
         {
-            return Ok(_addressReadOnlyRepository.Get());
+            return Ok(_addressRepository.Get());
         }
 
         /// <summary>
@@ -48,7 +42,7 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Address(Guid id)
         {
-            var obj = _addressReadOnlyRepository.Find(id);
+            var obj = _addressRepository.Find(id);
             return Ok(obj);
         }
 
@@ -58,13 +52,13 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="address"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult PostAddress([FromBody] Address address)
+        public IActionResult PostAddress([FromBody] AddressEntity address)
         {
             address.AddressId = Guid.NewGuid();
 
             if (Validate(address))
             {
-                _addressWriteRepository.Add(address);
+                _addressRepository.Add(address);
 
                 return Ok(address);
             }
@@ -80,9 +74,9 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="address"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateAddress(Guid id, [FromBody] Address address)
+        public IActionResult UpdateAddress(Guid id, [FromBody] AddressEntity address)
         {
-            var obj = _addressReadOnlyRepository.Find(id);
+            var obj = _addressRepository.Find(id);
 
             obj.AddressStreet = address.AddressStreet;
             obj.AddressNumber = address.AddressNumber;
@@ -95,13 +89,13 @@ namespace ContractHolder.WebAPI.Controllers
 
             if (Validate(address))
             {
-                return Ok(_addressWriteRepository.Update(id, obj));
+                return Ok(_addressRepository.Update(id, obj));
             }
             else
                 return Conflict();
         }
 
-        private bool Validate(Address address)
+        private bool Validate(AddressEntity address)
         {
             Regex regexLetters = new Regex("^[a-zA-Z]+$");
 

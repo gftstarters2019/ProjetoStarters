@@ -1,35 +1,69 @@
 ﻿using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class SignedContractRepository : IReadOnlyRepository<SignedContract>, IWriteRepository<SignedContract>
+    public class SignedContractRepository : IRepository<SignedContractEntity>
     {
         private readonly ConfigurationContext _db;
+        private readonly IRepository<ContractEntity> _contractRepository;
+        private bool disposed = false;
 
-        public SignedContractRepository(ConfigurationContext db)
+        public SignedContractRepository(ConfigurationContext db,
+                                        IRepository<ContractEntity> contractRepository)
         {
             _db = db;
+            _contractRepository = contractRepository;
         }
 
-        public bool Add(SignedContract t)
+        public SignedContractEntity Add(SignedContractEntity signedContract)
         {
-            throw new NotImplementedException();
+            var signedContractContractHolder = _db
+                                               .Individuals
+                                               .Where(ind => ind.BeneficiaryId == signedContract.BeneficiaryId)
+                                               .FirstOrDefault();
+            if (signedContractContractHolder == null)
+                return null;
+
+            signedContract.SignedContractId = Guid.NewGuid();
+
+            return _db.SignedContracts.Add(signedContract).Entity;
         }
 
-        public SignedContract Find(Guid id)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
         }
 
-        public IEnumerable<SignedContract> Get() => _db
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public SignedContractEntity Find(Guid id)
+        {
+            var signedContract = _db.SignedContracts.FirstOrDefault(sc => sc.SignedContractId == id);
+            if (signedContract == null)
+                return null;
+
+            signedContract.SignedContractContract = _contractRepository.Find(signedContract.ContractId);
+            return signedContract;
+        }
+
+        public IEnumerable<SignedContractEntity> Get() => _db
             .SignedContracts
-            .Where(sc => sc.ContractIndividualIsActive)
             .ToList();
 
         public bool Remove(Guid id)
@@ -37,9 +71,24 @@ namespace Backend.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public SignedContract Update(Guid id, SignedContract t)
+        public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
+        }
+
+        public SignedContractEntity Update(Guid id, SignedContractEntity signedContract)
+        {
+            if (signedContract != null)
+            {
+                var signedContractToUpdate = Find(id);
+                if (signedContractToUpdate != null)
+                {
+                    signedContractToUpdate.ContractIndividualIsActive = signedContract.ContractIndividualIsActive;
+                    signedContractToUpdate.BeneficiaryId = signedContract.BeneficiaryId;
+                    return _db.SignedContracts.Update(signedContractToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

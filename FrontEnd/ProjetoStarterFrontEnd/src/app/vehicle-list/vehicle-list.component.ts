@@ -4,6 +4,10 @@ import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material';
+
 
 @Component({
   selector: 'app-vehicle-list',
@@ -11,6 +15,7 @@ import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiari
   styleUrls: ['./vehicle-list.component.scss']
 })
 export class VehicleListComponent implements OnInit {
+  public result: any;
 
   detailCellRendererParams;
   gridApi;
@@ -20,7 +25,8 @@ export class VehicleListComponent implements OnInit {
   gridOptions: GridOptions;
   load_failure: boolean;
 
-  constructor(private http: HttpClient) { }
+  constructor(public dialog: MatDialog, private http: HttpClient, private _snackBar: MatSnackBar) { }
+ 
 
   ngOnInit() {
     this.setup_gridData();
@@ -32,12 +38,35 @@ export class VehicleListComponent implements OnInit {
     //this.contractform.patchValue(data);
     }
   
-  private handle_deleteUser(data: any) {
-    const id = data.beneficiaryId;
-    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(data => console.log(data));
+    private handle_deleteUser(data: any) {
+      console.log(data);
+      const id = data.beneficiaryId;
+      console.log(id);
 
-    this.setup_gridData();
-  }
+      const message = `Do you really want to delete this Vehicle ?`;
+
+      const dialogData = new ConfirmDialogModel("Confirm Action", message);
+  
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '375px',
+        panelClass:'content-container',
+        data: dialogData
+      });
+  
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.result = dialogResult;
+        if (this.result == true) {  
+          this.http.delete(`https://beneficiariesapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar("Error 403 - Invalid Action"), () => this.openSnackBar("Beneficiary removed"));
+          } 
+      });
+    }
+      
+    openSnackBar(message: string): void {
+      this._snackBar.open(message, '', {
+        duration: 5000,
+        
+      });
+    }
 
   //AG-grid Table Contract
   private setup_gridOptions() {
@@ -160,7 +189,7 @@ export class VehicleListComponent implements OnInit {
     this.gridColumApi = params.columnApi;
   }
   private setup_gridData() {
-    this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Vehicles');
+    this.rowData$ = this.http.get<Array<any>>('https://beneficiariesapi.azurewebsites.net/api/Beneficiary/Vehicles');
   }
   private onCellEdit(params: any) {
   }
