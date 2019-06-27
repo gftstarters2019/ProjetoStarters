@@ -4,13 +4,13 @@ using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
     public class PetRepository : IRepository<PetEntity>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public PetRepository(ConfigurationContext db)
         {
@@ -28,10 +28,25 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public PetEntity Find(Guid id)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            disposed = true;
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public PetEntity Find(Guid id) => _db.Pets.Where(pet => pet.BeneficiaryId == id).FirstOrDefault();
 
         public IEnumerable<PetEntity> Get() => _db
             .Pets

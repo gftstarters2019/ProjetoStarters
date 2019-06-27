@@ -11,6 +11,7 @@ namespace Backend.Infrastructure.Repositories
     public class MobileDeviceRepository : IRepository<MobileDeviceEntity>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public MobileDeviceRepository(ConfigurationContext db)
         {
@@ -36,10 +37,25 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public MobileDeviceEntity Find(Guid id)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public MobileDeviceEntity Find(Guid id) => _db.MobileDevices.Where(mob => mob.BeneficiaryId == id).FirstOrDefault();
 
         public IEnumerable<MobileDeviceEntity> Get() => _db
             .MobileDevices
@@ -66,7 +82,7 @@ namespace Backend.Infrastructure.Repositories
                     // Verifies if Serial Number is already in DB of active MobileDevice
                     if (_db.MobileDevices
                     .Where(mob => mob.MobileDeviceSerialNumber == mobileDevice.MobileDeviceSerialNumber
-                                  && !mob.IsDeleted)
+                                  && !mob.IsDeleted && mob.MobileDeviceSerialNumber != mobileDevice.MobileDeviceSerialNumber)
                     .Any())
                         return null;
 

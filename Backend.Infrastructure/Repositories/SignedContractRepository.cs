@@ -4,7 +4,6 @@ using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
@@ -12,6 +11,7 @@ namespace Backend.Infrastructure.Repositories
     {
         private readonly ConfigurationContext _db;
         private readonly IRepository<ContractEntity> _contractRepository;
+        private bool disposed = false;
 
         public SignedContractRepository(ConfigurationContext db,
                                         IRepository<ContractEntity> contractRepository)
@@ -34,9 +34,27 @@ namespace Backend.Infrastructure.Repositories
             return _db.SignedContracts.Add(signedContract).Entity;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public SignedContractEntity Find(Guid id)
         {
-            var signedContract = _db.SignedContracts.FirstOrDefault(sc => sc.ContractId == id);
+            var signedContract = _db.SignedContracts.FirstOrDefault(sc => sc.SignedContractId == id);
             if (signedContract == null)
                 return null;
 

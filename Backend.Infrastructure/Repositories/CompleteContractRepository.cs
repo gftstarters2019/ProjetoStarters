@@ -22,6 +22,7 @@ namespace Backend.Infrastructure.Repositories
         private readonly IRepository<RealtyEntity> _realtiesRepository;
         private readonly IRepository<VehicleEntity> _vehiclesRepository;
         private readonly IRepository<ContractBeneficiary> _contractBeneficiaryRepository;
+        private bool disposed = false;
 
         public CompleteContractRepository(ConfigurationContext db,
                                           IRepository<ContractEntity> contractRepository,
@@ -80,7 +81,7 @@ namespace Backend.Infrastructure.Repositories
                 if (AddContractBeneficiaries(addedBeneficiaries,
                                              completeContract.SignedContract))
                 {
-                    _db.SaveChanges();
+                    _contractBeneficiaryRepository.Dispose();
                     scope.Complete();
                     return completeContract;
                 }
@@ -291,22 +292,31 @@ namespace Backend.Infrastructure.Repositories
 
             foreach (var ben in beneficiariesGuidList)
             {
-                var contract_beneficiary = new ContractBeneficiary()
+                var addedContractBeneficiary = AddContractBeneficiary(new ContractBeneficiary()
                 {
                     BeneficiaryId = ben,
                     SignedContractId = signedContract.SignedContractId,
                     SignedContract = ConvertersManager.SignedContractConverter.Convert(signedContract)
-                };
-                _contractBeneficiaryRepository.Add(contract_beneficiary);
+                });
+                if (addedContractBeneficiary == null)
+                    return false;
             }
-            _contractBeneficiaryRepository.Save();
 
-            if(beneficiariesGuidList.Count == _db.Contract_Beneficiary
+            if(beneficiariesGuidList.Count == _contractBeneficiaryRepository.Get()
                                                  .Where(cb => cb.SignedContractId == signedContract.SignedContractId)
                                                  .Count())
                 return true;
             else
                 return false;
+        }
+
+        private ContractBeneficiary AddContractBeneficiary(ContractBeneficiary contractBeneficiaryToAdd)
+        {
+            var addedContractBeneficiary = _contractBeneficiaryRepository.Add(contractBeneficiaryToAdd);
+            if (addedContractBeneficiary == null)
+                return null;
+            _contractBeneficiaryRepository.Save();
+            return addedContractBeneficiary;
         }
         #endregion Add
 
@@ -338,7 +348,6 @@ namespace Backend.Infrastructure.Repositories
                 if(UpdateContractBeneficiaries(updatedBeneficiaries,
                                              updatedCompleteContract.SignedContract))
                 {
-                    _db.SaveChanges();
                     scope.Complete();
                     return updatedCompleteContract;
                 }
@@ -350,21 +359,25 @@ namespace Backend.Infrastructure.Repositories
         {
             if (updatedBeneficiaries == null)
                 return false;
-
-            _contractBeneficiaryRepository.Get().Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => _contractBeneficiaryRepository.Remove(cb.ContractBeneficiaryId));
-
+            
+            if (!DeleteContractBeneficiaries(signedContract.SignedContractId))
+                return false;
+            
             foreach (var ben in updatedBeneficiaries)
             {
-                _contractBeneficiaryRepository.Add(new ContractBeneficiary()
+                var addedContractBeneficiary = AddContractBeneficiary(new ContractBeneficiary()
                 {
                     BeneficiaryId = ben,
                     SignedContractId = signedContract.SignedContractId,
                     SignedContract = ConvertersManager.SignedContractConverter.Convert(signedContract)
                 });
+                if (addedContractBeneficiary == null)
+                    return false;
             }
+            
             _contractBeneficiaryRepository.Save();
 
-            if (updatedBeneficiaries.Count == _db.Contract_Beneficiary
+            if (updatedBeneficiaries.Count == _contractBeneficiaryRepository.Get()
                                                  .Where(cb => cb.SignedContractId == signedContract.SignedContractId)
                                                  .Count())
                 return true;
@@ -497,8 +510,9 @@ namespace Backend.Infrastructure.Repositories
                 {
                     var addedMobileDevice = AddMobileDevice(mobileDevice);
 
-                    if (addedMobileDevice != null)
-                        updatedMobileDevices.Add(addedMobileDevice.BeneficiaryId);
+                    if (addedMobileDevice == null)
+                        return null;
+                    updatedMobileDevices.Add(addedMobileDevice.BeneficiaryId);
                 }
                 // If MobileDevice already has an ID, update it
                 else
@@ -506,8 +520,9 @@ namespace Backend.Infrastructure.Repositories
                     var updatedMobileDevice = _mobileDevicesRepository.Update(mobileDevice.BeneficiaryId, ConvertersManager.MobileDeviceConverter.Convert(
                         mobileDevice));
 
-                    if (updatedMobileDevice != null)
-                        updatedMobileDevices.Add(updatedMobileDevice.BeneficiaryId);
+                    if (updatedMobileDevice == null)
+                        return null;
+                    updatedMobileDevices.Add(updatedMobileDevice.BeneficiaryId);
                 }
             }
             _mobileDevicesRepository.Save();
@@ -579,6 +594,27 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
         #endregion Update
+
+        #region Delete
+        private bool DeleteContractBeneficiaries(Guid id)
+        {
+            var contractBeneficiariesToDelete = _contractBeneficiaryRepository.Get().Where(cb => cb.SignedContractId == id).ToList();
+            foreach(var contractBeneficiary in contractBeneficiariesToDelete)
+            {
+                if(!DeleteContractBeneficiary(contractBeneficiary.ContractBeneficiaryId))
+                    return false;
+            }
+            return true;
+        }
+
+        private bool DeleteContractBeneficiary(Guid id)
+        {
+            if(!_contractBeneficiaryRepository.Remove(id))
+                return false;
+            _contractBeneficiaryRepository.Save();
+            return true;
+        }
+        #endregion Delete
 
         public CompleteContractDomain Find(Guid id)
         {
@@ -707,6 +743,24 @@ namespace Backend.Infrastructure.Repositories
         public bool Save()
         {
             return _db.SaveChanges() > 0;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

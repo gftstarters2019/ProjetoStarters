@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Backend.Infrastructure.Repositories.Interfaces
 {
-    public interface IRepository<T>
+    public interface IRepository<T> : IDisposable
     {
         T Find(Guid id);
         IEnumerable<T> Get();

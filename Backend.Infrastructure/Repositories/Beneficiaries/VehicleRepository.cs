@@ -4,13 +4,13 @@ using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
     public class VehicleRepository : IRepository<VehicleEntity>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public VehicleRepository(ConfigurationContext db)
         {
@@ -24,7 +24,7 @@ namespace Backend.Infrastructure.Repositories
                 // Verifies if Chassis Number is already in DB
                 if (_db.Vehicles
                         .Where(vec => vec.VehicleChassisNumber == vehicle.VehicleChassisNumber
-                                      && !vec.IsDeleted)
+                                      && !vec.IsDeleted && vec.VehicleChassisNumber != vehicle.VehicleChassisNumber)
                         .Any())
                     return null;
 
@@ -36,10 +36,25 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public VehicleEntity Find(Guid id)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public VehicleEntity Find(Guid id) => _db.Vehicles.Where(vec => vec.BeneficiaryId == id).FirstOrDefault();
 
         public IEnumerable<VehicleEntity> Get() => _db
             .Vehicles
@@ -63,7 +78,7 @@ namespace Backend.Infrastructure.Repositories
                 // Verifies if Chassis Number is already in DB
                 if (_db.Vehicles
                         .Where(vec => vec.VehicleChassisNumber == vehicle.VehicleChassisNumber
-                                      && !vec.IsDeleted)
+                                      && !vec.IsDeleted && vec.VehicleChassisNumber != vehicle.VehicleChassisNumber)
                         .Any())
                     return null;
 

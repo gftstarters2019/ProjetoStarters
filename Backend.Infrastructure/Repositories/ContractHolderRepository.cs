@@ -18,6 +18,7 @@ namespace Backend.Infrastructure.Repositories
         private readonly IRepository<IndividualTelephone> _individualTelephonesRepository;
         private readonly IRepository<AddressEntity> _addressRepository;
         private readonly IRepository<BeneficiaryAddress> _beneficiaryAddressRepository;
+        private bool disposed = false;
 
         public ContractHolderRepository(ConfigurationContext db,
                                         IRepository<IndividualEntity> individualsRepository,
@@ -116,6 +117,24 @@ namespace Backend.Infrastructure.Repositories
                 }
                 return null;
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public ContractHolderDomain Find(Guid id)
