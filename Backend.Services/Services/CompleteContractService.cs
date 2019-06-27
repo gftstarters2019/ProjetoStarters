@@ -18,7 +18,16 @@ namespace Backend.Services.Services
 
         public CompleteContractDomain Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var contractToBeDeleted = _completeContractRepository.Find(id);
+            if (contractToBeDeleted == null)
+                return null;
+
+            contractToBeDeleted.Contract.ContractDeleted = !contractToBeDeleted.Contract.ContractDeleted;
+            var deletedContract = _completeContractRepository.Update(id, contractToBeDeleted);
+            if (deletedContract == null)
+                return null;
+            _completeContractRepository.Save();
+            return deletedContract;
         }
 
         public CompleteContractDomain Get(Guid id)
