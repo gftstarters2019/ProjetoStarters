@@ -299,7 +299,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
           cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+            return data.value ? (new Date(data.value)).toLocaleDateString("pt-br") : '';
           },
         },
 

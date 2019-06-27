@@ -55,7 +55,7 @@ export class BeneficiaryVehicleComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if(changes.vehiclePushPermission.currentValue != 0 && changes.vehiclePushPermission.currentValue != changes.vehiclePushPermission.previousValue) {
       
-      this.messageVehicleEvent.emit(this.vehicleCreateForm);
+      this.messageVehicleEvent.emit(this.vehicleForm);
     }
   }
 }

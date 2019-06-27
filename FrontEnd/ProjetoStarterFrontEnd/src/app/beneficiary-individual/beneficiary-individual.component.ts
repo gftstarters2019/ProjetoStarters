@@ -41,7 +41,7 @@ export class BeneficiaryIndividualComponent implements OnInit {
       let rg = this.individualCreateForm.get('individualRG').value;
       rg = rg.replace(/\D+/g, '');
       this.individualCreateForm.get('individualRG').setValue(rg);
-      this.messageIndividualEvent.emit(this.individualCreateForm);
+      this.messageIndividualEvent.emit(this.individualForm);
     }
   }
 }

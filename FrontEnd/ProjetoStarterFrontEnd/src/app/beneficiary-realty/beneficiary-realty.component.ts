@@ -39,15 +39,15 @@ export class BeneficiaryRealtyComponent implements OnInit {
   }
 
   unMaskValues(): void {
-    let zipCode = this.realtyCreateForm.controls.addressZipCode.value;
+    let zipCode = this.realtyForm.controls.addressZipCode.value;
     zipCode = zipCode.replace(/\D+/g, '');
-    this.realtyCreateForm.controls.addressZipCode.setValue(zipCode);
+    this.realtyForm.controls.addressZipCode.setValue(zipCode);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.realtyPushPermission.currentValue != 0 && changes.realtyPushPermission.currentValue != changes.realtyPushPermission.previousValue) {
       this.unMaskValues();
-      this.messageRealtyEvent.emit(this.realtyCreateForm);
+      this.messageRealtyEvent.emit(this.realtyForm);
     }
   }
 

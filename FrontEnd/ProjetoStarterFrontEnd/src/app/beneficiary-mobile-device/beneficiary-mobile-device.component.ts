@@ -43,7 +43,7 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if(changes.mobilePushPermission.currentValue != 0 && changes.mobilePushPermission.currentValue != changes.mobilePushPermission.previousValue) {
       
-      this.messageMobileEvent.emit(this.mobileDeviceCreateForm);
+      this.messageMobileEvent.emit(this.mobileForm);
     }
   }
 }

@@ -74,7 +74,7 @@
     <div *ngIf="cType == 0 || cType==2 || cType==3">
       <div formArrayName="auxBeneficiaries"
         *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
-        <div  class="contractCard">
+        <div class="contractCard">
 
 
           <mat-card>
@@ -147,53 +147,51 @@
 
     <button mat-raised-button color="primary" type="button" (click)="addBeneficiary();">Add Beneficiary</button>
 
-  
-  <br><br>
-  <button class="btn-list" mat-raised-button color="primary" type="submit" (click)="changeMessageValue()"
-    [disabled]="!contractform.valid">Submit</button>
 
-    <button mat-raised-button color="primary" type="button" (click)="log();">Log</button>
-{{(contractform.valid)}}
+    <br><br>
+    <button class="btn-list" mat-raised-button color="primary" type="submit" (click)="changeMessageValue()"
+      [disabled]="!contractform.valid">Submit</button>
+
+    <br>
+    <br>
+    <div class="contractCard">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="listpanel-header">
+            <mat-panel-title>
+              Contract's List
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-nav-list>
+            <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true"
+              [paginationPageSize]="paginationPageSize" class="ag-theme-material" [masterDetail]="true"
+              [detailCellRendererParams]="detailCellRendererParams" [detailRowHeight]="detailRowHeight"
+              [rowHeight]="rowHeight" [colResizeDefault]="colResizeDefault" [gridOptions]="gridOption"
+              [rowData]="rowData$ | async">
+            </ag-grid-angular>
+          </mat-nav-list>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+    <div class="contractCard">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="listpanel-header">
+            <mat-panel-title>
+              Beneficiary's List
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-nav-list>
+            <app-beneficiary-list></app-beneficiary-list>
+          </mat-nav-list>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
   </form>
-  <br>
-  <br>
-  <div class="contractCard">
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header class="listpanel-header">
-          <mat-panel-title>
-            Contract's List
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <mat-nav-list>
-          <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true"
-            [paginationPageSize]="paginationPageSize" class="ag-theme-material" [masterDetail]="true"
-            [detailCellRendererParams]="detailCellRendererParams" [detailRowHeight]="detailRowHeight"
-            [rowHeight]="rowHeight" [colResizeDefault]="colResizeDefault" [gridOptions]="gridOption"
-            [rowData]="rowData$ | async">
-          </ag-grid-angular>
-        </mat-nav-list>
-
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
-
-  <div class="contractCard">
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header class="listpanel-header">
-          <mat-panel-title>
-            Beneficiary's List
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <mat-nav-list>
-          <app-beneficiary-list></app-beneficiary-list>
-        </mat-nav-list>
-
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
 
 </div>

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories } from '@angular/core';
+import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories, AfterViewInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
@@ -32,7 +32,7 @@ export interface Holder {
   templateUrl: './contract.component.html',
   styleUrls: ['./contract.component.scss']
 })
-export class ContractComponent implements OnInit {
+export class ContractComponent implements OnInit, AfterViewInit {
   public result: any = null;
   color = 'primary';
   beneficiaries: FormArray;
@@ -104,6 +104,8 @@ export class ContractComponent implements OnInit {
       this.holders = data;
     });
   }
+  ngAfterViewInit() {
+  }
 
   private setup_form() {
     this.contractform = this.fb.group({
@@ -111,7 +113,7 @@ export class ContractComponent implements OnInit {
       type: ['', Validators.required],
       category: ['', Validators.required],
       expiryDate: ['', Validators.required],
-      isActive: ['true', Validators.required],
+      isActive: ['', Validators.required],
       individuals: this.fb.array([]),
       pets: this.fb.array([]),
       realties: this.fb.array([]),
@@ -128,9 +130,6 @@ export class ContractComponent implements OnInit {
     });
   }
 
-  log(){
-    console.log(this.contractform);
-  }
   public assignContractType(): void {
     let i = 0;
     this.cType = this.contractform.get(['type']).value;
@@ -283,11 +282,11 @@ export class ContractComponent implements OnInit {
     };
     console.log(form);
     if (this.signedContractId == null) {
-      this.http.post('https://contract-api.azurewebsites.net/api/Contract', form, httpOptions)
+      this.http.post('https://contractgftapi.azurewebsites.net/api/Contract', form, httpOptions)
         .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
     }
     else {
-      this.http.put('https://contract-api.azurewebsites.net/api/Contract', form, httpOptions)
+      this.http.put('https://contractgftapi.azurewebsites.net/api/Contract', form, httpOptions)
         .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
     }
   }
@@ -412,7 +411,7 @@ export class ContractComponent implements OnInit {
       this.result = dialogResult;
       if (this.result == true) {
         if (show == false) {
-          this.http.delete(`https://contract-api.azurewebsites.net/api/Contract/${id}`)
+          this.http.delete(`https://contractgftapi.azurewebsites.net/api/Contract/${id}`)
             .subscribe(response => this.setup_gridData(),
               error => this.openSnackBar(error.message),
               () => this.openSnackBar("Contract removed"));
@@ -496,7 +495,7 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               cellRenderer: (data) => {
-                return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                return data.value ? (new Date(data.value)).toLocaleDateString("pt-br") : '';
               },
               cellClass: "cell-wrap-text",
               autoHeight: true,
@@ -606,14 +605,14 @@ export class ContractComponent implements OnInit {
             headerName: "Realties Details",
             children: [
               { headerName: 'Type', field: "addressType", valueFormatter: realtiestypeFormatter, minWidth: 115, },
-              { headerName: 'Street', field: "addressStreet", minWidth: 165, },
-              { headerName: 'No.', field: "addressNumber", minWidth: 110, },
-              { headerName: 'Complement', field: "addressComplement", minWidth: 145, },
-              { headerName: 'Neighborhood', field: "addressNeighborhood", minWidth: 145, },
-              { headerName: 'City', field: "addressCity", minWidth: 145, },
-              { headerName: 'State', field: "addressState", minWidth: 130, },
-              { headerName: 'Country', field: "addressCountry", minWidth: 120, },
-              { headerName: 'Zip-Code', field: "addressZipCode", minWidth: 125, },
+              { headerName: 'Street', field: "address.addressStreet", minWidth: 165, },
+              { headerName: 'No.', field: "address.addressNumber", minWidth: 110, },
+              { headerName: 'Complement', field: "address.addressComplement", minWidth: 145, },
+              { headerName: 'Neighborhood', field: "address.addressNeighborhood", minWidth: 145, },
+              { headerName: 'City', field: "address.addressCity", minWidth: 145, },
+              { headerName: 'State', field: "address.addressState", minWidth: 130, },
+              { headerName: 'Country', field: "address.addressCountry", minWidth: 120, },
+              { headerName: 'Zip-Code', field: "address.addressZipCode", minWidth: 125, },
               {
                 headerName: 'Construction Date', field: "constructionDate", minWidth: 165, cellRenderer: (data) => {
                   return data.value ? (new Date(data.value)).toLocaleDateString() : '';
@@ -720,7 +719,8 @@ export class ContractComponent implements OnInit {
   }
   private setup_gridData() {
     this.rowData$ = this.http
-      .get<Array<any>>('https://contract-api.azurewebsites.net/api/Contract');
+      .get<Array<any>>('https://contractgftapi.azurewebsites.net/api/Contract');
+      console.log(this.rowData$)
   }
   private onCellEdit(params: any) {
     // private onRowSelected(event: RowSelectedEvent) {
