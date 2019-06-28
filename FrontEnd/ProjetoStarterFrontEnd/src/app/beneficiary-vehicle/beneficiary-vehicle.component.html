@@ -32,13 +32,16 @@
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 30%;">
-
-          <input matInput bsDatepicker #dp="bsDatepicker" maxlength="100" [bsConfig]="bsConfig" placeholder="Manufactoring Year" name="vehicleManufactoringYear" formControlName="vehicleManufactoringYear" required>
-           <mat-error>Date is invalid!</mat-error>
+          <input matInput [matDatepicker]="picker" maxlength="100" placeholder="Manufactoring Year" name="vehicleManufactoringYear" formControlName="vehicleManufactoringYear" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Date is invalid!</mat-error>
         </mat-form-field>
 
         <mat-form-field style="width: 30%;">
-          <input matInput bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" maxlength="100" placeholder="Model Year" name="vehicleModelYear" formControlName="vehicleModelYear" required>
+          <input matInput [matDatepicker]="pickerModelYear" maxlength="100" placeholder="Model Year" name="vehicleModelYear" formControlName="vehicleModelYear" required>
+          <mat-datepicker-toggle matSuffix [for]="pickerModelYear"></mat-datepicker-toggle>
+          <mat-datepicker #pickerModelYear></mat-datepicker>
           <mat-error>Date is invalid!</mat-error>
         </mat-form-field>
 

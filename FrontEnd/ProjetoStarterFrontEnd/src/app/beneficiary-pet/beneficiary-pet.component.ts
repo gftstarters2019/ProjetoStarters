@@ -40,7 +40,8 @@ export class BeneficiaryPetComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.petPushPermission.currentValue != 0 && changes.petPushPermission.currentValue != changes.petPushPermission.previousValue) {
-      
+      // let birthdate = this.petForm.get('petBirthdate').value;
+      // this.petForm.get('petBirthdate').setValue(new Date(birthdate));
       this.messagePetEvent.emit(this.petForm);
 
     }
