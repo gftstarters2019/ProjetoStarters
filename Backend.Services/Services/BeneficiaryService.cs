@@ -23,9 +23,10 @@ namespace Backend.Services.Services
 
             beneficiaryToBeDeleted.IsDeleted = !beneficiaryToBeDeleted.IsDeleted;
             var deletedBeneficiary = _beneficiaryRepository.Update(id, beneficiaryToBeDeleted);
-            if(_beneficiaryRepository.Save())
-                return deletedBeneficiary;
-            return null;
+            if (deletedBeneficiary == null)
+                return null;
+            _beneficiaryRepository.Save();
+            return deletedBeneficiary;
         }
 
         public BeneficiaryEntity Get(Guid id)

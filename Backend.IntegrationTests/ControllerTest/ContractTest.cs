@@ -362,6 +362,7 @@ namespace IntegrationTests
             contractPostApiResponse.ExpiryDate = new DateTime(1999, 5, 6);
             contractPostApiResponse.IsActive = false;
 
+            contractPostApiResponse.MobileDevices.RemoveAt(0);
             jsonContent = JsonConvert.SerializeObject(contractPostApiResponse);
             contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             contentString.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");

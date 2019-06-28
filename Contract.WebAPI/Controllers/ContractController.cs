@@ -151,8 +151,9 @@ namespace Contract.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteContract(Guid id)
         {
-            if (_contractService.Delete(id) != null)
-                Ok(id);
+            var deletedContract = _contractService.Delete(id);
+            if (deletedContract != null)
+                return Ok(FactoriesManager.ContractViewModel.Create(deletedContract));
 
             return StatusCode(403);
         }

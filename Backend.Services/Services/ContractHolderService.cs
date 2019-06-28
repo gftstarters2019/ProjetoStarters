@@ -67,7 +67,7 @@ namespace Backend.Services.Services
             try
             {
                 var addedContractHolder = _contractHolderRepository.Add(contractHolderDomain);
-                SendEmail(addedContractHolder);
+                _contractHolderRepository.Save();
                 return addedContractHolder;
             }
             catch (Exception)
@@ -101,7 +101,10 @@ namespace Backend.Services.Services
             if (errors != "")
                 throw new Exception(errors);
 
-            return _contractHolderRepository.Update(id, contractToBeUpdated);
+            var updatedContractHolder = _contractHolderRepository.Update(id, contractToBeUpdated);
+            contractHolderRepository.Save();
+
+            return updatedContractHolder;
         }
     }
 }

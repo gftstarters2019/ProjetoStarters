@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormControl, Validators, FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
+import { BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-beneficiary-realty',
@@ -16,6 +17,8 @@ export class BeneficiaryRealtyComponent implements OnInit {
   @Input() realtyPushPermission !: number;
 
   @Output() messageRealtyEvent = new EventEmitter<any>();
+  
+  bsConfig: Partial<BsDatepickerConfig>;
 
   realtyCreateForm= this.formBuilder.group({
     municipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -33,21 +36,24 @@ export class BeneficiaryRealtyComponent implements OnInit {
     addressComplement: ['']
   });
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) { 
+    this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
+
+  }
 
   ngOnInit() {
   }
 
   unMaskValues(): void {
-    let zipCode = this.realtyCreateForm.controls.addressZipCode.value;
+    let zipCode = this.realtyForm.controls.addressZipCode.value;
     zipCode = zipCode.replace(/\D+/g, '');
-    this.realtyCreateForm.controls.addressZipCode.setValue(zipCode);
+    this.realtyForm.controls.addressZipCode.setValue(zipCode);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.realtyPushPermission.currentValue != 0 && changes.realtyPushPermission.currentValue != changes.realtyPushPermission.previousValue) {
       this.unMaskValues();
-      this.messageRealtyEvent.emit(this.realtyCreateForm);
+      this.messageRealtyEvent.emit(this.realtyForm);
     }
   }
 
