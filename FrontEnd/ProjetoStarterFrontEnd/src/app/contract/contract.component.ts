@@ -5,7 +5,7 @@ import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractCon
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
-import { MatSnackBar, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialogConfig } from '@angular/material';
 import { Location } from '@angular/common';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GenericValidator } from '../Validations/GenericValidator';
@@ -16,6 +16,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ContractService } from 'src/app/dataService/contract/contract.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { listLocales } from 'ngx-bootstrap/chronos';
+import { ConfirmDialogModel, ConfirmationDialogComponent } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 
 
 export interface Type {
@@ -94,6 +95,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
     { value: 4, viewValue: ' Platinum' },
     { value: 5, viewValue: ' Diamond' },
   ];
+  dialog: any;
 
 
   constructor(
@@ -509,9 +511,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
 
     const message = `Do you really want to delete this contract?`;
 
-    const id = data.signedContractId;
-
-
+    const dialogConfig = new MatDialogConfig();
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
     dialogConfig.disableClose = true;

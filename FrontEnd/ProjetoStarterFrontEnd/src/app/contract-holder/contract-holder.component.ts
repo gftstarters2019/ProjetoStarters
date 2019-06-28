@@ -122,7 +122,7 @@ bsConfig: Partial<BsDatepickerConfig>;
     };
     const message = `Do you really want to delete this Contract Holder?`;
 
-    this.http.delete(`https://contractholderapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      
+    this.http.delete(`https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      
     
 
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
@@ -413,4 +413,3 @@ function maskRG(params){
 function maskRGValue(rg){
   return rg.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/g,"\$1.\$2.\$3\-\$4")
 }
-
