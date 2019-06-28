@@ -37,8 +37,8 @@ export class MobileDeviceListComponent implements OnInit {
   }
 
   private handle_deleteUser(data: any) {
-    console.log(data);
     const id = data.beneficiaryId;
+
     console.log(id);
 
     const message = `Do you really want to delete this Mobile Device?`;

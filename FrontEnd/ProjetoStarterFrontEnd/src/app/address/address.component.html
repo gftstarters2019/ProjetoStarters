@@ -17,9 +17,15 @@
       <input matInput placeholder="Number" name="number" maxlength="100" formControlName="addressNumber" required>
       <mat-error>Number is invalid!</mat-error>
     </mat-form-field>
+
+
     <mat-form-field style="width: 150px;">
-        <input matInput placeholder="State" name="state" maxlength="100" formControlName="addressState" required>
-        <mat-error>State is invalid!</mat-error>
+        <mat-label>Select State:</mat-label>
+        <mat-select formControlName="addressState" name="state">
+          <mat-option *ngFor="let state of stateCategory" [value]="state.state">
+            {{state.state}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
           <div class="second-container">

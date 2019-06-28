@@ -1,34 +1,45 @@
+<mat-toolbar color="primary">
+  <span>Contract</span>
+</mat-toolbar>
+
+
 <div class="container">
-
-
-
-  <mat-label>
-    <h2 class="titleContract">Contract</h2>
-  </mat-label>
 
   <form [formGroup]="contractform" (ngSubmit)="onSubmit()">
     <div class="contractCard">
 
 
+
+      <!-- 
       <div>
         <mat-card class="contractHolderName">
           <mat-form-field style="width: 350px;">
-
-            <mat-label>Contract Holder's name:</mat-label>
-            <mat-select formControlName="contractHolderId" name="contractHolderId">
-              <mat-option *ngFor="let holder of holders" [value]="holder.individualId">
+            <input type="text" placeholder="Contract Holder's name:" aria-label="Number" matInput
+              [formControl]="contractHolderIdT" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let holder of filteredHolder | async" [value]="holder.individualName">
                 {{holder.individualName}}
-                <mat-error></mat-error>
               </mat-option>
-            </mat-select>
+            </mat-autocomplete>
           </mat-form-field>
-
-          <button class="btn-new-contract-holder" mat-raised-button color="primary" type="button"
-            routerLink="/contract-holder">
-            <mat-icon class="material-icons">add</mat-icon>Contract holder
-          </button>
         </mat-card>
-      </div>
+      </div> -->
+      <div>
+      <mat-card class="contractHolderName">
+      <mat-form-field class="example-full-width" style="width: 350px;">
+        <input type="text" placeholder="Contract Holder's name:" aria-label="Assignee" matInput [formControl]="control_autocomplete"
+          [matAutocomplete]="auto">
+
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="handle_autocompleteSelect($event)">
+          <mat-option *ngFor="let option of filteredHolder$ | async" [value]="option">
+            {{option.individualName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </mat-card>
+    </div>
+
+
 
       <mat-card>
         <mat-form-field>
@@ -50,12 +61,10 @@
         </mat-form-field> <br>
 
         <span>
-
           <mat-form-field>
-            <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" maxlength="100"
-              name="expiryDate" formControlName="expiryDate" required>
-            <mat-datepicker-toggle matSuffix [for]="expiryDate"></mat-datepicker-toggle>
-            <mat-datepicker #expiryDate></mat-datepicker>
+            <input matInput placeholder="Contract Expiry Date" name="expiryDate" formControlName="expiryDate"
+              bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" type="text" required>
+
             <mat-error>Date is invalid!</mat-error>
           </mat-form-field>
         </span>
@@ -74,7 +83,7 @@
     <div *ngIf="cType == 0 || cType==2 || cType==3">
       <div formArrayName="auxBeneficiaries"
         *ngFor="let beneficiary of contractform.get('auxBeneficiaries')['controls']; let i = index;">
-        <div  class="contractCard">
+        <div [formGroupName]="i" class="contractCard">
 
 
           <mat-card>
@@ -111,9 +120,11 @@
           <mat-card>
             <app-beneficiary-realty [realtyForm]="beneficiary" [realtyPushPermission]="message"
               (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
+
             <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove
               Beneficiary</button>
           </mat-card>
+
 
         </div>
       </div>
@@ -147,30 +158,34 @@
 
     <button mat-raised-button color="primary" type="button" (click)="addBeneficiary();">Add Beneficiary</button>
 
-  
-  <br><br>
-  <button class="btn-list" mat-raised-button color="primary" type="submit" (click)="changeMessageValue()"
-    [disabled]="!contractform.valid">Submit</button>
 
-    <button mat-raised-button color="primary" type="button" (click)="log();">Log</button>
-{{(contractform.valid)}}
+
+    <button class="btn-list" mat-raised-button color="primary" type="submit" (click)="changeMessageValue()"
+      >Submit Contract
+    </button>
+
   </form>
-  <br>
-  <br>
-  <div class="contractCard">
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header class="listpanel-header">
-          <mat-panel-title>
-            Contract's List
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+    <br>
+    <br>
+    <div class="contractCard">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="listpanel-header">
+            <mat-panel-title>
+              Contract's List
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-        <mat-nav-list>
-          <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true"
-            [paginationPageSize]="paginationPageSize" class="ag-theme-material" [masterDetail]="true"
-            [detailCellRendererParams]="detailCellRendererParams" [detailRowHeight]="detailRowHeight"
-            [rowHeight]="rowHeight" [colResizeDefault]="colResizeDefault" [gridOptions]="gridOption"
+          <mat-nav-list>
+            <ag-grid-angular 
+            style="width: 100%; height: 1000px;" 
+            [pagination]="true"
+            [paginationPageSize]="paginationPageSize" 
+            class="ag-theme-material" 
+            [masterDetail]="true"
+            [detailCellRendererParams]="detailCellRendererParams" 
+            [gridOptions]="gridOption"
+
             [rowData]="rowData$ | async">
           </ag-grid-angular>
         </mat-nav-list>
@@ -195,5 +210,3 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div>
-
-</div>

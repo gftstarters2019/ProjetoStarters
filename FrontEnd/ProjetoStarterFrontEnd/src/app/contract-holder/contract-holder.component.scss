@@ -1,12 +1,10 @@
-table {
-    width: 100%;
-  }
+
   .mat-form-field{
     display: flex;
     flex-direction: row;
     align-items: center;
     display: inline-block;
-    width: 100%;
+     width: 80%;
     vertical-align: middle;
     margin-right: 10px;
 }
@@ -30,10 +28,18 @@ button{
 }
 
 .btn-position {
-  float: right;
-  margin-right: 1em;
+  position: absolute;
+  left: 74%;
 }
 
 .titleContract {
   text-align: center;
+}
+
+.contracHolderData{
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.container {
+  width: 80%;
 }

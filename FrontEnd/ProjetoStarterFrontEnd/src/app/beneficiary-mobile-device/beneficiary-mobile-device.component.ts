@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
+import { BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
 
 export interface MobileType {
   value: string;
@@ -19,12 +20,9 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   @Input() mobilePushPermission !: number;
 
   @Output() messageMobileEvent = new EventEmitter<any>();
+  bsConfig: Partial<BsDatepickerConfig>;
 
-  mobileType: MobileType[] = [
-    {value: '0', name: 'Smartphone'},
-    {value: '1', name: 'Tablet'},
-    {value: '2', name: 'Laptop'}
-  ];
+
   
   mobileDeviceCreateForm= this.formBuilder.group({
     mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -35,7 +33,11 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
     mobileDeviceInvoiceValue: new FormControl('', GenericValidator.negativeValidation())
   });
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) {
+    this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
+
+
+   }
 
   ngOnInit() {
   }
@@ -43,7 +45,7 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if(changes.mobilePushPermission.currentValue != 0 && changes.mobilePushPermission.currentValue != changes.mobilePushPermission.previousValue) {
       
-      this.messageMobileEvent.emit(this.mobileDeviceCreateForm);
+      this.messageMobileEvent.emit(this.mobileForm);
     }
   }
 }

@@ -1,90 +1,93 @@
-<!-- Contract Holder Form -->
 
-<mat-label>
-    <h2 class="titleContract">Contract Holder</h2>
-  </mat-label>
- 
-<form [formGroup]="contractHolder" (ngSubmit)="onSubmit()" >
-  
-  <div class="addressBg"> 
-    <mat-card> 
-  <mat-form-field style="width: 500px;">
-    <input matInput placeholder="Name" name="individualName" maxlength="100" required formControlName="individualName" >
-    <mat-error>Name is invalid!</mat-error>
-  </mat-form-field> <br>
-  
-  <mat-form-field style="width: 250px;">
-      <input matInput placeholder="RG" name="individualRG" [textMask]="{mask: rgMask}" formControlName="individualRG" required>
-      <mat-error>RG is invalid!</mat-error>
-  </mat-form-field>  
-  
-  <mat-form-field style="width: 250px;">
-      <input matInput placeholder="CPF" id="individualCPF" [textMask]="{mask: cpfMask}" value="" name="individualCPF" type="text" formControlName="individualCPF" required>
-      <mat-error>CPF is invalid!</mat-error>
-      <span id="cpfResponse"></span>       
-    <script></script>
-  </mat-form-field> <br>
 
-  <mat-form-field style="width: 250px;">
-      <input matInput [matDatepicker]="picker" placeholder="Birthdate" maxlength="100" id="individualBirthdate" formControlName="individualBirthdate" required>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error>Date is invalid!</mat-error>
-    </mat-form-field>
-    
-    <mat-form-field style="width: 350px;">
-        <input matInput placeholder="Email" name="individualEmail" maxlength="100" type= "email" maxlength="30" formControlName="individualEmail" required email>
+ <mat-toolbar color="primary">
+    <span>Contract Holder</span>
+  </mat-toolbar>
+<div class="container">
+<form [formGroup]="contractHolder" (ngSubmit)="onSubmit()">
+
+  <div class="addressBg">
+    <mat-card class="contracHolderData">
+      <mat-form-field style="width: 300px;">
+        <input matInput placeholder="Name" name="individualName" maxlength="100" required
+          formControlName="individualName">
+        <mat-error>Name is invalid!</mat-error>
+      </mat-form-field> <br>
+
+      <mat-form-field style="width: 250px;">
+        <input matInput placeholder="RG" name="individualRG" [textMask]="{mask: rgMask}" formControlName="individualRG"
+          required>
+        <mat-error>RG is invalid!</mat-error>
+      </mat-form-field>
+
+      <mat-form-field style="width: 250px;">
+        <input matInput placeholder="CPF" id="individualCPF" [textMask]="{mask: cpfMask}" value="" name="individualCPF"
+          type="text" formControlName="individualCPF" required>
+        <mat-error>CPF is invalid!</mat-error>
+        <span id="cpfResponse"></span>
+        <script></script>
+      </mat-form-field> <br>
+
+      <mat-form-field style="width: 250px;">
+        <input matInput id="individualBirthdate" placeholder="Birthdate" maxlength="100" formControlName="individualBirthdate"
+          bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" type="text" required>
+        <mat-error>Date is invalid!</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field style="width: 350px;">
+        <input matInput placeholder="Email" name="individualEmail" maxlength="100" type="email" maxlength="30"
+          formControlName="individualEmail" required email>
+
         <mat-error>E-mail is invalid!</mat-error>
       </mat-form-field>
     </mat-card>
   </div>
-                              <!-- Telephone Component -->
-  <div class="addressBg" formArrayName="idTelephone" *ngFor="let telefone of contractHolder.get('idTelephone')['controls']; let i = index">
+  <!-- Telephone Component -->
+  <div class="addressBg" formArrayName="idTelephone"
+    *ngFor="let telefone of contractHolder.get('idTelephone')['controls']; let i = index">
     <mat-card>
-      <app-telephone [telephone2]="telefone"  [pushPermission]="message" (addTelephone)="handle_add_telphone($event)"></app-telephone>
-      <button mat-raised-button color="primary" type="button" (click)="removeTelephone(i)"><mat-icon class="material-icons">remove</mat-icon> Remove Telephone</button>
-    </mat-card> 
-  </div>  
-          <button mat-raised-button color="primary" type="button" (click)="showTelephone()"> 
-              <mat-icon class="material-icons">add</mat-icon> Add Telephone
-         </button>      
-                  <!-- Final do Telephone Component -->
+      <app-telephone [telephone2]="telefone" [pushPermission]="message" (addTelephone)="handle_add_telphone($event)">
+      </app-telephone>
+      <button mat-raised-button color="primary" type="button" (click)="removeTelephone(i)">
+        <mat-icon class="material-icons">remove</mat-icon> Remove Telephone
+      </button>
+    </mat-card>
+  </div>
+  <button mat-raised-button color="primary" type="button" (click)="showTelephone()">
+    <mat-icon class="material-icons">add</mat-icon> Add Telephone
+  </button>
+  <!-- Final do Telephone Component -->
 
-                  <!-- Address Component -->
-  <div class="addressBg"formArrayName="idAddress" *ngFor="let item of contractHolder.get('idAddress')['controls']; let i = index">    
-    <mat-card >
-      <app-address  [address2]="item" [addressPushPermission]="message" (addAddress)="handle_add_address($event)"> </app-address>
-      <button mat-raised-button color="primary" type="button" (click)="removeAddress(i)"><mat-icon class="material-icons">remove</mat-icon> Remove Address</button>
-    </mat-card> 
-  </div>  
-  
-  <button mat-raised-button color="primary" type="button" (click)="showAddress()"> 
-       <mat-icon class="material-icons">add</mat-icon>Add Address
-  </button> 
-  
- 
-  
-                <!-- Final do Address -->
-                <br>
-  <button class="btn-position" button color="primary" (click)=changeMessageValue() mat-raised-button type="submit" [disabled]="!contractHolder.valid">Submit Contract Holder</button> <br> <br>
-  <br> <br> <br>
+  <!-- Address Component -->
+  <div class="addressBg" formArrayName="idAddress"
+    *ngFor="let item of contractHolder.get('idAddress')['controls']; let i = index">
+    <mat-card>
+      <app-address [address2]="item" [addressPushPermission]="message" (addAddress)="handle_add_address($event)">
+      </app-address>
+      <button mat-raised-button color="primary" type="button" (click)="removeAddress(i)">
+        <mat-icon class="material-icons">remove</mat-icon> Remove Address
+      </button>
+    </mat-card>
+  </div>
+
+  <button mat-raised-button color="primary" type="button" (click)="showAddress()">
+    <mat-icon class="material-icons">add</mat-icon>Add Address
+  </button>
+
+  <button class="btn-position" button color="primary" (click)=changeMessageValue() mat-raised-button type="submit"
+    [disabled]="!contractHolder.valid">Submit Contract Holder</button>
 
 
   <div *ngIf="!showList" class="mat-elevation-z8">
-    
-    <div>
-     
 
-      <ag-grid-angular
-      style="width: 100%; height: 500px;" 
-      [pagination]="true"
-      class="ag-theme-material" 
-      [paginationPageSize]=50
-      [gridOptions]="gridOptions"
-      suppressClickEdit=true
-      [rowData]="rowData$ | async"> 
+    <div>
+
+      <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true" class="ag-theme-material"
+        [paginationPageSize]=50 [gridOptions]="gridOptions" suppressClickEdit=true [rowData]="rowData$ | async">
       </ag-grid-angular>
 
     </div>
   </div>
 </form>
+</div>
