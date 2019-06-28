@@ -42,8 +42,9 @@ export class IndividualListComponent implements OnInit {
   }
 
   private handle_deleteUser(data: any) {
-    console.log(data);
     const id = data.beneficiaryId;
+
+    this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Beneficiário removido com sucesso"));
     console.log(id);
     const message = `Do you really want to delete this Beneficiary?`;
 

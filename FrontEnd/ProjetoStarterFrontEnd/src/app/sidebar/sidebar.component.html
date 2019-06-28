@@ -2,20 +2,22 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
+
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list class="router-link">
       <a mat-list-item routerLink="/contract-holder" routerLinkActive="active">Contract Holder</a>
       <a mat-list-item routerLink="/contract" routerLinkActive="active">Contract</a>
+
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        <mat-icon aria-label="Side nav toggle icon">Menu</mat-icon>
       </button>
-      <span>GFT Starters 2019</span>
-    </mat-toolbar>
+      <span> </span>
+   
     <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>

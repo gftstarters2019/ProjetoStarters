@@ -35,6 +35,7 @@ export class RealtiesListComponent implements OnInit {
 
   private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
+
   }
 
   private handle_deleteUser(data: any) {
