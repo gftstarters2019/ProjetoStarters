@@ -1,7 +1,6 @@
-﻿using Backend.Application.ViewModels;
-using Backend.Core.Enums;
+﻿using Backend.Core.Enums;
 using Backend.Core.Models;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Text.RegularExpressions;
@@ -15,13 +14,13 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class TelephoneController : Controller
     {
-        private readonly IRepository<Telephone> _telephoneRepository;
+        private readonly IRepository<TelephoneEntity> _telephoneRepository;
 
         /// <summary>
         /// TelephoneController constructor
         /// </summary>
         /// <param name="telephoneRepository"></param>
-        public TelephoneController(IRepository<Telephone> telephoneRepository)
+        public TelephoneController(IRepository<TelephoneEntity> telephoneRepository)
         {
             _telephoneRepository = telephoneRepository;
         }
@@ -54,7 +53,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="telephone"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult PostTelephone([FromBody] Telephone telephone)
+        public IActionResult PostTelephone([FromBody] TelephoneEntity telephone)
         {
             telephone.TelephoneId = Guid.NewGuid();
 
@@ -69,26 +68,26 @@ namespace ContractHolder.WebAPI.Controllers
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="telephone"></param>
-        /// <returns></returns>
-        [HttpPost("Link")]
-        public IActionResult LinkTelephone([FromBody] TelephoneIndividualViewModel telephoneIndividualViewModel)
-        {
-            //telephone.TelephoneId = Guid.NewGuid();
+        // <summary>
+        // 
+        // </summary>
+        // <param name="telephone"></param>
+        // <returns></returns>
+        //[HttpPost("Link")]
+        //public IActionResult LinkTelephone([FromBody] TelephoneIndividualViewModel telephoneIndividualViewModel)
+        //{
+        //    //telephone.TelephoneId = Guid.NewGuid();
 
-            //if (Validate(telephone))
-            //{
-            //    _telephoneWriteRepository.Add(telephone);
+        //    //if (Validate(telephone))
+        //    //{
+        //    //    _telephoneWriteRepository.Add(telephone);
 
-            //    return Ok(telephone);
-            //}
-            //else
-                return Conflict();
+        //    //    return Ok(telephone);
+        //    //}
+        //    //else
+        //        return Conflict();
 
-        }
+        //}
 
         /// <summary>
         /// Updates a Telephone in the database
@@ -97,7 +96,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="telephone"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateTelephone(Guid id, [FromBody] Telephone telephone)
+        public IActionResult UpdateTelephone(Guid id, [FromBody] TelephoneEntity telephone)
         {
             var obj = _telephoneRepository.Find(id);
 
@@ -112,7 +111,7 @@ namespace ContractHolder.WebAPI.Controllers
                 return Conflict();
         }
 
-        private bool Validate(Telephone telephone)
+        private bool Validate(TelephoneEntity telephone)
         {
             Regex regex = new Regex("^[0-9]+$");
 

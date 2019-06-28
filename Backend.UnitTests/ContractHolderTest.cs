@@ -16,7 +16,7 @@ namespace UnitTests
         public void WhenCreateAnIndividual_ThenVerifyIfHeIsAContractHolder()
         {
             //arrange
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -26,14 +26,14 @@ namespace UnitTests
             
 
             //act
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
@@ -60,7 +60,7 @@ namespace UnitTests
             var individualEmail = "gftstarters2019@outlook.com";
 
             //act
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = new Guid("103660e3-5fd7-4606-bb1d-9d0f52e9c17a");
             //individual.IndividualId = new Guid("184ac189-467f-4e3b-badc-b6c299a25bc0");
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -69,14 +69,14 @@ namespace UnitTests
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
 
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
@@ -99,7 +99,7 @@ namespace UnitTests
         public void WhenCreateAContractHolder_ThenVerifyIfICanFindById()
         {
             //arrange
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -108,14 +108,14 @@ namespace UnitTests
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
 
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
@@ -135,7 +135,7 @@ namespace UnitTests
         public void WhenCreateContractHolder_AndUpdateHim_ThenVerifyIfHeWasUpdated()
         {
             //arrange
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -144,14 +144,14 @@ namespace UnitTests
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
 
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;
@@ -160,7 +160,7 @@ namespace UnitTests
             signedContract.ContractIndividualIsActive = true;
 
 
-            var updatedIndividual = new Individual();
+            var updatedIndividual = new IndividualEntity();
 
             var beneficiaryId = Guid.NewGuid();
             var individualId = Guid.NewGuid();
@@ -191,7 +191,7 @@ namespace UnitTests
         public void WhenCreateAContractHolder_AndDeleteHim_ThenVerifyIfHeWasDeleted()
         {
             //arrange
-            var individual = new Individual();
+            var individual = new IndividualEntity();
             individual.BeneficiaryId = Guid.NewGuid();
             //individual.IndividualId = Guid.NewGuid();
             individual.IndividualBirthdate = new DateTime(2019, 05, 28, 7, 0, 0);
@@ -200,14 +200,14 @@ namespace UnitTests
             individual.IndividualEmail = "gftstarters2019@outlook.com";
             
 
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var signedContract = new SignedContract();
+            var signedContract = new SignedContractEntity();
             signedContract.SignedContractId = Guid.NewGuid();
             //signedContract.IndividualId = individual.IndividualId;
             signedContract.ContractId = contract.ContractId;

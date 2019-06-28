@@ -1,9 +1,5 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Backend.Services.Validators
 {
@@ -16,7 +12,7 @@ namespace Backend.Services.Validators
             _numberValidator = numberValidator;
         }
 
-        public bool IsValid(Telephone telephone)
+        public bool IsValid(TelephoneDomain telephone)
         {
             if (!_numberValidator.LengthValidator(telephone.TelephoneNumber, 10))
                 return false;
