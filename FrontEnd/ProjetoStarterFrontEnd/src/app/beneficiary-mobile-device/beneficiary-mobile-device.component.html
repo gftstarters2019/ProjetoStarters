@@ -12,8 +12,15 @@
               <mat-error>Model is invalid!</mat-error>
             </mat-form-field>
 
-          <mat-form-field style="width: 30%;" class="positionMarFormField">
+          <!-- <mat-form-field style="width: 30%;" class="positionMarFormField">
             <input matInput bsDatepicker #dp="bsDatepicker" maxlength="100" [bsConfig]="bsConfig" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
+            <mat-error>Date is invalid!</mat-error>
+          </mat-form-field> -->
+
+          <mat-form-field style="width: 30%;">
+            <input matInput [matDatepicker]="picker" maxlength="100" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
             <mat-error>Date is invalid!</mat-error>
           </mat-form-field>
       </div>
