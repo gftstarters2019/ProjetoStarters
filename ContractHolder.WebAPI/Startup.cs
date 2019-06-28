@@ -1,9 +1,10 @@
-﻿using Backend.Application.ViewModels;
-using Backend.Core;
+﻿using Backend.Core.Domains;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
+using Backend.Services.Services;
+using Backend.Services.Services.Interfaces;
 using Backend.Services.Validators;
 using Backend.Services.Validators.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -45,16 +46,27 @@ namespace ContractHolder.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IRepository<Individual>, ContractHolderRepository>();
+            // Services
+            services.AddScoped<IService<ContractHolderDomain>, ContractHolderService>();
 
-            services.AddScoped<IRepository<Telephone>, TelephoneRepository>();
-            
-            services.AddScoped<IRepository<Address>, AddressRepository>();
-            
-            services.AddScoped<IRepository<ContractHolderViewModel>, ContractHolderViewModelRepository>();
-            
-            services.AddScoped<IRepository<SignedContract>, SignedContractRepository>();
+            // Repositories
+            services.AddScoped<IRepository<BeneficiaryAddress>, BeneficiaryAddressRepository>();
 
+            services.AddScoped<IRepository<ContractHolderDomain>, ContractHolderRepository>();
+
+            services.AddScoped<IRepository<TelephoneEntity>, TelephoneRepository>();
+
+            services.AddScoped<IRepository<IndividualEntity>, IndividualRepository>();
+
+            services.AddScoped<IRepository<IndividualTelephone>, IndividualTelephoneRepository>();
+            
+            services.AddScoped<IRepository<RealtyEntity>, RealtyRepository>();
+
+            services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
+            
+            services.AddScoped<IRepository<SignedContractEntity>, SignedContractRepository>();
+
+            // Validators
             services.AddScoped<IContractHolderValidator, ContractHolderValidator>();
 
             services.AddScoped<IDateValidator, DateValidator>();

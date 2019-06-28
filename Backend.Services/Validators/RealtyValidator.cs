@@ -1,8 +1,5 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators
 {
@@ -16,7 +13,7 @@ namespace Backend.Services.Validators
             _dateValidator = dateValidator;
             _numberValidator = numberValidator;
         }
-        public bool IsValid(Realty realty)
+        public bool IsValid(RealtyDomain realty)
         {
             if (!_dateValidator.IsValid(realty.RealtyConstructionDate))
                 return false;

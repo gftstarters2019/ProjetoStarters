@@ -1,16 +1,14 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Net.Mail;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Backend.Services.Validators
 {
     public class IndividualValidator: IIndividualValidator
     {
-        public bool IsValid(Individual individual)
+        public bool IsValid(IndividualDomain individual)
         {
             if (!CPFIsValid(individual.IndividualCPF))
                 return false;

@@ -12,10 +12,8 @@
               <mat-error>Model is invalid!</mat-error>
             </mat-form-field>
 
-          <mat-form-field style="width: 30%;">
-            <input matInput [matDatepicker]="picker" maxlength="100" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+          <mat-form-field style="width: 30%;" class="positionMarFormField">
+            <input matInput bsDatepicker #dp="bsDatepicker" maxlength="100" [bsConfig]="bsConfig" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
             <mat-error>Date is invalid!</mat-error>
           </mat-form-field>
       </div>
@@ -28,15 +26,15 @@
 
         <mat-form-field style="width: 30%;">
           <mat-label>Type</mat-label>
-          <mat-select name="mobileDeviceType" formControlName="mobileDeviceType"  required >
-              <mat-option *ngFor="let type of mobileType" [value]="type.value" >
-                  {{type.name}}
-              </mat-option>
+          <mat-select name="mobileDeviceType" formControlName="mobileDeviceType" required >
+                  <mat-option [value]="0">Smartphone</mat-option>
+                  <mat-option [value]="1">Tablet</mat-option>
+                  <mat-option [value]="2">Laptop</mat-option>
           </mat-select>
       </mat-form-field>
 
-        <mat-form-field style="width: 30%;">
-          <input matInput type="number" placeholder="Invoice Value" maxlength="100" name="mobileDeviceInvoiceValue" formControlName="mobileDeviceInvoiceValue" required>
+        <mat-form-field style="width: 30%;" class="positionMarFormField">
+          <input matInput type="number" placeholder="Invoice Value" name="mobileDeviceInvoiceValue" formControlName="mobileDeviceInvoiceValue" required>
           <mat-error>Invoice value is invalid!</mat-error>
         </mat-form-field>
       </div>

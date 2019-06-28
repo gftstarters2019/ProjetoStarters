@@ -21,7 +21,7 @@ constructor(private http: HttpClient){
 }
 
  ngOnInit(){
-   this.rowData = this.http.get('https://contractholderwebapi.azurewebsites.net/');
+   this.rowData = this.http.get('https://contractholderapi.azurewebsites.net/');
  }
 
 }

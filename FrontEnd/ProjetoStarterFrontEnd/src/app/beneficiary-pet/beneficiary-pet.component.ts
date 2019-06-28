@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
+import { BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
+
 
 export interface Species {
   value: string;
@@ -14,19 +16,12 @@ export interface Species {
 })
 export class BeneficiaryPetComponent implements OnInit {
 
-  species: Species[] = [
-    {value: '0', name: 'Canis lupus familiaris'},
-    {value: '1', name: 'Felis catus'},
-    {value: '2', name: 'Mesocricetus auratus'},
-    {value: '3', name: 'Nymphicus hollandicus'},
-    {value: '4', name: 'Ara chloropterus'},
-  ];
-
   @Input() petForm: FormGroup;
 
   @Input() petPushPermission !: number;
 
   @Output() messagePetEvent = new EventEmitter<any>();
+  bsConfig: Partial<BsDatepickerConfig>;
 
   petCreateForm= this.formBuilder.group({
     petName: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -35,7 +30,10 @@ export class BeneficiaryPetComponent implements OnInit {
     petBreed: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName))
   });
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) {
+    this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
+
+   }
 
   ngOnInit() {
   }
@@ -44,6 +42,7 @@ export class BeneficiaryPetComponent implements OnInit {
     if(changes.petPushPermission.currentValue != 0 && changes.petPushPermission.currentValue != changes.petPushPermission.previousValue) {
       
       this.messagePetEvent.emit(this.petForm);
+
     }
   }
 }

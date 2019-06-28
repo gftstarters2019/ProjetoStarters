@@ -1,44 +1,60 @@
 ﻿using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class IndividualRepository : IRepository<Individual>
+    public class IndividualRepository : IRepository<IndividualEntity>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public IndividualRepository(ConfigurationContext db)
         {
             _db = db;
         }
 
-        public bool Add(Individual individual)
+        public IndividualEntity Add(IndividualEntity individual)
         {
             if (individual != null)
             {
-                _db.Individuals.Add(individual);
-                if (_db.SaveChanges() == 1)
-                    return true;
+                // Verifies if CPF is already in DB of Individual not deleted
+                if (_db.Individuals
+                        .Where(ind => ind.IndividualCPF == individual.IndividualCPF && !ind.IsDeleted)
+                        .Any())
+                    return null;
+
+                individual.IsDeleted = false;
+                individual.BeneficiaryId = Guid.NewGuid();
+                return _db.Individuals.Add(individual).Entity;
             }
-            return false;
+            return null;
         }
 
-        public Individual Find(Guid id)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
         }
 
-        public Individual FindCPF(string cpf)
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<Individual> Get() => _db
+        public IndividualEntity Find(Guid id) => _db.Individuals.Where(ind => ind.BeneficiaryId == id).FirstOrDefault();
+
+        public IEnumerable<IndividualEntity> Get() => _db
             .Individuals
             .Where(i => !i.IsDeleted)
             .ToList();
@@ -50,12 +66,33 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
-        public Individual Update(Guid id, Individual t)
+        public IndividualEntity Update(Guid id, IndividualEntity updatedIndividual)
         {
-            throw new NotImplementedException();
+            if (updatedIndividual != null)
+            {
+                var individualToUpdate = Find(id);
+                if (individualToUpdate != null)
+                {
+                    // Verifies if CPF is already in DB of Individual not deleted
+                    if (_db.Individuals
+                            .Where(ind => ind.IndividualCPF == updatedIndividual.IndividualCPF && !ind.IsDeleted)
+                            .Any() && updatedIndividual.IndividualCPF != individualToUpdate.IndividualCPF)
+                        return null;
+
+                    individualToUpdate.IndividualBirthdate = updatedIndividual.IndividualBirthdate;
+                    individualToUpdate.IndividualCPF = updatedIndividual.IndividualCPF;
+                    individualToUpdate.IndividualEmail = updatedIndividual.IndividualEmail;
+                    individualToUpdate.IndividualName = updatedIndividual.IndividualName;
+                    individualToUpdate.IndividualRG = updatedIndividual.IndividualRG;
+                    individualToUpdate.IsDeleted = updatedIndividual.IsDeleted;
+
+                    return _db.Individuals.Update(individualToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }

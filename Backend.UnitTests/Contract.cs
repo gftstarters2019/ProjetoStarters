@@ -23,7 +23,7 @@ namespace UnitTests
             var contractDeleted = false;
 
             //act
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = new Guid("8b5e7842-0087-4ea9-9903-f127043ede90");
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
@@ -42,7 +42,7 @@ namespace UnitTests
         public void WhenCreateAContract_ThenVerifyIfICanFindById()
         {
             //arrange
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
@@ -60,14 +60,14 @@ namespace UnitTests
         public void WhenCreateContract_AndUpdateIt_ThenVerifyIfItWasUpdated()
         {
             //arrange
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;
             contract.ContractExpiryDate = new DateTime(2019, 05, 28, 7, 0, 0);
             contract.ContractDeleted = false;
 
-            var updatedContract = new Contract();
+            var updatedContract = new ContractEntity();
 
             var contractId = Guid.NewGuid();
             var contractType = ContractType.LifeInsurance;
@@ -94,7 +94,7 @@ namespace UnitTests
         public void WhenCreateAContractHolder_AndDeleteHim_ThenVerifyIfHeWasDeleted()
         {
             //arrange
-            var contract = new Contract();
+            var contract = new ContractEntity();
             contract.ContractId = Guid.NewGuid();
             contract.ContractType = ContractType.HealthPlan;
             contract.ContractCategory = ContractCategory.Diamond;

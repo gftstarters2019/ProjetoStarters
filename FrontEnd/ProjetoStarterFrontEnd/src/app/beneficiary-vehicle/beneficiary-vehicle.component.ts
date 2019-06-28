@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { GenericValidator } from '../Validations/GenericValidator';
+import { BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
 
 export interface Color {
   value: string;
@@ -14,6 +15,7 @@ export interface Color {
 })
 export class BeneficiaryVehicleComponent implements OnInit {
 
+  bsConfig: Partial<BsDatepickerConfig>;
   colors: Color[] = [
     {value: '0', name: 'White'},
     {value: '1', name: 'Silver'},
@@ -47,7 +49,11 @@ export class BeneficiaryVehicleComponent implements OnInit {
 
 
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {
+    this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
+
+
+  }
 
   ngOnInit() {
   }

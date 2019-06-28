@@ -33,6 +33,7 @@ export class PetListComponent implements OnInit {
 
   private handle_editUser(data: any) {
     //this.contractform.patchValue(data);
+
   }
 
   private handle_deleteUser(data: any) {
@@ -63,6 +64,7 @@ export class PetListComponent implements OnInit {
 
     });
   }
+
 
   private setup_gridOptions() {
 

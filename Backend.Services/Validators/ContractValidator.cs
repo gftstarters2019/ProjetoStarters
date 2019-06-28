@@ -1,8 +1,6 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators
 {
@@ -23,7 +21,7 @@ namespace Backend.Services.Validators
             _vehicleValidator = vehicleValidator;
         }
 
-        public bool IsValid(Contract contract, List<Individual> individuals, List<MobileDevice> mobileDevices, List<Pet> pets, List<Realty> realties, List<Vehicle> vehicles)
+        public bool IsValid(ContractDomain contract, List<IndividualDomain> individuals, List<MobileDeviceDomain> mobileDevices, List<PetDomain> pets, List<RealtyDomain> realties, List<VehicleDomain> vehicles)
         {
             if (individuals != null)
             {

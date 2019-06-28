@@ -1,8 +1,6 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators
 {
@@ -20,7 +18,7 @@ namespace Backend.Services.Validators
             _telephoneValidator = telephoneValidator;
         }
 
-        public bool IsValid(Individual individual, List<Address> addresses, List<Telephone> telephones)
+        public bool IsValid(IndividualDomain individual, List<AddressDomain> addresses, List<TelephoneDomain> telephones)
         {
             if (!_individualValidator.IsValid(individual))
                 return false;

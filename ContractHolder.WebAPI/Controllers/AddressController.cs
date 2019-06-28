@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Backend.Core.Models;
-using Backend.Infrastructure.Repositories.Contracts;
+﻿using Backend.Core.Models;
+using Backend.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Text.RegularExpressions;
 
 namespace ContractHolder.WebAPI.Controllers
 {
@@ -16,13 +13,13 @@ namespace ContractHolder.WebAPI.Controllers
     [ApiController]
     public class AddressController : Controller
     {
-        private readonly IRepository<Address> _addressRepository;
+        private readonly IRepository<AddressEntity> _addressRepository;
 
         /// <summary>
         /// AddressController constructor
         /// </summary>
         /// <param name="addressRepository"></param>
-        public AddressController(IRepository<Address> addressRepository)
+        public AddressController(IRepository<AddressEntity> addressRepository)
         {
             _addressRepository = addressRepository;
         }
@@ -55,7 +52,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="address"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult PostAddress([FromBody] Address address)
+        public IActionResult PostAddress([FromBody] AddressEntity address)
         {
             address.AddressId = Guid.NewGuid();
 
@@ -77,7 +74,7 @@ namespace ContractHolder.WebAPI.Controllers
         /// <param name="address"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateAddress(Guid id, [FromBody] Address address)
+        public IActionResult UpdateAddress(Guid id, [FromBody] AddressEntity address)
         {
             var obj = _addressRepository.Find(id);
 
@@ -98,7 +95,7 @@ namespace ContractHolder.WebAPI.Controllers
                 return Conflict();
         }
 
-        private bool Validate(Address address)
+        private bool Validate(AddressEntity address)
         {
             Regex regexLetters = new Regex("^[a-zA-Z]+$");
 

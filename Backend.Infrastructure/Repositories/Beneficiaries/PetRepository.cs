@@ -1,44 +1,54 @@
 ﻿using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class PetRepository : IRepository<Pet>
+    public class PetRepository : IRepository<PetEntity>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public PetRepository(ConfigurationContext db)
         {
             _db = db;
         }
 
-        public bool Add(Pet pet)
+        public PetEntity Add(PetEntity pet)
         {
             if (pet != null)
             {
-                _db.Pets.Add(pet);
-                if (_db.SaveChanges() == 1)
-                    return true;
+                pet.IsDeleted = false;
+                pet.BeneficiaryId = Guid.NewGuid();
+                return _db.Pets.Add(pet).Entity;
             }
-            return false;
+            return null;
         }
 
-        public Pet Find(Guid id)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            disposed = true;
         }
 
-        public Pet FindCPF(string cpf)
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<Pet> Get() => _db
+        public PetEntity Find(Guid id) => _db.Pets.Where(pet => pet.BeneficiaryId == id).FirstOrDefault();
+
+        public IEnumerable<PetEntity> Get() => _db
             .Pets
             .Where(i => !i.IsDeleted)
             .ToList();
@@ -50,12 +60,26 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            return _db.SaveChanges() > 0;
         }
 
-        public Pet Update(Guid id, Pet t)
+        public PetEntity Update(Guid id, PetEntity pet)
         {
-            throw new NotImplementedException();
+            if(pet != null)
+            {
+                var petToUpdate = Find(id);
+                if(petToUpdate != null)
+                {
+                    petToUpdate.IsDeleted = pet.IsDeleted;
+                    petToUpdate.PetBirthdate = pet.PetBirthdate;
+                    petToUpdate.PetBreed = pet.PetBreed;
+                    petToUpdate.PetName = pet.PetName;
+                    petToUpdate.PetSpecies = pet.PetSpecies;
+
+                    return _db.Pets.Update(petToUpdate).Entity;
+                }
+            }
+            return null;
         }
     }
 }
