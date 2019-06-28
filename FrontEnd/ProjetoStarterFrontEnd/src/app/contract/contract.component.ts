@@ -100,7 +100,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
 
-    this.http.get('https://contractholderapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
+    this.http.get('https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
       this.holders = data;
     });
   }
@@ -530,9 +530,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
         },
       ]
     }
-    this.defaultColDef = { resizable: true };
-    this.colResizeDefault = "shift";
-    this.detailRowHeight = 400;
+    this.detailRowHeight = 350;
     this.detailCellRendererParams = function (params) {
       var res: any = {};
       res.getDetailRowData = function (params) {
@@ -547,7 +545,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
         if (params.data.type == 6)
           params.successCallback(params.data.mobileDevices)
       }
-      if (params.data.type === 0 || params.data.name === 2 || params.data.name === 3) {
+      if (params.data.type === 0 || params.data.type === 2 || params.data.type === 3) {
         res.detailGridOptions = {
           columnDefs: [{
             headerName: "Individual Details",
@@ -558,7 +556,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
               {
                 headerName: 'Birthdate ', field: "individualBirthdate", minWidth: 115,
                 cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-br") : '';
                 },
               },
               { headerName: 'Email ', field: "individualEmail", minWidth: 150, }
@@ -605,14 +603,14 @@ export class ContractComponent implements OnInit, AfterViewInit {
             headerName: "Realties Details",
             children: [
               { headerName: 'Type', field: "addressType", valueFormatter: realtiestypeFormatter, minWidth: 115, },
-              { headerName: 'Street', field: "address.addressStreet", minWidth: 165, },
-              { headerName: 'No.', field: "address.addressNumber", minWidth: 110, },
-              { headerName: 'Complement', field: "address.addressComplement", minWidth: 145, },
-              { headerName: 'Neighborhood', field: "address.addressNeighborhood", minWidth: 145, },
-              { headerName: 'City', field: "address.addressCity", minWidth: 145, },
-              { headerName: 'State', field: "address.addressState", minWidth: 130, },
-              { headerName: 'Country', field: "address.addressCountry", minWidth: 120, },
-              { headerName: 'Zip-Code', field: "address.addressZipCode", minWidth: 125, },
+              { headerName: 'Street', field: "addressStreet", minWidth: 165, },
+              { headerName: 'No.', field: "addressNumber", minWidth: 110, },
+              { headerName: 'Complement', field: "addressComplement", minWidth: 145, },
+              { headerName: 'Neighborhood', field: "addressNeighborhood", minWidth: 145, },
+              { headerName: 'City', field: "addressCity", minWidth: 145, },
+              { headerName: 'State', field: "addressState", minWidth: 130, },
+              { headerName: 'Country', field: "addressCountry", minWidth: 120, },
+              { headerName: 'Zip-Code', field: "addressZipCode", minWidth: 125, },
               {
                 headerName: 'Construction Date', field: "constructionDate", minWidth: 165, cellRenderer: (data) => {
                   return data.value ? (new Date(data.value)).toLocaleDateString() : '';
@@ -720,7 +718,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
   private setup_gridData() {
     this.rowData$ = this.http
       .get<Array<any>>('https://contractgftapi.azurewebsites.net/api/Contract');
-      console.log(this.rowData$)
   }
   private onCellEdit(params: any) {
     // private onRowSelected(event: RowSelectedEvent) {
