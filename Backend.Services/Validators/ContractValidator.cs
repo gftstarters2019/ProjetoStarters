@@ -1,8 +1,6 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators
 {
@@ -23,14 +21,15 @@ namespace Backend.Services.Validators
             _vehicleValidator = vehicleValidator;
         }
 
-        public bool IsValid(Contract contract, List<Individual> individuals, List<MobileDevice> mobileDevices, List<Pet> pets, List<Realty> realties, List<Vehicle> vehicles)
+        public List<string> IsValid(ContractDomain contract, List<IndividualDomain> individuals, List<MobileDeviceDomain> mobileDevices, List<PetDomain> pets, List<RealtyDomain> realties, List<VehicleDomain> vehicles)
         {
+            List<string> errors = new List<string>();
+
             if (individuals != null)
             {
                 foreach (var item in individuals)
                 {
-                    if (!_individualValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_individualValidator.IsValid(item));
                 }
             }
 
@@ -38,8 +37,7 @@ namespace Backend.Services.Validators
             {
                 foreach (var item in mobileDevices)
                 {
-                    if (!_mobileDeviceValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_mobileDeviceValidator.IsValid(item));
                 }
             }
 
@@ -47,8 +45,7 @@ namespace Backend.Services.Validators
             {
                 foreach (var item in pets)
                 {
-                    if (!_petValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_petValidator.IsValid(item));
                 }
             }
 
@@ -56,8 +53,7 @@ namespace Backend.Services.Validators
             {
                 foreach (var item in realties)
                 {
-                    if (!_realtyValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_realtyValidator.IsValid(item));
                 }
             }
 
@@ -65,12 +61,11 @@ namespace Backend.Services.Validators
             {
                 foreach (var item in vehicles)
                 {
-                    if (!_vehicleValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_vehicleValidator.IsValid(item));
                 }
             }
 
-            return true;
+            return errors;
         }
     }
 }

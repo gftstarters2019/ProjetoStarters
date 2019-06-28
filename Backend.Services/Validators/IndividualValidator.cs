@@ -1,26 +1,29 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Backend.Services.Validators
 {
     public class IndividualValidator: IIndividualValidator
     {
-        public bool IsValid(Individual individual)
+        public List<string> IsValid(IndividualDomain individual)
         {
-            if (!CPFIsValid(individual.IndividualCPF))
-                return false;
-            if (!EmailIsValid(individual.IndividualEmail))
-                return false;
+            var errors = new List<string>();
+
             if (!NameIsValid(individual.IndividualName))
-                return false;
+                errors.Add($"{individual.IndividualName}: Nome inválido!; ");
+            if (!CPFIsValid(individual.IndividualCPF))
+                errors.Add($"{individual.IndividualCPF}: CPF inválido!; ");
+            if (!EmailIsValid(individual.IndividualEmail))
+                errors.Add($"{individual.IndividualEmail}: Email inválido!; ");
             if (!RGIsValid(individual.IndividualRG))
-                return false;
-            return true;
+                errors.Add($"{individual.IndividualRG}: RG inválido!; ");
+
+            return errors;
         }
         /// <summary>
         /// Validação de CPF

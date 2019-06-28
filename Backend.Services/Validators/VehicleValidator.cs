@@ -1,8 +1,6 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators
 {
@@ -17,13 +15,16 @@ namespace Backend.Services.Validators
             _numberValidator = numberValidator;
         }
 
-        public bool IsValid(Vehicle vehicle)
+        public List<string> IsValid(VehicleDomain vehicle)
         {
-            if (!_dateValidator.IsValid(vehicle.VehicleManufactoringYear) && !_dateValidator.IsValid(vehicle.VehicleModelYear))
-                return false;
-            if (!_numberValidator.IsPositive(vehicle.VehicleCurrentFipeValue.ToString()) && !_numberValidator.IsPositive(vehicle.VehicleCurrentMileage.ToString()))
-                return false;
-            return true;
+            var errors = new List<string>();
+
+            errors.AddRange(_dateValidator.IsValid(vehicle.VehicleManufactoringYear));
+            errors.AddRange(_dateValidator.IsValid(vehicle.VehicleModelYear));
+            errors.AddRange(_numberValidator.IsPositive(vehicle.VehicleCurrentFipeValue.ToString()));
+            errors.AddRange(_numberValidator.IsPositive(vehicle.VehicleCurrentMileage.ToString()));
+
+            return errors;
         }
     }
 }

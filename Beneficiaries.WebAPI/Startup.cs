@@ -4,12 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Backend.Application.ViewModels;
 using Backend.Core;
+using Backend.Core.Domains;
 using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
+using Backend.Services.Services;
+using Backend.Services.Services.Interfaces;
+using Beneficiaries.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -46,18 +49,38 @@ namespace Beneficiaries.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IRepository<Beneficiary>, BeneficiaryRepository>();
+            // Services
+            //services.AddScoped<IService<Backend.Core.Domains.Beneficiary>, BeneficiaryService>();
+            services.AddScoped<IService<Backend.Core.Models.BeneficiaryEntity>, BeneficiaryService>();
+
+            services.AddScoped<IService<IndividualDomain>, IndividualService>();
+
+            services.AddScoped<IService<MobileDeviceDomain>, MobileDeviceService>();
+
+            services.AddScoped<IService<RealtyDomain>, RealtyService>();
+
+            services.AddScoped<IService<PetDomain>, PetService>();
+
+            services.AddScoped<IService<VehicleDomain>, VehicleService>();
+            
+            // Repositories
+            services.AddScoped<IRepository<Backend.Core.Models.BeneficiaryEntity>, BeneficiaryRepository>();
+
             services.AddScoped<IRepository<ContractBeneficiary>, ContractBeneficiaryRepository>();
 
-            services.AddScoped<IRepository<Individual>, IndividualRepository>();
+            services.AddScoped<IRepository<IndividualEntity>, IndividualRepository>();
 
-            services.AddScoped<IRepository<MobileDevice>, MobileDeviceRepository>();
+            services.AddScoped<IRepository<MobileDeviceEntity>, MobileDeviceRepository>();
 
-            services.AddScoped<IRepository<RealtyViewModel>, RealtyRepository>();
+            services.AddScoped<IRepository<RealtyEntity>, RealtyRepository>();
 
-            services.AddScoped<IRepository<Pet>, PetRepository>();
+            services.AddScoped<IRepository<AddressEntity>, AddressRepository>();
 
-            services.AddScoped<IRepository<Vehicle>, VehicleRepository>();
+            services.AddScoped<IRepository<BeneficiaryAddress>, BeneficiaryAddressRepository>();
+
+            services.AddScoped<IRepository<PetEntity>, PetRepository>();
+
+            services.AddScoped<IRepository<VehicleEntity>, VehicleRepository>();
 
 
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));

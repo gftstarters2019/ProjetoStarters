@@ -1,26 +1,25 @@
-﻿using Backend.Core;
-using Backend.Core.Models;
+﻿using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class BeneficiaryRepository : IRepository<Beneficiary>
+    public class BeneficiaryRepository : IRepository<BeneficiaryEntity>
     {
         private readonly ConfigurationContext _db;
+        private bool disposed = false;
 
         public BeneficiaryRepository(ConfigurationContext db)
         {
             _db = db;
         }
 
-        public Beneficiary Find(Guid id)
+        public BeneficiaryEntity Find(Guid id)
         {
-            Beneficiary beneficiary;
+            BeneficiaryEntity beneficiary;
 
             // Individual
             beneficiary = _db
@@ -60,55 +59,55 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        public IEnumerable<Beneficiary> Get() => _db
-            //.Beneficiaries
+        public IEnumerable<BeneficiaryEntity> Get() => _db
             .Individuals
             .ToList();
-
-        public bool Add(Beneficiary beneficiary)
-        {
-            if(beneficiary != null)
-            {
-                _db.Add(beneficiary);
-                if (_db.SaveChanges() == 1)
-                    return true;
-
-                return false;
-            }
-            return false;
-        }
-
+        
         public bool Remove(Guid id)
         {
             var beneficiary = Find(id);
             if(beneficiary != null)
             {
                 _db.Remove(beneficiary);
-                _db.SaveChanges();
                 return true;
             }
             return false;
         }
 
-        public Beneficiary Update(Guid id, Beneficiary beneficiary)
+        public BeneficiaryEntity Update(Guid id, BeneficiaryEntity beneficiary)
         {
             if(beneficiary != null)
-            {
                 _db.Update(beneficiary);
-                _db.SaveChanges();
-            }
 
             return beneficiary;
         }
 
         public bool Save()
         {
+            return _db.SaveChanges() > 0;
+        }
+
+        public BeneficiaryEntity Add(BeneficiaryEntity t)
+        {
             throw new NotImplementedException();
         }
 
-        public Beneficiary FindCPF(string cpf)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators
 {
@@ -14,11 +12,13 @@ namespace Backend.Services.Validators
         {
             _dateValidator = dateValidator;
         }
-        public bool IsValid(Pet pet)
+        public List<string> IsValid(PetDomain pet)
         {
-            if (!_dateValidator.IsValid(pet.PetBirthdate))
-                return false;
-            return true;
+            var errors = new List<string>();
+
+            errors.AddRange(_dateValidator.IsValid(pet.PetBirthdate));
+
+            return errors;
         }
     }
 }

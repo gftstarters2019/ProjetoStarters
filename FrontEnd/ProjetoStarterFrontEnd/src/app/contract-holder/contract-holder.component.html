@@ -1,4 +1,5 @@
 
+
  <mat-toolbar color="primary">
     <span>Contract Holder</span>
   </mat-toolbar>
@@ -8,7 +9,7 @@
   <div class="addressBg">
     <mat-card class="contracHolderData">
       <mat-form-field style="width: 300px;">
-        <input matInput placeholder="Name" name="individualName" maxlength="50" required
+        <input matInput placeholder="Name" name="individualName" maxlength="100" required
           formControlName="individualName">
         <mat-error>Name is invalid!</mat-error>
       </mat-form-field> <br>
@@ -28,15 +29,17 @@
       </mat-form-field> <br>
 
       <mat-form-field style="width: 250px;">
-        <input matInput id="individualBirthdate" placeholder="Birthdate" formControlName="individualBirthdate"
-          bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" type="text" required>
+        <input matInput [matDatepicker]="picker" placeholder="Birthdate" maxlength="100" id="individualBirthdate" formControlName="individualBirthdate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
         <mat-error>Date is invalid!</mat-error>
       </mat-form-field>
 
 
       <mat-form-field style="width: 350px;">
-        <input matInput placeholder="Email" name="individualEmail" type="email" maxlength="30"
+        <input matInput placeholder="Email" name="individualEmail" maxlength="100" type="email" maxlength="30"
           formControlName="individualEmail" required email>
+
         <mat-error>E-mail is invalid!</mat-error>
       </mat-form-field>
     </mat-card>

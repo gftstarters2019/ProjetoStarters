@@ -34,7 +34,7 @@ export class IndividualListComponent implements OnInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
 
-    this.individual = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals');
+    this.individual = this.http.get<Array<any>>('https://beneficiariesapi.azurewebsites.net/api/Beneficiary/Individuals');
   }
 
   private handle_editUser(data: any) {
@@ -59,7 +59,7 @@ export class IndividualListComponent implements OnInit {
       dialogRef.afterClosed().subscribe(dialogResult => {
         this.result = dialogResult;
         if (this.result == true) {  
-          this.http.delete(`https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar("Error 403 - Invalid Action"), () => this.openSnackBar("Beneficiary removed"));
+          this.http.delete(`https://beneficiariesapi.azurewebsites.net/api/Beneficiary/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar("Error 403 - Invalid Action"), () => this.openSnackBar("Beneficiary removed"));
           } 
       });
   }
@@ -149,7 +149,7 @@ export class IndividualListComponent implements OnInit {
     this.gridColumApi = params.columnApi;
   }
   private setup_gridData() {
-    this.rowData$ = this.http.get<Array<any>>('https://beneficiarieswebapi.azurewebsites.net/api/Beneficiary/Individuals');
+    this.rowData$ = this.http.get<Array<any>>('https://beneficiariesapi.azurewebsites.net/api/Beneficiary/Individuals');
   }
   private onCellEdit(params: any) {
   }

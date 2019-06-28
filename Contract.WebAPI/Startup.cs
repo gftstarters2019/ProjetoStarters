@@ -1,8 +1,7 @@
-﻿using Backend.Application.ViewModels;
-using Backend.Core;
-using Backend.Infrastructure.Configuration;
+﻿using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Infrastructure.Repositories.Interfaces;
+using Backend.Services.Services;
 using Backend.Services.Validators;
 using Backend.Services.Validators.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -44,11 +43,32 @@ namespace Contract.WebAPI
                 builder => builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials());
             });
 
-            services.AddScoped<IRepository<Backend.Core.Models.Contract>, ContractRepository>();
+            // Services
+            services.AddScoped<Backend.Services.Services.Interfaces.IService<Backend.Core.Domains.CompleteContractDomain>, CompleteContractService>();
 
-            services.AddScoped<IRepository<Backend.Core.Models.SignedContract>, SignedContractRepository>();
+            // Repositories
+            services.AddScoped<IRepository<Backend.Core.Domains.CompleteContractDomain>, CompleteContractRepository>();
 
-            services.AddScoped<IRepository<ContractViewModel>, ContractViewModelRepository>();
+            services.AddScoped<IRepository<Backend.Core.Models.ContractEntity>, ContractRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.SignedContractEntity>, SignedContractRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.IndividualEntity>, IndividualRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.PetEntity>, PetRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.MobileDeviceEntity>, MobileDeviceRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.RealtyEntity>, RealtyRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.BeneficiaryAddress>, BeneficiaryAddressRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.VehicleEntity>, VehicleRepository>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.ContractBeneficiary>, ContractBeneficiaryRepository>();
+
+            // Validators
+            services.AddScoped<IContractValidator, ContractValidator>();
 
             services.AddScoped<IAddressValidator, AddressValidator>();
 
@@ -63,6 +83,8 @@ namespace Contract.WebAPI
             services.AddScoped<IPetValidator, PetValidator>();
 
             services.AddScoped<IRealtyValidator, RealtyValidator>();
+
+            services.AddScoped<IRepository<Backend.Core.Models.AddressEntity>, AddressRepository>();
 
             services.AddScoped<IVehicleValidator, VehicleValidator>();
 

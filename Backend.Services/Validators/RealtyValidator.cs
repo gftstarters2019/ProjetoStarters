@@ -1,8 +1,6 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators
 {
@@ -16,13 +14,15 @@ namespace Backend.Services.Validators
             _dateValidator = dateValidator;
             _numberValidator = numberValidator;
         }
-        public bool IsValid(Realty realty)
+        public List<string> IsValid(RealtyDomain realty)
         {
-            if (!_dateValidator.IsValid(realty.RealtyConstructionDate))
-                return false;
-            if (!_numberValidator.IsPositive(realty.RealtyMarketValue.ToString()) && !_numberValidator.IsPositive(realty.RealtySaleValue.ToString()))
-                return false;
-            return true;
+            var errors = new List<string>();
+
+            errors.AddRange(_dateValidator.IsValid(realty.RealtyConstructionDate));
+            errors.AddRange(_numberValidator.IsPositive(realty.RealtyMarketValue.ToString()));
+            errors.AddRange(_numberValidator.IsPositive(realty.RealtySaleValue.ToString()));
+
+            return errors;
         }
     }
 }

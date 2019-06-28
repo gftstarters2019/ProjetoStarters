@@ -1,18 +1,15 @@
-﻿using Backend.Infrastructure.Services.Contracts;
-using System;
-using System.Collections.Generic;
+﻿using Backend.Infrastructure.Services.Interfaces;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 
-namespace Backend.Infrastructure.Services
+namespace Backend.Services.Services
 {
     public class EmailService : IEmailService
     {
-        public void SendEmail(string subject, string body, string to)
+        public void SendEmail(string emailSubject, string emailBody, string destinationEmailAddress)
         {
             var fromAddress = new MailAddress("gftstarter@gmail.com", "GFT Starter");
-            var toAddress = new MailAddress(to, "Contract Holder");
+            var toAddress = new MailAddress(destinationEmailAddress, "Contract Holder");
 
             var smtp = new SmtpClient
             {
@@ -26,8 +23,8 @@ namespace Backend.Infrastructure.Services
 
             using (var message = new MailMessage(fromAddress, toAddress)
             {
-                Subject = subject,
-                Body = body
+                Subject = emailSubject,
+                Body = emailBody
             })
             {
                 smtp.Send(message);

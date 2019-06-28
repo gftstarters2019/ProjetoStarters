@@ -8,10 +8,10 @@ import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BsDatepickerConfig, BsLocaleService} from 'ngx-bootstrap/datepicker';
 import {ContractHolderService} from 'src/app/dataService/contractHolder/contract-holder.service';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+
 
 
 @Component({
@@ -25,7 +25,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
   
   
-bsConfig: Partial<BsDatepickerConfig>;
 
   public result: any;
 
@@ -51,12 +50,11 @@ bsConfig: Partial<BsDatepickerConfig>;
     private contractHolderService: ContractHolderService , 
     private http: HttpClient, 
     public dialog: MatDialog,
-    private localeService: BsLocaleService,
+    // private localeService: BsLocaleService,
     private _snackBar: MatSnackBar, 
     private location: Location) 
     {
-    this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
-    localeService.use('pt-br');
+    // localeService.use('pt-br');
 
   
   }
@@ -79,7 +77,7 @@ bsConfig: Partial<BsDatepickerConfig>;
 
     this.IndividualId = data.individualId;
     //data.individualBirthdate = Date.parse(DateString);
-    data.individualBirthdate = new Date(data.individualBirthdate).toLocaleDateString('pt-br');
+    //data.individualBirthdate = new Date(data.individualBirthdate).toLocaleDateString('pt-br');
     this.contractHolder.patchValue(data);
     
     let telephoneControl =  this.contractHolder.controls.idTelephone as FormArray;
@@ -122,9 +120,6 @@ bsConfig: Partial<BsDatepickerConfig>;
     };
     const message = `Do you really want to delete this Contract Holder?`;
 
-    this.http.delete(`https://contractholderapi.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      
-    
-
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -133,11 +128,12 @@ bsConfig: Partial<BsDatepickerConfig>;
       data: dialogData
     });
 
+    console.log(id);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result == true) {
-        this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage), () => this.openSnackBar('Contract Holder removed'));
+        this.http.delete(`https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage), () => this.openSnackBar('Contract Holder removed'));
       }
     });
   }
@@ -182,13 +178,15 @@ bsConfig: Partial<BsDatepickerConfig>;
       })
     };
 
+
       if (this.IndividualId == null) {
         this.contractHolderService.post_contractHolder(this.contractHolder.value).subscribe(response => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
   }
+
     else {
 
-    this.http.put(`https://contractholderapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
-}
+    this.http.put(`https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
+  }
 }
 
   openSnackBar(message: string): void {
@@ -321,10 +319,10 @@ bsConfig: Partial<BsDatepickerConfig>;
           lockPosition: true,
           sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
-          cellRenderer: (data) => {
+          // cellRenderer: (data) => {
 
-            return data.value ? (new Date(data.value)).toLocaleDateString('pt-br') : '';
-          }, 
+          //   return data.value ? (new Date(data.value)).toLocaleDateString('pt-br') : '';
+          // }, 
 
 
         },
@@ -372,8 +370,10 @@ bsConfig: Partial<BsDatepickerConfig>;
   }
 
   private setup_gridData() {
+
     //get
     this.rowData$ = this.contractHolderService.get_contractHolder();
+
   }
 
   private onCellEdit(params: any) {

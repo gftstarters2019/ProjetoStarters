@@ -2,10 +2,12 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
-    <mat-toolbar>GFT Starters 2019</mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item routerLink="/contract-holder">Contract Holder</a>
-      <a mat-list-item routerLink="/contract">Contract</a>
+
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list class="router-link">
+      <a mat-list-item routerLink="/contract-holder" routerLinkActive="active">Contract Holder</a>
+      <a mat-list-item routerLink="/contract" routerLinkActive="active">Contract</a>
+
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

@@ -1,12 +1,10 @@
-﻿using Backend.Core.Models;
-using System;
+﻿using Backend.Core.Domains;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Backend.Services.Validators.Contracts
 {
     public interface IPetValidator
     {
-        bool IsValid(Pet pet);
+        List<string> IsValid(PetDomain pet);
     }
 }

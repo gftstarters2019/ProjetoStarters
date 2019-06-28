@@ -9,6 +9,7 @@
     <div class="contractCard">
 
 
+
       <!-- 
       <div>
         <mat-card class="contractHolderName">
@@ -59,16 +60,25 @@
           </mat-select>
         </mat-form-field> <br>
 
-        <span>
+        <!-- <span>
           <mat-form-field>
             <input matInput placeholder="Contract Expiry Date" name="expiryDate" formControlName="expiryDate"
               bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" type="text" required>
 
             <mat-error>Date is invalid!</mat-error>
           </mat-form-field>
+        </span> -->
+
+        <span>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="expiryDate" placeholder="Contract Expiry Date" maxlength="100"
+              name="expiryDate" formControlName="expiryDate" required>
+            <mat-datepicker-toggle matSuffix [for]="expiryDate"></mat-datepicker-toggle>
+            <mat-datepicker #expiryDate></mat-datepicker>
+            <mat-error>Date is invalid!</mat-error>
+          </mat-form-field>
         </span>
-
-
 
         <mat-label class="posicaoStatus">Contract Status: </mat-label>
         <mat-slide-toggle class="posicaoStatus" [color]="color" formControlName="isActive">Active</mat-slide-toggle>
@@ -119,9 +129,11 @@
           <mat-card>
             <app-beneficiary-realty [realtyForm]="beneficiary" [realtyPushPermission]="message"
               (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
+
             <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove
               Beneficiary</button>
           </mat-card>
+
 
         </div>
       </div>
@@ -161,7 +173,7 @@
       >Submit Contract
     </button>
 
-
+  </form>
     <br>
     <br>
     <div class="contractCard">
@@ -182,29 +194,28 @@
             [masterDetail]="true"
             [detailCellRendererParams]="detailCellRendererParams" 
             [gridOptions]="gridOption"
+
             [rowData]="rowData$ | async">
           </ag-grid-angular>
-          </mat-nav-list>
+        </mat-nav-list>
 
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 
-    <div class="contractCard">
-      <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header class="listpanel-header">
-            <mat-panel-title>
-              Beneficiary's List
-            </mat-panel-title>
-          </mat-expansion-panel-header>
+  <div class="contractCard">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header class="listpanel-header">
+          <mat-panel-title>
+            Beneficiary's List
+          </mat-panel-title>
+        </mat-expansion-panel-header>
 
-          <mat-nav-list>
-            <app-beneficiary-list></app-beneficiary-list>
-          </mat-nav-list>
+        <mat-nav-list>
+          <app-beneficiary-list></app-beneficiary-list>
+        </mat-nav-list>
 
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-  </form>
-</div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>

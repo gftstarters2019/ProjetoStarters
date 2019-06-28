@@ -1,8 +1,8 @@
-﻿using Backend.Core.Models;
+﻿using Backend.Core.Domains;
 using Backend.Services.Validators.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Backend.Services.Validators
 {
@@ -13,37 +13,37 @@ namespace Backend.Services.Validators
         private readonly IAddressValidator _addressValidator;
         private readonly ITelephoneValidator _telephoneValidator;
 
-        public ContractHolderValidator(IIndividualValidator individualValidator, IAddressValidator addressValidator, ITelephoneValidator telephoneValidator)
+        public ContractHolderValidator(IIndividualValidator individualValidator, IAddressValidator addressValidator, ITelephoneValidator telephoneValidator, IDateValidator dateValidator)
         {
             _individualValidator = individualValidator;
             _addressValidator = addressValidator;
             _telephoneValidator = telephoneValidator;
+            _dateValidator = dateValidator;
         }
 
-        public bool IsValid(Individual individual, List<Address> addresses, List<Telephone> telephones)
+        public List<string> IsValid(IndividualDomain individual, List<AddressDomain> addresses, List<TelephoneDomain> telephones)
         {
-            if (!_individualValidator.IsValid(individual))
-                return false;
-            if (!_dateValidator.IsOfAge(individual.IndividualBirthdate))
-                return false;
+            List<string> errors = new List<string>();
+
+            errors.AddRange(_individualValidator.IsValid(individual));
+
+            errors.AddRange(_dateValidator.IsOfAge(individual.IndividualBirthdate));
+
             if (addresses != null)
             {
                 foreach (var item in addresses)
                 {
-                    if (!_addressValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_addressValidator.IsValid(item));
                 }
             }
             if (telephones != null)
             {
                 foreach (var item in telephones)
                 {
-                    if (!_telephoneValidator.IsValid(item))
-                        return false;
+                    errors.AddRange(_telephoneValidator.IsValid(item));
                 }
             }
-            return true;
+            return errors;            
         }
-
     }
 }

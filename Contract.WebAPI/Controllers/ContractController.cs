@@ -1,6 +1,8 @@
-﻿using Backend.Application.ViewModels;
+﻿using Backend.Core.Domains;
 using Backend.Core.Enums;
-using Backend.Infrastructure.Repositories.Contracts;
+using Backend.Services.Services.Interfaces;
+using Contract.WebAPI.Factories;
+using Contract.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,21 +17,14 @@ namespace Contract.WebAPI.Controllers
     [ApiController]
     public class ContractController : ControllerBase
     {
-        private readonly IRepository<Backend.Core.Models.Contract> _contractRepository;
-        private readonly IRepository<Backend.Core.Models.SignedContract> _signedContractRepository;
-
-        private readonly IRepository<ContractViewModel> _contractViewModelRepository;
+        private readonly IService<CompleteContractDomain> _contractService;
 
         /// <summary>
         /// ContractController constructor
         /// </summary>
-        public ContractController(IRepository<Backend.Core.Models.Contract> contractRepository,
-                                  IRepository<Backend.Core.Models.SignedContract> signedContractRepository,
-                                  IRepository<ContractViewModel> contractViewModelRepository)
+        public ContractController(IService<CompleteContractDomain> contractService)
         {
-            _contractRepository = contractRepository;
-            _signedContractRepository = signedContractRepository;
-            _contractViewModelRepository = contractViewModelRepository;
+            _contractService = contractService;
         }
 
         /// <summary>
@@ -39,7 +34,7 @@ namespace Contract.WebAPI.Controllers
         [HttpGet]
         public IActionResult Contracts()
         {
-            return Ok(_contractViewModelRepository.Get());
+            return Ok(_contractService.GetAll().Select(con => FactoriesManager.ContractViewModel.Create(con)));
         }
 
         /// <summary>
@@ -49,15 +44,11 @@ namespace Contract.WebAPI.Controllers
         [HttpGet("Categories")]
         public IActionResult Categories()
         {
-            var categories = new Dictionary<int, string>
+            var categories = new Dictionary<int, string>();
+            foreach (ContractCategory foo in Enum.GetValues(typeof(ContractCategory)))
             {
-                { 0, "iron" },
-                { 1, "bronze" },
-                { 2, "silver" },
-                { 3, "gold" },
-                { 4, "platinum" },
-                { 5, "diamond" }
-            };
+                categories.Add((int)foo, foo.ToString());
+            }
             return Ok(categories);
         }
 
@@ -68,16 +59,11 @@ namespace Contract.WebAPI.Controllers
         [HttpGet("Types")]
         public IActionResult Types()
         {
-            var types = new Dictionary<int, string>
+            var types = new Dictionary<int, string>();
+            foreach (ContractType foo in Enum.GetValues(typeof(ContractType)))
             {
-                { 0, "HealthPlan" },
-                { 1, "AnimalHealthPlan" },
-                { 2, "DentalPlan" },
-                { 3, "LifeInsurance" },
-                { 4, "RealStateInsurance" },
-                { 5, "VehicleInsurance" },
-                { 6, "MobileDeviceInsurance" }
-            };
+                types.Add((int)foo, foo.ToString());
+            }
             return Ok(types);
         }
 
@@ -89,8 +75,8 @@ namespace Contract.WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Contract(Guid id)
         {
-            var obj = _contractRepository.Find(id);
-            return Ok(obj);
+            var obj = _contractService.Get(id);
+            return Ok(FactoriesManager.ContractViewModel.Create(obj));
         }
 
         /// <summary>
@@ -101,10 +87,27 @@ namespace Contract.WebAPI.Controllers
         [HttpPost]
         public IActionResult PostContract([FromBody] ContractViewModel contract)
         {
-            if (!_contractViewModelRepository.Add(contract))
-                return StatusCode(403);
+            var contractToAdd = FactoriesManager.CompleteContractDomain.Create(contract);
 
-            return Ok();
+            try
+            {
+                var addedContract = _contractService.Save(contractToAdd);
+                if (addedContract == null)
+                    return StatusCode(403);
+
+                return Ok(FactoriesManager.ContractViewModel.Create(addedContract));
+            }
+            catch (Exception e)
+            {
+                string errors = e.Message;
+
+                return ValidationProblem(new ValidationProblemDetails()
+                    {
+                        Type = "Model Validation Error",
+                        Detail = errors
+                    }
+                );
+            }
         }
 
         /// <summary>
@@ -116,10 +119,28 @@ namespace Contract.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContract(Guid id, [FromBody] ContractViewModel contractViewModel)
         {
-            var updatedContract = _contractViewModelRepository.Update(id, contractViewModel);
-            if (updatedContract == null)
-                return StatusCode(403);
-            return Ok(updatedContract);
+            var contractToUpdate = FactoriesManager.CompleteContractDomain.Create(contractViewModel);
+
+            try
+            {
+                var updatedContract = _contractService.Update(id, contractToUpdate);
+                if (updatedContract == null)
+                    return StatusCode(403);
+
+                return Ok(FactoriesManager.ContractViewModel.Create(updatedContract));
+            }
+            catch (Exception e)
+            {
+                string errors = e.Message;
+
+                return ValidationProblem(new ValidationProblemDetails()
+                {
+                    Type = "Model Validation Error",
+                    Detail = errors
+                }
+                );
+            }
+
         }
 
         /// <summary>
@@ -130,44 +151,11 @@ namespace Contract.WebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteContract(Guid id)
         {
-            if (_signedContractRepository.Get()
-                .Where(sc => sc.ContractIndividualIsActive && sc.ContractId == id).ToList().Count > 0)
-                return Forbid();
+            var deletedContract = _contractService.Delete(id);
+            if (deletedContract != null)
+                return Ok(FactoriesManager.ContractViewModel.Create(deletedContract));
 
-            var signedContract = _signedContractRepository.Find(id);
-
-            if (signedContract != null)
-            {
-                var contract = _contractRepository.Find(signedContract.ContractId);
-                if (!signedContract.ContractIndividualIsActive)
-                {
-                    contract.ContractDeleted = !contract.ContractDeleted;
-                    return Ok(_contractRepository.Update(signedContract.ContractId, contract));
-                }
-                else
-                {
-                    return StatusCode(403);
-                }
-            }
-
-            return NotFound(signedContract);
+            return StatusCode(403);
         }
-
-        #region Validations
-        /// <summary>
-        /// Verifies if Contract is valid
-        /// </summary>
-        /// <param name="contract">Contract to be verified</param>
-        /// <returns>If Contract is valid</returns>
-        public static bool ContractIsValid(Backend.Core.Models.Contract contract)
-        {
-            if (!Enum.IsDefined(typeof(ContractType), contract.ContractType) || !Enum.IsDefined(typeof(ContractCategory), contract.ContractCategory))
-                return false;
-            if (contract.ContractExpiryDate < DateTime.Now.Date)
-                return false;
-
-            return true;
-        }
-        #endregion Validations
     }
 }

@@ -3,25 +3,31 @@
 
       <div class="flex-wrapper">
            <mat-form-field style="width: 30%;">
-            <input matInput placeholder="Brand" name="mobileDeviceBrand" formControlName="mobileDeviceBrand" required>
+            <input matInput placeholder="Brand" name="mobileDeviceBrand" maxlength="100" formControlName="mobileDeviceBrand" required>
             <mat-error>Brand is invalid!</mat-error>
           </mat-form-field>
 
           <mat-form-field style="width: 30%;">
-              <input matInput placeholder="Model" name="mobileDeviceModel" formControlName="mobileDeviceModel" required>
+              <input matInput placeholder="Model" name="mobileDeviceModel" maxlength="100" formControlName="mobileDeviceModel" required>
               <mat-error>Model is invalid!</mat-error>
             </mat-form-field>
 
-          <mat-form-field style="width: 30%;" class="positionMarFormField">
-            <input matInput bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
+          <!-- <mat-form-field style="width: 30%;" class="positionMarFormField">
+            <input matInput bsDatepicker #dp="bsDatepicker" maxlength="100" [bsConfig]="bsConfig" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
+            <mat-error>Date is invalid!</mat-error>
+          </mat-form-field> -->
 
+          <mat-form-field style="width: 30%;">
+            <input matInput [matDatepicker]="picker" maxlength="100" placeholder="Manufactoring Year" name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
             <mat-error>Date is invalid!</mat-error>
           </mat-form-field>
       </div>
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 30%;">
-          <input matInput placeholder="Serial Number" name="mobileDeviceSerialNumber" formControlName="mobileDeviceSerialNumber" required>
+          <input matInput placeholder="Serial Number" maxlength="100" name="mobileDeviceSerialNumber" formControlName="mobileDeviceSerialNumber" required>
           <mat-error>Seria is invalid!</mat-error>
         </mat-form-field>
 
