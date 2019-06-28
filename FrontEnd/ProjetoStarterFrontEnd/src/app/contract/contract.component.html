@@ -9,6 +9,7 @@
     <div class="contractCard">
 
 
+
       <!-- 
       <div>
         <mat-card class="contractHolderName">
@@ -119,9 +120,11 @@
           <mat-card>
             <app-beneficiary-realty [realtyForm]="beneficiary" [realtyPushPermission]="message"
               (messageRealtyEvent)="receiveMessage($event)"></app-beneficiary-realty>
+
             <button mat-raised-button color="primary" type="button" (click)="removeBeneficiary(i);">Remove
               Beneficiary</button>
           </mat-card>
+
 
         </div>
       </div>
@@ -161,7 +164,7 @@
       >Submit Contract
     </button>
 
-
+  </form>
     <br>
     <br>
     <div class="contractCard">
@@ -182,29 +185,28 @@
             [masterDetail]="true"
             [detailCellRendererParams]="detailCellRendererParams" 
             [gridOptions]="gridOption"
+
             [rowData]="rowData$ | async">
           </ag-grid-angular>
-          </mat-nav-list>
+        </mat-nav-list>
 
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 
-    <div class="contractCard">
-      <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header class="listpanel-header">
-            <mat-panel-title>
-              Beneficiary's List
-            </mat-panel-title>
-          </mat-expansion-panel-header>
+  <div class="contractCard">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header class="listpanel-header">
+          <mat-panel-title>
+            Beneficiary's List
+          </mat-panel-title>
+        </mat-expansion-panel-header>
 
-          <mat-nav-list>
-            <app-beneficiary-list></app-beneficiary-list>
-          </mat-nav-list>
+        <mat-nav-list>
+          <app-beneficiary-list></app-beneficiary-list>
+        </mat-nav-list>
 
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-  </form>
-</div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>

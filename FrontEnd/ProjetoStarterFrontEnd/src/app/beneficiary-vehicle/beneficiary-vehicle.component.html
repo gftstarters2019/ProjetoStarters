@@ -3,12 +3,12 @@
 
       <div class="flex-wrapper">
            <mat-form-field style="width: 30%;">
-              <input matInput placeholder="Brand" name="vehicleBrand" formControlName="vehicleBrand" required>
+              <input matInput placeholder="Brand" name="vehicleBrand" maxlength="100" formControlName="vehicleBrand" required>
               <mat-error>Brand is invalid!</mat-error>
           </mat-form-field>
 
           <mat-form-field style="width: 30%;">
-              <input matInput placeholder="Model" name="vehicleModel" formControlName="vehicleModel" required>
+              <input matInput placeholder="Model" name="vehicleModel" maxlength="100" formControlName="vehicleModel" required>
               <mat-error>Model is invalid!</mat-error>
             </mat-form-field>
 
@@ -32,29 +32,30 @@
 
       <div class="flex-wrapper">
         <mat-form-field style="width: 30%;">
-          <input matInput bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" placeholder="Manufactoring Year" name="vehicleManufactoringYear" formControlName="vehicleManufactoringYear" required>
+
+          <input matInput bsDatepicker #dp="bsDatepicker" maxlength="100" [bsConfig]="bsConfig" placeholder="Manufactoring Year" name="vehicleManufactoringYear" formControlName="vehicleManufactoringYear" required>
            <mat-error>Date is invalid!</mat-error>
         </mat-form-field>
 
         <mat-form-field style="width: 30%;">
-          <input matInput bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" placeholder="Model Year" name="vehicleModelYear" formControlName="vehicleModelYear" required>
+          <input matInput bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" maxlength="100" placeholder="Model Year" name="vehicleModelYear" formControlName="vehicleModelYear" required>
           <mat-error>Date is invalid!</mat-error>
         </mat-form-field>
 
         <mat-form-field style="width: 30%;">
-            <input matInput placeholder="Chassis Number" name="vehicleChassisNumber" formControlName="vehicleChassisNumber" required>
+            <input matInput placeholder="Chassis Number" maxlength="100" name="vehicleChassisNumber" formControlName="vehicleChassisNumber" required>
             <mat-error>Chassis is invalid!</mat-error>
         </mat-form-field>
       </div>
 
       <div class="flex-wrapper">
           <mat-form-field style="width: 30%;">
-              <input matInput placeholder="Current Mileage" type="number" name="vehicleCurrentMileage" formControlName="vehicleCurrentMileage" required>
+              <input matInput placeholder="Current Mileage" maxlength="100" type="number" name="vehicleCurrentMileage" formControlName="vehicleCurrentMileage" required>
               <mat-error>Mileage is invalid!</mat-error>
           </mat-form-field>
           
           <mat-form-field style="width: 30%;">
-            <input matInput placeholder="Current Fipe Value" type="number" name="vehicleCurrentFipeValue" formControlName="vehicleCurrentFipeValue" required>
+            <input matInput placeholder="Current Fipe Value" type="number" maxlength="100" name="vehicleCurrentFipeValue" formControlName="vehicleCurrentFipeValue" required>
             <mat-error>Fipe is invalid!</mat-error>
         </mat-form-field> 
       </div>

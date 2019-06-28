@@ -137,7 +137,7 @@ bsConfig: Partial<BsDatepickerConfig>;
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result == true) {
-        this.http.delete(`https://contractholderwebapi.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage), () => this.openSnackBar('Contract Holder removed'));
+        this.http.delete(`https://contractholderapi.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage), () => this.openSnackBar('Contract Holder removed'));
       }
     });
   }
@@ -182,13 +182,15 @@ bsConfig: Partial<BsDatepickerConfig>;
       })
     };
 
+
       if (this.IndividualId == null) {
         this.contractHolderService.post_contractHolder(this.contractHolder.value).subscribe(response => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular cadastrado com sucesso"));
   }
+
     else {
 
     this.http.put(`https://contractholderapi.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
-}
+  }
 }
 
   openSnackBar(message: string): void {
@@ -372,8 +374,10 @@ bsConfig: Partial<BsDatepickerConfig>;
   }
 
   private setup_gridData() {
+
     //get
     this.rowData$ = this.contractHolderService.get_contractHolder();
+
   }
 
   private onCellEdit(params: any) {

@@ -49,6 +49,11 @@ export class ContractComponent implements OnInit {
   rowData$: Observable<any>;
   paginationPageSize;
   detailCellRendererParams;
+  detailRowHeight;
+  colResizeDefault;
+  rowHeight;
+  defaultColDef: { resizable: boolean; };
+
   contractform: FormGroup;
   bsConfig: Partial<BsDatepickerConfig>;
 
@@ -168,6 +173,9 @@ export class ContractComponent implements OnInit {
     });
   }
 
+  log(){
+    console.log(this.contractform);
+  }
   public assignContractType(): void {
     let i = 0;
     this.cType = this.contractform.get(['type']).value;
@@ -317,14 +325,10 @@ export class ContractComponent implements OnInit {
     };
     if (this.signedContractId == null) {
       this.contractService.post_contract(this.contractform.value).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato cadastrado com sucesso"));
-
-
     }
     else {
       this.http.put(`https://contractgftapi.azurewebsites.net/api/Contract/${this.signedContractId}`, form, httpOptions)
         .subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Contrato atualizado com sucesso"));
-
-
     }
   }
 
@@ -499,11 +503,42 @@ export class ContractComponent implements OnInit {
     return null;
   }
 
-  private handle_deleteUser(data: any) {
+
+  private async handle_deleteUser(data: any) {
+    const id = data.signedContractId;
+    let show: boolean = data.isActive;
+
+    const message = `Do you really want to delete this contract?`;
 
     const id = data.signedContractId;
 
-    this.http.delete(`https://contractgftapi.azurewebsites.net/api/Contract/${id}`).subscribe(response => this.setup_gridData(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular removido com sucesso"));
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '375px',
+      panelClass: 'content-container',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if (this.result == true) {
+        if (show == false) {
+          this.http.delete(`https://contractgftapi.azurewebsites.net/api/Contract/${id}`)
+            .subscribe(response => this.setup_gridData(),
+              error => this.openSnackBar(error.message),
+              () => this.openSnackBar("Contract removed"));
+        }
+        else {
+          this.openSnackBar("Contract is active, cannot delete");
+        }
+      }
+    });
   }
 
 
@@ -516,9 +551,6 @@ export class ContractComponent implements OnInit {
       columnDefs: [
         {
           headerName: "Contract Holder",
-          // rowGroupIndex: 0,
-          // rowGroup: true,
-          // hide: false,
           children: [
             {
               headerName: 'Name',
@@ -526,7 +558,9 @@ export class ContractComponent implements OnInit {
               lockPosition: true,
               sortable: true,
               filter: true,
-              // cellRenderer: "agGroupCellRenderer",
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
+              cellRenderer: "agGroupCellRenderer",
               onCellValueChanged:
                 this.onCellEdit.bind(this),
             },
@@ -537,6 +571,8 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               valueFormatter: maskCpf,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this),
             }
@@ -544,9 +580,6 @@ export class ContractComponent implements OnInit {
         },
         {
           headerName: "Contract",
-          // rowGroupIndex: 0,
-          // rowGroup: true,
-          // hide: false,
           children: [
             {
               headerName: 'Category',
@@ -555,6 +588,8 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               valueFormatter: currencyCategory,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this),
             },
@@ -565,6 +600,8 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               valueFormatter: currencyType,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this),
             },
@@ -577,6 +614,8 @@ export class ContractComponent implements OnInit {
               cellRenderer: (data) => {
                 return data.value ? (new Date(data.value)).toLocaleDateString() : '';
               },
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this)
             },
@@ -587,6 +626,8 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               valueFormatter: currencyStatus,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               onCellValueChanged:
                 this.onCellEdit.bind(this)
             },
@@ -595,6 +636,8 @@ export class ContractComponent implements OnInit {
               field: 'editDelete',
               lockPosition: true,
               cellRendererFramework: ActionButtonComponent,
+              cellClass: "cell-wrap-text",
+              autoHeight: true,
               cellRendererParams: {
                 onEdit: this.handle_editUser.bind(this),
                 onDelete: this.handle_deleteUser.bind(this)
@@ -605,28 +648,207 @@ export class ContractComponent implements OnInit {
       ]
     }
 
+    this.defaultColDef = { resizable: true };
+    this.colResizeDefault = "shift";
+    this.detailRowHeight = 400;
+    this.detailCellRendererParams = function (params) {
+      var res: any = {};
+      res.getDetailRowData = function (params) {
+        if (params.data.type == 0 || params.data.type == 2 || params.data.type == 3)
+          params.successCallback(params.data.individuals)
+        if (params.data.type == 1)
+          params.successCallback(params.data.pets)
+        if (params.data.type == 4)
+          params.successCallback(params.data.realties)
+        if (params.data.type == 5)
+          params.successCallback(params.data.vehicles)
+        if (params.data.type == 6)
+          params.successCallback(params.data.mobileDevices)
+      }
+      if (params.data.type === 0 || params.data.name === 2 || params.data.name === 3) {
+        res.detailGridOptions = {
+          columnDefs: [{
+            headerName: "Individual Details",
+            children: [
+              { headerName: 'Name ', field: "individualName", minWidth: 125, },
+              { headerName: 'CPF ', field: "individualCPF", valueFormatter: maskCpf, minWidth: 145, },
+              { headerName: 'RG ', field: "individualRG", valueFormatter: maskRG, minWidth: 125, },
+              {
+                headerName: 'Birthdate ', field: "individualBirthdate", minWidth: 115,
+                cellRenderer: (data) => {
+                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                },
+              },
+              { headerName: 'Email ', field: "individualEmail", minWidth: 150, }
+            ]
+          }],
 
+          onGridReady: function (params) {
+            this.gridApi = params.api;
+            this.gridColumApi = params.columnApi;
+          },
+          onFirstDataRendered(params) {
+            params.api.sizeColumnsToFit();
+          },
+        }
+      }
+      if (params.data.type === 1) {
+        res.detailGridOptions = {
+          columnDefs: [{
+            headerName: "Pet Details",
+            children: [
+              { headerName: 'Name ', field: "petName", minWidth: 115, },
+              { headerName: 'Breed ', field: "petBreed", minWidth: 100, },
+              { headerName: 'Species ', field: "petSpecies", minWidth: 180, valueFormatter: SpeciesFormmatter },
+              {
+                headerName: 'Birthdate ', field: "petBirthdate", minWidth: 115, cellRenderer: (data) => {
+                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                },
+              },
+            ]
+          }],
+
+          onGridReady: function (params) {
+            this.gridApi = params.api;
+            this.gridColumApi = params.columnApi;
+          },
+          onFirstDataRendered(params) {
+            params.api.sizeColumnsToFit();
+          },
+        }
+      }
+      if (params.data.type === 4) {
+        res.detailGridOptions = { 
+          columnDefs: [{
+            headerName: "Realties Details",
+            children: [
+              { headerName: 'Type', field: "addressType", valueFormatter: realtiestypeFormatter, minWidth: 115, },
+              { headerName: 'Street', field: "addressStreet", minWidth: 165, },
+              { headerName: 'No.', field: "addressNumber", minWidth: 110, },
+              { headerName: 'Complement', field: "addressComplement", minWidth: 145, },
+              { headerName: 'Neighborhood', field: "addressNeighborhood", minWidth: 145, },
+              { headerName: 'City', field: "addressCity", minWidth: 145, },
+              { headerName: 'State', field: "addressState", minWidth: 130, },
+              { headerName: 'Country', field: "addressCountry", minWidth: 120, },
+              { headerName: 'Zip-Code', field: "addressZipCode", minWidth: 125, },
+              {
+                headerName: 'Construction Date', field: "constructionDate", minWidth: 165, cellRenderer: (data) => {
+                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                },
+              },
+              { headerName: 'Municipal Registration', field: "municipalRegistration", minWidth: 195, },
+              { headerName: 'Market Value', field: "marketValue", valueFormatter: SaleFormatter, minWidth: 140, },
+              { headerName: 'Sale Value', field: "saleValue", valueFormatter: SaleFormatter, minWidth: 135, },
+            ]
+          }],
+
+          onGridReady: function (params) {
+            this.gridApi = params.api;
+            this.gridColumApi = params.columnApi;
+          },
+          onFirstDataRendered(params) {
+            params.api.sizeColumnsToFit();
+          },
+        }
+      }
+      if (params.data.type === 5) {
+        res.detailGridOptions = {
+          columnDefs: [{
+            headerName: "Vehicles Details",
+            children: [
+              { headerName: 'Brand', field: "vehicleBrand", minWidth: 110, },
+              { headerName: 'Model', field: "vehicleModel", minWidth: 110, },
+              { headerName: 'Color', field: "vehicleColor", valueFormatter: colorFormatter, minWidth: 110, },
+              {
+                headerName: 'Manufactoring Year', field: "vehicleManufactoringYear", minWidth: 100, cellRenderer: (data) => {
+                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                },
+              },
+              {
+                headerName: 'Model Year', field: "vehicleModelYear", minWidth: 135, cellRenderer: (data) => {
+                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                },
+              },
+              { headerName: 'No. Chassis', field: "vehicleChassisNumber", minWidth: 160, },
+              { headerName: 'Current Mileage', field: "vehicleCurrentMileage", valueFormatter: MileageFormatter, minWidth: 165 },
+              { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue", valueFormatter: SaleFormatter, minWidth: 165, },
+              { headerName: 'Done Inspection', field: "vehicleDoneInspection", valueFormatter: doneFormatter, minWidth: 155, },
+            ]
+          }],
+
+          onGridReady: function (params) {
+            this.gridApi = params.api;
+            this.gridColumApi = params.columnApi;
+          },
+          onFirstDataRendered(params) {
+            params.api.sizeColumnsToFit();
+          },
+        }
+      }
+      if (params.data.type === 6) {
+        res.detailGridOptions = {
+          columnDefs: [{
+            headerName: "Mobile Device Details",
+            children: [
+              { headerName: 'Brand', field: "mobileDeviceBrand", minWidth: 120, },
+              { headerName: 'Model', field: "mobileDeviceModel", minWidth: 120, },
+              { headerName: 'Device Type', field: "mobileDeviceType", valueFormatter: DeviceFormatter, minWidth: 135, },
+              {
+                headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear", minWidth: 176, cellRenderer: (data) => {
+                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                },
+              },
+              { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber", minWidth: 180, },
+              { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue", valueFormatter: SaleFormatter, minWidth: 176, },
+            ]
+          }],
+          onGridReady: function (params) {
+            this.gridApi = params.api;
+            this.gridColumApi = params.columnApi;
+          },
+          onFirstDataRendered(params) {
+            params.api.sizeColumnsToFit();
+            params.api.autoSizeColumns();
+          },
+        }
+      }
+
+      return res;
+    }
   }
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
 
-
-
   }
+    setTimeout(function () {
+      var nodeA = params.api.getDisplayedRowAtIndex(1);
+      var nodeB = params.api.getDisplayedRowAtIndex(2);
+      var nodeC = params.api.getDisplayedRowAtIndex(3);
+      var nodeD = params.api.getDisplayedRowAtIndex(4);
+      var nodeE = params.api.getDisplayedRowAtIndex(5);
+      nodeA.setExpanded(true);
+      nodeB.setExpanded(true);
+      nodeC.setExpanded(true);
+      nodeD.setExpanded(true);
+      nodeE.setExpanded(true);
 
+    }, 250);
+  }
   private setup_gridData() {
     this.rowData$ = this.contractService.get_contract();
-
-
   }
   private onCellEdit(params: any) {
+    // private onRowSelected(event: RowSelectedEvent) {
 
+    //   const { data } = event;
+    //   this.contractform.getRawValue();
+    //   console.log(data);
+    //   this.contractform.patchValue(data);
+    // }
   }
-
-
 }
-
+//Function Formatting Category
 function currencyCategory(params) {
   return changeCategoryValue(params.value);
 }
@@ -683,20 +905,140 @@ function changeTypValue(number) {
 //function formatting Status
 function currencyStatus(params) {
   return changeStatusValue(params.value);
-} 
-
+}
 function changeStatusValue(stats: boolean) {
   if (stats == true) {
     return "Active";
-} else {
+  } else {
     return "Inactive"
   }
 }
 
-//function mask Cpf Contract Holder
-function maskCpf(params){
+//function mask Cpf
+function maskCpf(params) {
   return maskValue(params.value);
 }
-function maskValue(cpf){
-  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4")
+function maskValue(cpf) {
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "\$1.\$2.\$3\-\$4")
 }
+
+//function RG mask
+function maskRG(params) {
+  return maskRGValue(params.value);
+}
+function maskRGValue(rg) {
+  return rg.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/g, "\$1.\$2.\$3\-\$4")
+}
+
+//function mask value R$
+function SaleFormatter(params) {
+  return "R$ " + saleValue(params.value);
+}
+function saleValue(number) {
+  return number.toFixed(2);
+}
+
+//function type value Realties
+function realtiestypeFormatter(params) {
+  return typeValue(params.value);
+}
+function typeValue(number) {
+  if (number == 0) {
+    return "Home";
+  }
+  if (number == 1) {
+    return "Commercial";
+  }
+}
+
+//function vehicles color
+function colorFormatter(params) {
+  return colorValue(params.value);
+}
+function colorValue(number) {
+  if (number == 0) {
+    return "White";
+  }
+  if (number == 1) {
+    return "Silver";
+  }
+  if (number == 2) {
+    return "Black";
+  }
+  if (number == 3) {
+    return "Gray";
+  }
+  if (number == 4) {
+    return "Red";
+  }
+  if (number == 5) {
+    return "Blue";
+  }
+  if (number == 6) {
+    return "Brown";
+  }
+  if (number == 7) {
+    return "Yellow";
+  }
+  if (number == 8) {
+    return "Green";
+  }
+  if (number == 9) {
+    return "Other";
+  }
+}
+
+//function value mask Km
+function MileageFormatter(params) {
+  return mileageValue(params.value) + "Km";
+}
+function mileageValue(number) {
+  return number.toFixed(3);
+}
+
+//function done mask
+function doneFormatter(params) {
+  return doneValue(params.value);
+}
+function doneValue(bool) {
+  if (bool == true)
+    return "Check";
+  else
+    return "UnCheck";
+}
+
+//fucntion Mobile Device Type
+function DeviceFormatter(params) {
+  return deviceValue(params.value);
+}
+function deviceValue(number) {
+  if (number == 0)
+    return "Smartphone";
+  if (number == 1)
+    return "Tablet";
+  if (number == 2)
+    return "Laptop";
+}
+
+//function mask species
+function SpeciesFormmatter(params) {
+  return speciesValue(params.value);
+}
+function speciesValue(number) {
+  if (number == 0) {
+    return "Canis Lupus Familiaris";
+  }
+  if (number == 1) {
+    return "Felis Catus"
+  }
+  if (number == 2) {
+    return "Mesocricetus Auratus"
+  }
+  if (number == 3) {
+    return "Nymphicus Hollandicus"
+  }
+  if (number == 4) {
+    return "Ara Chloropterus"
+  }
+}
+
