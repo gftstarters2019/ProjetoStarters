@@ -153,7 +153,7 @@ namespace Backend.Infrastructure.Repositories
         {
             var contractHolders = new List<ContractHolderDomain>();
 
-            foreach(var individual in _db.Individuals)
+            foreach(var individual in _individualsRepository.Get())
             {
                 var contractHolderToAdd = new ContractHolderDomain();
                 contractHolderToAdd.Individual = ConvertersManager.IndividualConverter.Convert(individual);
