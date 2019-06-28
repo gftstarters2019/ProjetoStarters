@@ -129,7 +129,7 @@ namespace Contract.WebAPI.Controllers
 
                 return Ok(FactoriesManager.ContractViewModel.Create(updatedContract));
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 string errors = e.Message;
 

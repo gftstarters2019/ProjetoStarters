@@ -102,7 +102,7 @@ namespace Backend.Services.Services
                 throw new Exception(errors);
 
             var updatedContractHolder = _contractHolderRepository.Update(id, contractToBeUpdated);
-            contractHolderRepository.Save();
+            _contractHolderRepository.Save();
 
             return updatedContractHolder;
         }
