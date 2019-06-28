@@ -1,9 +1,10 @@
 ﻿using Backend.Core.Domains;
+using System.Collections.Generic;
 
 namespace Backend.Services.Validators.Contracts
 {
     public interface IRealtyValidator
     {
-        bool IsValid(RealtyDomain realty);
+        List<string> IsValid(RealtyDomain realty);
     }
 }

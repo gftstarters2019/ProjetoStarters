@@ -1,6 +1,8 @@
 ﻿using Backend.Core.Domains;
 using Backend.Infrastructure.Repositories.Interfaces;
 using Backend.Services.Services.Interfaces;
+using Backend.Services.Validators;
+using Backend.Services.Validators.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,12 @@ namespace Backend.Services.Services
     public class ContractHolderService : IService<ContractHolderDomain>
     {
         private IRepository<ContractHolderDomain> _contractHolderRepository;
+        private readonly IContractHolderValidator _contractHolderValidator;
 
-        public ContractHolderService(IRepository<ContractHolderDomain> contractHolderRepository)
+        public ContractHolderService(IRepository<ContractHolderDomain> contractHolderRepository, IContractHolderValidator contractHolderValidator)
         {
             _contractHolderRepository = contractHolderRepository;
+            _contractHolderValidator = contractHolderValidator;
         }
 
         public ContractHolderDomain Delete(Guid id)
@@ -44,19 +48,32 @@ namespace Backend.Services.Services
 
         public ContractHolderDomain Save(ContractHolderDomain contractHolderDomain)
         {
+            var errors = string.Empty;
+
             if (contractHolderDomain == null)
                 return null;
 
-            /*
-             * Validations
-            */
+            var validationErrorsList = _contractHolderValidator.IsValid(contractHolderDomain.Individual,contractHolderDomain.IndividualAddresses,contractHolderDomain.IndividualTelephones);
 
-            var addedContractHolder = _contractHolderRepository.Add(contractHolderDomain);
+            if(validationErrorsList.Any())
+                foreach (var er in validationErrorsList)
+                {
+                    errors += er;
+                }
 
-            if (addedContractHolder != null)
+            if (errors != "")
+                throw new Exception(errors);
+
+            try
+            {
+                var addedContractHolder = _contractHolderRepository.Add(contractHolderDomain);
                 _contractHolderRepository.Save();
-
-            return addedContractHolder;
+                return addedContractHolder;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private void SendEmail(ContractHolderDomain addedContractHolder)
@@ -68,16 +85,24 @@ namespace Backend.Services.Services
 
         public ContractHolderDomain Update(Guid id, ContractHolderDomain contractToBeUpdated)
         {
+            var errors = string.Empty;
+
             if (contractToBeUpdated == null)
                 return null;
 
-            /*
-             * Validations
-            */
-            var updatedContractHolder = _contractHolderRepository.Update(id, contractToBeUpdated);
+            var validationErrorsList = _contractHolderValidator.IsValid(contractToBeUpdated.Individual, contractToBeUpdated.IndividualAddresses, contractToBeUpdated.IndividualTelephones);
 
-            if (updatedContractHolder != null)
-                _contractHolderRepository.Save();
+            if (validationErrorsList.Any())
+                foreach (var er in validationErrorsList)
+                {
+                    errors += er;
+                }
+
+            if (errors != "")
+                throw new Exception(errors);
+
+            var updatedContractHolder = _contractHolderRepository.Update(id, contractToBeUpdated);
+            _contractHolderRepository.Save();
 
             return updatedContractHolder;
         }

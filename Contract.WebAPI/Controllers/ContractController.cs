@@ -89,11 +89,25 @@ namespace Contract.WebAPI.Controllers
         {
             var contractToAdd = FactoriesManager.CompleteContractDomain.Create(contract);
 
-            var addedContract = _contractService.Save(contractToAdd);
-            if (addedContract == null)
-                return StatusCode(403);
-            
-            return Ok(FactoriesManager.ContractViewModel.Create(addedContract));
+            try
+            {
+                var addedContract = _contractService.Save(contractToAdd);
+                if (addedContract == null)
+                    return StatusCode(403);
+
+                return Ok(FactoriesManager.ContractViewModel.Create(addedContract));
+            }
+            catch (Exception e)
+            {
+                string errors = e.Message;
+
+                return ValidationProblem(new ValidationProblemDetails()
+                    {
+                        Type = "Model Validation Error",
+                        Detail = errors
+                    }
+                );
+            }
         }
 
         /// <summary>
@@ -106,11 +120,27 @@ namespace Contract.WebAPI.Controllers
         public IActionResult UpdateContract(Guid id, [FromBody] ContractViewModel contractViewModel)
         {
             var contractToUpdate = FactoriesManager.CompleteContractDomain.Create(contractViewModel);
-            var updatedContract = _contractService.Update(id, contractToUpdate);
-            if (updatedContract == null)
-                return StatusCode(403);
-            
-            return Ok(FactoriesManager.ContractViewModel.Create(updatedContract));
+
+            try
+            {
+                var updatedContract = _contractService.Update(id, contractToUpdate);
+                if (updatedContract == null)
+                    return StatusCode(403);
+
+                return Ok(FactoriesManager.ContractViewModel.Create(updatedContract));
+            }
+            catch (Exception e)
+            {
+                string errors = e.Message;
+
+                return ValidationProblem(new ValidationProblemDetails()
+                {
+                    Type = "Model Validation Error",
+                    Detail = errors
+                }
+                );
+            }
+
         }
 
         /// <summary>

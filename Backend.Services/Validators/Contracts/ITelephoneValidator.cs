@@ -1,9 +1,10 @@
 ﻿using Backend.Core.Domains;
+using System.Collections.Generic;
 
 namespace Backend.Services.Validators.Contracts
 {
     public interface ITelephoneValidator
     {
-        bool IsValid(TelephoneDomain telephone);
+        List<string> IsValid(TelephoneDomain telephone);
     }
 }

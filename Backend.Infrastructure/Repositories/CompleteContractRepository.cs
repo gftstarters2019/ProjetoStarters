@@ -96,7 +96,7 @@ namespace Backend.Infrastructure.Repositories
                 case ContractType.DentalPlan:
                 case ContractType.HealthPlan:
                 case ContractType.LifeInsurance:
-                    if (completeContract.Individuals.Count == 0)
+                    if (completeContract.Individuals.Count == 0 || completeContract.Individuals.Count > 5)
                         return null;
 
                     completeContract.Individuals = AddIndividuals(completeContract.Individuals);
@@ -104,7 +104,7 @@ namespace Backend.Infrastructure.Repositories
                     return completeContract.Individuals.Select(ind => ind.BeneficiaryId).ToList();
 
                 case ContractType.AnimalHealthPlan:
-                    if (completeContract.Pets.Count == 0)
+                    if (completeContract.Pets.Count == 0 || completeContract.Pets.Count > 5)
                         return null;
 
                     completeContract.Pets = AddPets(completeContract.Pets);
@@ -112,7 +112,7 @@ namespace Backend.Infrastructure.Repositories
                     return completeContract.Pets.Select(pet => pet.BeneficiaryId).ToList();
 
                 case ContractType.MobileDeviceInsurance:
-                    if (completeContract.MobileDevices.Count == 0)
+                    if (completeContract.MobileDevices.Count == 0 || completeContract.MobileDevices.Count > 5)
                         return null;
 
                     completeContract.MobileDevices = AddMobileDevices(completeContract.MobileDevices);
@@ -120,7 +120,7 @@ namespace Backend.Infrastructure.Repositories
                     return completeContract.MobileDevices.Select(mob => mob.BeneficiaryId).ToList();
 
                 case ContractType.RealStateInsurance:
-                    if (completeContract.Realties.Count == 0)
+                    if (completeContract.Realties.Count == 0 || completeContract.Realties.Count > 5)
                         return null;
 
                     completeContract.Realties = AddRealties(completeContract.Realties);
@@ -128,7 +128,7 @@ namespace Backend.Infrastructure.Repositories
                     return completeContract.Realties.Select(real => real.BeneficiaryId).ToList();
 
                 case ContractType.VehicleInsurance:
-                    if (completeContract.Vehicles.Count == 0)
+                    if (completeContract.Vehicles.Count == 0 || completeContract.Vehicles.Count > 5)
                         return null;
 
                     completeContract.Vehicles = AddVehicles(completeContract.Vehicles);

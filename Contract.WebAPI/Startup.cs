@@ -66,8 +66,10 @@ namespace Contract.WebAPI
             services.AddScoped<IRepository<Backend.Core.Models.VehicleEntity>, VehicleRepository>();
 
             services.AddScoped<IRepository<Backend.Core.Models.ContractBeneficiary>, ContractBeneficiaryRepository>();
-            
+
             // Validators
+            services.AddScoped<IContractValidator, ContractValidator>();
+
             services.AddScoped<IAddressValidator, AddressValidator>();
 
             services.AddScoped<IDateValidator, DateValidator>();
