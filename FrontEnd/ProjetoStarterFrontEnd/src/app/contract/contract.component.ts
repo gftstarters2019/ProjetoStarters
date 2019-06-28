@@ -5,7 +5,7 @@ import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractCon
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
-import { MatSnackBar, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialog, MatDialogConfig } from '@angular/material';
 import { Location } from '@angular/common';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GenericValidator } from '../Validations/GenericValidator';
@@ -15,7 +15,8 @@ import { Data } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ContractService } from 'src/app/dataService/contract/contract.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
-import { listLocales } from 'ngx-bootstrap/chronos';
+//import { listLocales } from 'ngx-bootstrap/chronos';
+import { ConfirmDialogModel, ConfirmationDialogComponent } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 
 
 export interface Type {
@@ -102,7 +103,8 @@ export class ContractComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private location: Location,
     private contractService: ContractService,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    public dialog: MatDialog
   ) {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue' });
     localeService.use('pt-br');
@@ -123,7 +125,7 @@ export class ContractComponent implements OnInit {
 
     this.paginationPageSize = 50;
 
-    this.http.get('https://contractholderapi.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
+    this.http.get('https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder').subscribe((data: any[]) => {
       this.holders = data;
     });
 
@@ -317,7 +319,7 @@ export class ContractComponent implements OnInit {
 
   onSubmit() {
     let form = JSON.stringify(this.contractform.value);
-    debugger;
+    //debugger;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -337,7 +339,7 @@ export class ContractComponent implements OnInit {
   }
 
   private handle_editUser(data: any) {
-    data.expiryDate = new Date(data.expiryDate).toLocaleDateString('pt-br');
+    //data.expiryDate = new Date(data.expiryDate).toLocaleDateString('pt-br');
 
     this.signedContractId = data.signedContractId;
     // this.contractform.patchValue(data)
@@ -366,9 +368,11 @@ export class ContractComponent implements OnInit {
       if (!hasMaxIndividuals) {
         if (data.individuals != '') {
           for (i = 0; i < data.individuals.length; i++) {
-            data.individuals[i].individualBirthdate = new Date(data.individuals[i].individualBirthdate).toLocaleDateString('pt-br');
-
+            //data.individuals[i].individualBirthdate = new Date(data.individuals[i].individualBirthdate).toLocaleDateString('pt-br');
+            data.individuals[i].individualBirthdate
             individualControl.push(this.fb.group(data.individuals[i]));
+
+
 
           }
         }
@@ -390,16 +394,14 @@ export class ContractComponent implements OnInit {
       this.contractform.removeControl('realties');
       this.contractform.removeControl('vehicles');
       this.contractform.removeControl('mobileDevices');
-
+      debugger;
       this.contractform.patchValue(data)
       const hasMaxPets = petControl.length >= 5;
       if (!hasMaxPets) {
         if (data.pets != '') {
           for (j = 0; j < data.pets.length; j++) {
-            data.pets[i].petBirthdate = new Date(data.pets[i].petBirthdate).toLocaleDateString('pt-br');
-
+            //data.pets[j].petBirthdate = new Date(data.pets[j].petBirthdate).toLocaleDateString('pt-br');
             petControl.push(this.fb.group(data.pets[j]));
-
 
 
           }
@@ -426,7 +428,7 @@ export class ContractComponent implements OnInit {
       if (!hasMaxRealties) {
         if (data.realties != '') {
           for (i = 0; i < data.realties.length; i++) {
-            data.realties[i].constructionDate = new Date(data.realties[i].constructionDate).toLocaleDateString('pt-br');
+            //data.realties[i].constructionDate = new Date(data.realties[i].constructionDate).toLocaleDateString('pt-br');
             realtyControl.push(this.fb.group(data.realties[i]));
           }
 
@@ -452,8 +454,8 @@ export class ContractComponent implements OnInit {
       if (!hasMaxVehicle) {
         if (data.vehicles != '') {
           for (i = 0; i < data.vehicles.length; i++) {
-            data.vehicles[i].vehicleModelYear = new Date(data.vehicles[i].vehicleModelYear).toLocaleDateString('pt-br');
-            data.vehicles[i].vehicleManufactoringYear = new Date(data.vehicles[i].vehicleManufactoringYear).toLocaleDateString('pt-br');
+            //data.vehicles[i].vehicleModelYear = new Date(data.vehicles[i].vehicleModelYear).toLocaleDateString('pt-br');
+            //data.vehicles[i].vehicleManufactoringYear = new Date(data.vehicles[i].vehicleManufactoringYear).toLocaleDateString('pt-br');
 
             vehicleControl.push(this.fb.group(data.vehicles[i]));
           }
@@ -480,7 +482,7 @@ export class ContractComponent implements OnInit {
       if (!hasMaxmobileDevices) {
         if (data.mobileDevices != '') {
           for (i = 0; i < data.mobileDevices.length; i++) {
-            data.mobileDevices[i].mobileDeviceManufactoringYear = new Date(data.mobileDevices[i].mobileDeviceManufactoringYear).toLocaleDateString('pt-br');
+            //data.mobileDevices[i].mobileDeviceManufactoringYear = new Date(data.mobileDevices[i].mobileDeviceManufactoringYear).toLocaleDateString('pt-br');
 
             mobileDeviceControl.push(this.fb.group(data.mobileDevices[i]));
           }
@@ -510,7 +512,7 @@ export class ContractComponent implements OnInit {
 
     const message = `Do you really want to delete this contract?`;
 
-    const id = data.signedContractId;
+    const dialogConfig = new MatDialogConfig();
 
 
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
@@ -665,7 +667,7 @@ export class ContractComponent implements OnInit {
         if (params.data.type == 6)
           params.successCallback(params.data.mobileDevices)
       }
-      if (params.data.type === 0 || params.data.name === 2 || params.data.name === 3) {
+      if (params.data.type === 0 || params.data.type === 2 || params.data.type === 3) {
         res.detailGridOptions = {
           columnDefs: [{
             headerName: "Individual Details",
@@ -820,23 +822,23 @@ export class ContractComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
 
-  }
-    setTimeout(function () {
-      var nodeA = params.api.getDisplayedRowAtIndex(1);
-      var nodeB = params.api.getDisplayedRowAtIndex(2);
-      var nodeC = params.api.getDisplayedRowAtIndex(3);
-      var nodeD = params.api.getDisplayedRowAtIndex(4);
-      var nodeE = params.api.getDisplayedRowAtIndex(5);
-      nodeA.setExpanded(true);
-      nodeB.setExpanded(true);
-      nodeC.setExpanded(true);
-      nodeD.setExpanded(true);
-      nodeE.setExpanded(true);
+  setTimeout(function () {
+    var nodeA = params.api.getDisplayedRowAtIndex(1);
+    var nodeB = params.api.getDisplayedRowAtIndex(2);
+    var nodeC = params.api.getDisplayedRowAtIndex(3);
+    var nodeD = params.api.getDisplayedRowAtIndex(4);
+    var nodeE = params.api.getDisplayedRowAtIndex(5);
+    nodeA.setExpanded(true);
+    nodeB.setExpanded(true);
+    nodeC.setExpanded(true);
+    nodeD.setExpanded(true);
+    nodeE.setExpanded(true);
 
-    }, 250);
-  }
+  }, 250);
+}
   private setup_gridData() {
-    this.rowData$ = this.contractService.get_contract();
+    this.rowData$ = this.http
+      .get<Array<any>>('https://contractgftapi.azurewebsites.net/api/Contract');
   }
   private onCellEdit(params: any) {
     // private onRowSelected(event: RowSelectedEvent) {

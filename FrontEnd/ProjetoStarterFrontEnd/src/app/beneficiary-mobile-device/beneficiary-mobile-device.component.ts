@@ -44,7 +44,8 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.mobilePushPermission.currentValue != 0 && changes.mobilePushPermission.currentValue != changes.mobilePushPermission.previousValue) {
-      
+      // let manufactoringYear = this.mobileForm.get('mobileDeviceManufactoringYear').value;
+      // this.mobileForm.get('mobileDeviceManufactoringYear').setValue(new Date(manufactoringYear));
       this.messageMobileEvent.emit(this.mobileForm);
     }
   }
