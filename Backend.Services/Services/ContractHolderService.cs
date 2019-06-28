@@ -54,7 +54,7 @@ namespace Backend.Services.Services
             var addedContractHolder = _contractHolderRepository.Add(contractHolderDomain);
 
             if (addedContractHolder != null)
-                SendEmail(addedContractHolder);
+                _contractHolderRepository.Save();
 
             return addedContractHolder;
         }
@@ -74,8 +74,12 @@ namespace Backend.Services.Services
             /*
              * Validations
             */
+            var updatedContractHolder = _contractHolderRepository.Update(id, contractToBeUpdated);
 
-            return _contractHolderRepository.Update(id, contractToBeUpdated);
+            if (updatedContractHolder != null)
+                _contractHolderRepository.Save();
+
+            return updatedContractHolder;
         }
     }
 }
