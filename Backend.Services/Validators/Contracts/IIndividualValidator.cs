@@ -1,9 +1,10 @@
 ﻿using Backend.Core.Domains;
+using System.Collections.Generic;
 
 namespace Backend.Services.Validators.Contracts
 {
     public interface IIndividualValidator
     {
-        bool IsValid(IndividualDomain individual);
+        List<string> IsValid(IndividualDomain individual);
     }
 }

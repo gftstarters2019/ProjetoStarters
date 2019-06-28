@@ -73,6 +73,8 @@ namespace ContractHolder.WebAPI
 
             services.AddScoped<IIndividualValidator, IndividualValidator>();
 
+            services.AddScoped<INumberValidator, NumberValidator>();
+
             services.AddScoped<ITelephoneValidator, TelephoneValidator>();
 
             services.AddScoped<IAddressValidator, AddressValidator>();

@@ -1,9 +1,10 @@
 ﻿using Backend.Core.Domains;
+using System.Collections.Generic;
 
 namespace Backend.Services.Validators.Contracts
 {
     public interface IVehicleValidator
     {
-        bool IsValid(VehicleDomain vehicle);
+        List<string> IsValid(VehicleDomain vehicle);
     }
 }

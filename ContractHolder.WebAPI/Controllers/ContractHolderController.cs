@@ -58,14 +58,27 @@ namespace ContractHolder.WebAPI.Controllers
         /// <returns>Created Contract Holder</returns>
         [HttpPost]
         public IActionResult PostContractHolder([FromBody] ContractHolderViewModel contractHolderViewModel)
-        {
-            var addedContractHolder = _contractHolderService.Save(FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel));
+        {           
+            try
+            {
+                var addedContractHolder = _contractHolderService.Save(FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel));
+                if (addedContractHolder == null)
+                    return StatusCode(403);
+                return Ok(FactoriesManager.ContractHolderViewModel.Create(addedContractHolder));
+            }
+            catch (Exception e)
+            {
+                string errors = e.Message;
 
-            if (addedContractHolder == null)
-                return StatusCode(403);
-            
-            //SendWelcomeEmail(vm);
-            return Ok(FactoriesManager.ContractHolderViewModel.Create(addedContractHolder));
+                return ValidationProblem(new ValidationProblemDetails()
+                {
+                    Type = "Validation Error",
+                    Detail = errors
+                }
+                );
+            }
+
+            //SendWelcomeEmail(vm);         
         }
 
         /// <summary>
@@ -77,12 +90,26 @@ namespace ContractHolder.WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateContractHolder(Guid id, [FromBody] ContractHolderViewModel vm)
         {
-            var updatedContractHolder = _contractHolderService.Update(id, FactoriesManager.ContractHolderDomain.Create(vm));
+            try
+            {
+                var updatedContractHolder = _contractHolderService.Update(id, FactoriesManager.ContractHolderDomain.Create(vm));
 
-            if (updatedContractHolder == null)
-                return StatusCode(403);
-            
-            return Ok(FactoriesManager.ContractHolderViewModel.Create(updatedContractHolder));
+                if (updatedContractHolder == null)
+                    return StatusCode(403);
+
+                return Ok(FactoriesManager.ContractHolderViewModel.Create(updatedContractHolder));
+            }
+            catch (Exception e)
+            {
+                string errors = e.Message;
+
+                return ValidationProblem(new ValidationProblemDetails()
+                {
+                    Type = "Validation Error",
+                    Detail = errors
+                }
+                );
+            }
         }
 
         /// <summary>
