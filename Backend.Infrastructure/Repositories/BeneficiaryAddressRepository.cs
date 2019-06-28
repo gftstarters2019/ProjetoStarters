@@ -3,6 +3,7 @@ using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Backend.Infrastructure.Repositories
 {
@@ -53,7 +54,15 @@ namespace Backend.Infrastructure.Repositories
 
         public bool Remove(Guid id)
         {
-            throw new NotImplementedException();
+            var beneficiaryAddressToDelete = _db.Beneficiary_Address.Where(ba => ba.BeneficiaryAddressId == id).FirstOrDefault();
+            if (beneficiaryAddressToDelete != null)
+            {
+                beneficiaryAddressToDelete.Address = null;
+                beneficiaryAddressToDelete.Beneficiary = null;
+                if (_db.Beneficiary_Address.Remove(beneficiaryAddressToDelete) != null)
+                    return true;
+            }
+            return false;
         }
 
         public bool Save()

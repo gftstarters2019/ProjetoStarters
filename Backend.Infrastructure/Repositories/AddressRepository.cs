@@ -42,7 +42,6 @@ namespace Backend.Infrastructure.Repositories
             if (address != null)
             {
                 _db.Remove(address);
-                _db.SaveChanges();
                 return true;
             }
 

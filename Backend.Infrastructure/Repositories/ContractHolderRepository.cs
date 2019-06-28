@@ -203,9 +203,10 @@ namespace Backend.Infrastructure.Repositories
                 foreach(var address in contractHolderToUpdate.IndividualAddresses)
                 {
                     _beneficiaryAddressRepository.Remove(_beneficiaryAddressRepository.Get().FirstOrDefault(ba => ba.BeneficiaryId == id && ba.AddressId == address.AddressId).BeneficiaryId);
-                    _addressRepository.Remove(address.AddressId);
+                    _beneficiaryAddressRepository.Save();
                 }
-                foreach(var address in updatedContractHolder.IndividualAddresses)
+                
+                foreach (var address in updatedContractHolder.IndividualAddresses)
                 {
                     var addedAddress = ConvertersManager.AddressConverter.Convert(
                         _addressRepository.Add(ConvertersManager.AddressConverter.Convert(address)));
@@ -215,19 +216,21 @@ namespace Backend.Infrastructure.Repositories
                         BeneficiaryId = id
                     }) == null)
                         return null;
-
+                    _beneficiaryAddressRepository.Save();
+                    _addressRepository.Save();
                     contractHolderToUpdate.IndividualAddresses.Add(addedAddress);
                 }
-                _addressRepository.Save();
-                _beneficiaryAddressRepository.Save();
 
+                _beneficiaryAddressRepository.Save();
+                _addressRepository.Save();
+                
                 // Telephones
                 contractHolderToUpdate.IndividualTelephones.RemoveAll(tel => updatedContractHolder.IndividualTelephones.Select(tele => tele.TelephoneId).Contains(tel.TelephoneId));
                 updatedContractHolder.IndividualTelephones.RemoveAll(ad => ad.TelephoneId != Guid.Empty);
                 foreach (var telephone in contractHolderToUpdate.IndividualTelephones)
                 {
                     _individualTelephonesRepository.Remove(_individualTelephonesRepository.Get().FirstOrDefault(it => it.BeneficiaryId == id && it.TelephoneId == telephone.TelephoneId).BeneficiaryId);
-                    _telephonesRepository.Remove(telephone.TelephoneId);
+                    _individualTelephonesRepository.Save();
                 }
                 foreach (var telephone in updatedContractHolder.IndividualTelephones)
                 {
@@ -239,9 +242,11 @@ namespace Backend.Infrastructure.Repositories
                         BeneficiaryId = id
                     }) == null)
                         return null;
-
+                    _individualTelephonesRepository.Save();
+                    _telephonesRepository.Save();
                     contractHolderToUpdate.IndividualTelephones.Add(addedTelephone);
                 }
+
                 _telephonesRepository.Save();
                 _individualTelephonesRepository.Save();
 
