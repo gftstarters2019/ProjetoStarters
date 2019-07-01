@@ -35,7 +35,13 @@
             {{option.individualName}}
           </mat-option>
         </mat-autocomplete>
+
+        
       </mat-form-field>
+      <button class="btn-new-contract-holder" mat-raised-button color="primary" type="button"
+            routerLink="/contract-holder">
+            <mat-icon class="material-icons">add</mat-icon>Contract holder
+          </button>
     </mat-card>
     </div>
 
@@ -168,12 +174,10 @@
     <button mat-raised-button color="primary" type="button" (click)="addBeneficiary();">Add Beneficiary</button>
 
 
-
+    <br><br>
     <button class="btn-list" mat-raised-button color="primary" type="submit" (click)="changeMessageValue()"
-      >Submit Contract
-    </button>
+      [disabled]="!contractform.valid">Submit</button>
 
-  </form>
     <br>
     <br>
     <div class="contractCard">
@@ -186,36 +190,34 @@
           </mat-expansion-panel-header>
 
           <mat-nav-list>
-            <ag-grid-angular 
-            style="width: 100%; height: 1000px;" 
-            [pagination]="true"
-            [paginationPageSize]="paginationPageSize" 
-            class="ag-theme-material" 
-            [masterDetail]="true"
-            [detailCellRendererParams]="detailCellRendererParams" 
-            [gridOptions]="gridOption"
+            <ag-grid-angular style="width: 100%; height: 1000px;" [pagination]="true"
+              [paginationPageSize]="paginationPageSize" class="ag-theme-material" [masterDetail]="true"
+              [detailCellRendererParams]="detailCellRendererParams" [detailRowHeight]="detailRowHeight"
+              [rowHeight]="rowHeight" [colResizeDefault]="colResizeDefault" [gridOptions]="gridOption"
+              [rowData]="rowData$ | async">
+            </ag-grid-angular>
+          </mat-nav-list>
 
-            [rowData]="rowData$ | async">
-          </ag-grid-angular>
-        </mat-nav-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
 
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+    <div class="contractCard">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header class="listpanel-header">
+            <mat-panel-title>
+              Beneficiary's List
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-  <div class="contractCard">
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header class="listpanel-header">
-          <mat-panel-title>
-            Beneficiary's List
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+          <mat-nav-list>
+            <app-beneficiary-list></app-beneficiary-list>
+          </mat-nav-list>
 
-        <mat-nav-list>
-          <app-beneficiary-list></app-beneficiary-list>
-        </mat-nav-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </form>
 
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+</div>

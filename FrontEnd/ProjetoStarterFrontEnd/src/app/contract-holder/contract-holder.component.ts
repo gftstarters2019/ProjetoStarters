@@ -8,10 +8,10 @@ import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
 import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BsDatepickerConfig, BsLocaleService} from 'ngx-bootstrap/datepicker';
 import {ContractHolderService} from 'src/app/dataService/contractHolder/contract-holder.service';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
-
 
 
 @Component({
@@ -25,6 +25,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
   
   
+bsConfig: Partial<BsDatepickerConfig>;
 
   public result: any;
 
@@ -50,11 +51,12 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     private contractHolderService: ContractHolderService , 
     private http: HttpClient, 
     public dialog: MatDialog,
-    // private localeService: BsLocaleService,
+    private localeService: BsLocaleService,
     private _snackBar: MatSnackBar, 
     private location: Location) 
     {
-    // localeService.use('pt-br');
+    this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
+    localeService.use('pt-br');
 
   
   }
@@ -77,7 +79,7 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     this.IndividualId = data.individualId;
     //data.individualBirthdate = Date.parse(DateString);
-    //data.individualBirthdate = new Date(data.individualBirthdate).toLocaleDateString('pt-br');
+    data.individualBirthdate = new Date(data.individualBirthdate).toLocaleDateString('pt-br');
     this.contractHolder.patchValue(data);
     
     let telephoneControl =  this.contractHolder.controls.idTelephone as FormArray;
@@ -120,6 +122,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
     };
     const message = `Do you really want to delete this Contract Holder?`;
 
+    this.http.delete(`https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      
+    
+
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -128,7 +133,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
       data: dialogData
     });
 
-    console.log(id);
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
@@ -185,10 +189,9 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
 
     else {
 
-    this.http.put(`https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
+      this.http.put(`https://contractholderwebapiv3.azurewebsites.net/api/contractholder/${this.IndividualId}`, json, httpOptions).subscribe(data => this.load(), error => this.openSnackBar(error.message), () => this.openSnackBar("Titular atualizado com sucesso"));
+    }
   }
-}
-
   openSnackBar(message: string): void {
     this._snackBar.open(message, '', {
       duration: 5000,
@@ -319,10 +322,10 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
           lockPosition: true,
           sortable: true,
           onCellValueChanged: this.onCellEdit.bind(this),
-          // cellRenderer: (data) => {
+          cellRenderer: (data) => {
 
-          //   return data.value ? (new Date(data.value)).toLocaleDateString('pt-br') : '';
-          // }, 
+            return data.value ? (new Date(data.value)).toLocaleDateString('pt-br') : '';
+          }, 
 
 
         },
@@ -410,4 +413,3 @@ function maskRG(params){
 function maskRGValue(rg){
   return rg.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/g,"\$1.\$2.\$3\-\$4")
 }
-

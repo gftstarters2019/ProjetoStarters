@@ -1,11 +1,11 @@
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories } from '@angular/core';
+import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories, AfterViewInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { ActionButtonComponent } from '../action-button/action-button.component';
-import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialog, MatDialogConfig } from '@angular/material';
+import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialogConfig } from '@angular/material';
 import { Location } from '@angular/common';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GenericValidator } from '../Validations/GenericValidator';
@@ -15,7 +15,7 @@ import { Data } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ContractService } from 'src/app/dataService/contract/contract.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
-//import { listLocales } from 'ngx-bootstrap/chronos';
+import { listLocales } from 'ngx-bootstrap/chronos';
 import { ConfirmDialogModel, ConfirmationDialogComponent } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 
 
@@ -41,7 +41,7 @@ export interface Holder {
   templateUrl: './contract.component.html',
   styleUrls: ['./contract.component.scss']
 })
-export class ContractComponent implements OnInit {
+export class ContractComponent implements OnInit, AfterViewInit {
   public result: any = null;
   color = 'primary';
   beneficiaries: FormArray;
@@ -95,6 +95,7 @@ export class ContractComponent implements OnInit {
     { value: 4, viewValue: ' Platinum' },
     { value: 5, viewValue: ' Diamond' },
   ];
+  dialog: any;
 
 
   constructor(
@@ -103,8 +104,7 @@ export class ContractComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private location: Location,
     private contractService: ContractService,
-    private localeService: BsLocaleService,
-    public dialog: MatDialog
+    private localeService: BsLocaleService
   ) {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue' });
     localeService.use('pt-br');
@@ -130,6 +130,8 @@ export class ContractComponent implements OnInit {
     });
 
 
+  }
+  ngAfterViewInit() {
   }
 
   displayFn(holder?: Holder): string | undefined {
@@ -158,7 +160,7 @@ export class ContractComponent implements OnInit {
       type: ['', Validators.required],
       category: ['', Validators.required],
       expiryDate: ['', Validators.required],
-      isActive: ['true', Validators.required],
+      isActive: ['', Validators.required],
       individuals: this.fb.array([]),
       pets: this.fb.array([]),
       realties: this.fb.array([]),
@@ -175,9 +177,6 @@ export class ContractComponent implements OnInit {
     });
   }
 
-  log(){
-    console.log(this.contractform);
-  }
   public assignContractType(): void {
     let i = 0;
     this.cType = this.contractform.get(['type']).value;
@@ -319,7 +318,7 @@ export class ContractComponent implements OnInit {
 
   onSubmit() {
     let form = JSON.stringify(this.contractform.value);
-    //debugger;
+    debugger;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -339,7 +338,7 @@ export class ContractComponent implements OnInit {
   }
 
   private handle_editUser(data: any) {
-    //data.expiryDate = new Date(data.expiryDate).toLocaleDateString('pt-br');
+    data.expiryDate = new Date(data.expiryDate).toLocaleDateString('pt-br');
 
     this.signedContractId = data.signedContractId;
     // this.contractform.patchValue(data)
@@ -368,11 +367,9 @@ export class ContractComponent implements OnInit {
       if (!hasMaxIndividuals) {
         if (data.individuals != '') {
           for (i = 0; i < data.individuals.length; i++) {
-            //data.individuals[i].individualBirthdate = new Date(data.individuals[i].individualBirthdate).toLocaleDateString('pt-br');
-            data.individuals[i].individualBirthdate
+            data.individuals[i].individualBirthdate = new Date(data.individuals[i].individualBirthdate).toLocaleDateString('pt-br');
+
             individualControl.push(this.fb.group(data.individuals[i]));
-
-
 
           }
         }
@@ -394,14 +391,16 @@ export class ContractComponent implements OnInit {
       this.contractform.removeControl('realties');
       this.contractform.removeControl('vehicles');
       this.contractform.removeControl('mobileDevices');
-      debugger;
+
       this.contractform.patchValue(data)
       const hasMaxPets = petControl.length >= 5;
       if (!hasMaxPets) {
         if (data.pets != '') {
           for (j = 0; j < data.pets.length; j++) {
-            //data.pets[j].petBirthdate = new Date(data.pets[j].petBirthdate).toLocaleDateString('pt-br');
+            data.pets[i].petBirthdate = new Date(data.pets[i].petBirthdate).toLocaleDateString('pt-br');
+
             petControl.push(this.fb.group(data.pets[j]));
+
 
 
           }
@@ -428,7 +427,7 @@ export class ContractComponent implements OnInit {
       if (!hasMaxRealties) {
         if (data.realties != '') {
           for (i = 0; i < data.realties.length; i++) {
-            //data.realties[i].constructionDate = new Date(data.realties[i].constructionDate).toLocaleDateString('pt-br');
+            data.realties[i].constructionDate = new Date(data.realties[i].constructionDate).toLocaleDateString('pt-br');
             realtyControl.push(this.fb.group(data.realties[i]));
           }
 
@@ -454,8 +453,8 @@ export class ContractComponent implements OnInit {
       if (!hasMaxVehicle) {
         if (data.vehicles != '') {
           for (i = 0; i < data.vehicles.length; i++) {
-            //data.vehicles[i].vehicleModelYear = new Date(data.vehicles[i].vehicleModelYear).toLocaleDateString('pt-br');
-            //data.vehicles[i].vehicleManufactoringYear = new Date(data.vehicles[i].vehicleManufactoringYear).toLocaleDateString('pt-br');
+            data.vehicles[i].vehicleModelYear = new Date(data.vehicles[i].vehicleModelYear).toLocaleDateString('pt-br');
+            data.vehicles[i].vehicleManufactoringYear = new Date(data.vehicles[i].vehicleManufactoringYear).toLocaleDateString('pt-br');
 
             vehicleControl.push(this.fb.group(data.vehicles[i]));
           }
@@ -482,7 +481,7 @@ export class ContractComponent implements OnInit {
       if (!hasMaxmobileDevices) {
         if (data.mobileDevices != '') {
           for (i = 0; i < data.mobileDevices.length; i++) {
-            //data.mobileDevices[i].mobileDeviceManufactoringYear = new Date(data.mobileDevices[i].mobileDeviceManufactoringYear).toLocaleDateString('pt-br');
+            data.mobileDevices[i].mobileDeviceManufactoringYear = new Date(data.mobileDevices[i].mobileDeviceManufactoringYear).toLocaleDateString('pt-br');
 
             mobileDeviceControl.push(this.fb.group(data.mobileDevices[i]));
           }
@@ -513,8 +512,6 @@ export class ContractComponent implements OnInit {
     const message = `Do you really want to delete this contract?`;
 
     const dialogConfig = new MatDialogConfig();
-
-
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
     dialogConfig.disableClose = true;
@@ -614,7 +611,7 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               cellRenderer: (data) => {
-                return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                return data.value ? (new Date(data.value)).toLocaleDateString("pt-br") : '';
               },
               cellClass: "cell-wrap-text",
               autoHeight: true,
@@ -649,10 +646,7 @@ export class ContractComponent implements OnInit {
         },
       ]
     }
-
-    this.defaultColDef = { resizable: true };
-    this.colResizeDefault = "shift";
-    this.detailRowHeight = 400;
+    this.detailRowHeight = 350;
     this.detailCellRendererParams = function (params) {
       var res: any = {};
       res.getDetailRowData = function (params) {
@@ -678,7 +672,7 @@ export class ContractComponent implements OnInit {
               {
                 headerName: 'Birthdate ', field: "individualBirthdate", minWidth: 115,
                 cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-br") : '';
                 },
               },
               { headerName: 'Email ', field: "individualEmail", minWidth: 150, }
@@ -815,6 +809,7 @@ export class ContractComponent implements OnInit {
         }
       }
 
+
       return res;
     }
   }
@@ -822,23 +817,22 @@ export class ContractComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
 
-  setTimeout(function () {
-    var nodeA = params.api.getDisplayedRowAtIndex(1);
-    var nodeB = params.api.getDisplayedRowAtIndex(2);
-    var nodeC = params.api.getDisplayedRowAtIndex(3);
-    var nodeD = params.api.getDisplayedRowAtIndex(4);
-    var nodeE = params.api.getDisplayedRowAtIndex(5);
-    nodeA.setExpanded(true);
-    nodeB.setExpanded(true);
-    nodeC.setExpanded(true);
-    nodeD.setExpanded(true);
-    nodeE.setExpanded(true);
+    setTimeout(function () {
+      var nodeA = params.api.getDisplayedRowAtIndex(1);
+      var nodeB = params.api.getDisplayedRowAtIndex(2);
+      var nodeC = params.api.getDisplayedRowAtIndex(3);
+      var nodeD = params.api.getDisplayedRowAtIndex(4);
+      var nodeE = params.api.getDisplayedRowAtIndex(5);
+      nodeA.setExpanded(true);
+      nodeB.setExpanded(true);
+      nodeC.setExpanded(true);
+      nodeD.setExpanded(true);
+      nodeE.setExpanded(true);
 
-  }, 250);
-}
+    }, 250);
+  }
   private setup_gridData() {
-    this.rowData$ = this.http
-      .get<Array<any>>('https://contractgftapi.azurewebsites.net/api/Contract');
+    this.rowData$ = this.contractService.get_contract();
   }
   private onCellEdit(params: any) {
     // private onRowSelected(event: RowSelectedEvent) {
