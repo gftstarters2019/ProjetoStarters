@@ -2,11 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
-import { ActionButtonComponent } from '../action-button/action-button.component';
-import { ActionButtonBeneficiariesComponent } from '../action-button-beneficiaries/action-button-beneficiaries.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
+import { ActionButtonBeneficiariesComponent } from '../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
 
 @Component({
   selector: 'app-pet-list',

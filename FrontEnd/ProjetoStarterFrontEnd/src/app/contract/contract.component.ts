@@ -4,7 +4,6 @@ import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories, AfterVi
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
-import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialogConfig } from '@angular/material';
 import { Location } from '@angular/common';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -17,6 +16,7 @@ import { ContractService } from 'src/app/dataService/contract/contract.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { listLocales } from 'ngx-bootstrap/chronos';
 import { ConfirmDialogModel, ConfirmationDialogComponent } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { ActionButtonComponent } from '../components/shared/action-button/action-button.component';
 
 
 export interface Type {

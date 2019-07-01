@@ -36,11 +36,11 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { RealtiesListComponent } from './realties-list/realties-list.component';
 import { MobileDeviceListComponent } from './mobile-device-list/mobile-device-list.component';
-import { ActionButtonComponent } from './action-button/action-button.component';
-import { ActionButtonBeneficiariesComponent } from './action-button-beneficiaries/action-button-beneficiaries.component';
 import { MAT_DATE_LOCALE, DateAdapter ,  MAT_DATE_FORMATS} from '@angular/material';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
+import { ActionButtonComponent } from './components/shared/action-button/action-button.component';
+import { ActionButtonBeneficiariesComponent } from './components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
 
 @NgModule({
   declarations: [

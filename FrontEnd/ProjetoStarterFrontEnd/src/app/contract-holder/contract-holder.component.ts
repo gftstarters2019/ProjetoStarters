@@ -6,12 +6,12 @@ import "ag-grid-enterprise";
 import { Location } from '@angular/common';
 import { GenericValidator } from '../Validations/GenericValidator';
 import { Observable } from 'rxjs';
-import { ActionButtonComponent } from '../action-button/action-button.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BsDatepickerConfig, BsLocaleService} from 'ngx-bootstrap/datepicker';
 import {ContractHolderService} from 'src/app/dataService/contractHolder/contract-holder.service';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { ActionButtonComponent } from '../components/shared/action-button/action-button.component';
 
 
 @Component({
