@@ -15,13 +15,13 @@ namespace Backend.Services.Validators
             if (!new Regex("^[0-9]+$").IsMatch(address.AddressNumber) || address.AddressNumber.Length > 7)
                 errors.Add($"{address.AddressNumber}: Numero do imóvel incorreto! ");
 
-            if (!new Regex("^\\d{5}(?:[-\\s]\\d{3})?$").IsMatch(address.AddressZipCode))
+            if (!new Regex("^\\d{8}?$").IsMatch(address.AddressZipCode))
                 errors.Add($"{address.AddressZipCode}:Zip inválido! ");
 
             if (!regexLetters.IsMatch(address.AddressComplement))
                 errors.Add($"{address.AddressComplement}: Complemento Inválido! ");
 
-            if (!regexLetters.IsMatch(address.AddressNeighborhood))
+            if (!regexLetters.IsMatch(address.AddressNeighborhood) && string.IsNullOrWhiteSpace(address.AddressNeighborhood))
                 errors.Add($"{address.AddressNeighborhood}: Bairro Inválido! ");
 
             if (!regexLetters.IsMatch(address.AddressCity))
