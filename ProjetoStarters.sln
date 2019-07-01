@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Services", "3 - Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend.Services", "Backend.Services\Backend.Services.csproj", "{47B72CE9-5BFA-44B6-985B-8FBC53D52427}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunction", "AzureFunction\AzureFunction.csproj", "{C6CD02D7-A054-47E1-AF8A-6B9D223B52D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{47B72CE9-5BFA-44B6-985B-8FBC53D52427}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47B72CE9-5BFA-44B6-985B-8FBC53D52427}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47B72CE9-5BFA-44B6-985B-8FBC53D52427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6CD02D7-A054-47E1-AF8A-6B9D223B52D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6CD02D7-A054-47E1-AF8A-6B9D223B52D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6CD02D7-A054-47E1-AF8A-6B9D223B52D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6CD02D7-A054-47E1-AF8A-6B9D223B52D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{445D8F99-33FC-4DA2-9B32-0CB6434263B1} = {2CE60E68-51B1-49E6-924C-BE23E46551F0}
 		{F7DB0EF9-5CF9-4D6A-AAFD-CFC0E0F7A93B} = {AFFED230-A64C-4BA3-8169-A76E8318F76A}
 		{47B72CE9-5BFA-44B6-985B-8FBC53D52427} = {A9C52176-E82A-4C5D-9223-C44F7DE2199D}
+		{C6CD02D7-A054-47E1-AF8A-6B9D223B52D5} = {2CE60E68-51B1-49E6-924C-BE23E46551F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9442E083-F96F-46A1-95AF-DB9FF6C24AA9}
