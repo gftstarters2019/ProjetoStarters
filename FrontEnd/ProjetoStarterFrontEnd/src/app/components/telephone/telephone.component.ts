@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, AbstractControl, Validator, FormArray } from '@angular/forms';
-import { GenericValidator } from '../Validations/GenericValidator';
+import { GenericValidator } from '../../Validations/GenericValidator';
 
 export interface Telephone{
   id: string,

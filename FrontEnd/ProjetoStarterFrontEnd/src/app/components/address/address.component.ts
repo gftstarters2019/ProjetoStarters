@@ -1,7 +1,7 @@
 
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray, AbstractControl } from '@angular/forms';
-import { GenericValidator } from '../Validations/GenericValidator';
+import { GenericValidator } from '../../Validations/GenericValidator';
 import { MatCardModule } from '@angular/material/card';
 
 

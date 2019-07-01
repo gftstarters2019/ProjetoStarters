@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AddressComponent } from './address/address.component';
+import { AddressComponent } from './components/address/address.component';
 import { MaterialModule } from './material/material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { ContractComponent } from './contract/contract.component';
@@ -26,7 +26,7 @@ import { BeneficiaryPetComponent } from './beneficiary-pet/beneficiary-pet.compo
 import { BeneficiaryVehicleComponent } from './beneficiary-vehicle/beneficiary-vehicle.component';
 import { BeneficiaryRealtyComponent } from './beneficiary-realty/beneficiary-realty.component';
 import { BeneficiaryMobileDeviceComponent } from './beneficiary-mobile-device/beneficiary-mobile-device.component';
-import { TelephoneComponent } from './telephone/telephone.component';
+import { TelephoneComponent } from './components/telephone/telephone.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MatCardModule } from '@angular/material/card';
 import { ObserversModule } from '@angular/cdk/observers';
@@ -41,6 +41,7 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
 import { ActionButtonComponent } from './components/shared/action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from './components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+import { IndividualComponent } from './components/individual/individual.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { ActionButtonBeneficiariesComponent } from './components/shared/action-b
     MobileDeviceListComponent,
     ActionButtonBeneficiariesComponent,
     ConfirmationDialogComponent,
+    IndividualComponent,
   ],
   imports: [
     ObserversModule,
