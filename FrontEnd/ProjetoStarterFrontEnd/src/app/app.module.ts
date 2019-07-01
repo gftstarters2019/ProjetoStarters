@@ -42,6 +42,7 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
 import { ActionButtonComponent } from './components/shared/action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from './components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
 import { IndividualComponent } from './components/individual/individual.component';
+import { PetsComponent } from './components/pets/pets.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { IndividualComponent } from './components/individual/individual.componen
     ActionButtonBeneficiariesComponent,
     ConfirmationDialogComponent,
     IndividualComponent,
+    PetsComponent,
   ],
   imports: [
     ObserversModule,
