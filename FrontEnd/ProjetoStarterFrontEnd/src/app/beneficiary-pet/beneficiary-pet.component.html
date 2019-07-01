@@ -8,12 +8,21 @@
         </mat-form-field>
     </div>
 
-      <div class="flex-wrapper">
+      <!-- <div class="flex-wrapper">
       <mat-form-field  style="width: 200px;">
           <input matInput  placeholder="Birthdate" maxlength="100" name="petBirthdate" formControlName="petBirthdate"
             bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" type="text" required>
           <mat-error>Date is invalid!</mat-error>
         </mat-form-field>
+    </div> -->
+
+    <div class="flex-wrapper">
+      <mat-form-field style="width: 30%;">
+        <input matInput [matDatepicker]="picker" placeholder="Birthdate" maxlength="100" name="petBirthdate" formControlName="petBirthdate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>Date is invalid!</mat-error>
+      </mat-form-field>
     </div>
 
     <mat-form-field style="width: 200px;">

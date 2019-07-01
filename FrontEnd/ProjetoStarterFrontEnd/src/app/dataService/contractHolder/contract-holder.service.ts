@@ -11,7 +11,7 @@ export class ContractHolderService {
   constructor( private http: HttpClient) { }
 
   get_contractHolder(): Observable<Array<ContractHolder>>{
-    return  this.http.get<Array<ContractHolder>>('https://contractholderapi.azurewebsites.net/api/ContractHolder');
+    return  this.http.get<Array<ContractHolder>>('https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder');
   }
 
   get_localContractHolder() : Observable<Array<ContractHolder>>{
@@ -25,7 +25,7 @@ export class ContractHolderService {
         'Content-Type': 'application/json'
       })
     };
-    return this.http.post<Array<ContractHolder>>('https://contractholderapi.azurewebsites.net/api/contractholder', json, httpOptions);
+    return this.http.post<Array<ContractHolder>>('https://contractholderwebapiv3.azurewebsites.net/api/contractholder', json, httpOptions);
   }
 
   post_contractHolderLocal(form: FormGroup): Observable<Array<ContractHolder>>{

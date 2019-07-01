@@ -46,6 +46,8 @@ export class BeneficiaryIndividualComponent implements OnInit {
       let rg = this.individualForm.get('individualRG').value;
       rg = rg.replace(/\D+/g, '');
       this.individualForm.get('individualRG').setValue(rg);
+      // let birthdate = this.individualForm.get('individualBirthdate').value;
+      // this.individualForm.get('individualBirthdate').setValue(new Date(birthdate));
       this.messageIndividualEvent.emit(this.individualForm);
     }
   }

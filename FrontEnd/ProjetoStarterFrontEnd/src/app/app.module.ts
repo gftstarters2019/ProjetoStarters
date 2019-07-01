@@ -17,7 +17,7 @@ import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.co
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { HashLocationStrategy, Location, LocationStrategy } from '@angular/common';
 import { TableListComponent } from './table-list/table-list.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -40,9 +40,6 @@ import { ActionButtonComponent } from './action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from './action-button-beneficiaries/action-button-beneficiaries.component';
 import { MAT_DATE_LOCALE, DateAdapter ,  MAT_DATE_FORMATS} from '@angular/material';
 import { defineLocale } from 'ngx-bootstrap/chronos';
-import { ptBrLocale } from 'ngx-bootstrap/locale';
-defineLocale('pt-br', ptBrLocale); 
-import { MomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
@@ -54,6 +51,7 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
     BeneficiaryListComponent,
     SidebarComponent,
     TableListComponent,
+   
     BeneficiarylistAddComponent,
     BeneficiaryIndividualComponent,
     BeneficiaryPetComponent,
@@ -75,6 +73,7 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
     ObserversModule,
     BrowserModule,
     FormsModule,
+    
     BrowserAnimationsModule,
     AppRoutingModule,
     BsDatepickerModule.forRoot(),
@@ -105,8 +104,8 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
     },
-    {provide: MAT_DATE_LOCALE, useValue: 'pt'},
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    // {provide: MAT_DATE_LOCALE, useValue: 'pt'},
+    // {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
   ],
   bootstrap: [AppComponent],
 

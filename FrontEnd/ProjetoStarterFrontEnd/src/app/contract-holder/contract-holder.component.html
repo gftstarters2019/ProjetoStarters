@@ -29,8 +29,9 @@
       </mat-form-field> <br>
 
       <mat-form-field style="width: 250px;">
-        <input matInput id="individualBirthdate" placeholder="Birthdate" maxlength="100" formControlName="individualBirthdate"
-          bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" type="text" required>
+        <input matInput [matDatepicker]="picker" placeholder="Birthdate" maxlength="100" id="individualBirthdate" formControlName="individualBirthdate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
         <mat-error>Date is invalid!</mat-error>
       </mat-form-field>
 
