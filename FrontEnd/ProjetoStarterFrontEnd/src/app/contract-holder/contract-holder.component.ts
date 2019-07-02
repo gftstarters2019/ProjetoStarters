@@ -74,7 +74,6 @@ export class ContractHolderComponent implements OnInit, AfterViewInit {
   }
 
   private handle_editUser(data: any) {
-
     this.IndividualId = data.individualId;
     //data.individualBirthdate = Date.parse(DateString);
     //data.individualBirthdate = new Date(data.individualBirthdate).toLocaleDateString('pt-br');

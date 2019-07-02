@@ -68,6 +68,7 @@ export class ContractComponent implements OnInit {
   load_failure: boolean;
   holders: Holder[];
   locale = 'pt-br';
+  disableInput: boolean = false;
 
   message: number = 0;
   filteredHolder$: Observable<Holder[]>;
@@ -155,6 +156,7 @@ export class ContractComponent implements OnInit {
   private setup_form() {
     this.contractform = this.fb.group({
       contractHolderId: ['', Validators.required],
+      individualName: [''],
       type: ['', Validators.required],
       category: ['', Validators.required],
       expiryDate: ['', Validators.required],
@@ -319,7 +321,7 @@ export class ContractComponent implements OnInit {
 
   onSubmit() {
     let form = JSON.stringify(this.contractform.value);
-    //debugger;
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -339,12 +341,9 @@ export class ContractComponent implements OnInit {
   }
 
   private handle_editUser(data: any) {
-    //data.expiryDate = new Date(data.expiryDate).toLocaleDateString('pt-br');
-
+    this.disableInput = true;
     this.signedContractId = data.signedContractId;
-    // this.contractform.patchValue(data)
-
-
+    this.contractform.get('individualName').setValue(data.contractHolder.individualName)
 
 
     let i;
@@ -394,7 +393,6 @@ export class ContractComponent implements OnInit {
       this.contractform.removeControl('realties');
       this.contractform.removeControl('vehicles');
       this.contractform.removeControl('mobileDevices');
-      debugger;
       this.contractform.patchValue(data)
       const hasMaxPets = petControl.length >= 5;
       if (!hasMaxPets) {
