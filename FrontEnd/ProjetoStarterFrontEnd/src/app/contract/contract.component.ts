@@ -77,6 +77,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
   load_failure: boolean;
   holders: Holder[];
   locale = 'pt-br';
+  disableInput: boolean = false;
 
   message: number = 0;
   filteredHolder$: Observable<Holder[]>;
@@ -166,6 +167,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
   private setup_form() {
     this.contractform = this.fb.group({
       contractHolderId: ['', Validators.required],
+      individualName: [''],
       type: ['', Validators.required],
       category: ['', Validators.required],
       expiryDate: ['', Validators.required],
@@ -350,7 +352,9 @@ export class ContractComponent implements OnInit, AfterViewInit {
 
   private handle_editUser(data: any) {
     this._adapter.setLocale('pt-BR');
+    this.disableInput = true;
     this.signedContractId = data.signedContractId;
+    this.contractform.get('individualName').setValue(data.contractHolder.individualName)
 
 
     let i;

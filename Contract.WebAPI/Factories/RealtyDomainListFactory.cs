@@ -10,6 +10,9 @@ namespace Contract.WebAPI.Factories
     {
         public List<RealtyDomain> Create(List<RealtyViewModel> realtyViewModels)
         {
+            if (realtyViewModels == null)
+                return null;
+
             var realtiesDomain = new List<RealtyDomain>();
 
             foreach (var realty in realtyViewModels)

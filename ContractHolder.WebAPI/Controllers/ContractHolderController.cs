@@ -76,9 +76,7 @@ namespace ContractHolder.WebAPI.Controllers
                     Detail = errors
                 }
                 );
-            }
-
-            //SendWelcomeEmail(vm);         
+            }      
         }
 
         /// <summary>
