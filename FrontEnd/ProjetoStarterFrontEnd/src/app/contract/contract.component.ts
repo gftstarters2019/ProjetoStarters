@@ -5,7 +5,7 @@ import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories, AfterVi
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
-import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialogConfig } from '@angular/material';
+import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialogConfig, MatDialog } from '@angular/material';
 import { GenericValidator } from '../Validations/GenericValidator';
 import { take, takeUntil, startWith, filter, map, debounceTime, switchMap, debounce } from 'rxjs/operators';
 
@@ -15,8 +15,8 @@ import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { ConfirmDialogModel, ConfirmationDialogComponent } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { ActionButtonComponent } from '../components/shared/action-button/action-button.component';
 
-import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 
@@ -41,15 +41,16 @@ export interface Holder {
   selector: 'app-contract',
   templateUrl: './contract.component.html',
   styleUrls: ['./contract.component.scss'],
-  providers:[ 
-    {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'},
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
 
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
 
   ]
 })
 export class ContractComponent implements OnInit, AfterViewInit {
+  
   public result: any = null;
   color = 'primary';
   beneficiaries: FormArray;
@@ -103,7 +104,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
     { value: 4, viewValue: ' Platinum' },
     { value: 5, viewValue: ' Diamond' },
   ];
-  dialog: any;
 
 
   constructor(
@@ -112,7 +112,8 @@ export class ContractComponent implements OnInit, AfterViewInit {
     private _snackBar: MatSnackBar,
     private contractService: ContractService,
     private localeService: BsLocaleService,
-    private _adapter: DateAdapter<any>
+    private _adapter: DateAdapter<any>,
+    public dialog: MatDialog,
   ) {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue' });
     localeService.use('pt-br');
@@ -151,7 +152,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
       debounceTime(300),
       map(input => {
         return this.holders.filter(holder => holder.individualName.includes(input))
-    
+
       })
     )
   }
@@ -503,6 +504,8 @@ export class ContractComponent implements OnInit, AfterViewInit {
     const message = `Do you really want to delete this contract?`;
 
     const dialogConfig = new MatDialogConfig();
+
+
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
     dialogConfig.disableClose = true;
@@ -530,7 +533,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
 
   private setup_gridOptions() {
     this.gridOption = {
@@ -625,11 +627,10 @@ export class ContractComponent implements OnInit, AfterViewInit {
               field: 'editDelete',
               lockPosition: true,
               cellRendererFramework: ActionButtonComponent,
-              cellClass: "cell-wrap-text",
               autoHeight: true,
               cellRendererParams: {
                 onEdit: this.handle_editUser.bind(this),
-                onDelete: this.handle_deleteUser.bind(this)
+                onDelete: this.handle_deleteUser.bind(this),
               }
             },
           ]
@@ -704,7 +705,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
         }
       }
       if (params.data.type === 4) {
-        res.detailGridOptions = { 
+        res.detailGridOptions = {
           columnDefs: [{
             headerName: "Realties Details",
             children: [

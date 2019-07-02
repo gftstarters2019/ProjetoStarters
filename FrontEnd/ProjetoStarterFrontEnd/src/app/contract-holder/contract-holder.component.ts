@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { BsDatepickerConfig, BsLocaleService} from 'ngx-bootstrap/datepicker';
 import {ContractHolderService} from 'src/app/dataService/contractHolder/contract-holder.service';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ActionButtonComponent } from '../components/shared/action-button/action-button.component';
 
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
@@ -123,11 +123,13 @@ bsConfig: Partial<BsDatepickerConfig>;
       })
     };
     const message = `Do you really want to delete this Contract Holder?`;
-
-    this.http.delete(`https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder/${id}`). subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage),()=> this.openSnackBar('Titular deletado com sucesso') );      
     
-
+    const dialogConfig = new MatDialogConfig();
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.hasBackdrop = true;
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '375px',

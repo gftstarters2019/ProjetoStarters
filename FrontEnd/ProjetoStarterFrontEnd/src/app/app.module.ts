@@ -39,8 +39,8 @@ import { RealtiesListComponent } from './AG-grid-List/realties-list/realties-lis
 import { MobileDeviceListComponent } from './AG-grid-List/mobile-device-list/mobile-device-list.component';
 import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
-import { ActionButtonComponent } from './components/shared/action-button/action-button.component';
 import { ActionButtonBeneficiariesComponent } from './components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+import { ActionButtonComponent } from './components/shared/action-button/action-button.component';
 
 
 @NgModule({
