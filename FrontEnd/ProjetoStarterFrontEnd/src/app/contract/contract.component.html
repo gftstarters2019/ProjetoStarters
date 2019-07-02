@@ -8,26 +8,10 @@
   <form [formGroup]="contractform" (ngSubmit)="onSubmit()">
     <div class="contractCard">
 
-
-
-      <!-- 
-      <div>
-        <mat-card class="contractHolderName">
-          <mat-form-field style="width: 350px;">
-            <input type="text" placeholder="Contract Holder's name:" aria-label="Number" matInput
-              [formControl]="contractHolderIdT" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let holder of filteredHolder | async" [value]="holder.individualName">
-                {{holder.individualName}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </mat-card>
-      </div> -->
-      <div>
+      <div *ngIf="disableInput == false">
       <mat-card class="contractHolderName">
       <mat-form-field class="example-full-width" style="width: 350px;">
-        <input type="text" placeholder="Contract Holder's name:" aria-label="Assignee" matInput [formControl]="control_autocomplete"
+        <input type="text" placeholder="Contract Holder's name:" aria-label="Assignee"  formControlName="individualName" name="data.contractHolder.individualName" matInput [formControl]="control_autocomplete"
           [matAutocomplete]="auto">
 
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="handle_autocompleteSelect($event)">
@@ -39,7 +23,13 @@
     </mat-card>
     </div>
 
-
+    <div *ngIf="disableInput == true">
+      <mat-card class="contractHolderName">
+      <mat-form-field class="example-full-width" style="width: 350px;">
+        <input type="text" placeholder="Contract Holder's name:" aria-label="Assignee"  formControlName="individualName" matInput  readonly="readonly" >
+      </mat-form-field>
+    </mat-card>
+    </div>
 
       <mat-card>
         <mat-form-field>
