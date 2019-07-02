@@ -39,8 +39,8 @@
       
           <mat-form-field class="select-type" style="width: 350px;">
             <mat-select formControlName="addressType"  placeholder="Select Type" required>
-              <mat-option value="Commercial">Commercial</mat-option>
-              <mat-option value="Home">Home</mat-option>
+              <mat-option [value]="0">Commercial</mat-option>
+              <mat-option [value]="1">Home</mat-option>
             </mat-select>
             
           </mat-form-field>

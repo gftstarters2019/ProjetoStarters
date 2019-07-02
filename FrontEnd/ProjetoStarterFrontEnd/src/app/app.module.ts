@@ -15,7 +15,6 @@ import { ContractHolderComponent } from './contract-holder/contract-holder.compo
 import { SidebarComponent } from './sidebar/sidebar.component';
 
 import { BeneficiaryListComponent } from './beneficiary-list/beneficiary-list.component';
-import { BeneficiarylistAddComponent } from './beneficiarylist-add/beneficiarylist-add.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -53,7 +52,6 @@ import { ActionButtonBeneficiariesComponent } from './components/shared/action-b
     BeneficiaryListComponent,
     SidebarComponent,
 
-    BeneficiarylistAddComponent,
     TelephoneComponent,
     ActionButtonComponent,
     TelephoneComponent,

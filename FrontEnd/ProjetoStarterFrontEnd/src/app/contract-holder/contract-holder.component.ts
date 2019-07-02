@@ -73,7 +73,6 @@ bsConfig: Partial<BsDatepickerConfig>;
     this.setup_gridData();
     this.setup_gridOptions();
     this.setup_form();
-    this.setup_form();
   }
 
   ngAfterViewInit() {

@@ -242,6 +242,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
           petBreed: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName))
         }));
       }
+
       if (this.cType == 4) {
         this.beneficiaries.push(this.fb.group({
           municipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -259,6 +260,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
           addressComplement: ['']
         }));
       }
+
       if (this.cType == 5) {
         this.beneficiaries.push(this.fb.group({
           vehicleBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -272,6 +274,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
           vehicleDoneInspection: new FormControl(false)
         }));
       }
+
       if (this.cType == 6) {
         this.beneficiaries.push(this.fb.group({
           mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -406,7 +409,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
     }
     if (data.type == 4) {
 
-
       this.cType = data.type;
       let realtyControl = this.contractform.controls.auxBeneficiaries as FormArray;
       for (i = 0; i < realtyControl.length; i++) {
@@ -480,7 +482,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
       }
     }
   }
-
 
 
   zipCodeValidation(control: AbstractControl): { [key: string]: boolean } | null {

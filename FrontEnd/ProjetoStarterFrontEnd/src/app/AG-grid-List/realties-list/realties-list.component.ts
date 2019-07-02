@@ -79,7 +79,7 @@ export class RealtiesListComponent implements OnInit {
       columnDefs: [
         {
           headerName: 'Type',
-          field: 'address.addressType',
+          field: 'addressType',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -89,7 +89,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Street',
-          field: 'address.addressStreet',
+          field: 'addressStreet',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -98,7 +98,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'No.',
-          field: 'address.addressNumber',
+          field: 'addressNumber',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -107,7 +107,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Complement',
-          field: 'address.addressComplement',
+          field: 'addressComplement',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -116,7 +116,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Neighborhood',
-          field: 'address.addressNeighborhood',
+          field: 'addressNeighborhood',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -125,7 +125,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'City',
-          field: 'address.addressCity',
+          field: 'addressCity',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -134,7 +134,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'State',
-          field: 'address.addressState',
+          field: 'addressState',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -144,7 +144,7 @@ export class RealtiesListComponent implements OnInit {
 
         {
           headerName: 'Country',
-          field: 'address.addressCountry',
+          field: 'addressCountry',
           lockPosition: true,
           sortable: true,
           filter: true,
@@ -153,7 +153,7 @@ export class RealtiesListComponent implements OnInit {
         },
         {
           headerName: 'Zip-Code',
-          field: 'address.addressZipCode',
+          field: 'addressZipCode',
           lockPosition: true,
           sortable: true,
           filter: true,
