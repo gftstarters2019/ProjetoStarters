@@ -321,7 +321,7 @@ export class ContractComponent implements OnInit {
 
   onSubmit() {
     let form = JSON.stringify(this.contractform.value);
-    //debugger;
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -344,7 +344,6 @@ export class ContractComponent implements OnInit {
     this.disableInput = true;
     this.signedContractId = data.signedContractId;
     this.contractform.get('individualName').setValue(data.contractHolder.individualName)
-    debugger;
 
 
     let i;
@@ -394,7 +393,6 @@ export class ContractComponent implements OnInit {
       this.contractform.removeControl('realties');
       this.contractform.removeControl('vehicles');
       this.contractform.removeControl('mobileDevices');
-      debugger;
       this.contractform.patchValue(data)
       const hasMaxPets = petControl.length >= 5;
       if (!hasMaxPets) {
