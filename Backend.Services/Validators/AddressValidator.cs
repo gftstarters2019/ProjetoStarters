@@ -17,10 +17,7 @@ namespace Backend.Services.Validators
 
             if (!new Regex("^\\d{8}?$").IsMatch(address.AddressZipCode))
                 errors.Add($"{address.AddressZipCode}:Zip inválido! ");
-
-            if (!regexLetters.IsMatch(address.AddressComplement))
-                errors.Add($"{address.AddressComplement}: Complemento Inválido! ");
-
+            
             if (!regexLetters.IsMatch(address.AddressNeighborhood) && string.IsNullOrWhiteSpace(address.AddressNeighborhood))
                 errors.Add($"{address.AddressNeighborhood}: Bairro Inválido! ");
 
