@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { ActionButtonBeneficiariesComponent } from '../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+import { ActionButtonBeneficiariesComponent } from '../../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
 
 @Component({
   selector: 'app-individual-list',
@@ -34,10 +34,6 @@ export class IndividualListComponent implements OnInit {
     this.paginationPageSize = 50;
 
     this.individual = this.http.get<Array<any>>('https://beneficiariesapi.azurewebsites.net/api/Beneficiary/Individuals');
-  }
-
-  private handle_editUser(data: any) {
-    //this.contractform.patchValue(data);
   }
 
   private handle_deleteUser(data: any) {
@@ -155,7 +151,6 @@ export class IndividualListComponent implements OnInit {
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-
   }
 }
 

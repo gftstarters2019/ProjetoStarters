@@ -17,6 +17,9 @@ export class IndividualComponent implements OnInit {
 
   bsConfig: Partial<BsDatepickerConfig>;
 
+  public cpfMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+  public rgMask= [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /[X0-9]/]
+  
   constructor(private fb: FormBuilder) {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue' });
 

@@ -24,6 +24,7 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+    "@ng-bootstrap/ng-bootstrap": "^5.0.0-rc.1",
     "@oasisdigital/angular-material-search-select": "^0.14.0",
     "ag-grid-angular": "^20.2.0",
     "ag-grid-community": "^20.2.0",

@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
-import { ActionButtonBeneficiariesComponent } from '../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+import { ActionButtonBeneficiariesComponent } from '../../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
 
 
 @Component({
@@ -32,10 +32,6 @@ export class VehicleListComponent implements OnInit {
     this.setup_gridOptions();
     this.paginationPageSize = 50;
   }
-
-  private handle_editUser(data: any) {
-    //this.contractform.patchValue(data);
-    }
   
     private handle_deleteUser(data: any) {
       const id = data.beneficiaryId;
@@ -175,7 +171,6 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           cellRendererFramework: ActionButtonBeneficiariesComponent,
           cellRendererParams: {
-            onEdit: this.handle_editUser.bind(this),
               onDelete: this.handle_deleteUser.bind(this)
           }
         },

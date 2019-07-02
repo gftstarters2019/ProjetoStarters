@@ -1,3 +1,4 @@
+import { TextMaskModule } from 'angular2-text-mask';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories, AfterViewInit } from '@angular/core';
@@ -5,18 +6,18 @@ import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractCon
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialogConfig } from '@angular/material';
-import { Location } from '@angular/common';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GenericValidator } from '../Validations/GenericValidator';
 import { take, takeUntil, startWith, filter, map, debounceTime, switchMap, debounce } from 'rxjs/operators';
-import { Data } from '@angular/router';
 
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ContractService } from 'src/app/dataService/contract/contract.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
-import { listLocales } from 'ngx-bootstrap/chronos';
 import { ConfirmDialogModel, ConfirmationDialogComponent } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { ActionButtonComponent } from '../components/shared/action-button/action-button.component';
+
+import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
 
 
 export interface Type {
@@ -39,7 +40,14 @@ export interface Holder {
 @Component({
   selector: 'app-contract',
   templateUrl: './contract.component.html',
-  styleUrls: ['./contract.component.scss']
+  styleUrls: ['./contract.component.scss'],
+  providers:[ 
+    {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'},
+
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+
+  ]
 })
 export class ContractComponent implements OnInit, AfterViewInit {
   public result: any = null;
@@ -102,9 +110,9 @@ export class ContractComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private _snackBar: MatSnackBar,
-    private location: Location,
     private contractService: ContractService,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private _adapter: DateAdapter<any>
   ) {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue' });
     localeService.use('pt-br');
@@ -318,7 +326,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     let form = JSON.stringify(this.contractform.value);
-    debugger;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -338,12 +345,8 @@ export class ContractComponent implements OnInit, AfterViewInit {
   }
 
   private handle_editUser(data: any) {
-    data.expiryDate = new Date(data.expiryDate).toLocaleDateString('pt-br');
-
+    this._adapter.setLocale('pt-BR');
     this.signedContractId = data.signedContractId;
-    // this.contractform.patchValue(data)
-
-
 
 
     let i;
@@ -367,8 +370,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
       if (!hasMaxIndividuals) {
         if (data.individuals != '') {
           for (i = 0; i < data.individuals.length; i++) {
-            data.individuals[i].individualBirthdate = new Date(data.individuals[i].individualBirthdate).toLocaleDateString('pt-br');
-
             individualControl.push(this.fb.group(data.individuals[i]));
 
           }
@@ -397,12 +398,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
       if (!hasMaxPets) {
         if (data.pets != '') {
           for (j = 0; j < data.pets.length; j++) {
-            data.pets[i].petBirthdate = new Date(data.pets[i].petBirthdate).toLocaleDateString('pt-br');
-
             petControl.push(this.fb.group(data.pets[j]));
-
-
-
           }
 
         }
@@ -427,7 +423,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
       if (!hasMaxRealties) {
         if (data.realties != '') {
           for (i = 0; i < data.realties.length; i++) {
-            data.realties[i].constructionDate = new Date(data.realties[i].constructionDate).toLocaleDateString('pt-br');
             realtyControl.push(this.fb.group(data.realties[i]));
           }
 
@@ -453,9 +448,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
       if (!hasMaxVehicle) {
         if (data.vehicles != '') {
           for (i = 0; i < data.vehicles.length; i++) {
-            data.vehicles[i].vehicleModelYear = new Date(data.vehicles[i].vehicleModelYear).toLocaleDateString('pt-br');
-            data.vehicles[i].vehicleManufactoringYear = new Date(data.vehicles[i].vehicleManufactoringYear).toLocaleDateString('pt-br');
-
             vehicleControl.push(this.fb.group(data.vehicles[i]));
           }
 
@@ -481,8 +473,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
       if (!hasMaxmobileDevices) {
         if (data.mobileDevices != '') {
           for (i = 0; i < data.mobileDevices.length; i++) {
-            data.mobileDevices[i].mobileDeviceManufactoringYear = new Date(data.mobileDevices[i].mobileDeviceManufactoringYear).toLocaleDateString('pt-br');
-
             mobileDeviceControl.push(this.fb.group(data.mobileDevices[i]));
           }
 
@@ -545,7 +535,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
     this.gridOption = {
       rowSelection: 'single',
 
-      // onRowSelected: this.onRowSelected.bind(this),
       masterDetail: true,
       columnDefs: [
         {
@@ -611,7 +600,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
               sortable: true,
               filter: true,
               cellRenderer: (data) => {
-                return data.value ? (new Date(data.value)).toLocaleDateString("pt-br") : '';
+                return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
               },
               cellClass: "cell-wrap-text",
               autoHeight: true,
@@ -698,7 +687,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
               { headerName: 'Species ', field: "petSpecies", minWidth: 180, valueFormatter: SpeciesFormmatter },
               {
                 headerName: 'Birthdate ', field: "petBirthdate", minWidth: 115, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
             ]
@@ -729,7 +718,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
               { headerName: 'Zip-Code', field: "addressZipCode", minWidth: 125, },
               {
                 headerName: 'Construction Date', field: "constructionDate", minWidth: 165, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
               { headerName: 'Municipal Registration', field: "municipalRegistration", minWidth: 195, },
@@ -757,12 +746,12 @@ export class ContractComponent implements OnInit, AfterViewInit {
               { headerName: 'Color', field: "vehicleColor", valueFormatter: colorFormatter, minWidth: 110, },
               {
                 headerName: 'Manufactoring Year', field: "vehicleManufactoringYear", minWidth: 100, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
               {
                 headerName: 'Model Year', field: "vehicleModelYear", minWidth: 135, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
               { headerName: 'No. Chassis', field: "vehicleChassisNumber", minWidth: 160, },
@@ -791,7 +780,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
               { headerName: 'Device Type', field: "mobileDeviceType", valueFormatter: DeviceFormatter, minWidth: 135, },
               {
                 headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear", minWidth: 176, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
               { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber", minWidth: 180, },
@@ -808,8 +797,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
           },
         }
       }
-
-
       return res;
     }
   }
@@ -835,13 +822,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
     this.rowData$ = this.contractService.get_contract();
   }
   private onCellEdit(params: any) {
-    // private onRowSelected(event: RowSelectedEvent) {
 
-    //   const { data } = event;
-    //   this.contractform.getRawValue();
-    //   console.log(data);
-    //   this.contractform.patchValue(data);
-    // }
   }
 }
 //Function Formatting Category

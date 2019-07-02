@@ -1,7 +1,7 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Validators, FormBuilder, FormArray, FormGroup, AbstractControl, MaxLengthValidator } from '@angular/forms';
-import { GridOptions, ColDef, RowSelectedEvent, RowClickedEvent } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { Location } from '@angular/common';
 import { GenericValidator } from '../Validations/GenericValidator';
@@ -12,6 +12,10 @@ import {ContractHolderService} from 'src/app/dataService/contractHolder/contract
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
 import { ActionButtonComponent } from '../components/shared/action-button/action-button.component';
+
+import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
 
 
 @Component({
@@ -29,9 +33,6 @@ bsConfig: Partial<BsDatepickerConfig>;
 
   public result: any;
 
-
-
-  private columnDefs: Array<ColDef>;
   rowData$: Observable<Array<any>>;
   detailCellRendererParams;
   gridApi;
@@ -53,7 +54,10 @@ bsConfig: Partial<BsDatepickerConfig>;
     public dialog: MatDialog,
     private localeService: BsLocaleService,
     private _snackBar: MatSnackBar, 
-    private location: Location) 
+    private location: Location,
+    private _adapter: DateAdapter<any>,
+
+    ) 
     {
     this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
     localeService.use('pt-br');
@@ -76,10 +80,9 @@ bsConfig: Partial<BsDatepickerConfig>;
   }
 
   private handle_editUser(data: any) {
-
+   
+    this._adapter.setLocale('pt-BR');
     this.IndividualId = data.individualId;
-    //data.individualBirthdate = Date.parse(DateString);
-    data.individualBirthdate = new Date(data.individualBirthdate).toLocaleDateString('pt-br');
     this.contractHolder.patchValue(data);
     
     let telephoneControl =  this.contractHolder.controls.idTelephone as FormArray;
@@ -324,12 +327,9 @@ bsConfig: Partial<BsDatepickerConfig>;
           onCellValueChanged: this.onCellEdit.bind(this),
           cellRenderer: (data) => {
 
-            return data.value ? (new Date(data.value)).toLocaleDateString('pt-br') : '';
+            return data.value ? (new Date(data.value)).toLocaleDateString("pt-br") : '';
           }, 
-
-
         },
-
         {
           headerName: 'Email',
           field: 'individualEmail',
@@ -348,24 +348,15 @@ bsConfig: Partial<BsDatepickerConfig>;
           },
 
         },
-
       ],
-
-
       detailCellRendererParams: {
-
-
         getDetailRowData: function (params) {
           params.successCallback(params.data.idAddress);
         },
-
-
       },
       onGridReady: this.onGridReady.bind(this)
     }
   }
-
-
 
   onGridReady(params) {
     this.gridApi = params.api;
@@ -374,9 +365,7 @@ bsConfig: Partial<BsDatepickerConfig>;
 
   private setup_gridData() {
 
-    //get
     this.rowData$ = this.contractHolderService.get_contractHolder();
-
   }
 
   private onCellEdit(params: any) {

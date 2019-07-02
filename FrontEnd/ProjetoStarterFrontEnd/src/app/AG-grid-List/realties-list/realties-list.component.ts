@@ -4,9 +4,9 @@ import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfirmationDialogComponent, ConfirmDialogModel } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent, ConfirmDialogModel } from '../../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { ActionButtonBeneficiariesComponent } from '../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+import { ActionButtonBeneficiariesComponent } from '../../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
 
 @Component({
   selector: 'app-realties-list',

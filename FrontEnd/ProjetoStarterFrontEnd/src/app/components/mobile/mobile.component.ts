@@ -1,19 +1,20 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { GenericValidator } from '../Validations/GenericValidator';
 import { BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
+import { GenericValidator } from 'src/app/Validations/GenericValidator';
 
 export interface MobileType {
   value: string;
   name: string;
 }
 
+
 @Component({
-  selector: 'app-beneficiary-mobile-device',
-  templateUrl: './beneficiary-mobile-device.component.html',
-  styleUrls: ['./beneficiary-mobile-device.component.scss']
+  selector: 'app-mobile',
+  templateUrl: './mobile.component.html',
+  styleUrls: ['./mobile.component.scss']
 })
-export class BeneficiaryMobileDeviceComponent implements OnInit {
+export class MobileComponent implements OnInit {
 
   @Input() mobileForm: FormGroup;
 
@@ -33,6 +34,7 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
     mobileDeviceInvoiceValue: new FormControl('', GenericValidator.negativeValidation())
   });
 
+
   constructor(private formBuilder: FormBuilder) {
     this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
 
@@ -44,8 +46,6 @@ export class BeneficiaryMobileDeviceComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.mobilePushPermission.currentValue != 0 && changes.mobilePushPermission.currentValue != changes.mobilePushPermission.previousValue) {
-      // let manufactoringYear = this.mobileForm.get('mobileDeviceManufactoringYear').value;
-      // this.mobileForm.get('mobileDeviceManufactoringYear').setValue(new Date(manufactoringYear));
       this.messageMobileEvent.emit(this.mobileForm);
     }
   }

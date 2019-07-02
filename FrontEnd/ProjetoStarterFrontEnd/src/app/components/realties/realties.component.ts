@@ -1,14 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormControl, Validators, FormBuilder, AbstractControl, FormGroup } from '@angular/forms';
-import { GenericValidator } from '../Validations/GenericValidator';
 import { BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
 
 @Component({
-  selector: 'app-beneficiary-realty',
-  templateUrl: './beneficiary-realty.component.html',
-  styleUrls: ['./beneficiary-realty.component.scss']
+  selector: 'app-realties',
+  templateUrl: './realties.component.html',
+  styleUrls: ['./realties.component.scss']
 })
-export class BeneficiaryRealtyComponent implements OnInit {
+export class RealtiesComponent implements OnInit {
 
   zipCodeMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
 
@@ -20,21 +19,6 @@ export class BeneficiaryRealtyComponent implements OnInit {
   
   bsConfig: Partial<BsDatepickerConfig>;
 
-  realtyCreateForm= this.formBuilder.group({
-    municipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
-    constructionDate: new FormControl('', GenericValidator.dateValidation()),
-    saleValue: new FormControl('', GenericValidator.negativeValidation()),
-    marketValue: new FormControl('', GenericValidator.negativeValidation()),
-    addressStreet: ['', Validators.pattern(GenericValidator.regexSimpleName)],
-    addressType: ['', Validators.required],
-    addressNumber: ['', [Validators.pattern(/^[0-9]+$/), Validators.maxLength(4)]],
-    addressState: ['', [Validators.pattern(/^[[A-Z]+$/), Validators.maxLength(2), Validators.minLength(2)]],
-    addressNeighborhood: [ '', Validators.pattern(GenericValidator.regexSimpleName)],
-    addressCountry: ['', Validators.pattern(GenericValidator.regexSimpleName)],
-    addressZipCode: ['', this.zipCodeValidation],
-    addressCity: [''],
-    addressComplement: ['']
-  });
 
   constructor(private formBuilder: FormBuilder) { 
     this.bsConfig = Object.assign({}, {containerClass: 'theme-dark-blue'});
