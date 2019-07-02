@@ -27,12 +27,12 @@
       </mat-form-field> <br>
 
       <mat-form-field style="width: 250px;">
-        <input matInput [matDatepicker]="picker" placeholder="Birthdate" maxlength="100" id="individualBirthdate" formControlName="individualBirthdate" required>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error>Date is invalid!</mat-error>
-      </mat-form-field>
-
+          <input matInput [matDatepicker]="picker" placeholder="Birthdate" maxlength="100"
+          name="picker" formControlName="individualBirthdate" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Date is invalid!</mat-error>
+        </mat-form-field>
 
       <mat-form-field style="width: 350px;">
         <input matInput placeholder="Email" name="individualEmail" maxlength="100" type="email" maxlength="30"

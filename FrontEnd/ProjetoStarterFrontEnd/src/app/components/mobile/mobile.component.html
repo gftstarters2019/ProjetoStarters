@@ -1,0 +1,50 @@
+<form [formGroup]="mobileForm">
+    <div class="container">
+  
+      <div class="flex-wrapper">
+        <mat-form-field style="width: 30%;">
+          <input matInput placeholder="Brand" name="mobileDeviceBrand" maxlength="100" formControlName="mobileDeviceBrand"
+            required>
+          <mat-error>Brand is invalid!</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field style="width: 30%;">
+          <input matInput placeholder="Model" name="mobileDeviceModel" maxlength="100" formControlName="mobileDeviceModel"
+            required>
+          <mat-error>Model is invalid!</mat-error>
+        </mat-form-field>
+  
+  
+        <mat-form-field style="width: 30%;">
+          <input matInput [matDatepicker]="picker" maxlength="100" placeholder="Manufactoring Year"
+            name="mobileDeviceManufactoringYear" formControlName="mobileDeviceManufactoringYear" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Date is invalid!</mat-error>
+        </mat-form-field>
+      </div>
+  
+      <div class="flex-wrapper">
+        <mat-form-field style="width: 30%;">
+          <input matInput placeholder="Serial Number" maxlength="100" name="mobileDeviceSerialNumber"
+            formControlName="mobileDeviceSerialNumber" required>
+          <mat-error>Seria is invalid!</mat-error>
+        </mat-form-field>
+  
+        <mat-form-field style="width: 30%;">
+          <mat-label>Type</mat-label>
+          <mat-select name="mobileDeviceType" formControlName="mobileDeviceType" required>
+            <mat-option [value]="0">Smartphone</mat-option>
+            <mat-option [value]="1">Tablet</mat-option>
+            <mat-option [value]="2">Laptop</mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field style="width: 30%;" class="positionMarFormField">
+          <input matInput type="number" placeholder="Invoice Value" name="mobileDeviceInvoiceValue"
+            formControlName="mobileDeviceInvoiceValue" required>
+          <mat-error>Invoice value is invalid!</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
