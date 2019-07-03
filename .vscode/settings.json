@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/f9ef2927-27f1-4076-86d1-56ca1f4084ea/resourceGroups/HealthAndInsuranceWebApp/providers/Microsoft.Web/sites/gftstarters2019",
+    "appService.deploySubpath": "FrontEnd\\ProjetoStarterFrontEnd\\dist\\project-contractform"
+}

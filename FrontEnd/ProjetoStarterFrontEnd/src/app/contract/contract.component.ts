@@ -1,22 +1,23 @@
+import { TextMaskModule } from 'angular2-text-mask';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories } from '@angular/core';
+import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories, AfterViewInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
-import { ActionButtonComponent } from '../action-button/action-button.component';
-import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialog, MatDialogConfig } from '@angular/material';
-import { Location } from '@angular/common';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialogConfig, MatDialog } from '@angular/material';
 import { GenericValidator } from '../Validations/GenericValidator';
 import { take, takeUntil, startWith, filter, map, debounceTime, switchMap, debounce } from 'rxjs/operators';
-import { Data } from '@angular/router';
 
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ContractService } from 'src/app/dataService/contract/contract.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
-//import { listLocales } from 'ngx-bootstrap/chronos';
 import { ConfirmDialogModel, ConfirmationDialogComponent } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
+import { ActionButtonComponent } from '../components/shared/action-button/action-button.component';
+
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
 
 
 export interface Type {
@@ -39,9 +40,17 @@ export interface Holder {
 @Component({
   selector: 'app-contract',
   templateUrl: './contract.component.html',
-  styleUrls: ['./contract.component.scss']
+  styleUrls: ['./contract.component.scss'],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+
+  ]
 })
-export class ContractComponent implements OnInit {
+export class ContractComponent implements OnInit, AfterViewInit {
+  
   public result: any = null;
   color = 'primary';
   beneficiaries: FormArray;
@@ -68,6 +77,7 @@ export class ContractComponent implements OnInit {
   load_failure: boolean;
   holders: Holder[];
   locale = 'pt-br';
+  disableInput: boolean = false;
 
   message: number = 0;
   filteredHolder$: Observable<Holder[]>;
@@ -101,10 +111,10 @@ export class ContractComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private _snackBar: MatSnackBar,
-    private location: Location,
     private contractService: ContractService,
     private localeService: BsLocaleService,
-    public dialog: MatDialog
+    private _adapter: DateAdapter<any>,
+    public dialog: MatDialog,
   ) {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue' });
     localeService.use('pt-br');
@@ -131,6 +141,8 @@ export class ContractComponent implements OnInit {
 
 
   }
+  ngAfterViewInit() {
+  }
 
   displayFn(holder?: Holder): string | undefined {
     return holder ? holder.individualName : undefined;
@@ -141,7 +153,7 @@ export class ContractComponent implements OnInit {
       debounceTime(300),
       map(input => {
         return this.holders.filter(holder => holder.individualName.includes(input))
-    
+
       })
     )
   }
@@ -155,10 +167,11 @@ export class ContractComponent implements OnInit {
   private setup_form() {
     this.contractform = this.fb.group({
       contractHolderId: ['', Validators.required],
+      individualName: [''],
       type: ['', Validators.required],
       category: ['', Validators.required],
       expiryDate: ['', Validators.required],
-      isActive: ['true', Validators.required],
+      isActive: ['', Validators.required],
       individuals: this.fb.array([]),
       pets: this.fb.array([]),
       realties: this.fb.array([]),
@@ -175,9 +188,6 @@ export class ContractComponent implements OnInit {
     });
   }
 
-  log(){
-    console.log(this.contractform);
-  }
   public assignContractType(): void {
     let i = 0;
     this.cType = this.contractform.get(['type']).value;
@@ -235,6 +245,7 @@ export class ContractComponent implements OnInit {
           petBreed: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName))
         }));
       }
+
       if (this.cType == 4) {
         this.beneficiaries.push(this.fb.group({
           municipalRegistration: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -252,6 +263,7 @@ export class ContractComponent implements OnInit {
           addressComplement: ['']
         }));
       }
+
       if (this.cType == 5) {
         this.beneficiaries.push(this.fb.group({
           vehicleBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -265,6 +277,7 @@ export class ContractComponent implements OnInit {
           vehicleDoneInspection: new FormControl(false)
         }));
       }
+
       if (this.cType == 6) {
         this.beneficiaries.push(this.fb.group({
           mobileDeviceBrand: new FormControl('', Validators.pattern(GenericValidator.regexSimpleName)),
@@ -319,7 +332,6 @@ export class ContractComponent implements OnInit {
 
   onSubmit() {
     let form = JSON.stringify(this.contractform.value);
-    //debugger;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -339,12 +351,10 @@ export class ContractComponent implements OnInit {
   }
 
   private handle_editUser(data: any) {
-    //data.expiryDate = new Date(data.expiryDate).toLocaleDateString('pt-br');
-
+    this._adapter.setLocale('pt-BR');
+    this.disableInput = true;
     this.signedContractId = data.signedContractId;
-    // this.contractform.patchValue(data)
-
-
+    this.contractform.get('individualName').setValue(data.contractHolder.individualName)
 
 
     let i;
@@ -368,11 +378,7 @@ export class ContractComponent implements OnInit {
       if (!hasMaxIndividuals) {
         if (data.individuals != '') {
           for (i = 0; i < data.individuals.length; i++) {
-            //data.individuals[i].individualBirthdate = new Date(data.individuals[i].individualBirthdate).toLocaleDateString('pt-br');
-            data.individuals[i].individualBirthdate
             individualControl.push(this.fb.group(data.individuals[i]));
-
-
 
           }
         }
@@ -394,23 +400,19 @@ export class ContractComponent implements OnInit {
       this.contractform.removeControl('realties');
       this.contractform.removeControl('vehicles');
       this.contractform.removeControl('mobileDevices');
-      debugger;
+
       this.contractform.patchValue(data)
       const hasMaxPets = petControl.length >= 5;
       if (!hasMaxPets) {
         if (data.pets != '') {
           for (j = 0; j < data.pets.length; j++) {
-            //data.pets[j].petBirthdate = new Date(data.pets[j].petBirthdate).toLocaleDateString('pt-br');
             petControl.push(this.fb.group(data.pets[j]));
-
-
           }
 
         }
       }
     }
     if (data.type == 4) {
-
 
       this.cType = data.type;
       let realtyControl = this.contractform.controls.auxBeneficiaries as FormArray;
@@ -428,7 +430,6 @@ export class ContractComponent implements OnInit {
       if (!hasMaxRealties) {
         if (data.realties != '') {
           for (i = 0; i < data.realties.length; i++) {
-            //data.realties[i].constructionDate = new Date(data.realties[i].constructionDate).toLocaleDateString('pt-br');
             realtyControl.push(this.fb.group(data.realties[i]));
           }
 
@@ -454,9 +455,6 @@ export class ContractComponent implements OnInit {
       if (!hasMaxVehicle) {
         if (data.vehicles != '') {
           for (i = 0; i < data.vehicles.length; i++) {
-            //data.vehicles[i].vehicleModelYear = new Date(data.vehicles[i].vehicleModelYear).toLocaleDateString('pt-br');
-            //data.vehicles[i].vehicleManufactoringYear = new Date(data.vehicles[i].vehicleManufactoringYear).toLocaleDateString('pt-br');
-
             vehicleControl.push(this.fb.group(data.vehicles[i]));
           }
 
@@ -482,8 +480,6 @@ export class ContractComponent implements OnInit {
       if (!hasMaxmobileDevices) {
         if (data.mobileDevices != '') {
           for (i = 0; i < data.mobileDevices.length; i++) {
-            //data.mobileDevices[i].mobileDeviceManufactoringYear = new Date(data.mobileDevices[i].mobileDeviceManufactoringYear).toLocaleDateString('pt-br');
-
             mobileDeviceControl.push(this.fb.group(data.mobileDevices[i]));
           }
 
@@ -491,7 +487,6 @@ export class ContractComponent implements OnInit {
       }
     }
   }
-
 
 
   zipCodeValidation(control: AbstractControl): { [key: string]: boolean } | null {
@@ -543,12 +538,10 @@ export class ContractComponent implements OnInit {
     });
   }
 
-
   private setup_gridOptions() {
     this.gridOption = {
       rowSelection: 'single',
 
-      // onRowSelected: this.onRowSelected.bind(this),
       masterDetail: true,
       columnDefs: [
         {
@@ -614,7 +607,7 @@ export class ContractComponent implements OnInit {
               sortable: true,
               filter: true,
               cellRenderer: (data) => {
-                return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
               },
               cellClass: "cell-wrap-text",
               autoHeight: true,
@@ -638,21 +631,17 @@ export class ContractComponent implements OnInit {
               field: 'editDelete',
               lockPosition: true,
               cellRendererFramework: ActionButtonComponent,
-              cellClass: "cell-wrap-text",
               autoHeight: true,
               cellRendererParams: {
                 onEdit: this.handle_editUser.bind(this),
-                onDelete: this.handle_deleteUser.bind(this)
+                onDelete: this.handle_deleteUser.bind(this),
               }
             },
           ]
         },
       ]
     }
-
-    this.defaultColDef = { resizable: true };
-    this.colResizeDefault = "shift";
-    this.detailRowHeight = 400;
+    this.detailRowHeight = 350;
     this.detailCellRendererParams = function (params) {
       var res: any = {};
       res.getDetailRowData = function (params) {
@@ -678,7 +667,7 @@ export class ContractComponent implements OnInit {
               {
                 headerName: 'Birthdate ', field: "individualBirthdate", minWidth: 115,
                 cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-br") : '';
                 },
               },
               { headerName: 'Email ', field: "individualEmail", minWidth: 150, }
@@ -704,7 +693,7 @@ export class ContractComponent implements OnInit {
               { headerName: 'Species ', field: "petSpecies", minWidth: 180, valueFormatter: SpeciesFormmatter },
               {
                 headerName: 'Birthdate ', field: "petBirthdate", minWidth: 115, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
             ]
@@ -720,7 +709,7 @@ export class ContractComponent implements OnInit {
         }
       }
       if (params.data.type === 4) {
-        res.detailGridOptions = { 
+        res.detailGridOptions = {
           columnDefs: [{
             headerName: "Realties Details",
             children: [
@@ -735,7 +724,7 @@ export class ContractComponent implements OnInit {
               { headerName: 'Zip-Code', field: "addressZipCode", minWidth: 125, },
               {
                 headerName: 'Construction Date', field: "constructionDate", minWidth: 165, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
               { headerName: 'Municipal Registration', field: "municipalRegistration", minWidth: 195, },
@@ -763,12 +752,12 @@ export class ContractComponent implements OnInit {
               { headerName: 'Color', field: "vehicleColor", valueFormatter: colorFormatter, minWidth: 110, },
               {
                 headerName: 'Manufactoring Year', field: "vehicleManufactoringYear", minWidth: 100, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
               {
                 headerName: 'Model Year', field: "vehicleModelYear", minWidth: 135, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
               { headerName: 'No. Chassis', field: "vehicleChassisNumber", minWidth: 160, },
@@ -797,7 +786,7 @@ export class ContractComponent implements OnInit {
               { headerName: 'Device Type', field: "mobileDeviceType", valueFormatter: DeviceFormatter, minWidth: 135, },
               {
                 headerName: 'Manufactoring Year', field: "mobileDeviceManufactoringYear", minWidth: 176, cellRenderer: (data) => {
-                  return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+                  return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
               { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber", minWidth: 180, },
@@ -814,7 +803,6 @@ export class ContractComponent implements OnInit {
           },
         }
       }
-
       return res;
     }
   }
@@ -822,32 +810,25 @@ export class ContractComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumApi = params.columnApi;
 
-  setTimeout(function () {
-    var nodeA = params.api.getDisplayedRowAtIndex(1);
-    var nodeB = params.api.getDisplayedRowAtIndex(2);
-    var nodeC = params.api.getDisplayedRowAtIndex(3);
-    var nodeD = params.api.getDisplayedRowAtIndex(4);
-    var nodeE = params.api.getDisplayedRowAtIndex(5);
-    nodeA.setExpanded(true);
-    nodeB.setExpanded(true);
-    nodeC.setExpanded(true);
-    nodeD.setExpanded(true);
-    nodeE.setExpanded(true);
+    setTimeout(function () {
+      var nodeA = params.api.getDisplayedRowAtIndex(1);
+      var nodeB = params.api.getDisplayedRowAtIndex(2);
+      var nodeC = params.api.getDisplayedRowAtIndex(3);
+      var nodeD = params.api.getDisplayedRowAtIndex(4);
+      var nodeE = params.api.getDisplayedRowAtIndex(5);
+      nodeA.setExpanded(true);
+      nodeB.setExpanded(true);
+      nodeC.setExpanded(true);
+      nodeD.setExpanded(true);
+      nodeE.setExpanded(true);
 
-  }, 250);
-}
+    }, 250);
+  }
   private setup_gridData() {
-    this.rowData$ = this.http
-      .get<Array<any>>('https://contractgftapi.azurewebsites.net/api/Contract');
+    this.rowData$ = this.contractService.get_contract();
   }
   private onCellEdit(params: any) {
-    // private onRowSelected(event: RowSelectedEvent) {
 
-    //   const { data } = event;
-    //   this.contractform.getRawValue();
-    //   console.log(data);
-    //   this.contractform.patchValue(data);
-    // }
   }
 }
 //Function Formatting Category
