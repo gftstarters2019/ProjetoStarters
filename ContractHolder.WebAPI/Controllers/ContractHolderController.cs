@@ -69,7 +69,7 @@ namespace ContractHolder.WebAPI.Controllers
                 if (addedContractHolder == null)
                     return StatusCode(403);
                 //_busClient.SendMessageToQueue(new SendEmailContractHolder(contractHolderViewModel.individualEmail, contractHolderViewModel.individualName));
-                _busClient.PublishMessageToTopic(new EmailSentContractHolder(contractHolderViewModel.individualEmail, contractHolderViewModel.individualName));
+                _busClient.PublishMessageToTopic(new WelcomeEmailSent(contractHolderViewModel.individualEmail, contractHolderViewModel.individualName));
                 return Ok(FactoriesManager.ContractHolderViewModel.Create(addedContractHolder));
             }
             catch (Exception e)

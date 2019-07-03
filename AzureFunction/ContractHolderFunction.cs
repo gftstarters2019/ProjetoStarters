@@ -7,10 +7,10 @@ namespace AzureFunction
 {
     public static class ContractHolderFunction
     {
-        [FunctionName("EmailSentContractHolderFunction")]
-        public static void EmailSentContractHolder([ServiceBusTrigger("%ServiceBusTopicName%", "%ServiceBusSubscriptionName%", Connection = "ServiceBusConnectionString")]string emailSent, ILogger log)
+        [FunctionName("WelcomeEmailSentFunction")]
+        public static void WelcomeEmailSent([ServiceBusTrigger("%ServiceBusTopicName%", "%ServiceBusSubscriptionName%", Connection = "ServiceBusConnectionString")]string emailSent, ILogger log)
         {
-            var contractHolder = JsonConvert.DeserializeObject<EmailSentContractHolder>(emailSent);
+            var contractHolder = JsonConvert.DeserializeObject<WelcomeEmailSent>(emailSent);
             log.LogInformation($"C# ServiceBus queue trigger function processed message: {contractHolder.Email}");
         }
     }

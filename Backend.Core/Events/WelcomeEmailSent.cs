@@ -3,9 +3,9 @@ using System.Net.Mail;
 
 namespace Backend.Core.Events
 {
-    public class EmailSentContractHolder
+    public class WelcomeEmailSent
     {
-        public EmailSentContractHolder(string email, string name)
+        public WelcomeEmailSent(string email, string name)
         {
             Email = email;
             Name = name;

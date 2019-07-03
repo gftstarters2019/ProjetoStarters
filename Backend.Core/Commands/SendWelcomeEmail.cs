@@ -3,9 +3,9 @@ using System.Net.Mail;
 
 namespace Backend.Core.Commands
 {
-    public class SendEmailContractHolder
+    public class SendWelcomeEmail
     {
-        public SendEmailContractHolder (string email, string name)
+        public SendWelcomeEmail (string email, string name)
         {
             Email = email;
             Name = name;

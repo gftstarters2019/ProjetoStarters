@@ -1,5 +1,7 @@
 ﻿using Backend.Core.Domains;
 using Backend.Core.Enums;
+using Backend.Core.Events;
+using Backend.Infrastructure.ServiceBus.Contracts;
 using Backend.Services.Services.Interfaces;
 using Contract.WebAPI.Factories;
 using Contract.WebAPI.ViewModels;
@@ -18,13 +20,15 @@ namespace Contract.WebAPI.Controllers
     public class ContractController : ControllerBase
     {
         private readonly IService<CompleteContractDomain> _contractService;
+        private readonly IServiceBusClient _busClient;
 
         /// <summary>
         /// ContractController constructor
         /// </summary>
-        public ContractController(IService<CompleteContractDomain> contractService)
+        public ContractController(IService<CompleteContractDomain> contractService, IServiceBusClient busClient)
         {
             _contractService = contractService;
+            _busClient = busClient;
         }
 
         /// <summary>
@@ -94,6 +98,12 @@ namespace Contract.WebAPI.Controllers
                 var addedContract = _contractService.Save(contractToAdd);
                 if (addedContract == null)
                     return StatusCode(403);
+
+                if(contractToAdd.Individuals.Any())
+                    foreach (var ind in contractToAdd.Individuals)
+                    {
+                        _busClient.PublishMessageToTopic(new WelcomeEmailSent(ind.IndividualEmail, ind.IndividualName));
+                    }
 
                 return Ok(FactoriesManager.ContractViewModel.Create(addedContract));
             }
