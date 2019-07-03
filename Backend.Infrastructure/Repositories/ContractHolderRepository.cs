@@ -36,6 +36,7 @@ namespace Backend.Infrastructure.Repositories
             _beneficiaryAddressRepository = beneficiaryAddressRepository;
         }
 
+        #region Add
         public ContractHolderDomain Add(ContractHolderDomain contractHolder)
         {
             using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -43,74 +44,11 @@ namespace Backend.Infrastructure.Repositories
             {
                 if(contractHolder != null)
                 {
-                    // Add Individual
-                    contractHolder.Individual = ConvertersManager.IndividualConverter.Convert(
-                        _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
-                            contractHolder.Individual)));
+                    contractHolder.Individual = AddIndividual(contractHolder.Individual);
+                    
+                    contractHolder.IndividualTelephones = AddTelephones(contractHolder.IndividualTelephones, contractHolder.Individual.BeneficiaryId);
 
-                    if (contractHolder.Individual == null)
-                        throw new Exception("CPF já cadastrado! ");
-
-                    _individualsRepository.Save();
-
-                    // Add Telephones and Individual Telephones
-                    if (contractHolder.IndividualTelephones.Count > 5)
-                        throw new Exception("Quantidade máxima de telefones excedida! ");
-
-                    var addedTelephones = new List<TelephoneDomain>();
-                    foreach(var telephone in contractHolder.IndividualTelephones)
-                    {
-                        var addedTelephone = ConvertersManager.TelephoneConverter.Convert(
-                            _telephonesRepository.Add(ConvertersManager.TelephoneConverter.Convert(
-                                telephone)));
-
-                        var addedIndividualTelephone = _individualTelephonesRepository.Add(new IndividualTelephone()
-                        {
-                            BeneficiaryId = contractHolder.Individual.BeneficiaryId,
-                            TelephoneId = addedTelephone.TelephoneId
-                        });
-
-                        if (addedTelephone == null || addedIndividualTelephone == null)
-                            return null;
-
-                        addedTelephones.Add(addedTelephone);
-                    }
-                    if (addedTelephones.Count != contractHolder.IndividualTelephones.Count)
-                        return null;
-                    _telephonesRepository.Save();
-                    _individualTelephonesRepository.Save();
-
-
-                    contractHolder.IndividualTelephones = addedTelephones;
-
-                    // Add Addresses
-                    if (contractHolder.IndividualAddresses.Count > 3)
-                        throw new Exception("Quantidade máxima de endereços excedida! ");
-
-                    var addedAddresses = new List<AddressDomain>();
-                    foreach (var address in contractHolder.IndividualAddresses)
-                    {
-                        var addedAddress = ConvertersManager.AddressConverter.Convert(
-                            _addressRepository.Add(ConvertersManager.AddressConverter.Convert(
-                                address)));
-
-                        var addedBeneficiaryAddress = _beneficiaryAddressRepository.Add(new BeneficiaryAddress()
-                        {
-                            AddressId = addedAddress.AddressId,
-                            BeneficiaryId = contractHolder.Individual.BeneficiaryId
-                        });
-
-                        if (addedAddress == null || addedBeneficiaryAddress == null)
-                            return null;
-
-                        addedAddresses.Add(addedAddress);
-                    }
-                    if (addedAddresses.Count != contractHolder.IndividualAddresses.Count)
-                        return null;
-                    _addressRepository.Save();
-                    _beneficiaryAddressRepository.Save();
-
-                    contractHolder.IndividualAddresses = addedAddresses;
+                    contractHolder.IndividualAddresses = AddAddresses(contractHolder.IndividualAddresses, contractHolder.Individual.BeneficiaryId);
 
                     scope.Complete();
                     return contractHolder;
@@ -119,16 +57,95 @@ namespace Backend.Infrastructure.Repositories
             }
         }
 
+        private IndividualDomain AddIndividual(IndividualDomain individualToAdd)
+        {
+            var addedContractHolder = ConvertersManager.IndividualConverter.Convert(
+                        _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
+                            individualToAdd)));
+
+            if (addedContractHolder == null)
+                throw new Exception("CPF já cadastrado! ");
+
+            _individualsRepository.Save();
+
+            return addedContractHolder;
+        }
+
+        private List<TelephoneDomain> AddTelephones(List<TelephoneDomain> telephonesToAdd, Guid beneficiaryId)
+        {
+            if (telephonesToAdd.Count > 5)
+                throw new Exception("Quantidade máxima de telefones excedida! ");
+
+            var addedTelephones = new List<TelephoneDomain>();
+            foreach (var telephone in telephonesToAdd)
+            {
+                var addedTelephone = ConvertersManager.TelephoneConverter.Convert(
+                    _telephonesRepository.Add(ConvertersManager.TelephoneConverter.Convert(
+                        telephone)));
+
+                var addedIndividualTelephone = _individualTelephonesRepository.Add(new IndividualTelephone()
+                {
+                    BeneficiaryId = beneficiaryId,
+                    TelephoneId = addedTelephone.TelephoneId
+                });
+
+                if (addedTelephone == null || addedIndividualTelephone == null)
+                    return null;
+
+                addedTelephones.Add(addedTelephone);
+            }
+            if (addedTelephones.Count != telephonesToAdd.Count)
+                return null;
+
+            _telephonesRepository.Save();
+            _individualTelephonesRepository.Save();
+
+            return addedTelephones;
+        }
+
+        private List<AddressDomain> AddAddresses(List<AddressDomain> telephonesToAdd, Guid beneficiaryId)
+        {
+            if (telephonesToAdd.Count > 3)
+                throw new Exception("Quantidade máxima de endereços excedida! ");
+
+            var addedAddresses = new List<AddressDomain>();
+            foreach (var address in telephonesToAdd)
+            {
+                var addedAddress = ConvertersManager.AddressConverter.Convert(
+                    _addressRepository.Add(ConvertersManager.AddressConverter.Convert(
+                        address)));
+
+                var addedBeneficiaryAddress = _beneficiaryAddressRepository.Add(new BeneficiaryAddress()
+                {
+                    AddressId = addedAddress.AddressId,
+                    BeneficiaryId = beneficiaryId
+                });
+
+                if (addedAddress == null || addedBeneficiaryAddress == null)
+                    return null;
+
+                addedAddresses.Add(addedAddress);
+            }
+            if (addedAddresses.Count != telephonesToAdd.Count)
+                return null;
+
+            _addressRepository.Save();
+            _beneficiaryAddressRepository.Save();
+
+            return addedAddresses;
+        }
+        #endregion Add
+
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed)
             {
                 if (disposing)
                 {
                     _db.Dispose();
                 }
             }
-            this.disposed = true;
+            disposed = true;
         }
 
         public void Dispose()

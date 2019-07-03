@@ -139,12 +139,9 @@ namespace Backend.Infrastructure.Repositories
                     return null;
             }
         }
-        private IndividualDomain AddIndividual(IndividualDomain individual)
-        {
-            return ConvertersManager.IndividualConverter.Convert(
-                _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
-                    individual)));
-        }
+        private IndividualDomain AddIndividual(IndividualDomain individual) => ConvertersManager.IndividualConverter.Convert(
+            _individualsRepository.Add(ConvertersManager.IndividualConverter.Convert(
+                individual)));
 
         private List<IndividualDomain> AddIndividuals(List<IndividualDomain> individuals)
         {
@@ -169,11 +166,8 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private PetDomain AddPet(PetDomain pet)
-        {
-            return ConvertersManager.PetConverter.Convert(
+        private PetDomain AddPet(PetDomain pet) => ConvertersManager.PetConverter.Convert(
                 _petsRepository.Add(ConvertersManager.PetConverter.Convert(pet)));
-        }
 
         private List<PetDomain> AddPets(List<PetDomain> pets)
         {
@@ -198,11 +192,8 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private MobileDeviceDomain AddMobileDevice(MobileDeviceDomain mobileDevice)
-        {
-            return ConvertersManager.MobileDeviceConverter.Convert(
+        private MobileDeviceDomain AddMobileDevice(MobileDeviceDomain mobileDevice) => ConvertersManager.MobileDeviceConverter.Convert(
                 _mobileDevicesRepository.Add(ConvertersManager.MobileDeviceConverter.Convert(mobileDevice)));
-        }
 
         private List<MobileDeviceDomain> AddMobileDevices(List<MobileDeviceDomain> mobileDevices)
         {
@@ -227,11 +218,8 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private RealtyDomain AddRealty(RealtyDomain realty)
-        {
-            return ConvertersManager.RealtyConverter.Convert(
+        private RealtyDomain AddRealty(RealtyDomain realty) => ConvertersManager.RealtyConverter.Convert(
                 _realtiesRepository.Add(ConvertersManager.RealtyConverter.Convert(realty)));
-        }
 
         private List<RealtyDomain> AddRealties(List<RealtyDomain> realties)
         {
@@ -256,11 +244,8 @@ namespace Backend.Infrastructure.Repositories
             return null;
         }
 
-        private VehicleDomain AddVehicle(VehicleDomain vehicle)
-        {
-            return ConvertersManager.VehicleConverter.Convert(
+        private VehicleDomain AddVehicle(VehicleDomain vehicle) => ConvertersManager.VehicleConverter.Convert(
                 _vehiclesRepository.Add(ConvertersManager.VehicleConverter.Convert(vehicle)));
-        }
 
         private List<VehicleDomain> AddVehicles(List<VehicleDomain> vehicles)
         {
@@ -315,6 +300,7 @@ namespace Backend.Infrastructure.Repositories
             var addedContractBeneficiary = _contractBeneficiaryRepository.Add(contractBeneficiaryToAdd);
             if (addedContractBeneficiary == null)
                 return null;
+
             _contractBeneficiaryRepository.Save();
             return addedContractBeneficiary;
         }
@@ -754,14 +740,14 @@ namespace Backend.Infrastructure.Repositories
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed)
             {
                 if (disposing)
                 {
                     _db.Dispose();
                 }
             }
-            this.disposed = true;
+            disposed = true;
         }
 
         public void Dispose()
