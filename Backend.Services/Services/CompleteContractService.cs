@@ -1,4 +1,5 @@
 ﻿using Backend.Core.Domains;
+using Backend.Core.Enums;
 using Backend.Infrastructure.Repositories.Interfaces;
 using Backend.Services.Services.Interfaces;
 using Backend.Services.Validators.Contracts;
@@ -26,6 +27,39 @@ namespace Backend.Services.Services
                 return null;
 
             contractToBeDeleted.Contract.ContractDeleted = !contractToBeDeleted.Contract.ContractDeleted;
+            switch (contractToBeDeleted.Contract.ContractType)
+            {
+                case ContractType.DentalPlan:
+                case ContractType.HealthPlan:
+                case ContractType.LifeInsurance:
+                    foreach (var individual in contractToBeDeleted.Individuals)
+                        individual.IsDeleted = contractToBeDeleted.Contract.ContractDeleted;
+                    break;
+
+                case ContractType.AnimalHealthPlan:
+                    foreach (var pet in contractToBeDeleted.Pets)
+                        pet.IsDeleted = contractToBeDeleted.Contract.ContractDeleted;
+                    break;
+
+                case ContractType.MobileDeviceInsurance:
+                    foreach (var mobile in contractToBeDeleted.MobileDevices)
+                        mobile.IsDeleted = contractToBeDeleted.Contract.ContractDeleted;
+                    break;
+
+                case ContractType.RealStateInsurance:
+                    foreach (var realty in contractToBeDeleted.Realties)
+                        realty.IsDeleted = contractToBeDeleted.Contract.ContractDeleted;
+                    break;
+
+                case ContractType.VehicleInsurance:
+                    foreach (var vehicle in contractToBeDeleted.Vehicles)
+                        vehicle.IsDeleted = contractToBeDeleted.Contract.ContractDeleted;
+                    break;
+
+                default:
+                    return null;
+            }
+
             var deletedContract = _completeContractRepository.Update(id, contractToBeDeleted);
             if (deletedContract == null)
                 return null;
