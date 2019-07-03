@@ -3,6 +3,8 @@ using Backend.Core.Models;
 using Backend.Infrastructure.Configuration;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Repositories.Interfaces;
+using Backend.Infrastructure.ServiceBus;
+using Backend.Infrastructure.ServiceBus.IoC;
 using Backend.Services.Services;
 using Backend.Services.Services.Interfaces;
 using Backend.Services.Validators;
@@ -79,7 +81,13 @@ namespace ContractHolder.WebAPI
 
             services.AddScoped<IAddressValidator, AddressValidator>();
 
+            // DB Context
             services.AddDbContext<ConfigurationContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            // Service Bus
+            services.ConfigureServiceBus(new ServiceBusSettings(
+                Configuration["ServiceBus:DefaultConnection"], Configuration["ServiceBus:QueueName"],
+                Configuration["ServiceBus:TopicName"], Configuration["ServiceBus:SubscriptionName"]));
 
             ConfigureSwagger(services);
         }

@@ -1,4 +1,6 @@
 ﻿using Backend.Core.Domains;
+using Backend.Core.Events;
+using Backend.Infrastructure.ServiceBus.Contracts;
 using Backend.Services.Services.Interfaces;
 using ContractHolder.WebAPI.Factories;
 using ContractHolder.WebAPI.ViewModels;
@@ -16,13 +18,15 @@ namespace ContractHolder.WebAPI.Controllers
     public class ContractHolderController : ControllerBase
     {
         private readonly IService<ContractHolderDomain> _contractHolderService;
+        private readonly IServiceBusClient _busClient;
 
         /// <summary>
         /// ContractHolderController constructor
         /// </summary>
-        public ContractHolderController(IService<ContractHolderDomain> contractHolderService)
+        public ContractHolderController(IService<ContractHolderDomain> contractHolderService, IServiceBusClient busClient)
         {
             _contractHolderService = contractHolderService;
+            _busClient = busClient;
         }
 
         /// <summary>
@@ -64,6 +68,8 @@ namespace ContractHolder.WebAPI.Controllers
                 var addedContractHolder = _contractHolderService.Save(FactoriesManager.ContractHolderDomain.Create(contractHolderViewModel));
                 if (addedContractHolder == null)
                     return StatusCode(403);
+                //_busClient.SendMessageToQueue(new SendEmailContractHolder(contractHolderViewModel.individualEmail, contractHolderViewModel.individualName));
+                _busClient.PublishMessageToTopic(new EmailSentContractHolder(contractHolderViewModel.individualEmail, contractHolderViewModel.individualName));
                 return Ok(FactoriesManager.ContractHolderViewModel.Create(addedContractHolder));
             }
             catch (Exception e)
