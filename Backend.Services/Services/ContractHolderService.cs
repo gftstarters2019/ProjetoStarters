@@ -1,4 +1,5 @@
 ﻿using Backend.Core.Domains;
+using Backend.Core.Models;
 using Backend.Infrastructure.Repositories.Interfaces;
 using Backend.Services.Services.Interfaces;
 using Backend.Services.Validators;
@@ -13,17 +14,24 @@ namespace Backend.Services.Services
     {
         private IRepository<ContractHolderDomain> _contractHolderRepository;
         private readonly IContractHolderValidator _contractHolderValidator;
+        private IRepository<SignedContractEntity> _signedContractRepository;
 
-        public ContractHolderService(IRepository<ContractHolderDomain> contractHolderRepository, IContractHolderValidator contractHolderValidator)
+        public ContractHolderService(IRepository<ContractHolderDomain> contractHolderRepository,
+                                     IContractHolderValidator contractHolderValidator,
+                                     IRepository<SignedContractEntity> signedContractRepository)
         {
             _contractHolderRepository = contractHolderRepository;
             _contractHolderValidator = contractHolderValidator;
+            _signedContractRepository = signedContractRepository;
         }
 
         public ContractHolderDomain Delete(Guid id)
         {
             var contractHolderToDelete = _contractHolderRepository.Find(id);
             if (contractHolderToDelete == null)
+                return null;
+
+            if (_signedContractRepository.Get().Where(sc => sc.BeneficiaryId == id && sc.ContractIndividualIsActive).Any())
                 return null;
 
             contractHolderToDelete.Individual.IsDeleted = !contractHolderToDelete.Individual.IsDeleted;
