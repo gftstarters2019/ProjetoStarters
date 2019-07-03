@@ -105,8 +105,7 @@ namespace ContractHolder.WebAPI.Controllers
                 {
                     Type = "Validation Error",
                     Detail = errors
-                }
-                );
+                });
             }
         }
 

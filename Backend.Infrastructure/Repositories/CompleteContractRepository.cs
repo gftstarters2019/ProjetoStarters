@@ -393,44 +393,19 @@ namespace Backend.Infrastructure.Repositories
                 case ContractType.DentalPlan:
                 case ContractType.HealthPlan:
                 case ContractType.LifeInsurance:
-                    if (completeContract.Individuals.Count == 0)
-                        return null;
-
-                    var updatedIndividuals = UpdateIndividuals(completeContract.Individuals);
-
-                    return updatedIndividuals;
+                    return UpdateIndividuals(completeContract.Individuals);
 
                 case ContractType.AnimalHealthPlan:
-                    if (completeContract.Pets.Count == 0)
-                        return null;
-
-                    var updatedPets = UpdatePets(completeContract.Pets);
-
-                    return updatedPets;
+                    return UpdatePets(completeContract.Pets);
 
                 case ContractType.MobileDeviceInsurance:
-                    if (completeContract.MobileDevices.Count == 0)
-                        return null;
-
-                    var updatedMobileDevices = UpdateMobileDevices(completeContract.MobileDevices);
-
-                    return updatedMobileDevices;
+                    return UpdateMobileDevices(completeContract.MobileDevices);
 
                 case ContractType.RealStateInsurance:
-                    if (completeContract.Realties.Count == 0)
-                        return null;
-
-                    var updatedRealties = UpdateRealties(completeContract.Realties);
-
-                    return updatedRealties;
+                    return UpdateRealties(completeContract.Realties);
 
                 case ContractType.VehicleInsurance:
-                    if (completeContract.Vehicles.Count == 0)
-                        return null;
-
-                    var updatedVehicles = UpdateVehicles(completeContract.Vehicles);
-
-                    return updatedVehicles;
+                    return UpdateVehicles(completeContract.Vehicles);
 
                 default:
                     return null;
@@ -439,6 +414,9 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> UpdateIndividuals(List<IndividualDomain> individuals)
         {
+            if (individuals.Count == 0)
+                return null;
+
             List<Guid> updatedIndividuals = new List<Guid>();
 
             foreach (var ind in individuals)
@@ -470,6 +448,9 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> UpdatePets(List<PetDomain> pets)
         {
+            if (pets.Count == 0)
+                return null;
+
             List<Guid> updatedPets = new List<Guid>();
 
             foreach (var pet in pets)
@@ -501,6 +482,9 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> UpdateMobileDevices(List<MobileDeviceDomain> mobileDevices)
         {
+            if (mobileDevices.Count == 0)
+                return null;
+
             List<Guid> updatedMobileDevices = new List<Guid>();
 
             foreach (var mobileDevice in mobileDevices)
@@ -534,6 +518,9 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> UpdateRealties(List<RealtyDomain> realties)
         {
+            if (realties.Count == 0)
+                return null;
+
             List<Guid> updatedRealties = new List<Guid>();
 
             foreach (var realty in realties)
@@ -565,6 +552,9 @@ namespace Backend.Infrastructure.Repositories
 
         private List<Guid> UpdateVehicles(List<VehicleDomain> vehicles)
         {
+            if (vehicles.Count == 0)
+                return null;
+
             List<Guid> updatedVehicles = new List<Guid>();
 
             foreach (var vehicle in vehicles)
@@ -635,35 +625,62 @@ namespace Backend.Infrastructure.Repositories
                 case ContractType.DentalPlan:
                 case ContractType.HealthPlan:
                 case ContractType.LifeInsurance:
-                    completeContractToReturn.Individuals = _individualsRepository.Get().Where(ind => _contractBeneficiaryRepository.Get()
-                        .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ind.BeneficiaryId))
-                        .Select(ind => ConvertersManager.IndividualConverter.Convert(ind)).ToList();
+                    completeContractToReturn.Individuals = IndividualsInContract(signedContract.SignedContractId);
                     break;
                 case ContractType.AnimalHealthPlan:
-                    completeContractToReturn.Pets = _petsRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
-                        .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
-                        .Select(ben => ConvertersManager.PetConverter.Convert(ben)).ToList();
+                    completeContractToReturn.Pets = PetsInContract(signedContract.SignedContractId);
                     break;
                 case ContractType.MobileDeviceInsurance:
-                    completeContractToReturn.MobileDevices = _mobileDevicesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
-                        .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
-                        .Select(ben => ConvertersManager.MobileDeviceConverter.Convert(ben)).ToList();
+                    completeContractToReturn.MobileDevices = MobileDevicesInContract(signedContract.SignedContractId);
                     break;
                 case ContractType.RealStateInsurance:
-                    completeContractToReturn.Realties = _realtiesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
-                       .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
-                        .Select(ben => ConvertersManager.RealtyConverter.Convert(ben)).ToList();
+                    completeContractToReturn.Realties = RealtiesInContract(signedContract.SignedContractId);
                     break;
                 case ContractType.VehicleInsurance:
-                    completeContractToReturn.Vehicles = _vehiclesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
-                        .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
-                        .Select(ben => ConvertersManager.VehicleConverter.Convert(ben)).ToList();
+                    completeContractToReturn.Vehicles = VehiclesInContract(signedContract.SignedContractId);
                     break;
                 default:
                     return null;
             }
             return completeContractToReturn;
         }
+
+        #region In Contract
+        private List<IndividualDomain> IndividualsInContract(Guid signedContractId)
+        {
+            return _individualsRepository.Get().Where(ind => _contractBeneficiaryRepository.Get()
+                        .Where(cb => cb.SignedContractId == signedContractId).Select(cb => cb.BeneficiaryId).Contains(ind.BeneficiaryId))
+                        .Select(ind => ConvertersManager.IndividualConverter.Convert(ind)).ToList();
+        }
+
+        private List<PetDomain> PetsInContract(Guid signedContractId)
+        {
+            return _petsRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                        .Where(cb => cb.SignedContractId == signedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                        .Select(ben => ConvertersManager.PetConverter.Convert(ben)).ToList();
+        }
+
+        private List<MobileDeviceDomain> MobileDevicesInContract(Guid signedContractId)
+        {
+            return _mobileDevicesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                        .Where(cb => cb.SignedContractId == signedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                        .Select(ben => ConvertersManager.MobileDeviceConverter.Convert(ben)).ToList();
+        }
+
+        private List<RealtyDomain> RealtiesInContract(Guid signedContractId)
+        {
+            return _realtiesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                       .Where(cb => cb.SignedContractId == signedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                        .Select(ben => ConvertersManager.RealtyConverter.Convert(ben)).ToList();
+        }
+
+        private List<VehicleDomain> VehiclesInContract(Guid signedContractId)
+        {
+            return _vehiclesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
+                        .Where(cb => cb.SignedContractId == signedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
+                        .Select(ben => ConvertersManager.VehicleConverter.Convert(ben)).ToList();
+        }
+        #endregion In Contract
 
         public IEnumerable<CompleteContractDomain> Get()
         {
@@ -688,29 +705,19 @@ namespace Backend.Infrastructure.Repositories
                         case ContractType.DentalPlan:
                         case ContractType.HealthPlan:
                         case ContractType.LifeInsurance:
-                            completeContractToAdd.Individuals = _individualsRepository.Get().Where(ind => _contractBeneficiaryRepository.Get()
-                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ind.BeneficiaryId))
-                                .Select(ind => ConvertersManager.IndividualConverter.Convert(ind)).ToList();
+                            completeContractToAdd.Individuals = IndividualsInContract(signedContract.SignedContractId);
                             break;
                         case ContractType.AnimalHealthPlan:
-                            completeContractToAdd.Pets = _petsRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
-                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
-                                .Select(ben => ConvertersManager.PetConverter.Convert(ben)).ToList();
+                            completeContractToAdd.Pets = PetsInContract(signedContract.SignedContractId);
                             break;
                         case ContractType.MobileDeviceInsurance:
-                            completeContractToAdd.MobileDevices = _mobileDevicesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
-                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
-                                .Select(ben => ConvertersManager.MobileDeviceConverter.Convert(ben)).ToList();
+                            completeContractToAdd.MobileDevices = MobileDevicesInContract(signedContract.SignedContractId);
                             break;
                         case ContractType.RealStateInsurance:
-                            completeContractToAdd.Realties  = _realtiesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
-                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
-                                .Select(ben => ConvertersManager.RealtyConverter.Convert(ben)).ToList();
+                            completeContractToAdd.Realties = RealtiesInContract(signedContract.SignedContractId);
                             break;
                         case ContractType.VehicleInsurance:
-                            completeContractToAdd.Vehicles = _vehiclesRepository.Get().Where(ben => _contractBeneficiaryRepository.Get()
-                                .Where(cb => cb.SignedContractId == signedContract.SignedContractId).Select(cb => cb.BeneficiaryId).Contains(ben.BeneficiaryId))
-                                .Select(ben => ConvertersManager.VehicleConverter.Convert(ben)).ToList();
+                            completeContractToAdd.Vehicles = VehiclesInContract(signedContract.SignedContractId);
                             break;
                         default:
                             continue;
