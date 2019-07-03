@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+  <span>Report</span>
+</mat-toolbar>
+<br/>
+<br/>
+<div class="container">
+  <form>
+    <div class="reportCard">
+      <mat-card>
+
+        <div *ngIf="disableInput == false">
+          <mat-form-field class="contractHolderName" style="width: 350px;">
+            <input matInput placeholder="Contract Holder's name:" aria-label="Assignee" formControlName="individualName" name="data.contractHolder.individualName" [formControl]="control_autocomplete" [matAutocomplete]="auto">
+
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="contractHolder_namecompleteSelect($event)"></mat-autocomplete>
+            <mat-option *ngFor="let option of FilteredHolder$ | async" [value]="option">
+              {{option.individualName}}
+            </mat-option>
+          </mat-form-field>
+        </div>
+      </mat-card>
+    </div>
+
+  </form>
+</div>

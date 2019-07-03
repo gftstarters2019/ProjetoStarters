@@ -10,6 +10,7 @@ import { IndividualComponent } from './components/individual/individual.componen
 import { MobileComponent } from './components/mobile/mobile.component';
 import { RealtiesComponent } from './components/realties/realties.component';
 import { VehiclesComponent } from './components/vehicles/vehicles.component';
+import { ReportsComponent } from './reports/reports.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path:'vehicle', component: VehiclesComponent},
   { path: 'mobile', component: MobileComponent },
   { path: 'telephone', component: TelephoneComponent },
+  { path: 'reports', component: ReportsComponent },
   { path: '', pathMatch: 'full', redirectTo: 'contract-holder' }
 ]
 @NgModule({

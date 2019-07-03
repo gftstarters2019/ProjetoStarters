@@ -43,7 +43,6 @@ export interface Holder {
   styleUrls: ['./contract.component.scss'],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
-
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
 
@@ -161,7 +160,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
   handle_autocompleteSelect(event: MatAutocompleteSelectedEvent) {
     const holder: Holder = event.option.value;
     console.log(holder);
-    this.contractform.get('contractHolderId').setValue(holder.individualId)
+    this.contractform.get('contractHolderId').setValue(holder.individualId);
   }
 
   private setup_form() {

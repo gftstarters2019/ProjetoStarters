@@ -141,7 +141,7 @@ bsConfig: Partial<BsDatepickerConfig>;
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
       if (this.result == true) {
-        this.http.delete(`https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar(error.mensage), () => this.openSnackBar('Contract Holder removed'));
+        this.http.delete(`https://contractholderwebapiv3.azurewebsites.net/api/ContractHolder/${id}`).subscribe(data => this.setup_gridData(), error => this.openSnackBar("403 - Error Deleting this Contract Holder has Active Contract"), () => this.openSnackBar('Contract Holder removed'));
       }
     });
   }

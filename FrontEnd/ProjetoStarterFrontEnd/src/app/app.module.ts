@@ -41,6 +41,9 @@ import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/materia
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
 import { ActionButtonBeneficiariesComponent } from './components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
 import { ActionButtonComponent } from './components/shared/action-button/action-button.component';
+import { ReportsComponent } from './reports/reports.component';
+import { ReportComponent } from './forms/report/report.component';
+import { ReportListComponent } from './AG-grid-List/report-list/report-list.component';
 
 
 @NgModule({
@@ -67,6 +70,9 @@ import { ActionButtonComponent } from './components/shared/action-button/action-
     MobileComponent,
     RealtiesComponent,
     VehiclesComponent,
+    ReportsComponent,
+    ReportComponent,
+    ReportListComponent,
   ],
   imports: [
     ObserversModule,
