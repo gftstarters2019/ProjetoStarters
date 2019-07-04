@@ -1,4 +1,3 @@
-import { TextMaskModule } from 'angular2-text-mask';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, SimpleChanges, ModuleWithComponentFactories, AfterViewInit } from '@angular/core';
@@ -6,19 +5,29 @@ import { Validators, FormBuilder, FormGroup, FormArray, FormControl, AbstractCon
 import { GridOptions, RowSelectedEvent, GridReadyEvent, DetailGridInfo } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { MatSnackBar, MatAutocompleteSelectedEvent, MatDialogConfig, MatDialog } from '@angular/material';
-import { GenericValidator } from '../Validations/GenericValidator';
+import { GenericValidator } from '../Configuration/Validations/GenericValidator';
 import { take, takeUntil, startWith, filter, map, debounceTime, switchMap, debounce } from 'rxjs/operators';
-
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ContractService } from 'src/app/dataService/contract/contract.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { ConfirmDialogModel, ConfirmationDialogComponent } from '../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { ActionButtonComponent } from '../components/shared/action-button/action-button.component';
-
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-
-
+// IMPORTS MASKS TO AG-GRID
+import { maskCpf } from 'src/app/Configuration/Mask/mask_cpf';
+import { currencyCategory } from 'src/app/Configuration/Mask/mask_contractCategory';
+import { currencyType } from '../Configuration/Mask/mask_contractType';
+import { currencyStatus } from '../Configuration/Mask/mask_isActive';
+import { maskRG } from '../Configuration/Mask/mask_rg';
+import { SpeciesFormmatter } from '../Configuration/Mask/mask_petSpecies';
+import { realtiestypeFormatter } from '../Configuration/Mask/mask_realtiesType';
+import { RealFormatter } from '../Configuration/Mask/mask_valueReal';
+import { colorFormatter } from '../Configuration/Mask/mask_color';
+import { MileageFormatter } from '../Configuration/Mask/mask_mileage';
+import { doneFormatter } from '../Configuration/Mask/mask_isCheck';
+import { DeviceFormatter } from '../Configuration/Mask/mask_deviceType';
+import { maskZipCode } from '../Configuration/Mask/mask_zipCode';
 
 export interface Type {
   value: number;
@@ -49,7 +58,7 @@ export interface Holder {
   ]
 })
 export class ContractComponent implements OnInit, AfterViewInit {
-  
+
   public result: any = null;
   color = 'primary';
   beneficiaries: FormArray;
@@ -66,10 +75,6 @@ export class ContractComponent implements OnInit, AfterViewInit {
   contractform: FormGroup;
   bsConfig: Partial<BsDatepickerConfig>;
 
-  // contractHolderIdT: FormControl = new FormControl();
-  private _onDestroy = new Subject<void>();
-
-
   gridApi;
   gridColumApi;
   gridOption: GridOptions;
@@ -83,9 +88,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
   control_autocomplete = new FormControl();
 
   cType: any;
-
   signedContractId: any = null;
-
   contractTypes: Type[] = [
 
     { value: 0, viewValue: ' Health Plan' },
@@ -104,6 +107,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
     { value: 4, viewValue: ' Platinum' },
     { value: 5, viewValue: ' Diamond' },
   ];
+  params: any;
 
 
   constructor(
@@ -537,7 +541,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private setup_gridOptions() {
+  setup_gridOptions() {
     this.gridOption = {
       rowSelection: 'single',
 
@@ -720,15 +724,15 @@ export class ContractComponent implements OnInit, AfterViewInit {
               { headerName: 'City', field: "addressCity", minWidth: 145, },
               { headerName: 'State', field: "addressState", minWidth: 130, },
               { headerName: 'Country', field: "addressCountry", minWidth: 120, },
-              { headerName: 'Zip-Code', field: "addressZipCode", minWidth: 125, },
+              { headerName: 'Zip-Code', field: "addressZipCode", minWidth: 125, valueFormatter: maskZipCode, },
               {
                 headerName: 'Construction Date', field: "constructionDate", minWidth: 165, cellRenderer: (data) => {
                   return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
                 },
               },
               { headerName: 'Municipal Registration', field: "municipalRegistration", minWidth: 195, },
-              { headerName: 'Market Value', field: "marketValue", valueFormatter: SaleFormatter, minWidth: 140, },
-              { headerName: 'Sale Value', field: "saleValue", valueFormatter: SaleFormatter, minWidth: 135, },
+              { headerName: 'Market Value', field: "marketValue", valueFormatter: RealFormatter, minWidth: 140, },
+              { headerName: 'Sale Value', field: "saleValue", valueFormatter: RealFormatter, minWidth: 135, },
             ]
           }],
 
@@ -761,7 +765,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
               },
               { headerName: 'No. Chassis', field: "vehicleChassisNumber", minWidth: 160, },
               { headerName: 'Current Mileage', field: "vehicleCurrentMileage", valueFormatter: MileageFormatter, minWidth: 165 },
-              { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue", valueFormatter: SaleFormatter, minWidth: 165, },
+              { headerName: 'Current Fipe Value', field: "vehicleCurrentFipeValue", valueFormatter: RealFormatter, minWidth: 165, },
               { headerName: 'Done Inspection', field: "vehicleDoneInspection", valueFormatter: doneFormatter, minWidth: 155, },
             ]
           }],
@@ -789,7 +793,7 @@ export class ContractComponent implements OnInit, AfterViewInit {
                 },
               },
               { headerName: 'Device SerialNumber', field: "mobileDeviceSerialNumber", minWidth: 180, },
-              { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue", valueFormatter: SaleFormatter, minWidth: 176, },
+              { headerName: 'Device Invoice Value', field: "mobileDeviceInvoiceValue", valueFormatter: RealFormatter, minWidth: 176, },
             ]
           }],
           onGridReady: function (params) {
@@ -823,204 +827,10 @@ export class ContractComponent implements OnInit, AfterViewInit {
 
     }, 250);
   }
-  private setup_gridData() {
+  setup_gridData() {
     this.rowData$ = this.contractService.get_contract();
   }
   private onCellEdit(params: any) {
 
   }
 }
-//Function Formatting Category
-function currencyCategory(params) {
-  return changeCategoryValue(params.value);
-}
-function changeCategoryValue(number) {
-  if (number == 0) {
-    return "Iron";
-  }
-  if (number == 1) {
-    return "Bronze";
-  }
-  if (number == 2) {
-    return "Silver";
-  }
-  if (number == 3) {
-    return "Gold"
-  }
-  if (number == 4) {
-    return "Platium"
-  }
-  if (number == 5) {
-    return "Diamond"
-  }
-}
-
-//function formatting Type
-function currencyType(params) {
-  return changeTypValue(params.value);
-}
-function changeTypValue(number) {
-  if (number == 0) {
-    return "Health Plan";
-  }
-  if (number == 1) {
-    return "Animal Health Plan";
-  }
-  if (number == 2) {
-    return "Dental Plan";
-  }
-  if (number == 3) {
-    return "Life Insurance Plan"
-  }
-  if (number == 4) {
-    return "Real Estate Insurance"
-  }
-  if (number == 5) {
-    return "Vehicle Insurance"
-  }
-  if (number == 6) {
-    return "Mobile Device Insurance"
-  }
-}
-
-
-//function formatting Status
-function currencyStatus(params) {
-  return changeStatusValue(params.value);
-}
-function changeStatusValue(stats: boolean) {
-  if (stats == true) {
-    return "Active";
-  } else {
-    return "Inactive"
-  }
-}
-
-//function mask Cpf
-function maskCpf(params) {
-  return maskValue(params.value);
-}
-function maskValue(cpf) {
-  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "\$1.\$2.\$3\-\$4")
-}
-
-//function RG mask
-function maskRG(params) {
-  return maskRGValue(params.value);
-}
-function maskRGValue(rg) {
-  return rg.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/g, "\$1.\$2.\$3\-\$4")
-}
-
-//function mask value R$
-function SaleFormatter(params) {
-  return "R$ " + saleValue(params.value);
-}
-function saleValue(number) {
-  return number.toFixed(2);
-}
-
-//function type value Realties
-function realtiestypeFormatter(params) {
-  return typeValue(params.value);
-}
-function typeValue(number) {
-  if (number == 0) {
-    return "Home";
-  }
-  if (number == 1) {
-    return "Commercial";
-  }
-}
-
-//function vehicles color
-function colorFormatter(params) {
-  return colorValue(params.value);
-}
-function colorValue(number) {
-  if (number == 0) {
-    return "White";
-  }
-  if (number == 1) {
-    return "Silver";
-  }
-  if (number == 2) {
-    return "Black";
-  }
-  if (number == 3) {
-    return "Gray";
-  }
-  if (number == 4) {
-    return "Red";
-  }
-  if (number == 5) {
-    return "Blue";
-  }
-  if (number == 6) {
-    return "Brown";
-  }
-  if (number == 7) {
-    return "Yellow";
-  }
-  if (number == 8) {
-    return "Green";
-  }
-  if (number == 9) {
-    return "Other";
-  }
-}
-
-//function value mask Km
-function MileageFormatter(params) {
-  return mileageValue(params.value) + "Km";
-}
-function mileageValue(number) {
-  return number.toFixed(3);
-}
-
-//function done mask
-function doneFormatter(params) {
-  return doneValue(params.value);
-}
-function doneValue(bool) {
-  if (bool == true)
-    return "Check";
-  else
-    return "UnCheck";
-}
-
-//fucntion Mobile Device Type
-function DeviceFormatter(params) {
-  return deviceValue(params.value);
-}
-function deviceValue(number) {
-  if (number == 0)
-    return "Smartphone";
-  if (number == 1)
-    return "Tablet";
-  if (number == 2)
-    return "Laptop";
-}
-
-//function mask species
-function SpeciesFormmatter(params) {
-  return speciesValue(params.value);
-}
-function speciesValue(number) {
-  if (number == 0) {
-    return "Canis Lupus Familiaris";
-  }
-  if (number == 1) {
-    return "Felis Catus"
-  }
-  if (number == 2) {
-    return "Mesocricetus Auratus"
-  }
-  if (number == 3) {
-    return "Nymphicus Hollandicus"
-  }
-  if (number == 4) {
-    return "Ara Chloropterus"
-  }
-}
-

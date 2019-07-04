@@ -1,11 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+//IMPORTS AG-GRID TABLE
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
-import { MatSnackBar } from '@angular/material/snack-bar';
+//IMPORTS COMPONENTS DELETE AND POP-UP 
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ActionButtonBeneficiariesComponent } from '../../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+// IMPORTS MASKS TO AG-GRID
+import { SpeciesFormmatter } from 'src/app/Configuration/Mask/mask_petSpecies';
 
 @Component({
   selector: 'app-pet-list',
@@ -28,11 +32,6 @@ export class PetListComponent implements OnInit {
     this.setup_gridData();
     this.setup_gridOptions();
     this.paginationPageSize = 50;
-  }
-
-  private handle_editUser(data: any) {
-    //this.contractform.patchValue(data);
-
   }
 
   private handle_deleteUser(data: any) {
@@ -90,7 +89,7 @@ export class PetListComponent implements OnInit {
           sortable: true,
           filter: true,
           cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+            return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
           },
           onCellValueChanged:
             this.onCellEdit.bind(this)
@@ -139,25 +138,5 @@ export class PetListComponent implements OnInit {
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-  }
-}
-function SpeciesFormmatter(params) {
-  return speciesValue(params.value);
-}
-function speciesValue(number) {
-  if (number == 0) {
-    return "Canis Lupus Familiaris";
-  }
-  if (number == 1) {
-    return "Felis Catus"
-  }
-  if (number == 2) {
-    return "Mesocricetus Auratus"
-  }
-  if (number == 3) {
-    return "Nymphicus Hollandicus"
-  }
-  if (number == 4) {
-    return "Ara Chloropterus"
   }
 }

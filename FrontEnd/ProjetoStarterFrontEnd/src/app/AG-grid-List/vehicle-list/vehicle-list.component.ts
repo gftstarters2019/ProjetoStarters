@@ -3,9 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { MatSnackBar } from '@angular/material/snack-bar';
+//IMPORTS COMPONENTS DELETE AND POP-UP
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
 import { ActionButtonBeneficiariesComponent } from '../../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+// IMPORTS MASKS TO AG-GRID
+import { colorFormatter } from 'src/app/Configuration/Mask/mask_color';
+import { MileageFormatter } from 'src/app/Configuration/Mask/mask_mileage';
+import { doneFormatter } from 'src/app/Configuration/Mask/mask_isCheck';
+import { RealFormatter } from 'src/app/Configuration/Mask/mask_valueReal';
 
 
 @Component({
@@ -109,7 +115,7 @@ export class VehicleListComponent implements OnInit {
           sortable: true,
           filter: true,
           cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+            return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
           },
           onCellValueChanged:
             this.onCellEdit.bind(this)
@@ -121,7 +127,7 @@ export class VehicleListComponent implements OnInit {
           sortable: true,
           filter: true,
           cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+            return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
           },
           onCellValueChanged:
             this.onCellEdit.bind(this)
@@ -151,7 +157,7 @@ export class VehicleListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
-          valueFormatter: FipeFormatter,
+          valueFormatter: RealFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -191,60 +197,4 @@ export class VehicleListComponent implements OnInit {
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
   }
-}
-function colorFormatter(params) {
-  return colorValue(params.value);
-}
-function colorValue(number) {
-  if (number == 0) {
-    return "White";
-  }
-  if (number == 1) {
-    return "Silver";
-  }
-  if (number == 2) {
-    return "Black";
-  }
-  if (number == 3) {
-    return "Gray";
-  }
-  if (number == 4) {
-    return "Red";
-  }
-  if (number == 5) {
-    return "Blue";
-  }
-  if (number == 6) {
-    return "Brown";
-  }
-  if (number == 7) {
-    return "Yellow";
-  }
-  if (number == 8) {
-    return "Green";
-  }
-  if (number == 9) {
-    return "Other";
-  }
-}
-function MileageFormatter(params) {
-  return mileageValue(params.value) + "Km";
-}
-function mileageValue(number) {
-  return number.toFixed(3);
-}
-function FipeFormatter(params) {
-  return "R$ " + FipeValue(params.value);
-}
-function FipeValue(number) {
-  return number.toFixed(2);
-}
-function doneFormatter(params) {
-  return doneValue(params.value);
-}
-function doneValue(bool){
-  if (bool == true)
-    return "Check";
-  else
-    return "UnCheck";
 }

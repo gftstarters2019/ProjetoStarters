@@ -4,7 +4,7 @@ import { Validators, FormBuilder, FormArray, FormGroup, AbstractControl, MaxLeng
 import { GridOptions, ColDef } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { Location } from '@angular/common';
-import { GenericValidator } from '../Validations/GenericValidator';
+import { GenericValidator } from '../Configuration/Validations/GenericValidator';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BsDatepickerConfig, BsLocaleService} from 'ngx-bootstrap/datepicker';

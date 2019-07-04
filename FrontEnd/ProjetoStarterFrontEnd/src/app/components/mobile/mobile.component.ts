@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { BsDatepickerConfig} from 'ngx-bootstrap/datepicker';
-import { GenericValidator } from 'src/app/Validations/GenericValidator';
+import { GenericValidator } from 'src/app/Configuration/Validations/GenericValidator';
 
 export interface MobileType {
   value: string;

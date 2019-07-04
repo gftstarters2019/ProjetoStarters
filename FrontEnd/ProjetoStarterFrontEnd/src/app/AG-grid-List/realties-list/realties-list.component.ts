@@ -4,9 +4,14 @@ import { GridOptions, ColDef, RowSelectedEvent } from 'ag-grid-community';
 import "ag-grid-enterprise";
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+// IMPORTS COMPONENTS DELETE AND POP-UP
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ActionButtonBeneficiariesComponent } from '../../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+// IMPORTS MASKS TO AG-GRID
+import { realtiestypeFormatter } from 'src/app/Configuration/Mask/mask_realtiesType';
+import { RealFormatter } from 'src/app/Configuration/Mask/mask_valueReal';
+import { maskZipCode } from 'src/app/Configuration/Mask/mask_zipCode';
 
 @Component({
   selector: 'app-realties-list',
@@ -25,16 +30,10 @@ export class RealtiesListComponent implements OnInit {
 
   constructor(public dialog: MatDialog, private http: HttpClient, private _snackBar: MatSnackBar) { }
 
-
   ngOnInit() {
     this.setup_gridData();
     this.setup_gridOptions();
     this.paginationPageSize = 50;
-  }
-
-  private handle_editUser(data: any) {
-    //this.contractform.patchValue(data);
-
   }
 
   private handle_deleteUser(data: any) {
@@ -157,6 +156,7 @@ export class RealtiesListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
+          valueFormatter: maskZipCode,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -176,7 +176,7 @@ export class RealtiesListComponent implements OnInit {
           sortable: true,
           filter: true,
           cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+            return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
           },
           onCellValueChanged:
             this.onCellEdit.bind(this)
@@ -187,7 +187,7 @@ export class RealtiesListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
-          valueFormatter: SaleFormatter,
+          valueFormatter: RealFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -197,7 +197,7 @@ export class RealtiesListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
-          valueFormatter: MarketFormatter,
+          valueFormatter: RealFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -227,28 +227,5 @@ export class RealtiesListComponent implements OnInit {
 
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
-  }
-}
-function SaleFormatter(params) {
-  return "R$ " + saleValue(params.value);
-}
-function saleValue(number) {
-  return number.toFixed(2);
-}
-function MarketFormatter(params) {
-  return "R$ " + marketvalue(params.value);
-}
-function marketvalue(number) {
-  return number.toFixed(2);
-}
-function realtiestypeFormatter(params) {
-  return typeValue(params.value);
-}
-function typeValue(number) {
-  if (number == 0) {
-    return "Home";
-  }
-  if (number == 1) {
-    return "Commercial";
   }
 }

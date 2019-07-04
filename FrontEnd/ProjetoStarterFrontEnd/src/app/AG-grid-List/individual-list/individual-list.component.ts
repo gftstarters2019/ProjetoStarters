@@ -6,6 +6,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ActionButtonBeneficiariesComponent } from '../../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+// IMPORTS MASKS TO AG-GRID
+import { maskCpf,  } from 'src/app/Configuration/Mask/mask_cpf';
+import { maskRG } from 'src/app/Configuration/Mask/mask_rg';
+
 
 @Component({
   selector: 'app-individual-list',
@@ -112,7 +116,7 @@ export class IndividualListComponent implements OnInit {
           sortable: true,
           filter: true,
           cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+            return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
           },
           onCellValueChanged:
             this.onCellEdit.bind(this)
@@ -153,19 +157,3 @@ export class IndividualListComponent implements OnInit {
     const { data } = event;
   }
 }
-
-//function mask Cpf  Beneficiaries
-function maskCpf(params){
-  return maskValue(params.value);
-}
-function maskValue(cpf){
-  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4")
-}
-//function mask RG Beneficiaries
-function maskRG(params){
-  return maskRGValue(params.value);
-}
-function maskRGValue(rg){
-  return rg.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/g,"\$1.\$2.\$3\-\$4")
-}
-

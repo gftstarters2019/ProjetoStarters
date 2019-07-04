@@ -6,6 +6,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent, ConfirmDialogModel } from '../../components/shared/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ActionButtonBeneficiariesComponent } from '../../components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
+// IMPORTS MASKS TO AG-GRID
+import { DeviceFormatter } from 'src/app/Configuration/Mask/mask_deviceType';
+import { RealFormatter } from 'src/app/Configuration/Mask/mask_valueReal';
 
 @Component({
   selector: 'app-mobile-device-list',
@@ -100,7 +103,7 @@ export class MobileDeviceListComponent implements OnInit {
           sortable: true,
           filter: true,
           cellRenderer: (data) => {
-            return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+            return data.value ? (new Date(data.value)).toLocaleDateString("pt-BR") : '';
           },
           onCellValueChanged:
             this.onCellEdit.bind(this)
@@ -130,7 +133,7 @@ export class MobileDeviceListComponent implements OnInit {
           lockPosition: true,
           sortable: true,
           filter: true,
-          valueFormatter: invoiceFormatter,
+          valueFormatter: RealFormatter,
           onCellValueChanged:
             this.onCellEdit.bind(this)
         },
@@ -161,22 +164,4 @@ export class MobileDeviceListComponent implements OnInit {
   private onRowSelected(event: RowSelectedEvent) {
     const { data } = event;
   }
-}
-function DeviceFormatter(params) {
-  return deviceValue(params.value);
-}
-function deviceValue(number) {
-  if (number == 0)
-    return "Smartphone";
-  if (number == 1)
-    return "Tablet";
-  if (number == 2)
-    return "Laptop";
-}
-
-function invoiceFormatter(params) {
-  return "R$ " + invoiceValue(params.value);
-}
-function invoiceValue(number) {
-  return number.toFixed(2);
 }

@@ -42,7 +42,6 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
 import { ActionButtonBeneficiariesComponent } from './components/shared/action-button-beneficiaries/action-button-beneficiaries.component';
 import { ActionButtonComponent } from './components/shared/action-button/action-button.component';
 import { ReportsComponent } from './reports/reports.component';
-import { ReportComponent } from './forms/report/report.component';
 import { ReportListComponent } from './AG-grid-List/report-list/report-list.component';
 
 
@@ -71,7 +70,6 @@ import { ReportListComponent } from './AG-grid-List/report-list/report-list.comp
     RealtiesComponent,
     VehiclesComponent,
     ReportsComponent,
-    ReportComponent,
     ReportListComponent,
   ],
   imports: [
