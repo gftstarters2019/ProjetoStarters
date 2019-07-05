@@ -1,46 +1,32 @@
 <div class="container-12">
   <mat-card>
     <mat-form-field class="text-filename">
-      <input matInput placeholder="File Name:" id="fileName" type="text" maxlength="70">
+      <input matInput placeholder="File Name:" id="fileName" type="text" maxlength="70" [(ngModel)]="input_filename">
     </mat-form-field>
 
-    <mat-form-field class="text-separator">
-      <input matInput placeholder="Separator:" id="columnSeparator" type="text" maxlength="1">
+    <mat-form-field class="text-sheetname">
+      <input matInput placeholder="SheetName:" id="sheetname" type="text" maxlength="15"
+        [(ngModel)]="input_sheetname">
     </mat-form-field>
 
-    <label style="margin-left: 20px;"> 
-      <button mat-flat-button color="primary" (click)="onBtnExport()">
+    <label style="margin-left: 20px;">
+      <button mat-flat-button color="primary" (click)="onBtnExportCSV()">
         Export to CSV</button>
     </label>
-    <label style="margin-left: 20px;"> 
-      <button mat-flat-button color="primary" (click)="onBtnExport()">
+    <label style="margin-left: 20px;">
+      <button mat-flat-button color="primary" (click)="onBtnExportXLS()">
         Export to XLS</button>
     </label>
-    <label style="margin-left: 20px;"> 
-      <button mat-flat-button color="primary" (click)="onBtnExport()">
-      Export to XLSX</button>
-    </label>
-
   </mat-card>
 </div>
 <br />
 <div class="container">
   <mat-card>
-  <ag-grid-angular 
-  #agGrid 
-  id="myGrid" 
-  style="width: 100%; height: 1000px;" 
-  [pagination]="true"
-  [paginationPageSize]="50" 
-  class="ag-theme-material" 
-  [masterDetail]="true"
-  [rowSelection]="rowSelection"
-  [excelStyles]="excelStyles"
-  [detailCellRendererParams]="detailCellRendererParams" 
-  [detailRowHeight]="detailRowHeight" [rowHeight]="rowHeight"
-  [colResizeDefault]="colResizeDefault" 
-  [gridOptions]="GridOptions" 
-  [rowData]="rowData$ | async">
-  </ag-grid-angular>
-</mat-card>
+    <ag-grid-angular #agGrid id="myGrid" style="width: 100%; height: 1000px;" [pagination]="true"
+      [paginationPageSize]="50" class="ag-theme-material" [masterDetail]="true" [rowSelection]="rowSelection"
+      [excelStyles]="excelStyles" [detailCellRendererParams]="detailCellRendererParams"
+      [detailRowHeight]="detailRowHeight" [rowHeight]="rowHeight" [colResizeDefault]="colResizeDefault"
+      [gridOptions]="GridOptions" [rowData]="rowData$ | async">
+    </ag-grid-angular>
+  </mat-card>
 </div>

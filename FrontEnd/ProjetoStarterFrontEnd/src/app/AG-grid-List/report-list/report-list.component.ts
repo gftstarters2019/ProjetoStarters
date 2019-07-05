@@ -38,6 +38,9 @@ export class ReportListComponent implements OnInit {
   GridOptions: GridOptions;
   gridColumApi;
   excelStyles;
+  input_filename: string;
+  input_separator: string;
+  input_sheetname: any;
 
   constructor(private http: HttpClient) { }
 
@@ -181,20 +184,6 @@ export class ReportListComponent implements OnInit {
         },
       ]
     }
-    this.excelStyles = [
-      {
-        id: "booleanType",
-        dataType: "boolean"
-      },
-      {
-        id: "stringType",
-        dataType: "string"
-      },
-      {
-        id: "dateType",
-        dataType: "dateTime"
-      }
-    ];
     this.detailRowHeight = 350;
     this.detailCellRendererParams = function (params) {
       var res: any = {};
@@ -378,22 +367,32 @@ export class ReportListComponent implements OnInit {
 
     }, 250);
   }
-  onBtnExport(): void {
-    var params = {
-      columnGroups: getBooleanValue("#columnGroups"),
-      onlySelected: getBooleanValue("#onlySelected"),
-      allColumns: getBooleanValue("#allColumns"),
-      fileName: document.querySelector("#fileName"),
-      sheetName: document.querySelector("#sheetName"),
-      exportMode: document.querySelector('input[name="mode"]:checked')
-    };
-    this.gridApi.exportDataAsExcel(params);
-  }
-};
-function getBooleanValue(cssSelector) {
-  return document.querySelector(cssSelector).checked === true;
-}
+  onBtnExportCSV(): void {
 
+    var params = {
+      columnGroups: true,
+      onlySelected: true,
+      allColumns: true,
+      fileName: this.input_filename,
+      sheetName: this.input_sheetname,
+    };
+
+    this.GridOptions.api.exportDataAsCsv(params);
+  }
+  onBtnExportXLS(): void {
+
+    var params = {
+      columnGroups: true,
+      onlySelected: true,
+      allColumns: true,
+      fileName: this.input_filename,
+      sheetName: this.input_sheetname,
+    };
+
+    this.GridOptions.api.exportDataAsExcel(params);
+  }
+
+};
 
 
 
